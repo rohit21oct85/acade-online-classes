@@ -1,0 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;1,300&display=swap');
+
+*{
+    font-family: 'Open Sans', sans-serif;
+}
+p{
+    font-size:16px;
+    font-family: 'Open Sans', sans-serif;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f100; 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #2f3348;
+    border-radius: 10px;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
+/* loged in css */
+
+.login_menu{
+    background-color: #3b405a;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.webLogo {
+    background-color: #fff;
+    text-align: center;
+    padding: 11px;
+}
+.user_area {
+    text-align: center;
+    color: #fff;
+    padding: 5px 0px;
+    background-color: #2f3348;
+}
+.user_icon {
+    height: 70px;
+    margin: 10px 0px 0px 0px;
+    padding: 0px;
+}
+.profileImage {
+    width: 60px;
+    height: 60px;
+    border-radius: 5%;
+}
+.user_options ul {
+    text-decoration: none;
+    list-style-type: none;
+    display: flex;
+    padding: 10px 10px 10px 10px;
+    justify-content: space-between;
+    margin-bottom: 0px !important;
+}
+.user_options ul li {
+    font-size: 14px;
+    letter-spacing: 0.3px;
+    padding-left: 0px;
+    cursor: pointer;
+}
+.navbar_menus {
+    margin-top: 15px;
+    color: #fff;
+    height: 60vh;
+    overflow-y: auto;
+}
+.navbar_menus ul {
+    list-style-type: none;
+    padding: 0px 0px;
+    overflow-y: auto;
+}
+.navbar_menus ul li {
+    margin-bottom: 5px;
+    letter-spacing: 1px;
+    font-size: 14px;
+    font-weight: 400;
+    width: 100%;
+    border-radius:0px;
+    cursor: pointer;
+}
+.navbar_menus ul li .active{
+    background-color: #fff;
+    color: #2f3348;
+    border-radius:0px;
+    font-weight:600;
+}
+.navbar_menus ul li:hover .active{
+    background-color: #fff;
+    color:#2f3348;
+}
+.navbar_menus ul li a{
+    color: #fff;
+    text-decoration: none;
+    padding: 8px 10px;
+    width: 100%;
+    border: 0px;
+    font-size: 13px;
+}
+.navbar_menus ul li:hover{
+    background-color: #fff;
+}
+.navbar_menus ul li:hover a{
+    color: #2f3348;
+    font-weight:600;
+}
