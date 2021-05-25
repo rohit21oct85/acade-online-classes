@@ -97,6 +97,9 @@ app.get(`/api/v1/test`, (req, res) => {
 })
 app.use("/api/v1/admin", Routes.adminAuth);
 app.use("/api/v1/module", Routes.moduleRoutes);
+app.use("/api/v1/class", Routes.classRoutes);
+
+
 app.use("/api/v1/vehicle", Routes.vehicleRoutes);
 app.use("/api/v1/category", Routes.categoryRoutes);
 

@@ -4,6 +4,7 @@ import Dashboard from '../pages/admin/Dashboard.jsx'
 import CategoryList from '../pages/admin/category/CategoryList'
 
 import AppModule from '../pages/admin/appModule/AppModule.jsx'
+import ClassList from '../pages/admin/class/ClassList.jsx'
 
 export const webRoutes =  [
     { 
@@ -32,5 +33,9 @@ export const adminRoutes = [
     {
         path: '/admin/app-module/:module_id?',
         component: AppModule
+    },
+    {
+        path: '/admin/class-management',
+        component: ClassList
     }
 ]
