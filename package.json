@@ -1,7 +1,7 @@
 {
-  "name": "shivam-auto-parts",
+  "name": "acadecraft-online-classess",
   "version": "1.0.0",
-  "description": "Ecommerce app for spares parts",
+  "description": "Online Classes web app for schools, teachers and students",
   "main": "index.js",
   "scripts": {
     "start": "NODE_ENV='production' && node index.js",

@@ -1,10 +1,22 @@
-import React,{useContext} from 'react'
+import React,{useContext, useEffect} from 'react'
+import {useLocation, useHistory} from 'react-router-dom'
 import './mainDash.css';
 
 import {AuthContext} from '../../context/AuthContext.jsx';
 
 export default function Dashboard() {
-const { state } = useContext(AuthContext);
+    const history = useHistory();
+    const location = useLocation();
+    const path = location?.pathname;
+
+    const { state } = useContext(AuthContext);
+    useEffect(checkURL, [state]);
+    async function checkURL(){
+        if(path === '/admin/'){
+            history.push(`/admin/dashboard`);
+        }    
+    }
+
 return (
 
 <>
@@ -35,7 +47,6 @@ return (
                         </div>
                     </div>
                     )}    
-                    
                     </div>
                 </div>    
             </div>

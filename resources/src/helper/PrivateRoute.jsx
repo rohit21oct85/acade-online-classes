@@ -6,10 +6,9 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
     const {state} = useContext(AuthContext);
     return (
         <Route {...rest} render={props => (
-            state.isLoggedIn ? <Component {...props} /> : <Redirect to={{ pathname: '/login' }} />
+            state.isLoggedIn ? <Component {...props} /> : <Redirect to={{ pathname: '/admin/login' }} />
         )} />
     )
     
 }
-
 export default PrivateRoute;

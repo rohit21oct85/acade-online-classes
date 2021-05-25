@@ -84,7 +84,7 @@ const options = {
     await mongoose.connect(MONGO_URI, options)
     .then(() => console.log(`Mongo DB Connected`))
     .catch(err => console.log(err));
-
+    mongoose.Promise = global.Promise;
     app.listen(PORT, () => {
         console.log(`App is running on PORT ${PORT}`);
     })
@@ -98,10 +98,9 @@ app.get(`/api/v1/test`, (req, res) => {
 app.use("/api/v1/admin", Routes.adminAuth);
 app.use("/api/v1/module", Routes.moduleRoutes);
 app.use("/api/v1/class", Routes.classRoutes);
+app.use("/api/v1/school", Routes.schoolRoutes);
 
 
-app.use("/api/v1/vehicle", Routes.vehicleRoutes);
-app.use("/api/v1/category", Routes.categoryRoutes);
 
 
 if (process.env.NODE_ENV === 'production') {
@@ -109,9 +108,5 @@ if (process.env.NODE_ENV === 'production') {
     app.get('/*', (req, res) => {
         const index = path.join(__dirname, 'views', 'build', 'index.html');
         res.sendFile(index);
-    });
-}else{
-    app.get('/*', (req, res) => {
-        res.send("App is running on Dev Environment")
     });
 }

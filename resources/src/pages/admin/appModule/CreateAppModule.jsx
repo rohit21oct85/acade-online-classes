@@ -61,7 +61,7 @@ export default function CreateAppModule() {
         clearFields();
         history.push(`${path}`);
         addToast('App Module Updated successfully', { appearance: 'success',autoDismiss: true });
-        history.push(`/app-module`)
+        history.push(`/admin/app-module`)
     }
     });
 
@@ -121,10 +121,10 @@ export default function CreateAppModule() {
                         ) : (
                             <>
                             {params?.module_id ? (
-                                <><span className="fa fa-save mr-2"></span> Update App Module</>
+                                <><span className="fa fa-save mr-2"></span> Update Module</>
                                 ):(
                                     
-                                    <><span className="fa fa-save mr-2"></span> Save App Module</>
+                                    <><span className="fa fa-save mr-2"></span> Save Module</>
                             )}
                             </>
                         )}
@@ -136,7 +136,7 @@ export default function CreateAppModule() {
                             e.preventDefault();
                             clearFields();
                             setSingleModule({})
-                            history.push(`/app-module`)
+                            history.push(`/admin/app-module`)
                         }}>
                             <span className="fa fa-times mr-2"></span>
                             Cancel

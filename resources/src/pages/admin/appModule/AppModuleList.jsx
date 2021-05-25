@@ -1,4 +1,5 @@
 import React from 'react'
+import Loading from '../../../components/Loading';
 import useAppModule from '../../../hooks/useAppModule';
 import SingleModule from './SingleModule';
 
@@ -9,7 +10,7 @@ export default function AppModuleList() {
             <p className="form-heading">
             <span className="fa fa-plus-circle mr-2"></span>App Modules</p>
             <hr className="mt-1"/>
-            {isLoading && (<div class="spinner-border" role="status"> <span class="sr-only">Loading...</span> </div>)}
+            {isLoading && (<Loading isLoading={isLoading}/>)}
             <div className="col-md-12 row no-gutter data-container">
             
             {data?.map( module => { 

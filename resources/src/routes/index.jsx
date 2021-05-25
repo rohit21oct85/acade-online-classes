@@ -1,7 +1,7 @@
 import AdminLogin from '../pages/admin/auth/Login'
 import NotAuthorized from '../pages/NotAuthorized.jsx'
 import Dashboard from '../pages/admin/Dashboard.jsx'
-import CategoryList from '../pages/admin/category/CategoryList'
+import SchoolList from '../pages/admin/school/SchoolList'
 
 import AppModule from '../pages/admin/appModule/AppModule.jsx'
 import ClassList from '../pages/admin/class/ClassList.jsx'
@@ -9,6 +9,10 @@ import ClassList from '../pages/admin/class/ClassList.jsx'
 export const webRoutes =  [
     { 
         path:'/',
+        component: AdminLogin
+    },
+    { 
+        path:'/admin/login',
         component: AdminLogin
     },
     {
@@ -23,8 +27,12 @@ export const privateRoutes = [
         component: Dashboard
     },
     {
-        path: '/admin/category-management/:action_type?/:category_id?/:category_slug?/:segment_id?',
-        component: CategoryList
+        path: '/admin',
+        component: Dashboard
+    },
+    {
+        path: '/admin/school-management/:page_type?/:school_id?',
+        component: SchoolList
     }
 
 ];
