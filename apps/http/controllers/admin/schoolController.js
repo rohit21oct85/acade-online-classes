@@ -1,12 +1,12 @@
-const Vehicle = require('../../../models/admin/Vehicle');
+const School = require('../../../models/admin/School');
 
-const CreateVehicle = async (req, res) => {
+const CreateSchool = async (req, res) => {
     const body = req.body;
     try {
-        const newVehicle = new Vehicle(body);
-        await newVehicle.save();
+        const newSchool = new School(body);
+        await newSchool.save();
         return res.status(200).json({ 
-            message: "Vehicle created sucessfully"
+            message: "School created sucessfully"
         });
     } catch (error) {
         res.status(502).json({
@@ -14,12 +14,12 @@ const CreateVehicle = async (req, res) => {
         })
     }
 }
-const UpdateVehicle = async (req, res) =>{
+const UpdateSchool = async (req, res) =>{
     try {
-        await Vehicle.findOneAndUpdate({_id: req.params.id},req.body)
+        await School.findOneAndUpdate({_id: req.params.id},req.body)
                 .then(response => {
                     return res.status(202).json({
-                        message: "Vehicle, Updated successfully"
+                        message: "School, Updated successfully"
                     })
                 })
                 .catch(error => {
@@ -35,11 +35,12 @@ const UpdateVehicle = async (req, res) =>{
         });
     }
 }
-const ViewVehicle = async (req, res) => {
+
+const ViewSchool = async (req, res) => {
     try{
-        const VehicleData = await Vehicle.findOne({_id: req.params.id},{__v: 0});
+        const SchoolData = await School.findOne({_id: req.params.id},{__v: 0});
         return res.status(200).json({ 
-            data: VehicleData
+            data: SchoolData
         });    
     } catch(error){
         res.status(409).json({
@@ -48,11 +49,11 @@ const ViewVehicle = async (req, res) => {
         });
     }
 }
-const ViewAllVehicle = async (req, res) => {
+const ViewAllSchool = async (req, res) => {
     try{
-        const AllVehicles = await Vehicle.find({},{__v: 0});
+        const AllSchool = await School.find({},{__v: 0});
         return res.status(200).json({ 
-            data: AllVehicles 
+            data: AllSchool 
         });    
     } catch(error){
         res.status(409).json({
@@ -61,12 +62,12 @@ const ViewAllVehicle = async (req, res) => {
         });
     }
 }
-const DeleteVehicle = async (req, res) =>{
-    const id = req.body.vehicle_id;
+const DeleteSchool = async (req, res) =>{
+    const id = req.params.id;
     try {
-        await Vehicle.deleteOne({_id: id}).then( response => {
+        await School.deleteOne({_id: id}).then( response => {
             return res.status(201).json({
-                message: "Vehicle, deleted successfully"
+                message: "School, deleted successfully"
               })
         });
     } catch (error) {
@@ -77,9 +78,9 @@ const DeleteVehicle = async (req, res) =>{
 };
 
 module.exports = {
-    CreateVehicle,
-    UpdateVehicle,
-    ViewVehicle,
-    ViewAllVehicle,
-    DeleteVehicle,
+    CreateSchool,
+    UpdateSchool,
+    ViewSchool,
+    ViewAllSchool,
+    DeleteSchool,
 }

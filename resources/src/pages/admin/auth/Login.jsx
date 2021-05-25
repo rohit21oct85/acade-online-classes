@@ -70,25 +70,20 @@ export default function Login() {
             
         }   
     }
-    const goToLogin = () => {
-        if(location.pathname === '/admin' || location.pathname === '/admin/'){
-            history.push('/admin/login');
-        }
-        emailRef.current.value = 'madmin@adc.com'
-        passwordRef.current.value = ''
-    }
-    useEffect(goToLogin,[state])
     
     useEffect(checkLoggedInUser,[state]);
     async function checkLoggedInUser(){
-        if(state?.isLoggedIn == "true"){
-            if(state?.role == "1"){
+        if(state?.isLoggedIn === true){
+            if(state?.role === "1"){
                 history.push(`/admin/dashboard`)
             }else{
-                history.push(`/dashboard`)
-            }
+                history.push('/dashboard')
+            }   
+        }else{
+            history.push('/');
         }
     }
+
     return (
         <div className="container-fluid p-0 m-0 text-center LoginBg" style={{
             background: `url('/bg.jpg')`

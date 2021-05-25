@@ -45,16 +45,16 @@ return (
             </div>
             <ul>
                 <li as={Link}>
-                    <button className="btn-success p-2 dark pt-0 pb-0 m-0" style={{ borderRadius: '5px' }}>
+                    <button className="bg-warning dark br-10 pl-2 pr-2">
                     {(state.role === "1") ? (
                         <>
-                        <span className="fa fa-lock"></span> Super Admin
+                        <span className="fa fa-lock mr-2"></span> Master Admin
                         </>
                     ):' Admin'}
                     </button>
                 </li>
                 <li as={Link} onClick={logout} alt="Logout">
-                    <button className="btn-danger p-2 dark pt-0 pb-0 m-0" style={{ borderRadius: '5px' }}>
+                    <button className="bg-danger dark br-10  pl-2 pr-2">
                         <span className="fa fa-power-off mr-2"></span>
                         Logout
                     </button>
