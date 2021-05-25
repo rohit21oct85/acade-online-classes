@@ -1,9 +1,9 @@
 import React from 'react'
 import {useHistory, useParams} from 'react-router-dom'
-import CreateCategory from './../category/CreateCategory';
+import CreateCategory from '../appModule/CreateAppModule';
 import AllClassList from './AllClassList';
-import CreateSegment from './../category/CreateSegment';
-import AllSegmentList from './../category/AllSegmentList';  
+// import CreateSegment from '../appModule/CreateAppModule';
+// import AllSegmentList from '../appModule/';  
 
 export default function CategoryList() {
     const params = useParams();
