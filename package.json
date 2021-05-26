@@ -8,8 +8,8 @@
     "client": "cd resources && npm run start",
     "backend": "nodemon index.js",
     "dev": "npm-run-all --parallel client backend",
-    "build": "cd views && rm -rf build && cd ../resources && npm run build",
-    "clean": "cd views && rm -rf build"
+    "create:build": "cd views && rm -rf build && cd ../resources && npm run build",
+    "clean:build": "cd views && rm -rf build"
   },
   "keywords": [
     "express",
