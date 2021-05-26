@@ -66,7 +66,7 @@ const ViewAllClass = async (req, res) => {
 }
 
 const DeleteClass = async (req, res) =>{
-    const id = req.body.class_id;
+    const id = req.params.id;
     try {
         await Class.deleteOne({_id: id}).then( response => {
             return res.status(201).json({

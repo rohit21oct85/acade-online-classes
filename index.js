@@ -2,6 +2,7 @@ const dotenv = require('dotenv').config();
 const express = require("express");
 var bb = require('express-busboy');
 const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
 const cors = require("cors");
 const path = require("path");
 const session = require('express-session')
@@ -25,6 +26,9 @@ var job = new cronJob({
 job.start();
 
 app.use(cors());
+app.use(bodyParser.json({limit: '500mb'}));
+app.use(bodyParser.urlencoded({ extended: true, limit: '500mb' }));
+
 const bb_options = {
     upload: true,
     path: '/storage/admin',
@@ -99,6 +103,8 @@ app.use("/api/v1/admin", Routes.adminAuth);
 app.use("/api/v1/module", Routes.moduleRoutes);
 app.use("/api/v1/class", Routes.classRoutes);
 app.use("/api/v1/school", Routes.schoolRoutes);
+app.use("/api/v1/subject", Routes.subjectRoutes);
+app.use("/api/v1/student", Routes.studentRoutes);
 
 
 

@@ -1,10 +1,10 @@
 import React from 'react'
 import {useHistory, useParams} from 'react-router-dom'
-import CreateClass from './CreateClass';
-import UploadClasses from './UploadClasses';
-import AllClasses from './AllClasses';
+import CreateSubject from './CreateSubject';
+import UploadSubjects from './UploadSubjects';
+import AllSubjects from './AllSubjects';
 
-export default function ClassList() {
+export default function SubjectList() {
     const params = useParams();
     const history = useHistory();
     
@@ -13,16 +13,15 @@ export default function ClassList() {
             <div className="main-area-all">
                 <div className="dashboard_main-container">
                         <div className="dash-main-head">
-                            <h2>Class List</h2>
+                            <h2>Subjects List</h2>
                         </div>
                     <div className="dash-con-heading">
                         <div className="col-md-12 row">
-                        
                             <button className="btn btn-sm dark mr-2" onClick={e => { history.push(`/admin/dashboard`)}}>
                                 <span className="fa fa-dashboard"></span>
                             </button>
-                            <button className="btn btn-sm dark" onClick={e => { history.push(`/admin/class-management/upload`)}}>
-                                <span className="fa fa-upload"></span>   Upload Classes 
+                            <button className="btn btn-sm dark" onClick={e => { history.push(`/admin/subject-management/upload`)}}>
+                                <span className="fa fa-upload"></span>   Upload Subjects 
                             </button>
                         </div>
                     </div>
@@ -30,11 +29,11 @@ export default function ClassList() {
                     <div className="dash-cont-start">
                         <div className="row">
                             <div className="col-md-3">
-                                { params.page_type == "upload" ? <UploadClasses /> : <CreateClass /> }
+                            { params.page_type == "upload" ? <UploadSubjects /> : <CreateSubject /> }
                             </div>
                             
                             <div className="col-md-9 ">
-                            <AllClasses />
+                            <AllSubjects />
                             </div>
 
                         </div>

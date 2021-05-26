@@ -7,9 +7,9 @@ import API_URL from '../helper/APIHelper'
 
 export default function useCategory() {
     const {state } = useContext(AuthContext);
-    return useQuery('class', async () => {
+    return useQuery('subjects', async () => {
         if(state.access_token){
-            const result = await axios.get(`${API_URL}v1/class/view-all`,{
+            const result = await axios.get(`${API_URL}v1/subject/view-all`,{
                 headers: {
                     'Content-Type': 'Application/json',
                     'Authorization':'Bearer '+ state.access_token

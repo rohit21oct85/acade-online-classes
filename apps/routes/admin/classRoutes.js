@@ -7,7 +7,8 @@ const router = express.Router();
 var multer = require('multer')
 var storage = multer.diskStorage({
     destination: function(req, file, cb) {
-        cb(null, 'uploads/')
+        console.log(req,file)
+        cb(null, './uploads')
     },
     fileFilter: function(req, file, cb) {
         console.log(file.mimetype, "dadasd")
@@ -25,8 +26,8 @@ router
     .patch('/update/:id', checkAuth, Class.UpdateClass)
     .get('/view/:id', checkAuth, Class.ViewClass)
     .get('/view-all', checkAuth, Class.ViewAllClass)
-    .delete('/delete/', checkAuth, Class.DeleteClass)
-    .post('/upload', upload.single('file'), checkAuth, Class.uploadClass)
+    .delete('/delete/:id', checkAuth, Class.DeleteClass)
+    .post('/upload', upload.array('file'), checkAuth, Class.uploadClass)
 ;
 
 module.exports = router;
