@@ -1,12 +1,12 @@
-const School = require('../../../models/admin/School');
+const SchoolAdmin = require('../../../models/admin/SchoolAdmin');
 
-const CreateSchool = async (req, res) => {
+const CreateSchoolAdmin = async (req, res) => {
     const body = req.body;
     try {
-        const newSchool = new School(body);
-        await newSchool.save();
+        const newSchoolAdmin = new SchoolAdmin(body);
+        await newSchoolAdmin.save();
         return res.status(200).json({ 
-            message: "School created sucessfully"
+            message: "SchoolAdmin created sucessfully"
         });
     } catch (error) {
         res.status(502).json({
@@ -14,12 +14,12 @@ const CreateSchool = async (req, res) => {
         })
     }
 }
-const UpdateSchool = async (req, res) =>{
+const UpdateSchoolAdmin = async (req, res) =>{
     try {
-        await School.findOneAndUpdate({_id: req.params.id},req.body)
+        await SchoolAdmin.findOneAndUpdate({_id: req.params.id},req.body)
                 .then(response => {
                     return res.status(202).json({
-                        message: "School, Updated successfully"
+                        message: "SchoolAdmin, Updated successfully"
                     })
                 })
                 .catch(error => {
@@ -36,11 +36,11 @@ const UpdateSchool = async (req, res) =>{
     }
 }
 
-const ViewSchool = async (req, res) => {
+const ViewSchoolAdmin = async (req, res) => {
     try{
-        const SchoolData = await School.findOne({_id: req.params.id},{__v: 0});
+        const SchoolAdminData = await SchoolAdmin.findOne({_id: req.params.id},{__v: 0});
         return res.status(200).json({ 
-            data: SchoolData
+            data: SchoolAdminData
         });    
     } catch(error){
         res.status(409).json({
@@ -49,11 +49,11 @@ const ViewSchool = async (req, res) => {
         });
     }
 }
-const ViewAllSchool = async (req, res) => {
+const ViewAllSchoolAdmin = async (req, res) => {
     try{
-        const AllSchool = await School.find({},{__v: 0});
+        const AllSchoolAdmin = await SchoolAdmin.find({},{__v: 0});
         return res.status(200).json({ 
-            data: AllSchool 
+            data: AllSchoolAdmin 
         });    
     } catch(error){
         res.status(409).json({
@@ -62,12 +62,12 @@ const ViewAllSchool = async (req, res) => {
         });
     }
 }
-const DeleteSchool = async (req, res) =>{
-    const id = req.body.school_id;
+const DeleteSchoolAdmin = async (req, res) =>{
+    const id = req.body.schoolAdmin_id;
     try {
-        await School.deleteOne({_id: id}).then( response => {
+        await SchoolAdmin.deleteOne({_id: id}).then( response => {
             return res.status(201).json({
-                message: "School, deleted successfully"
+                message: "SchoolAdmin, deleted successfully"
               })
         });
     } catch (error) {
@@ -78,9 +78,9 @@ const DeleteSchool = async (req, res) =>{
 };
 
 module.exports = {
-    CreateSchool,
-    UpdateSchool,
-    ViewSchool,
-    ViewAllSchool,
-    DeleteSchool,
+    CreateSchoolAdmin,
+    UpdateSchoolAdmin,
+    ViewSchoolAdmin,
+    ViewAllSchoolAdmin,
+    DeleteSchoolAdmin,
 }

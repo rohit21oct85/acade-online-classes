@@ -98,6 +98,7 @@ app.get(`/api/v1/test`, (req, res) => {
 app.use("/api/v1/admin", Routes.adminAuth);
 app.use("/api/v1/module", Routes.moduleRoutes);
 app.use("/api/v1/school", Routes.schoolRoutes);
+app.use("/api/v1/school-admin", Routes.schoolAdminRoutes);
 
 
 if (process.env.NODE_ENV === 'production') {

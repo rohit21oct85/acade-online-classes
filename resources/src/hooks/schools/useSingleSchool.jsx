@@ -2,8 +2,8 @@ import {useParams} from 'react-router-dom'
 import {useContext}  from 'react'
 import {useQuery} from 'react-query';
 import axios from 'axios';
-import {AuthContext} from '../context/AuthContext.jsx';
-import API_URL from '../helper/APIHelper'
+import {AuthContext} from '../../context/AuthContext.jsx';
+import API_URL from '../../helper/APIHelper'
 
 export default function useSingleSchool() {
     const params = useParams();
@@ -17,10 +17,8 @@ export default function useSingleSchool() {
                     'Authorization':'Bearer '+state.access_token
                 }
             });
-            
             return result.data.data; 
         }
-        
     });
     
 }

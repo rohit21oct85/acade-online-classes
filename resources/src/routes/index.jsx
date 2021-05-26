@@ -2,6 +2,9 @@ import AdminLogin from '../pages/admin/auth/Login'
 import NotAuthorized from '../pages/NotAuthorized.jsx'
 import Dashboard from '../pages/admin/Dashboard.jsx'
 import SchoolList from '../pages/admin/school/SchoolList'
+import SchoolAuthList from '../pages/admin/school_admin/SchoolAuthList'
+
+import SchoolLogin from '../pages/school/auth/Login'
 
 import AppModule from '../pages/admin/appModule/AppModule.jsx'
 
@@ -32,6 +35,10 @@ export const privateRoutes = [
     {
         path: '/admin/school-management/:page_type?/:school_id?',
         component: SchoolList
+    },
+    {
+        path: '/admin/auth-management/:page_type?/:school_id?/:school_admin_email?/:school_admin_id?',
+        component: SchoolAuthList
     }
 
 ];
@@ -42,3 +49,11 @@ export const adminRoutes = [
         component: AppModule
     }
 ]
+
+export const schoolAdminRoutes = [
+    {
+        path: '/school/login',
+        component: SchoolLogin
+    }
+]
+
