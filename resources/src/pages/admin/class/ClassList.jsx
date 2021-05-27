@@ -1,5 +1,5 @@
-import React from 'react'
-import {useHistory, useParams} from 'react-router-dom'
+import React, { useEffect,useState } from 'react'
+import {useHistory, useParams, useLocation} from 'react-router-dom'
 import CreateClass from './CreateClass';
 import UploadClasses from './UploadClasses';
 import AllClasses from './AllClasses';
@@ -7,7 +7,8 @@ import AllClasses from './AllClasses';
 export default function ClassList() {
     const params = useParams();
     const history = useHistory();
-    
+    const location = useLocation();
+
     return (
         <div className="col-lg-10 col-md-10 main_dash_area">
             <div className="main-area-all">

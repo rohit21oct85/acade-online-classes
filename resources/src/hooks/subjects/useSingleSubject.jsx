@@ -2,10 +2,10 @@ import {useParams} from 'react-router-dom'
 import {useContext}  from 'react'
 import {useQuery} from 'react-query';
 import axios from 'axios';
-import {AuthContext} from '../context/AuthContext.jsx';
-import API_URL from '../helper/APIHelper'
+import {AuthContext} from '../../context/AuthContext.jsx';
+import API_URL from '../../helper/APIHelper'
 
-export default function useSingleSchool() {
+export default function useSingleSubject() {
     const params = useParams();
     const subject_id = params?.subject_id
     const {state } = useContext(AuthContext);

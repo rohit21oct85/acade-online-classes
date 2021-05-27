@@ -1,4 +1,3 @@
-const { Console } = require('console');
 const Subject = require('../../../models/admin/Subject');
 
 const CreateSubject = async (req, res) => {

@@ -6,7 +6,7 @@ import axios from 'axios'
 import API_URL from '../../../helper/APIHelper';
 import * as utils from '../../../utils/utils'
 import { useToasts } from 'react-toast-notifications';
-import useSingleStudent from '../../../hooks/useSingleStudent';
+import useSingleStudent from '../../../hooks/students/useSingleStudent';
 
 export default function CreateStudent() {
     const history = useHistory();
@@ -25,12 +25,12 @@ export default function CreateStudent() {
     const [SingleStudent, setSingleStudent] = useState({});
 
     const initialData = {
-        student_name: '',
+        first_name: '',
+        last_name: '',
         class_id: '',
         class_name: '',
-        class_id: '',
-        class_id: '',
-        class_id: '',
+        guardian_name: '',
+        guardian_phone: '',
     } 
     const [formData, setFormData] = useState(initialData);
 
@@ -101,10 +101,37 @@ export default function CreateStudent() {
                     <input 
                         type="text" 
                         className="form-control" 
-                        name="student_name"
-                        value={params?.student_id ? SingleStudent?.student_name : formData?.student_name}
+                        name="first_name"
+                        value={params?.student_id ? SingleStudent?.first_name : formData?.first_name}
                         onChange={handleChange}
-                        placeholder="Student Name"/>
+                        placeholder="First Name"/>
+                </div>
+                <div className="form-group">
+                    <input 
+                        type="text" 
+                        className="form-control" 
+                        name="last_name"
+                        value={params?.student_id ? SingleStudent?.last_name : formData?.last_name}
+                        onChange={handleChange}
+                        placeholder="Last Name"/>
+                </div>
+                <div className="form-group">
+                    <input 
+                        type="text" 
+                        className="form-control" 
+                        name="guardian_name"
+                        value={params?.student_id ? SingleStudent?.guardian_name : formData?.guardian_name}
+                        onChange={handleChange}
+                        placeholder="Guardian Name"/>
+                </div>
+                <div className="form-group">
+                    <input 
+                        type="text" 
+                        className="form-control" 
+                        name="guardian_phone_no"
+                        value={params?.student_id ? SingleStudent?.guardian_phone_no : formData?.guardian_phone_no}
+                        onChange={handleChange}
+                        placeholder="Guardian Phone"/>
                 </div>
             
                 <div className="form-group flex">

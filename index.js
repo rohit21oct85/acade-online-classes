@@ -1,6 +1,6 @@
 const dotenv = require('dotenv').config();
 const express = require("express");
-var bb = require('express-busboy');
+// var bb = require('express-busboy');
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -29,21 +29,21 @@ app.use(cors());
 app.use(bodyParser.json({limit: '500mb'}));
 app.use(bodyParser.urlencoded({ extended: true, limit: '500mb' }));
 
-const bb_options = {
-    upload: true,
-    path: '/storage/admin',
-    allowedPath: /./
-}
-bb_options.mimeTypeLimit = [
-    'text/x-markdown',
-    'application/javascript',
-    'image/jpeg',
-    'image/png'
-];
-bb_options.allowedPath = function(url) {
-    return url == '/storage/admin';
-}
-bb.extend(app, bb_options);
+// const bb_options = {
+//     upload: true,
+//     path: '/storage/admin',
+//     allowedPath: /./
+// }
+// bb_options.mimeTypeLimit = [
+//     'text/x-markdown',
+//     'application/javascript',
+//     'image/jpeg',
+//     'image/png'
+// ];
+// bb_options.allowedPath = function(url) {
+//     return url == '/storage/admin';
+// }
+// bb.extend(app, bb_options);
 
 const PORT = process.env.PORT || 8080;
 
@@ -105,8 +105,10 @@ app.use("/api/v1/class", Routes.classRoutes);
 app.use("/api/v1/school", Routes.schoolRoutes);
 app.use("/api/v1/subject", Routes.subjectRoutes);
 app.use("/api/v1/student", Routes.studentRoutes);
+app.use("/api/v1/teacher", Routes.teacherRoutes);
 
 
+app.use("/api/v1/school-admin", Routes.schoolAdminRoutes);
 
 
 if (process.env.NODE_ENV === 'production') {

@@ -1,4 +1,4 @@
-import useSubjectList from '../../../hooks/useSubjectList';
+import useSubjectList from '../../../hooks/subjects/useSubjectList';
 import Loading from '../../../components/Loading';
 import {useHistory} from 'react-router-dom'
 import {useMutation, useQueryClient} from 'react-query'

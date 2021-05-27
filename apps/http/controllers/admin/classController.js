@@ -51,6 +51,22 @@ const ViewClass = async (req, res) => {
         });
     }
 }
+
+const getClassBySchoolId = async (req, res) => {
+    try{
+        const filter = {school_id: req.params.id}
+        const ClassData = await Class.find(filter,{__v: 0});
+        return res.status(200).json({ 
+            data: ClassData
+        });    
+    } catch(error){
+        res.status(409).json({
+            message: "Error occured",
+            errors: error.message
+        });
+    }
+}
+
 const ViewAllClass = async (req, res) => {
     try{
         const AllClasss = await Class.find({},{__v: 0});
@@ -82,21 +98,22 @@ const DeleteClass = async (req, res) =>{
 
 const uploadClass = async(req, res) => {
     const data = req.body;
-    console.log(req.file,req.body)
+    // console.log(req.body.subject_id)
     let FinalData = [];
     try {
         let results = [];
-        console.log(req.file.path)
+        // console.log(req.file.path)
         fs.createReadStream(req.file.path)
             .pipe(csv())
             .on('data', (data) => results.push(data))
             .on('end', () => {
                 results.forEach(book => {
                     FinalData.push({ 
-                        subject_id: book.class_name, 
-                        subject_name: book.section, 
-                        sub_subject_name: book.capacity, 
-                        sub_subject_id: book.class_teacher,
+                        class_name: book.class_name, 
+                        section: book.section, 
+                        capacity:book.capacity,
+                        class_teacher: book.class_teacher,
+                        school_id:req.body.school_id
                     })
                 })
                 otherFunction(res, FinalData, function() {
@@ -130,4 +147,5 @@ module.exports = {
     ViewAllClass,
     DeleteClass,
     uploadClass,
+    getClassBySchoolId,
 }

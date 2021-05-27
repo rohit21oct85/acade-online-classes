@@ -2,25 +2,23 @@ import {useParams} from 'react-router-dom'
 import {useContext}  from 'react'
 import {useQuery} from 'react-query';
 import axios from 'axios';
-import {AuthContext} from '../context/AuthContext.jsx';
-import API_URL from '../helper/APIHelper'
+import {AuthContext} from '../../context/AuthContext.jsx';
+import API_URL from '../../helper/APIHelper'
 
-export default function useSingleSchool() {
+export default function useSingleSchoolAdmin() {
     const params = useParams();
-    const school_id = params?.school_id
+    const school_admin_id = params?.school_admin_id
     const {state } = useContext(AuthContext);
-    return useQuery(`single-module-${school_id}`, async () => {
-        if(school_id !== undefined){
-            const result = await axios.get(`${API_URL}v1/school/view/${school_id}`,{
+    return useQuery(`single-school-admin-${school_admin_id}`, async () => {
+        if(school_admin_id !== undefined){
+            const result = await axios.get(`${API_URL}v1/school-admin/view/${school_admin_id}`,{
                 headers: {
                     'Content-Type': 'Application/json',
                     'Authorization':'Bearer '+state.access_token
                 }
             });
-            
             return result.data.data; 
         }
-        
     });
     
 }

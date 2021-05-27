@@ -1,4 +1,4 @@
-import useClassList from '../../../hooks/useClassList';
+import useClassList from '../../../hooks/classes/useClassList';
 import Loading from '../../../components/Loading';
 import {useHistory} from 'react-router-dom'
 import {useMutation, useQueryClient} from 'react-query'
@@ -7,11 +7,15 @@ import API_URL from '../../../helper/APIHelper';
 import {AuthContext} from '../../../context/AuthContext';
 import { useToasts } from 'react-toast-notifications';
 import React, {useState, useContext} from 'react'
+import {useParams} from 'react-router-dom'
 
 export default function AllClasses() {
+    const params = useParams();
 
     const {data, isLoading} = useClassList();
     
+    const [schooloradmin, setSchoolOrAdmin] = useState("admin");
+
     const history = useHistory();
 
     const { addToast } = useToasts();
@@ -45,7 +49,7 @@ export default function AllClasses() {
         <p className="form-heading">
             <span className="fa fa-plus-circle mr-2"></span>All Classes</p>
         <hr className="mt-1"/>
-        <Loading isLoading={isLoading} /> 
+        {/* <Loading isLoading={isLoading} />  */}
         <div className="col-md-12 row no-gutter data-container-category">
         <table className="table table-hover">
                     <thead>
@@ -69,7 +73,11 @@ export default function AllClasses() {
                                     <button className="btn bg-primary text-white btn-sm mr-2" 
                                         onClick={
                                             e => {
+                                                if(params.school_id){
+                                                    history.push(`/admin/class-management/modify-class/${params?.school_id}/${item?._id}`)
+                                                }else{
                                                     history.push(`/admin/class-management/modify-class/${item?._id}`)
+                                                }
                                             }
                                         }>
                                         <span className="fa fa-edit"></span>

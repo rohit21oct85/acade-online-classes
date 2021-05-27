@@ -63,7 +63,7 @@ const ViewAllSchool = async (req, res) => {
     }
 }
 const DeleteSchool = async (req, res) =>{
-    const id = req.params.id;
+    const id = req.body.school_id;
     try {
         await School.deleteOne({_id: id}).then( response => {
             return res.status(201).json({

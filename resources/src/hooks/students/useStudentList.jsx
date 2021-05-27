@@ -2,10 +2,10 @@
 import {useContext}  from 'react'
 import {useQuery} from 'react-query';
 import axios from 'axios';
-import {AuthContext} from '../context/AuthContext.jsx';
-import API_URL from '../helper/APIHelper'
+import {AuthContext} from '../../context/AuthContext.jsx';
+import API_URL from '../../helper/APIHelper'
 
-export default function useCategory() {
+export default function useStudentList() {
     const {state } = useContext(AuthContext);
     return useQuery('students', async () => {
         if(state.access_token){

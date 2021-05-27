@@ -1,4 +1,4 @@
-import useStudentList from '../../../hooks/useStudentList';
+import useStudentList from '../../../hooks/students/useStudentList';
 import Loading from '../../../components/Loading';
 import {useHistory} from 'react-router-dom'
 import {useMutation, useQueryClient} from 'react-query'
@@ -51,8 +51,8 @@ export default function AllStudents() {
                     <thead>
                         <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Student Name</th>
-                        <th scope="col">Class Name</th>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
                         <th scope="col">Guardian Name</th>
                         <th scope="col">Guardian Phone</th>
                         </tr>
@@ -62,8 +62,8 @@ export default function AllStudents() {
                             return (
                                 <tr key={item?._id}>
                                 <th scope="row">{key}</th>
-                                <td>{item.student_name}</td>
-                                <td>{item.class_name}</td>
+                                <td>{item.first_name}</td>
+                                <td>{item.last_name}</td>
                                 <td>{item.guardian_name}</td>
                                 <td>{item.guardian_phone_no}</td>
                                 <td>

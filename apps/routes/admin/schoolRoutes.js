@@ -10,6 +10,6 @@ router
     .patch('/update/:id',checkAuth,adminAuth, School.UpdateSchool)
     .get('/view/:id',checkAuth,adminAuth, School.ViewSchool)
     .get('/view-all',checkAuth,adminAuth, School.ViewAllSchool)
-    .delete('/delete/:id', checkAuth,adminAuth, School.DeleteSchool);
+    .post('/delete', checkAuth,adminAuth, School.DeleteSchool);
 
 module.exports = router;

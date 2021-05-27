@@ -8,7 +8,7 @@ var multer = require('multer')
 var storage = multer.diskStorage({
     destination: function(req, file, cb) {
         console.log(req,file)
-        cb(null, './uploads')
+        cb(null, 'apps/uploads/')
     },
     fileFilter: function(req, file, cb) {
         console.log(file.mimetype, "dadasd")
@@ -27,7 +27,9 @@ router
     .get('/view/:id', checkAuth, Class.ViewClass)
     .get('/view-all', checkAuth, Class.ViewAllClass)
     .delete('/delete/:id', checkAuth, Class.DeleteClass)
-    .post('/upload', upload.array('file'), checkAuth, Class.uploadClass)
+    .post('/upload', upload.single('file'), checkAuth, Class.uploadClass)
+
+    .get('/class-by-school-id/:id', checkAuth, Class.getClassBySchoolId)
 ;
 
 module.exports = router;

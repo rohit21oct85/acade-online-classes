@@ -6,7 +6,7 @@ import axios from 'axios'
 import API_URL from '../../../helper/APIHelper';
 import * as utils from '../../../utils/utils'
 import { useToasts } from 'react-toast-notifications';
-import useSingleSubject from '../../../hooks/useSingleSubject';
+import useSingleSubject from '../../../hooks/subjects/useSingleSubject';
 
 export default function CreateSubject() {
     const history = useHistory();

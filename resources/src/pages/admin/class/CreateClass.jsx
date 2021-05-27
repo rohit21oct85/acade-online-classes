@@ -6,7 +6,10 @@ import axios from 'axios'
 import API_URL from '../../../helper/APIHelper';
 import * as utils from '../../../utils/utils'
 import { useToasts } from 'react-toast-notifications';
-import useSingleClass from '../../../hooks/useSingleClass';
+import useSingleClass from '../../../hooks/classes/useSingleClass';
+import useSchoolLists from '../../../hooks/schools/useSchoolLists';
+import useTeacherList from '../../../hooks/teachers/useTeacherList';
+import useClassList from '../../../hooks/classes/useClassList';
 
 export default function CreateClass() {
     const history = useHistory();
@@ -15,12 +18,18 @@ export default function CreateClass() {
     const path = location.pathname;
 
     const { addToast } = useToasts();
-
+    
     const {state} = useContext(AuthContext);
 
     const [loading, setLoading] = useState(false);
+    
+    const [schooloradmin, setSchoolOrAdmin] = useState("admin");
 
     const {data} = useSingleClass();
+    
+    const {data : schools, isLoading } = useSchoolLists();
+    const {data : teachers, teachersIsLoading } = useTeacherList();
+    const {data : classes, classIsLoading} = useClassList();
 
     const [SingleClass, setSingleClass] = useState({});
 
@@ -29,6 +38,8 @@ export default function CreateClass() {
         section: '',
         capacity: '',
         class_teacher: '',
+        school_id: '',
+        teacher_id: ''
     } 
     const [formData, setFormData] = useState(initialData);
 
@@ -76,8 +87,15 @@ export default function CreateClass() {
         if(params?.class_id){
                 await updateMutation.mutate(SingleClass);
         }else{
-
+            if(formData.school_id == ''){
+                setLoading(false);
+                addToast('Please Select a School', { appearance: 'error',autoDismiss: true });
+            }else if(formData.teacher_id == ''){
+                setLoading(false);
+                addToast('Please Select a Teacher', { appearance: 'error',autoDismiss: true });
+            }else{
                 await mutation.mutate(formData);
+            }
         }
     }
 
@@ -88,6 +106,15 @@ export default function CreateClass() {
                 setFormData({...formData, [e.target.name]: e.target.value})
         }
     }
+    
+    async function handleChangeSchool(e){
+        if(params?.class_id){
+            setSingleClass({...SingleClass, [e.target.name]: e.target.value})
+        }else{
+            setFormData({...formData, ['school_id']: e.target.value})
+            history.push(`/admin/class-management/select-school/${e.target.value}`)
+        }
+    }
 
     return (
         <>
@@ -95,6 +122,27 @@ export default function CreateClass() {
             <span className="fa fa-plus-circle mr-2"></span>Add New Class</p>
             <hr className="mt-1"/>
             <form onSubmit={saveClass}>
+               {schooloradmin == "admin" && 
+                <div className="form-group">
+                    <select className="form-control" aria-label="Default select example" name="school_id" onChange={handleChangeSchool}>
+                        <option>Select School</option>
+                        {!isLoading && schools?.map(school => {
+                        return (
+                            <option value={school._id} key={school._id}>{school.name}</option>
+                        )
+                        })}
+                    </select>
+                </div> }
+                <div className="form-group">
+                    <select className="form-control" aria-label="Default select example" name="teacher_id" onChange={handleChange}>
+                        <option>Select Teacher</option>
+                        {!teachersIsLoading && teachers?.map(teacher => {
+                        return (
+                            <option value={teacher._id} key={teacher._id}>{teacher.first_name +' '+ teacher.last_name}</option>
+                        )
+                        })}
+                    </select>
+                </div>
                 <div className="form-group">
                     <input 
                         type="text" 
@@ -154,7 +202,7 @@ export default function CreateClass() {
                         )}
                         
                     </button>
-                    {params?.class_id && (
+                    {(params?.class_id || params?.school_id) && (
                         <button className="btn btn-sm red ml-2"
                         onClick={e => {
                             e.preventDefault();

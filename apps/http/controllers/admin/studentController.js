@@ -1,4 +1,3 @@
-const { Console } = require('console');
 const Student = require('../../../models/admin/Student');
 
 const CreateStudent = async (req, res) => {
