@@ -1,35 +1,19 @@
-const Admin = require('../../../models/admin/admin.js');
+const SchoolAdmin = require('../../../models/school/SchoolAdmin.js');
+const School = require('../../../models/admin/School.js');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
 let refreshTokens = [];
 
-const Register = async (req, res) => {
-    return res.status(405).json({
-        message: 'Register Routes Not Allowed'
-    })
-    const body = req.body;
-    try {
-        const newAdmin = new Admin(body);
-        await newAdmin.save();
-        return res.status(200).json({ 
-            message: "Registered Sucessfully"
-        });
-    } catch (error) {
-        res.status(502).json({
-            message : error.message
-        })
-    }
-}
-
 const Login = async (req, res) => {
     try {
          
-        await Admin.findOne({email: req.body.email},{__v: 0}).then( admin => {
+        await SchoolAdmin.findOne({email: req.body.email},{__v: 0}).then( admin => {
             if(admin){
-                bcrypt.compare(req.body.password, admin.password, function(err,response){
+                bcrypt.compare(req.body.password, admin.password, async function(err,response){
                     if(err){
                         res.status(203).json({ 
+                            status: 203,
                             message: "Password does not match"
                         });
                     }
@@ -37,17 +21,18 @@ const Login = async (req, res) => {
                         if(response){
                             const accessToken = generateAccessToken(admin);
                             const refreshToken = generateRefreshToken(admin);
+                            let school = await getSchoolData(admin?.school_id);
                             refreshTokens.push(refreshToken);
-                            
                             res.status(200).json({ 
                                 accessToken, 
                                 refreshToken,
-                                admin
+                                admin,
+                                school
                             });
                         } else {
                             res.status(203).json({ 
                                 status: 203,
-                                message: "Password does not match"
+                                message: "You have entered a wrong password."
                             });
                         }                      
                     }
@@ -67,20 +52,24 @@ const Login = async (req, res) => {
         })
         
     } catch (error) {
-        return res.status(401).json({
+        res.status(203).json({
+            status: 203,
             message: error.message
         });  
     }
 }
+async function getSchoolData(school_id){
+      return await School.findOne({_id: school_id});
+}
 const generateAccessToken = (user) => {
-    const accessTokenSecret = 'SHIVAMPARTS2021';
+    const accessTokenSecret = 'ADC-SA2021';
     return jwt.sign({ 
         id: user._id,  
         role: user.role 
-    }, accessTokenSecret, {expiresIn: '30d'})
+    }, accessTokenSecret, {expiresIn: '1d'})
 }
 const generateRefreshToken = (user) => {
-    const refreshTokenSecret = 'SHIVAMPARTS2021';
+    const refreshTokenSecret = 'ADC-SA2021';
     return jwt.sign({
         id: user._id,   
         role: user.role
@@ -89,7 +78,7 @@ const generateRefreshToken = (user) => {
 
 const RefreshToken = async (req,res) => {
     
-    const refreshTokenSecret = 'SHIVAMPARTS2021';
+    const refreshTokenSecret = 'ADC-SA2021';
     const refreshToken = req.body.token;
     if(refreshToken === null) return res.status(401).json({message: 'Invalid refresh token'});
     if(!refreshTokens.includes(refreshToken)) return res.status(401).json({message: 'Invalid refresh token'});
@@ -103,7 +92,7 @@ const RefreshToken = async (req,res) => {
 }
 
 const Logout = async (req, res) => {
-    const accessTokenSecret = 'SHIVAMPARTS2021';
+    const accessTokenSecret = 'ADC-SA2021';
     const authorizationHeader = req.headers.authorization;
     if (authorizationHeader){
         const accessToken = req.headers.authorization.split(' ')[1];  
@@ -134,7 +123,6 @@ const ForgotPassword = async (req, res) => {
 }
 
 module.exports = {
-    Register,
     Login,
     Logout,
     RefreshToken,

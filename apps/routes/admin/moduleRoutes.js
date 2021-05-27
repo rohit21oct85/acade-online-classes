@@ -8,7 +8,7 @@ router
     .post('/create',checkAuth,adminAuth, Module.CreateModule)
     .patch('/update/:id',checkAuth,adminAuth, Module.UpdateModule)
     .get('/view/:id',checkAuth,adminAuth, Module.ViewModule)
-    .get('/view-all',checkAuth,adminAuth, Module.ViewAllModule)
+    .get('/view-all',checkAuth, Module.ViewAllModule)
     .delete('/delete/:id', checkAuth,adminAuth, Module.DeleteModule);
 
 module.exports = router;

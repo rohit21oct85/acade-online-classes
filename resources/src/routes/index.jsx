@@ -4,7 +4,11 @@ import Dashboard from '../pages/admin/Dashboard.jsx'
 import SchoolList from '../pages/admin/school/SchoolList'
 import SchoolAuthList from '../pages/admin/school_admin/SchoolAuthList'
 
-import SchoolLogin from '../pages/school/auth/Login'
+import SchoolAdminLogin from '../pages/school/admin_auth/AdminLogin'
+import SchoolAdminDashboard from '../pages/school/admin/SchoolAdminDashboard'
+
+import TeacherLogin from '../pages/school/teacher_auth/TeacherLogin'
+import StudentLogin from '../pages/school/student_auth/StudentLogin'
 
 import AppModule from '../pages/admin/appModule/AppModule.jsx'
 import ClassList from '../pages/admin/class/ClassList.jsx'
@@ -24,7 +28,22 @@ export const webRoutes =  [
     {
         path:'/403',
         component: NotAuthorized
-    }
+    },
+    {
+        path: '/school/admin/login',
+        component: SchoolAdminLogin
+    },
+    
+    {
+        path: '/school/teacher/login',
+        component: TeacherLogin
+    },
+    
+    {
+        path: '/school/student/login',
+        component: StudentLogin
+    },
+
 ];
 
 export const privateRoutes = [
@@ -67,13 +86,23 @@ export const adminRoutes = [
     {
         path: '/admin/app-module/:module_id?',
         component: AppModule
-    }
+    },
+    
+    {
+        path: '/admin/app-roles/:role_id?',
+        component: AppModule
+    },
+    {
+        path: '/admin/app-permissions/:permission_id?',
+        component: AppModule
+    },
+
 ]
 
 export const schoolAdminRoutes = [
     {
-        path: '/school/login',
-        component: SchoolLogin
-    }
+        path: '/school/:school_slug/admin/dashboard',
+        component: SchoolAdminDashboard
+    },
 ]
 

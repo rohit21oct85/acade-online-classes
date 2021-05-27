@@ -3,12 +3,13 @@ import { NavLink, useHistory, useLocation } from 'react-router-dom'
 
 
 import {AuthContext} from '../../../context/AuthContext';
-import './login.css';
+import './admin_login.css';
 import axios from 'axios'
 import API_URL from '../../../helper/APIHelper.jsx';
 import { useToasts } from 'react-toast-notifications';
+import * as utils from '../../../utils/utils';
 
-export default function Login() {
+export default function AdminLogin() {
     const history = useHistory();
     const location = useLocation();
     const { addToast } = useToasts();
@@ -17,7 +18,7 @@ export default function Login() {
     const [error, setError] = useState(null);
     const {dispatch,state } = useContext(AuthContext);
     const [loading, setLoading] = useState(false);
-
+    
     const submitForm = async (e) => {
         e.preventDefault();
         const email = emailRef.current.value;
@@ -31,20 +32,24 @@ export default function Login() {
             return false;
         }else{
             setLoading(true);
-            
             const formData = {email: emailRef.current.value , password: passwordRef.current.value};
-            const response = await axios.post(`${API_URL}v1/admin/login`, formData);
-            if(response?.data?.status === 203){
+            const response = await axios.post(`${API_URL}v1/school-admin-auth/login`, formData);
+            // console.log(response)
+            if(response?.status === 203){
                 addToast(`${response?.data?.message}`, { appearance: 'error',autoDismiss: true });
                 setLoading(false);
             }else{
-                let access_token = response?.data?.accessToken
-                let refresh_token = response?.data?.refreshToken
-                let fullname = response?.data?.admin?.fullname
-                let email = response?.data?.admin?.email
-                let role = response?.data?.admin?.role
-                let user_type = "master_admin"
-                let created_at = response?.data?.admin?.created_at
+                let access_token = response.data.accessToken
+                let refresh_token = response.data.refreshToken
+                let fullname = response.data.admin.first_name+ ' '+response.data.admin.last_name
+                let email = response.data.admin.email
+                let role = response.data.admin.role
+                let user_type = 'school_admin'
+                let school_id = response.data.admin._id
+                let school_name = response.data.school.name
+                let school_slug = utils.MakeSlug(school_name)
+                let school_logo = response.data.school.logo
+                let created_at = response.data.admin.created_at
                 
                 let isLoggedIn = true;
                 localStorage.setItem('access_token', access_token)
@@ -53,6 +58,9 @@ export default function Login() {
                 localStorage.setItem('email', email);
                 localStorage.setItem('role', role);
                 localStorage.setItem('user_type', user_type);
+                localStorage.setItem('school_id', school_id);
+                localStorage.setItem('school_slug', school_slug);
+                localStorage.setItem('school_logo', school_logo);
                 localStorage.setItem('created_at', created_at);
                 localStorage.setItem('isLoggedIn', isLoggedIn);
                 const payloadData = {
@@ -61,17 +69,19 @@ export default function Login() {
                     email,
                     role,
                     user_type,
+                    school_id,
+                    school_slug,
+                    school_logo,
                     created_at,
                     access_token,
                     refresh_token
                 }
                 if(isLoggedIn){
                     dispatch({type: 'LOGIN', payload: payloadData});
-                    history.push('/admin/dashboard');
+                    history.push(`/school/${school_slug}/admin/dashboard`)
+                    
                 }
             }
-            
-            
             
         }   
     }
@@ -80,17 +90,17 @@ export default function Login() {
     async function checkLoggedInUser(){
         if(state?.isLoggedIn === true){
             if(state?.role === "1"){
-                history.push(`/admin/dashboard`)
-            }else{
-                history.push('/dashboard')
-            }   
+                history.push(`/school/admin/dashboard`)
+            }  
         }else{
-            history.push('/admin/login');
+            if(location?.pathname === '/school/admin/login'){
+                history.push('/school/admin/login');
+            }
         }
     }
 
     return (
-        <div className="container-fluid p-0 m-0 text-center LoginBg" style={{
+        <div className="container-fluid p-0 m-0 text-center SchoolAdminLoginBg" style={{
             background: `url('/bg.jpg')`
         }}>
             <div className="col-md-12">
@@ -99,10 +109,9 @@ export default function Login() {
                 </NavLink>
             </div>
             <div className="row no-gutter">
-                <div className="col-md-3 adminLoginDiv">
-                <h4>Administrator Login </h4>    
-                <hr />
-                
+                <div className="col-md-3 schoolAdminLoginDiv">
+                    <h4>School Admin Login </h4>    
+                    <hr />
                 <form autoComplete="Off" onSubmit={submitForm}>
                     <div className="form-group text-left">
                         <label> <span className="fa fa-send mr-2"></span> Email address</label>
@@ -134,28 +143,6 @@ export default function Login() {
                             </>
                         )}
                     </button>
-                    <hr />
-                    <p>Do you have an Account details provided by your Schools ?</p>
-                    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>
-                    <button className="btn btn-sm dark mb-2"
-                    onClick={e => history.push('/school/admin/login')}
-                    >
-                        <span className="fa fa-lock text-warning mr-2"></span>
-                        Login As School Admin</button>
-                        
-                    <button className="btn btn-sm dark mb-2"
-                    onClick={e => history.push('/school/teacher/login')}
-                    >
-                        <span className="fa fa-lock text-warning mr-2"></span>
-                        Login As School Teacher</button>
-
-                    <button className="btn btn-sm dark"
-                    onClick={e => history.push('/school/student/login')}
-                    >
-                        <span className="fa fa-lock text-warning mr-2"></span>
-                        Login As School Student</button>
-                    </div>
-
                     </form>
                 </div>
             </div>

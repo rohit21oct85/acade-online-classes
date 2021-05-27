@@ -9,6 +9,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import PrivateRoute from './helper/PrivateRoute.jsx';
 import AdminRoute from './helper/AdminRoute.jsx';
+import SchoolAdminRoute from './helper/SchoolAdminRoute.jsx';
 
 import { webRoutes, privateRoutes, adminRoutes, schoolAdminRoutes } from './routes/index.jsx';
 
@@ -34,7 +35,9 @@ return (
     <QueryClientProvider client={queryClient}>
     <AuthProvider>
     <ToastProvider>
+
     <Navigation />
+    
     <React.StrictMode>
     <Switch>
     {webRoutes?.map((route => (
@@ -47,6 +50,10 @@ return (
 
     {adminRoutes?.map((route => (
       <AdminRoute exact={true} key={route.path} path={route.path} component={route.component} />
+    )))}
+    
+    {schoolAdminRoutes?.map((route => (
+      <SchoolAdminRoute exact={true} key={route.path} path={route.path} component={route.component} />
     )))}
 
 

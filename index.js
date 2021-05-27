@@ -109,6 +109,7 @@ app.use("/api/v1/teacher", Routes.teacherRoutes);
 
 
 app.use("/api/v1/school-admin", Routes.schoolAdminRoutes);
+app.use("/api/v1/school-admin-auth", Routes.schoolAdminAuth);
 
 
 if (process.env.NODE_ENV === 'production') {

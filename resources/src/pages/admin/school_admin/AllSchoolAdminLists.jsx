@@ -1,17 +1,25 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import useSchoolAdminLists from '../../../hooks/schools_admin/useSchoolAdminLists';
 import Loading from '../../../components/Loading';
 import useSchoolLists from '../../../hooks/schools/useSchoolLists';
 
 export default function AllSchoolAdminLists() {
-      
       const {data, isLoading} = useSchoolAdminLists();
       const {data:schools } = useSchoolLists()
       const history = useHistory();
-      function getSchoolName(school_id){
+      const [schoolAdmins, setSchoolsAdmin] = useState([]);
+      useEffect(manipulateSchools, [data]);
+      async function manipulateSchools(){
+            await data && data.map(async schoolAdmin => {
+                  schoolAdmin['school_name'] = await getSchoolName(schoolAdmin?.school_id);
+                  setSchoolsAdmin(schoolAdmins => [...schoolAdmins, schoolAdmin]);
+            })
+            return data;
+      }
+      async function getSchoolName(school_id){
             const schoolData = schools?.filter(school => school?._id === school_id);
-            return schoolData && schoolData[0].name
+            return schoolData && schoolData[0]?.name
       }
       
       return (
@@ -21,7 +29,7 @@ export default function AllSchoolAdminLists() {
             <hr className="mt-1"/>
             {isLoading && (<Loading isLoading={isLoading}/>)}
             <div className="col-md-12 row" style={{ height: 'auto !important',maxHeight: '400px', overflow: 'scroll'}}>
-            {!isLoading && data?.map(school => {
+            {!isLoading && schoolAdmins?.map(school => {
                   return (
                   <div 
                         key={school?._id}
@@ -35,7 +43,7 @@ export default function AllSchoolAdminLists() {
                                                 School Name: 
                                           </div>
                                           <div className="name-main">
-                                                {getSchoolName(school?.school_id)}
+                                                {school?.school_name}
                                           </div>
                                     </div>
                                     <div className="admin-name"> 

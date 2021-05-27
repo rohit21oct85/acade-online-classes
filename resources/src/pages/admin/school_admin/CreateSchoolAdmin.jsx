@@ -21,35 +21,78 @@ export default function CreateSchoolAdmin() {
     password: "",
   };
     const { data: schoolLists } = useSchoolLists();
-    const { data } = useSingleSchoolAdmin();
-    const [SingleSchoolAdmin, setSingleSchoolAdmin] = useState({});
+    const { data } = useSingleSchoolAdmin(params?.school_admin_id);
     const [formData, setFormData] = useState({});
-    
+    const [plainpassword, setPlainPassword] = useState("");
     const createMutation = useCreateSchoolAdmin(formData);
-    const updateMutation = useUpdateSchoolAdmin(SingleSchoolAdmin);
+    const updateMutation = useUpdateSchoolAdmin(formData);
     const deleteMutation = useDeleteSchoolAdmin(formData);
 
     const saveSchool = async (e) => {
         e.preventDefault();
-        formData["first_name"] = params?.school_admin_id
-        ? SingleSchoolAdmin?.first_name
-        : formData?.first_name;
-        formData["last_name"] = params?.school_admin_id
-        ? SingleSchoolAdmin?.last_name
-        : formData?.last_name;
-        formData["password"] = params?.school_admin_id
-        ? SingleSchoolAdmin?.password
-        : formData?.password;
-
+        if(params?.school_admin_id){
+          // update first name
+          if(data?.first_name === formData?.first_name){
+            formData["first_name"] =  data?.first_name;
+          }else if(data?.first_name !== formData?.first_name){
+            formData["first_name"] =  formData?.first_name;
+          }
+        }else{
+          // create first name
+          formData["first_name"] =  formData?.first_name;
+        }
+        
+        if(params?.school_admin_id){
+          // update first name
+          if(data?.last_name === formData?.last_name){
+            formData["last_name"] =  data?.last_name;
+          }else if(data?.last_name !== formData?.last_name){
+            formData["last_name"] =  formData?.last_name;
+          }
+        }else{
+          // create first name
+          formData["last_name"] =  formData?.last_name;
+        }
+        
+        
+        if(params?.school_admin_id){
+          // update 
+          if(data?.plain_password === formData?.password){
+            formData["plain_password"] =  data?.plain_password;
+          }else if(data?.plain_password !== formData?.password){
+            formData["plain_password"] =  formData?.password;
+          }
+        }else{
+          // create
+          formData["plain_password"] =  formData?.password;
+        }
+        
+        if(params?.school_admin_id){
+          // update 
+          if(data?.plain_password === formData?.password){
+            formData["password"] =  data?.plain_password;
+          }else if(data?.plain_password !== formData?.password){
+            formData["password"] =  data?.password;
+          }
+        }else{
+          // create
+          formData["password"] =  formData?.password;
+        }
+        
         formData["email"] = params?.school_admin_id
-        ? SingleSchoolAdmin?.email
-        : params?.school_admin_email
+          ? data?.email
+          : params?.school_admin_email
+        
+        
 
         formData['school_id'] = params?.school_id
         formData['role'] = 1
 
+        console.log(formData);
+        // return;
+
         if (params?.school_admin_id) {
-            await updateMutation.mutate(SingleSchoolAdmin);
+            await updateMutation.mutate(formData);
         } else {
         if (formData?.first_name == "") {
             addToast("Please Enter admin first name", {
@@ -75,19 +118,13 @@ export default function CreateSchoolAdmin() {
     async function handleDelete(e) {
         if (params?.school_admin_id) {
             formData["school_admin_id"] = params?.school_admin_id;
+            formData["school_admin_email"] = params?.school_admin_email;
             await deleteMutation.mutate(formData);
         }
     }
 
     async function handleChange(e) {
-        if(params?.school_admin_id) {
-            setSingleSchoolAdmin({
-                ...SingleSchoolAdmin,
-                [e.target.name]: e.target.value,
-            });
-        } else {
-            setFormData({ ...formData, [e.target.name]: e.target.value });
-        }
+        setFormData({ ...formData, [e.target.name]: e.target.value });
     }
     
     async function validateEmail(e) {
@@ -105,17 +142,11 @@ export default function CreateSchoolAdmin() {
     }
 
     useEffect(clearFields, [params?.page_type]);
-    useEffect(setSchoolAdmin, [data]);
-
+    
     async function clearFields (){
         setFormData(initialData);
-        setSingleSchoolAdmin(initialData);
     }
-    async function setSchoolAdmin() {
-      if (data !== undefined) {
-        setSingleSchoolAdmin(data);
-      }
-    }
+    
   return (
     <>
       <p className="form-heading">
@@ -152,16 +183,15 @@ export default function CreateSchoolAdmin() {
           <input
             type="text"
             className="form-control"
-            name="admin_email"
-            value={
-            params?.school_admin_id
-                ? SingleSchoolAdmin?.email
-                : params?.school_admin_email
-            }
+            name="email"
+            value={params?.school_admin_id
+              ? data?.email
+              : params?.school_admin_email}
             onChange={handleChange}
             onBlur={validateEmail}
             autoComplete="no-password"
             placeholder="admin_email"
+            disabled={params?.school_admin_id}
           />
         </div>
 
@@ -171,8 +201,8 @@ export default function CreateSchoolAdmin() {
             className="form-control"
             name="first_name"
             value={
-              params?.first_name
-                ? SingleSchoolAdmin?.first_name
+              params?.school_admin_id
+                ? data?.first_name
                 : formData?.first_name
             }
             onChange={handleChange}
@@ -186,7 +216,7 @@ export default function CreateSchoolAdmin() {
             className="form-control"
             name="last_name"
             value={
-              params?.last_name ? SingleSchoolAdmin?.last_name : formData?.last_name
+              params?.school_admin_id ? data?.last_name : formData?.last_name
             }
             onChange={handleChange}
             autoComplete="no-password"
@@ -198,9 +228,6 @@ export default function CreateSchoolAdmin() {
             type="text"
             className="form-control"
             name="password"
-            value={
-              params?.password ? SingleSchoolAdmin?.password : formData?.password
-            }
             onChange={handleChange}
             autoComplete="no-password"
             placeholder="enter password"
@@ -230,14 +257,13 @@ export default function CreateSchoolAdmin() {
               </>
             )}
           </button>
-          {params?.school_admin_id && (
-            <>
+          {(params?.school_admin_id || params?.school_id) && (
               <button
                 className="btn btn-sm bg-danger br-5 text-white ml-2"
                 onClick={(e) => {
                   e.preventDefault();
-                  setFormData({});
-                  setSingleSchoolAdmin({});
+                  setFormData({...formData});
+                  clearFields();
                   history.push(`/admin/auth-management`);
                 }}
               >
@@ -245,6 +271,9 @@ export default function CreateSchoolAdmin() {
                 Cancel
               </button>
 
+          )}
+          {(params?.school_admin_id) && (
+            <>
               <button
                 className="btn btn-sm bg-warning br-5 text-white ml-2"
                 onClick={handleDelete}
