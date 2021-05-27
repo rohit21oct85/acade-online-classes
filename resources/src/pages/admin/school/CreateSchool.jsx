@@ -15,7 +15,7 @@ export default function CreateSchool() {
     const history = useHistory();
     const params  = useParams();
     const { addToast } = useToasts();
-    const {data} = useSingleSchool();
+    const {data} = useSingleSchool(params?.school_id);
     const [SingleSchool, setSingleSchool] = useState({});
     const initialData = {name: '',address: '',
             logo: '',zip_code: '',

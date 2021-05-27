@@ -1,4 +1,4 @@
-const SchoolAdmin = require('../../../models/admin/SchoolAdmin');
+const SchoolAdmin = require('../../../models/school/SchoolAdmin');
 
 const CreateSchoolAdmin = async (req, res) => {
     const body = req.body;
@@ -63,9 +63,10 @@ const ViewAllSchoolAdmin = async (req, res) => {
     }
 }
 const DeleteSchoolAdmin = async (req, res) =>{
-    const id = req.body.schoolAdmin_id;
+    const id = req.body.school_admin_id;
+    const email = req.body.school_admin_email;
     try {
-        await SchoolAdmin.deleteOne({_id: id}).then( response => {
+        await SchoolAdmin.deleteOne({_id: id, email: email}).then( response => {
             return res.status(201).json({
                 message: "SchoolAdmin, deleted successfully"
               })

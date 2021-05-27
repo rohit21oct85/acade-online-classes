@@ -5,9 +5,8 @@ import axios from 'axios';
 import {AuthContext} from '../../context/AuthContext.jsx';
 import API_URL from '../../helper/APIHelper'
 
-export default function useSingleSchoolAdmin() {
+export default function useSingleSchoolAdmin(school_admin_id) {
     const params = useParams();
-    const school_admin_id = params?.school_admin_id
     const {state } = useContext(AuthContext);
     return useQuery(`single-school-admin-${school_admin_id}`, async () => {
         if(school_admin_id !== undefined){

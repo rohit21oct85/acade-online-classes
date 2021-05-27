@@ -3,12 +3,12 @@ import { NavLink, useHistory, useLocation } from 'react-router-dom'
 
 
 import {AuthContext} from '../../../context/AuthContext';
-import './login.css';
+import './StudentLogin.css';
 import axios from 'axios'
 import API_URL from '../../../helper/APIHelper.jsx';
 import { useToasts } from 'react-toast-notifications';
 
-export default function Login() {
+export default function StudentLogin() {
     const history = useHistory();
     const location = useLocation();
     const { addToast } = useToasts();
@@ -31,20 +31,20 @@ export default function Login() {
             return false;
         }else{
             setLoading(true);
-            
             const formData = {email: emailRef.current.value , password: passwordRef.current.value};
             const response = await axios.post(`${API_URL}v1/admin/login`, formData);
-            if(response?.data?.status === 203){
-                addToast(`${response?.data?.message}`, { appearance: 'error',autoDismiss: true });
+            // console.log(response)
+            if(response.response && response.response.status){
+                addToast('Please enter valid email or password', { appearance: 'error',autoDismiss: true });
                 setLoading(false);
             }else{
-                let access_token = response?.data?.accessToken
-                let refresh_token = response?.data?.refreshToken
-                let fullname = response?.data?.admin?.fullname
-                let email = response?.data?.admin?.email
-                let role = response?.data?.admin?.role
-                let user_type = "master_admin"
-                let created_at = response?.data?.admin?.created_at
+                let access_token = response.data.accessToken
+                let refresh_token = response.data.refreshToken
+                let fullname = response.data.admin.fullname
+                let email = response.data.admin.email
+                let role = response.data.admin.role
+                let user_type = 'student'
+                let created_at = response.data.admin.created_at
                 
                 let isLoggedIn = true;
                 localStorage.setItem('access_token', access_token)
@@ -67,11 +67,18 @@ export default function Login() {
                 }
                 if(isLoggedIn){
                     dispatch({type: 'LOGIN', payload: payloadData});
-                    history.push('/admin/dashboard');
+
+                    if(role === "1"){
+                        history.push(`/school/admin/dashboard`)
+                    }
+                    else if(role === "2"){
+                        history.push('/school/teachers/dashboard')
+                    }   
+                    else if(role === "3"){
+                        history.push('/school/students/dashboard')
+                    }   
                 }
             }
-            
-            
             
         }   
     }
@@ -79,29 +86,31 @@ export default function Login() {
     useEffect(checkLoggedInUser,[state]);
     async function checkLoggedInUser(){
         if(state?.isLoggedIn === true){
-            if(state?.role === "1"){
-                history.push(`/admin/dashboard`)
-            }else{
-                history.push('/dashboard')
+            if(state?.role === "3"){
+                history.push('/school/students/dashboard')
             }   
         }else{
-            history.push('/admin/login');
+            if(location?.pathname == '/school/student/login'){
+                history.push('/school/student/login');
+            }
         }
     }
 
     return (
-        <div className="container-fluid p-0 m-0 text-center LoginBg" style={{
+        <div className="container-fluid p-0 m-0 text-center StudentLoginBg" style={{
             background: `url('/bg.jpg')`
         }}>
-            <div className="col-md-12">
+            <div className="col-md-4" style={{ 
+                position: 'absolute'
+            }}>
                 <NavLink to="/">
                     <img className="logo" alt="company Logo" src="/logo.png"/>
                 </NavLink>
             </div>
             <div className="row no-gutter">
-                <div className="col-md-3 adminLoginDiv">
-                <h4>Administrator Login </h4>    
-                <hr />
+                <div className="col-md-3 StudentLoginDiv">
+                    <h4>School Student Login </h4>    
+                    <hr />
                 
                 <form autoComplete="Off" onSubmit={submitForm}>
                     <div className="form-group text-left">
@@ -135,27 +144,6 @@ export default function Login() {
                         )}
                     </button>
                     <hr />
-                    <p>Do you have an Account details provided by your Schools ?</p>
-                    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>
-                    <button className="btn btn-sm dark mb-2"
-                    onClick={e => history.push('/school/admin/login')}
-                    >
-                        <span className="fa fa-lock text-warning mr-2"></span>
-                        Login As School Admin</button>
-                        
-                    <button className="btn btn-sm dark mb-2"
-                    onClick={e => history.push('/school/teacher/login')}
-                    >
-                        <span className="fa fa-lock text-warning mr-2"></span>
-                        Login As School Teacher</button>
-
-                    <button className="btn btn-sm dark"
-                    onClick={e => history.push('/school/student/login')}
-                    >
-                        <span className="fa fa-lock text-warning mr-2"></span>
-                        Login As School Student</button>
-                    </div>
-
                     </form>
                 </div>
             </div>

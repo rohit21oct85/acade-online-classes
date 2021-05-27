@@ -19,6 +19,11 @@ const SchoolAdminSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
+  plain_password: {
+    type: String,
+    required: true,
+    trim: true,
+  },
   password: {
     type: String,
     required: true,

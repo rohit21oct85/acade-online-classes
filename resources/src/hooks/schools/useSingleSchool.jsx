@@ -5,9 +5,8 @@ import axios from 'axios';
 import {AuthContext} from '../../context/AuthContext.jsx';
 import API_URL from '../../helper/APIHelper'
 
-export default function useSingleSchool() {
+export default function useSingleSchool(school_id) {
     const params = useParams();
-    const school_id = params?.school_id
     const {state } = useContext(AuthContext);
     return useQuery(`single-module-${school_id}`, async () => {
         if(school_id !== undefined){
