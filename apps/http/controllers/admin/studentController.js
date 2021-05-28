@@ -1,4 +1,6 @@
 const Student = require('../../../models/admin/Student');
+const csv = require('csv-parser')
+const fs = require('fs')
 
 const CreateStudent = async (req, res) => {
     const body = req.body;
@@ -78,10 +80,72 @@ const DeleteStudent = async (req, res) =>{
     }
 };
 
+// const getStudentBySchoolId = async (req, res) => {
+//     try{
+//         const filter = {student_id: req.params.id}
+//         const ClassData = await Class.find(filter,{__v: 0});
+//         return res.status(200).json({ 
+//             data: ClassData
+//         });    
+//     } catch(error){
+//         res.status(409).json({
+//             message: "Error occured",
+//             errors: error.message
+//         });
+//     }
+// }
+
+const uploadStudent = async(req, res) => {
+    const data = req.body;
+    console.log(req.body, req.file, req.body.class_id)
+    let FinalData = [];
+    try {
+        let results = [];
+        // console.log(req.file.path)
+        fs.createReadStream(req.file.path)
+            .pipe(csv())
+            .on('data', (data) => results.push(data))
+            .on('end', () => {
+                results.forEach(book => {
+                    FinalData.push({ 
+                        first_name: book.first_name, 
+                        last_name: book.last_name, 
+                        guardian_name:book.guardian_name,
+                        guardian_phone_no: book.guardian_phone,
+                        school_id: req.body.school_id,
+                        class_id:req.body.class_id
+                    })
+                })
+                otherFunction(res, FinalData, function() {
+                    fs.unlinkSync(req.file.path)
+                })
+            });
+    } catch (error) {
+        return res.status(409).json({
+            message: "External Error occured",
+            errors: error.message
+        });
+    }
+}
+
+const otherFunction = async(res, FinalData, callback) => {
+    await Student.insertMany(FinalData).then(() => {
+        res.status(200).send('Students Inserted')
+        callback()
+    }).catch(error => {
+        return res.status(409).json({
+            message: "Error occured while Inserting Data",
+            errors: error.message
+        });
+    })
+}
+
 module.exports = {
     CreateStudent,
     UpdateStudent,
     ViewStudent,
     ViewAllStudent,
     DeleteStudent,
+    uploadStudent,
+    // getStudentBySchoolId,
 }

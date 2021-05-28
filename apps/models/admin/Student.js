@@ -19,6 +19,9 @@ const StudentSchema = new mongoose.Schema({
     guardian_phone_no:{
         type:String
     },
+    school_id:{
+        type:String
+    },
     status:{
         type: Boolean,
         default: false

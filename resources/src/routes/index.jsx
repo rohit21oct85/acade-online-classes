@@ -64,12 +64,16 @@ export const privateRoutes = [
         component: ClassList
     },
     {
-        path: '/admin/subject-management/:page_type?/:subject_id?',
-        component: SubjectList
+        path: '/admin/student-management/:page_type?/:school_id?/:class_id?/:student_id?',
+        component: StudentList
     },
     {
         path: '/admin/students-management/:page_type?/:student_id?',
         component: StudentList
+    },
+    {
+        path: '/admin/subject-management/:page_type?/:subject_id?',
+        component: SubjectList
     },
     {
         path: '/admin/auth-management/:page_type?/:school_id?/:school_admin_email?/:school_admin_id?',

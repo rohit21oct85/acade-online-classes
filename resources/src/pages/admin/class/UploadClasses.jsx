@@ -86,8 +86,12 @@ export default function UploadClasses() {
             <p className="form-heading">
             <span className="fa fa-plus-circle mr-2"></span>Upload Classes</p>
             <hr className="mt-1"/>
+
+            <a href="/apps/sampledata/classes.csv" download>
+            Download Sample File
+            </a>
+            <hr className="mt-1"/>
             <form onSubmit={uploadFile} method="POST" encType="multipart/form-data">
-                { schooloradmin == "admin" &&
                 <div className="form-group">
                     <select className="form-control" aria-label="Default select example" name="school_id" onChange={handleChange}>
                         <option>Select School</option>
@@ -97,7 +101,7 @@ export default function UploadClasses() {
                         )
                         })}
                     </select>
-                </div>}
+                </div>
                 <div className="form-group">
                     <input 
                         type="file" 

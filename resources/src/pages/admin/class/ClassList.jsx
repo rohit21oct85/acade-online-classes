@@ -22,7 +22,13 @@ export default function ClassList() {
                             <button className="btn btn-sm dark mr-2" onClick={e => { history.push(`/admin/dashboard`)}}>
                                 <span className="fa fa-dashboard"></span>
                             </button>
-                            <button className="btn btn-sm dark" onClick={e => { history.push(`/admin/class-management/upload`)}}>
+                            <button className="btn btn-sm dark" onClick={e => { 
+                                if(params.page_type == undefined){
+                                    history.push(`/admin/class-management/upload`)
+                                }else if(params.page_type == "upload"){
+                                    history.push(`/admin/class-management`)
+                                }
+                                }}>
                                 <span className="fa fa-upload"></span>   Upload Classes 
                             </button>
                         </div>
@@ -33,7 +39,6 @@ export default function ClassList() {
                             <div className="col-md-3">
                                 { params.page_type == "upload" ? <UploadClasses /> : <CreateClass /> }
                             </div>
-                            
                             <div className="col-md-9 ">
                             <AllClasses />
                             </div>

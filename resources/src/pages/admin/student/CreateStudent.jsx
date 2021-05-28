@@ -7,6 +7,8 @@ import API_URL from '../../../helper/APIHelper';
 import * as utils from '../../../utils/utils'
 import { useToasts } from 'react-toast-notifications';
 import useSingleStudent from '../../../hooks/students/useSingleStudent';
+import useSchoolLists from '../../../hooks/schools/useSchoolLists';
+import useClassList from '../../../hooks/classes/useClassList';
 
 export default function CreateStudent() {
     const history = useHistory();
@@ -21,8 +23,10 @@ export default function CreateStudent() {
     const [loading, setLoading] = useState(false);
 
     const {data} = useSingleStudent();
-
+    const pattern = /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/;
     const [SingleStudent, setSingleStudent] = useState({});
+    const {data : schools, schoolIsLoading } = useSchoolLists();
+    const {data : classes, classesIsLoading } = useClassList();
 
     const initialData = {
         first_name: '',
@@ -30,7 +34,8 @@ export default function CreateStudent() {
         class_id: '',
         class_name: '',
         guardian_name: '',
-        guardian_phone: '',
+        guardian_phone_no: '',
+        school_id: '',
     } 
     const [formData, setFormData] = useState(initialData);
 
@@ -73,13 +78,24 @@ export default function CreateStudent() {
     });
 
     const saveStudent = async (e) => {
+        console.log(formData.school_id)
         e.preventDefault();
         setLoading(true);
         if(params?.student_id){
                 await updateMutation.mutate(SingleStudent);
         }else{
-
+            if(formData.school_id == ''){
+                setLoading(false);
+                addToast('Please Select a School', { appearance: 'error',autoDismiss: true });
+            }else if(formData.class_id == ''){
+                setLoading(false);
+                addToast('Please Select a Class', { appearance: 'error',autoDismiss: true });
+            }else if(!pattern.test(formData.guardian_phone_no)){
+                setLoading(false);
+                addToast('Please Enter a 10 digit phone no', { appearance: 'error',autoDismiss: true });
+            }else{
                 await mutation.mutate(formData);
+            }
         }
     }
 
@@ -91,12 +107,55 @@ export default function CreateStudent() {
         }
     }
 
+    async function handleChangeSchool(e){
+        if(params?.student_id){
+            setSingleStudent({...SingleStudent, [e.target.name]: e.target.value})
+                history.push(`/admin/student-management/select-school/${e.target.value}/${params?.class_id}/${params?.student_id}`)
+        }else{
+            setFormData({...formData, ['school_id']: e.target.value})
+            params.class_id ?
+                history.push(`/admin/student-management/select-school/${e.target.value}/${params?.class_id}`)
+                :
+                history.push(`/admin/student-management/select-school/${e.target.value}`)
+            }
+    }
+
+    async function handleChangeClass(e){
+        if(params?.student_id){
+            setSingleStudent({...SingleStudent, [e.target.name]: e.target.value})
+        }else{
+            setFormData({...formData, ['class_id']: e.target.value})
+            history.push(`/admin/student-management/select-school/${params.school_id}/${e.target.value}`)
+        }
+        console.log(formData)
+    }
+
     return (
         <>
             <p className="form-heading">
             <span className="fa fa-plus-circle mr-2"></span>Add New Student</p>
             <hr className="mt-1"/>
             <form onSubmit={saveStudent}>
+                <div className="form-group">
+                    <select className="form-control" aria-label="Default select example" name="school_id" onChange={handleChangeSchool} value={params.school_id}>
+                        <option>Select School</option>
+                        {!schoolIsLoading && schools?.map(school => {
+                        return (
+                            <option value={school._id} key={school._id}>{school.name}</option>
+                        )
+                        })}
+                    </select>
+                </div>
+                <div className="form-group">
+                    <select className="form-control" aria-label="Default select example" name="class_id" onChange={handleChangeClass}>
+                        <option>Select Class</option>
+                        {!classesIsLoading && classes?.map(item => {
+                        return (
+                            <option value={item._id} key={item._id}>{item.class_name}</option>
+                        )
+                        })}
+                    </select>
+                </div>
                 <div className="form-group">
                     <input 
                         type="text" 
@@ -153,7 +212,7 @@ export default function CreateStudent() {
                         )}
                         
                     </button>
-                    {params?.student_id && (
+                    {(params?.student_id || params?.school_id) && (
                         <button className="btn btn-sm red ml-2"
                         onClick={e => {
                             e.preventDefault();

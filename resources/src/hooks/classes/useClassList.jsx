@@ -9,10 +9,9 @@ import {useParams} from 'react-router-dom'
 export default function useClassList() {
     const {state } = useContext(AuthContext);
     const params = useParams();
-    
-    return useQuery('classes', async () => {
+    const key = params.school_id ? `classes-${params.school_id}` : `classes`
+    return useQuery(key, async () => {
         if(state.access_token ){
-            console.log(params)
             if(!params.school_id){
                 const result = await axios.get(`${API_URL}v1/class/view-all`,{
                     headers: {

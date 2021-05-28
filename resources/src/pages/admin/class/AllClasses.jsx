@@ -76,7 +76,7 @@ export default function AllClasses() {
                                                 if(params.school_id){
                                                     history.push(`/admin/class-management/modify-class/${params?.school_id}/${item?._id}`)
                                                 }else{
-                                                    history.push(`/admin/class-management/modify-class/${item?._id}`)
+                                                    history.push(`/admin/class-management/modify-class/${item.school_id}/${item?._id}`)
                                                 }
                                             }
                                         }>
