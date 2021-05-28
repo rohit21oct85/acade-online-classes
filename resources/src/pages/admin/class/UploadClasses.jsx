@@ -87,7 +87,7 @@ export default function UploadClasses() {
             <span className="fa fa-plus-circle mr-2"></span>Upload Classes</p>
             <hr className="mt-1"/>
 
-            <a href="/apps/sampledata/classes.csv" download>
+            <a href="/sampledata/classes.csv" download>
             Download Sample File
             </a>
             <hr className="mt-1"/>
