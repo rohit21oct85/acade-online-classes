@@ -19,10 +19,6 @@ const ClassSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
-    class_teacher:{
-        type: String,
-        required: true,
-    },
     status:{
         type: Boolean,
         required: true,

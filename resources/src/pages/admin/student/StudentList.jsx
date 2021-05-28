@@ -1,5 +1,5 @@
 import React from 'react'
-import {useHistory, useParams} from 'react-router-dom'
+import {useHistory, useParams, useLocation} from 'react-router-dom'
 import CreateStudent from './CreateStudent';
 import UploadStudents from './UploadStudents';
 import AllStudents from './AllStudents';
@@ -21,7 +21,13 @@ export default function StudentList() {
                             <button className="btn btn-sm dark mr-2" onClick={e => { history.push(`/admin/dashboard`)}}>
                                 <span className="fa fa-dashboard"></span>
                             </button>
-                            <button className="btn btn-sm dark" onClick={e => { history.push(`/admin/students-management/upload`)}}>
+                            <button className="btn btn-sm dark" onClick={e => {
+                                if(params.page_type == undefined){
+                                    history.push(`/admin/student-management/upload`)
+                                }else if(params.page_type == "upload"){
+                                    history.push(`/admin/student-management`)
+                                }
+                                }}>
                                 <span className="fa fa-upload"></span>   Upload Students 
                             </button>
                         </div>

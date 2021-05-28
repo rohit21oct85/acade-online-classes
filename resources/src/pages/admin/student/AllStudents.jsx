@@ -31,7 +31,9 @@ export default function AllStudents() {
         return axios.delete(`${API_URL}v1/student/delete/${student_id}`, options)
     },{
         onSuccess: () => {
-            queryClient.invalidateQueries('students')
+            let school_id =  params?.school_id;
+            let class_id =  params?.class_id;
+            queryClient.invalidateQueries(`students-${school_id}-${class_id}`)
             addToast('Student Deleted successfully', { appearance: 'success',autoDismiss: true });
         }
     });
@@ -70,7 +72,7 @@ export default function AllStudents() {
                                     <button className="btn bg-primary text-white btn-sm mr-2" 
                                         onClick={
                                             e => {
-                                                    history.push(`/admin/students-management/modify-student/${item?._id}`)
+                                                    history.push(`/admin/student-management/modify-student/${item.school_id}/${item.class_id}/${item?._id}`)
                                             }
                                         }>
                                         <span className="fa fa-edit"></span>

@@ -8,7 +8,6 @@ import * as utils from '../../../utils/utils'
 import { useToasts } from 'react-toast-notifications';
 import useSingleClass from '../../../hooks/classes/useSingleClass';
 import useSchoolLists from '../../../hooks/schools/useSchoolLists';
-import useTeacherList from '../../../hooks/teachers/useTeacherList';
 import useClassList from '../../../hooks/classes/useClassList';
 
 export default function CreateClass() {
@@ -28,10 +27,11 @@ export default function CreateClass() {
     const {data} = useSingleClass();
     
     const {data : schools, isLoading } = useSchoolLists();
-    const {data : teachers, teachersIsLoading } = useTeacherList();
     const {data : classes, classIsLoading} = useClassList();
 
     const [SingleClass, setSingleClass] = useState({});
+    const [school, setSchool] = useState();
+    const [teacher, setTeacher] = useState();
 
     const initialData = {
         class_name: '',
@@ -60,7 +60,8 @@ export default function CreateClass() {
         return axios.post(`${API_URL}v1/class/create`, formData, options)
     },{
         onSuccess: () => {
-            queryClient.invalidateQueries('classes')
+            let school_id =  params?.school_id;
+            queryClient.invalidateQueries(`classes-${school_id}`)
             setLoading(false);
             setFormData(initialData);
             history.push(`${path}`);
@@ -73,7 +74,8 @@ export default function CreateClass() {
         return axios.patch(`${API_URL}v1/class/update/${class_id}`, formData, options)
     },{
         onSuccess: () => {
-            queryClient.invalidateQueries('classes')
+            let school_id =  params?.school_id;
+            queryClient.invalidateQueries(`classes-${school_id}`)
             setLoading(false);
             setFormData(initialData);
             history.push(`${path}`);
@@ -90,9 +92,6 @@ export default function CreateClass() {
             if(formData.school_id == ''){
                 setLoading(false);
                 addToast('Please Select a School', { appearance: 'error',autoDismiss: true });
-            }else if(formData.teacher_id == ''){
-                setLoading(false);
-                addToast('Please Select a Teacher', { appearance: 'error',autoDismiss: true });
             }else{
                 await mutation.mutate(formData);
             }
@@ -103,13 +102,14 @@ export default function CreateClass() {
         if(params?.class_id){
                 setSingleClass({...SingleClass, [e.target.name]: e.target.value})
         }else{
-                setFormData({...formData, [e.target.name]: e.target.value})
+            setFormData({...formData, [e.target.name]: e.target.value})
         }
     }
     
     async function handleChangeSchool(e){
         if(params?.class_id){
             setSingleClass({...SingleClass, [e.target.name]: e.target.value})
+            history.push(`/admin/class-management/select-school/${e.target.value}/${params.class_id}`)
         }else{
             setFormData({...formData, ['school_id']: e.target.value})
             history.push(`/admin/class-management/select-school/${e.target.value}`)
@@ -122,23 +122,12 @@ export default function CreateClass() {
             <span className="fa fa-plus-circle mr-2"></span>Add New Class</p>
             <hr className="mt-1"/>
             <form onSubmit={saveClass}>
-               {schooloradmin == "admin" && 
                 <div className="form-group">
-                    <select className="form-control" aria-label="Default select example" name="school_id" onChange={handleChangeSchool}>
+                    <select className="form-control" aria-label="Default select example" name="school_id" onChange={handleChangeSchool} value={params.school_id}>
                         <option>Select School</option>
                         {!isLoading && schools?.map(school => {
                         return (
                             <option value={school._id} key={school._id}>{school.name}</option>
-                        )
-                        })}
-                    </select>
-                </div> }
-                <div className="form-group">
-                    <select className="form-control" aria-label="Default select example" name="teacher_id" onChange={handleChange}>
-                        <option>Select Teacher</option>
-                        {!teachersIsLoading && teachers?.map(teacher => {
-                        return (
-                            <option value={teacher._id} key={teacher._id}>{teacher.first_name +' '+ teacher.last_name}</option>
                         )
                         })}
                     </select>
@@ -173,7 +162,7 @@ export default function CreateClass() {
                         placeholder="Class Capacity"/>
                 </div>
 
-                <div className="form-group">
+                {/* <div className="form-group">
                     <input 
                         type="text" 
                         className="form-control" 
@@ -181,7 +170,7 @@ export default function CreateClass() {
                         value={params?.class_id ? SingleClass?.class_teacher : formData?.class_teacher}
                         onChange={handleChange}
                         placeholder="Class Teacher"/>
-                </div>
+                </div> */}
 
                 <div className="form-group flex">
                     <button className="btn btn-sm dark">

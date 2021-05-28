@@ -35,7 +35,8 @@ export default function AllClasses() {
         return axios.delete(`${API_URL}v1/class/delete/${class_id}`, options)
     },{
         onSuccess: () => {
-            queryClient.invalidateQueries('classes')
+            let school_id =  params?.school_id;
+            queryClient.invalidateQueries(`classes-${school_id}`)
             addToast('Class Deleted successfully', { appearance: 'success',autoDismiss: true });
         }
     });
@@ -76,7 +77,7 @@ export default function AllClasses() {
                                                 if(params.school_id){
                                                     history.push(`/admin/class-management/modify-class/${params?.school_id}/${item?._id}`)
                                                 }else{
-                                                    history.push(`/admin/class-management/modify-class/${item?._id}`)
+                                                    history.push(`/admin/class-management/modify-class/${item.school_id}/${item?._id}`)
                                                 }
                                             }
                                         }>
