@@ -80,20 +80,20 @@ const DeleteStudent = async (req, res) =>{
     }
 };
 
-// const getStudentBySchoolId = async (req, res) => {
-//     try{
-//         const filter = {student_id: req.params.id}
-//         const ClassData = await Class.find(filter,{__v: 0});
-//         return res.status(200).json({ 
-//             data: ClassData
-//         });    
-//     } catch(error){
-//         res.status(409).json({
-//             message: "Error occured",
-//             errors: error.message
-//         });
-//     }
-// }
+const getStudentBySchoolIdAndClassId = async (req, res) => {
+    try{
+        const filter = {school_id: req.params.sid, class_id: req.params.cid}
+        const StudentData = await Student.find(filter,{__v: 0});
+        return res.status(200).json({ 
+            data: StudentData
+        });    
+    } catch(error){
+        res.status(409).json({
+            message: "Error occured",
+            errors: error.message
+        });
+    }
+}
 
 const uploadStudent = async(req, res) => {
     const data = req.body;
@@ -147,5 +147,5 @@ module.exports = {
     ViewAllStudent,
     DeleteStudent,
     uploadStudent,
-    // getStudentBySchoolId,
+    getStudentBySchoolIdAndClassId,
 }

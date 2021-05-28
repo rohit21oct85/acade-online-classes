@@ -31,7 +31,9 @@ export default function AllStudents() {
         return axios.delete(`${API_URL}v1/student/delete/${student_id}`, options)
     },{
         onSuccess: () => {
-            queryClient.invalidateQueries('students')
+            let school_id =  params?.school_id;
+            let class_id =  params?.class_id;
+            queryClient.invalidateQueries(`students-${school_id}-${class_id}`)
             addToast('Student Deleted successfully', { appearance: 'success',autoDismiss: true });
         }
     });

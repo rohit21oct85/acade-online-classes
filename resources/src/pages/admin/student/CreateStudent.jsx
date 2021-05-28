@@ -56,7 +56,9 @@ export default function CreateStudent() {
         return axios.post(`${API_URL}v1/student/create`, formData, options)
     },{
         onSuccess: () => {
-            queryClient.invalidateQueries('students')
+            let school_id =  params?.school_id;
+            let class_id =  params?.class_id;
+            queryClient.invalidateQueries(`students-${school_id}-${class_id}`)
             setLoading(false);
             setFormData(initialData);
             history.push(`${path}`);
@@ -69,7 +71,9 @@ export default function CreateStudent() {
         return axios.patch(`${API_URL}v1/student/update/${student_id}`, formData, options)
     },{
         onSuccess: () => {
-            queryClient.invalidateQueries('students')
+            let school_id =  params?.school_id;
+            let class_id =  params?.class_id;
+            queryClient.invalidateQueries(`students-${school_id}-${class_id}`)
             setLoading(false);
             setFormData(initialData);
             history.push(`${path}`);
@@ -78,7 +82,6 @@ export default function CreateStudent() {
     });
 
     const saveStudent = async (e) => {
-        console.log(formData.school_id)
         e.preventDefault();
         setLoading(true);
         if(params?.student_id){
@@ -123,11 +126,11 @@ export default function CreateStudent() {
     async function handleChangeClass(e){
         if(params?.student_id){
             setSingleStudent({...SingleStudent, [e.target.name]: e.target.value})
+            history.push(`/admin/student-management/select-school/${params?.school_id}/${e.target.value}/${params?.student_id}`)
         }else{
             setFormData({...formData, ['class_id']: e.target.value})
             history.push(`/admin/student-management/select-school/${params.school_id}/${e.target.value}`)
         }
-        console.log(formData)
     }
 
     return (

@@ -58,7 +58,8 @@ export default function UploadClasses() {
         return axios.post(`${API_URL}v1/class/upload`, formDataUpload, options)
     },{
         onSuccess: () => {
-            queryClient.invalidateQueries('classes')
+            let school_id =  params?.school_id;
+            queryClient.invalidateQueries(`classes-${school_id}`)
             setLoading(false);
             history.push(`${path}`);
             addToast('Classes added successfully', { appearance: 'success', autoDismiss: true });
