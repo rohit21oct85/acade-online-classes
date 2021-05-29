@@ -6,7 +6,7 @@ import API_URL from '../../helper/APIHelper';
 import { useToasts } from 'react-toast-notifications';
 import {AuthContext} from '../../context/AuthContext';
 
-export default function useDeleteSchool(formData) {
+export default function useDeletePermission() {
       const location = useLocation();
       const path  = location.pathname;
       
@@ -21,12 +21,12 @@ export default function useDeleteSchool(formData) {
       }      
       const { addToast } = useToasts();
       const status =  useMutation((formData) => {
-            return axios.post(`${API_URL}v1/school/delete`,formData, options)
+            return axios.post(`${API_URL}v1/permission/delete`,formData, options)
         },{
         onSuccess: () => {
-            queryClient.invalidateQueries('schools')
-            history.push('/admin/school-management');
-            addToast('Schools deleted successfully', { appearance: 'success',autoDismiss: true });
+            queryClient.invalidateQueries(['permissions'])
+            history.push('/admin/app-permissions');
+            addToast('Permission deleted successfully', { appearance: 'success',autoDismiss: true });
         }
         });
       return status;

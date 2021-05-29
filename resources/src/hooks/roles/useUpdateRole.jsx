@@ -1,15 +1,15 @@
-import { useContext } from 'react'
-import {useLocation, useHistory} from 'react-router-dom'
+import React, { useContext, useState } from 'react'
+import {useLocation, useParams, useHistory} from 'react-router-dom'
 import {useMutation, useQueryClient} from 'react-query'
 import axios from 'axios'
 import API_URL from '../../helper/APIHelper';
 import { useToasts } from 'react-toast-notifications';
 import {AuthContext} from '../../context/AuthContext';
 
-export default function useDeleteSchool(formData) {
+export default function useUpdateRole(formData) {
+      const params = useParams();
       const location = useLocation();
-      const path  = location.pathname;
-      
+      const path = location.pathname;
       const history = useHistory();
       const queryClient = useQueryClient()
       const {state} = useContext(AuthContext);
@@ -21,12 +21,13 @@ export default function useDeleteSchool(formData) {
       }      
       const { addToast } = useToasts();
       const status =  useMutation((formData) => {
-            return axios.post(`${API_URL}v1/school/delete`,formData, options)
+            const id = params?.role_id
+            return axios.patch(`${API_URL}v1/role/update/${id}`, formData, options)
         },{
         onSuccess: () => {
-            queryClient.invalidateQueries('schools')
-            history.push('/admin/school-management');
-            addToast('Schools deleted successfully', { appearance: 'success',autoDismiss: true });
+            queryClient.invalidateQueries('roles')
+            addToast('Category Updated successfully', { appearance: 'success',autoDismiss: true });
+            history.push('/admin/app-roles');
         }
         });
       return status;

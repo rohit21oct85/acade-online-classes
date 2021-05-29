@@ -2,12 +2,12 @@ import React, {useState, useContext, useEffect} from 'react'
 import {useHistory, useParams, useLocation} from 'react-router-dom'
 import {AuthContext} from '../../../context/AuthContext';
 
-import {useMutation, useQueryClient} from 'react-query'
-import axios from 'axios'
-import API_URL from '../../../helper/APIHelper';
 import * as utils from '../../../utils/utils'
 import { useToasts } from 'react-toast-notifications';
-import useSingleModule from '../../../hooks/useSingleModule';
+import useSingleModule from '../../../hooks/modules/useSingleModule';
+import useCreateModule from '../../../hooks/modules/useCreateModule';
+import useUpdateModule from '../../../hooks/modules/useUpdateModule';
+import useDeleteModule from '../../../hooks/modules/useDeleteModule';
 
 export default function CreateAppModule() {
     const history = useHistory();
@@ -17,6 +17,7 @@ export default function CreateAppModule() {
 
     const { addToast } = useToasts();
     const {state} = useContext(AuthContext);
+
     const [moduleName, setModuleName] = useState("");
     const [moduleIcon, setModuleIcon] = useState("");
     const [loading, setLoading] = useState(false);
@@ -31,52 +32,31 @@ export default function CreateAppModule() {
         setModuleName('');
         setModuleIcon('');
         setSingleModule({})
-    }
-    const queryClient = useQueryClient()
-    const options = {
-        headers: {
-            'Content-Type': 'Application/json',
-            'Authorization':'Bearer '+state.access_token
-        }
-    }
-    const mutation = useMutation(formData => {
-        return axios.post(`${API_URL}v1/module/create`, formData, options)
-    },{
-    onSuccess: () => {
-        queryClient.invalidateQueries('app-modules')
         setLoading(false);
-        clearFields();
-        history.push(`${path}`);
-        addToast('App Module added successfully', { appearance: 'success',autoDismiss: true });
     }
-    });
     
-    const updateMutation = useMutation((formData) => {
-        let module_id =  params?.module_id;
-        return axios.patch(`${API_URL}v1/module/update/${module_id}`, formData, options)
-    },{
-    onSuccess: () => {
-        queryClient.invalidateQueries('app-modules')
-        setLoading(false);
-        clearFields();
-        history.push(`${path}`);
-        addToast('App Module Updated successfully', { appearance: 'success',autoDismiss: true });
-        history.push(`/admin/app-module`)
-    }
-    });
-
+    const createMutation = useCreateModule(formData);
+    const updateMutation = useUpdateModule(formData);
+    const deleteMutation = useDeleteModule(formData);
+    
     const saveAppModule = async (e) => {
         e.preventDefault();
         setLoading(true);
-        
         formData['module_name'] = params?.module_id ? singleModule?.module_name : moduleName;
         formData['module_slug'] = utils.MakeSlug(params?.module_id ? singleModule?.module_name : moduleName);
         formData['module_icon'] = params?.module_id ? singleModule?.module_icon : moduleIcon;
         if(params?.module_id){
             await updateMutation.mutate(formData);
         }else{
-            await mutation.mutate(formData);
+            await createMutation.mutate(formData);
         }
+        clearFields();
+    }
+
+    async function handleDelete(e){
+        e.preventDefault();
+        formData['module_id'] = params?.module_id;
+        await deleteMutation.mutate(formData);
     }
 
     return (
@@ -112,26 +92,24 @@ export default function CreateAppModule() {
                         <span className={`fa p-abs tl10 ${singleModule?.module_icon}`}></span>
                 </div>
                 <div className="form-group flex">
-                    <button className="btn btn-sm dark">
+                    <button className="btn btn-sm dark br-5">
                         {loading ? (
-                            <>
-                            <span className="fa fa-spinner mr-2"></span>
-                            processing ....
-                            </>
+                            <><span className="fa fa-spinner mr-2"></span></>
                         ) : (
                             <>
                             {params?.module_id ? (
-                                <><span className="fa fa-save mr-2"></span> Update Module</>
+                                <><span className="fa fa-save mr-2"></span> Update</>
                                 ):(
                                     
-                                    <><span className="fa fa-save mr-2"></span> Save Module</>
+                                    <><span className="fa fa-save mr-2"></span> Save</>
                             )}
                             </>
                         )}
                         
                     </button>
                     {params?.module_id && (
-                        <button className="btn btn-sm dark ml-2"
+                        <>
+                        <button className="btn btn-sm dark bg-warning ml-2 br-5"
                         onClick={e => {
                             e.preventDefault();
                             clearFields();
@@ -141,6 +119,19 @@ export default function CreateAppModule() {
                             <span className="fa fa-times mr-2"></span>
                             Cancel
                         </button>
+                        <button className="btn btn-sm dark bg-danger ml-2 br-5"
+                        onClick={handleDelete}
+                        disbaled={deleteMutation?.isLoading?.toString()}
+                        >
+
+                            {deleteMutation?.isLoading ? 
+                            <><span className="fa fa-spinner mr-2"></span> ... </>
+                            :
+                            <><span className="fa fa-trash mr-2"></span> Delete</>
+                            }
+                            
+                        </button>
+                        </>
                     )}
                 </div>
 
