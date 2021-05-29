@@ -61,9 +61,8 @@ export default function UploadStudents() {
         onSuccess: () => {
             let school_id =  params?.school_id;
             let class_id =  params?.class_id;
-            queryClient.invalidateQueries(`students-${school_id}-${class_id}`)
+            queryClient.invalidateQueries(`students`)
             setLoading(false);
-            // history.push(`${path}`);
             addToast('Student added successfully', { appearance: 'success', autoDismiss: true });
         }
     });
@@ -145,6 +144,9 @@ export default function UploadStudents() {
                         name="file"
                         onChange={handelChangeUpload}
                         placeholder="Upload .csv"/>
+                        <small id="passwordHelpInline" class="text-muted">
+                            Upload Classes File in .csv format only.
+                        </small>
                 </div>
             
                 <div className="form-group flex">

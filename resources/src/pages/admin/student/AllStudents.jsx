@@ -1,6 +1,8 @@
 import useStudentList from '../../../hooks/students/useStudentList';
+import useClassList from '../../../hooks/classes/useClassList';
+import useSchoolLists from '../../../hooks/schools/useSchoolLists';
 import Loading from '../../../components/Loading';
-import {useHistory} from 'react-router-dom'
+import {useHistory, useParams} from 'react-router-dom'
 import {useMutation, useQueryClient} from 'react-query'
 import axios from 'axios'
 import API_URL from '../../../helper/APIHelper';
@@ -9,8 +11,6 @@ import { useToasts } from 'react-toast-notifications';
 import React, {useState, useContext} from 'react'
 
 export default function AllStudents() {
-
-    const {data, isLoading} = useStudentList();
     
     const history = useHistory();
 
@@ -19,6 +19,14 @@ export default function AllStudents() {
     const {state} = useContext(AuthContext);
 
     const queryClient = useQueryClient()
+
+    const params = useParams();
+    
+    const {data, isLoading} = useStudentList();
+    const {data:schools, schoolIsLoading} = useSchoolLists();
+    const {data:classes, classIsLoading} = useClassList();
+    const school = schools?.filter( school => school?._id == params?.school_id)
+    const clas = classes?.filter( item => item?._id == params?.class_id)
 
     const options = {
         headers: {
@@ -31,9 +39,8 @@ export default function AllStudents() {
         return axios.delete(`${API_URL}v1/student/delete/${student_id}`, options)
     },{
         onSuccess: () => {
-            let school_id =  params?.school_id;
-            let class_id =  params?.class_id;
-            queryClient.invalidateQueries(`students-${school_id}-${class_id}`)
+            const key = (params.school_id && params.class_id) ? `students-${params.school_id}-${params.class_id}` : `students`
+            queryClient.invalidateQueries(key)
             addToast('Student Deleted successfully', { appearance: 'success',autoDismiss: true });
         }
     });
@@ -45,7 +52,7 @@ export default function AllStudents() {
     return (
         <>
         <p className="form-heading">
-            <span className="fa fa-plus-circle mr-2"></span>All Students</p>
+            <span className="fa fa-plus-circle mr-2"></span>{(school && school[0]?.name) ? "School: "+school[0].name+" - Class: "+ (clas && clas[0]?.class_name ? clas[0].class_name : '') : "All Students"}</p>
         <hr className="mt-1"/>
         <Loading isLoading={isLoading} /> 
         <div className="col-md-12 row no-gutter data-container-category">

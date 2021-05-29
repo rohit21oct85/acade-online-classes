@@ -1,4 +1,6 @@
 const Subject = require('../../../models/admin/Subject');
+const csv = require('csv-parser')
+const fs = require('fs')
 
 const CreateSubject = async (req, res) => {
     const body = req.body;
@@ -78,10 +80,69 @@ const DeleteSubject = async (req, res) =>{
     }
 };
 
+
+const uploadSubject = async(req, res) => {
+    const data = req.body;
+    // console.log(req.body.subject_id)
+    let FinalData = [];
+    try {
+        let results = [];
+        // console.log(req.file.path)
+        fs.createReadStream(req.file.path)
+            .pipe(csv())
+            .on('data', (data) => results.push(data))
+            .on('end', () => {
+                results.forEach(subject => {
+                    FinalData.push({ 
+                        subject_name: subject.subject_name,
+                        school_id: req.body.school_id
+                    })
+                })
+                otherFunction(res, FinalData, function() {
+                    fs.unlinkSync(req.file.path)
+                })
+            });
+    } catch (error) {
+        return res.status(409).json({
+            message: "External Error occured",
+            errors: error.message
+        });
+    }
+}
+
+const otherFunction = async(res, FinalData, callback) => {
+    await Subject.insertMany(FinalData).then(() => {
+        res.status(200).send('Subjects Inserted')
+        callback()
+    }).catch(error => {
+        return res.status(409).json({
+            message: "Error occured while Inserting Data",
+            errors: error.message
+        });
+    })
+}
+
+const getSubjectBySchoolId = async (req, res) => {
+    try{
+        const filter = {school_id: req.params.id}
+        const SubjectData = await Subject.find(filter,{__v: 0});
+        return res.status(200).json({ 
+            data: SubjectData
+        });    
+    } catch(error){
+        res.status(409).json({
+            message: "Error occured",
+            errors: error.message
+        });
+    }
+}
+
 module.exports = {
     CreateSubject,
     UpdateSubject,
     ViewSubject,
     ViewAllSubject,
     DeleteSubject,
+    uploadSubject,
+    getSubjectBySchoolId,
 }
