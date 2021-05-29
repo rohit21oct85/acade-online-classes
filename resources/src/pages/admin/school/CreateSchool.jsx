@@ -7,7 +7,7 @@ import { useToasts } from 'react-toast-notifications';
 import useSingleSchool from '../../../hooks/schools/useSingleSchool';
 import useCreateSchool from '../../../hooks/schools/useCreateSchool';
 import useUpdateSchool from '../../../hooks/schools/useUpdateSchool';
-import useDeleteSchool from '../../../hooks/schools/useDeleteSchool';
+import useDeleteSchool from '../../../hooks/roles/useDeleteRole';
 
 
 

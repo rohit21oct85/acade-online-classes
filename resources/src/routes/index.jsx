@@ -11,6 +11,8 @@ import TeacherLogin from '../pages/school/teacher_auth/TeacherLogin'
 import StudentLogin from '../pages/school/student_auth/StudentLogin'
 
 import AppModule from '../pages/admin/appModule/AppModule.jsx'
+import AppRole from '../pages/admin/appRole/AppRole.jsx'
+import AppPermission from '../pages/admin/appPermission/AppPermission.jsx'
 import ClassList from '../pages/admin/class/ClassList.jsx'
 import SubjectList from '../pages/admin/subject/SubjectList.jsx'
 import StudentList from '../pages/admin/student/StudentList.jsx'
@@ -94,11 +96,11 @@ export const adminRoutes = [
     
     {
         path: '/admin/app-roles/:role_id?',
-        component: AppModule
+        component: AppRole
     },
     {
-        path: '/admin/app-permissions/:permission_id?',
-        component: AppModule
+        path: '/admin/app-permissions/:role_id?/:role_slug?/:school_id?/:school_slug?/:permission_id?',
+        component: AppPermission
     },
 
 ]

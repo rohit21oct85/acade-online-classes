@@ -100,7 +100,9 @@ app.get(`/api/v1/test`, (req, res) => {
     res.send(`Test  Api running on Dev Environment`);
 })
 app.use("/api/v1/admin", Routes.adminAuth);
+app.use("/api/v1/role", Routes.roleRoutes);
 app.use("/api/v1/module", Routes.moduleRoutes);
+app.use("/api/v1/permission", Routes.permissionRoutes);
 app.use("/api/v1/class", Routes.classRoutes);
 app.use("/api/v1/school", Routes.schoolRoutes);
 app.use("/api/v1/subject", Routes.subjectRoutes);

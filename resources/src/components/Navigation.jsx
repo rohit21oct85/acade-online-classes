@@ -3,7 +3,7 @@ import { Link, useHistory ,NavLink, useLocation, useParams } from "react-router-
 import './Nav.css';
 import { Nav} from 'react-bootstrap'
 import {AuthContext} from '../context/AuthContext';
-import useAppModule from '../hooks/useAppModule';
+import useAppModule from '../hooks/modules/useAppModule';
 import Loading from './Loading';
 
 export default function Navigation() {
@@ -15,7 +15,7 @@ export default function Navigation() {
     const [modules, setModules] = useState([]);
     const [profileImage, setProfileImage] = useState("");
     const [dashboardUrl, setDashboardUrl] = useState("");
-    useEffect(setAllModules,[state, params?.school_slug]);
+    useEffect(setAllModules,[state,data,params?.school_slug]);
     let dashboard_url = '';
     let profile = '';
     async function setAllModules(){

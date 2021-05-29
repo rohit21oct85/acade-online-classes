@@ -1,5 +1,5 @@
 const express =  require("express");
-const SchoolAdmin = require('../../http/controllers/admin/SchoolAdminController.js');
+const SchoolAdmin = require('../../http/controllers/admin/schoolAdminController.js');
 const checkAuth =  require("../../http/middleware/check-auth");
 const adminAuth =  require("../../http/middleware/admin-auth");
 
