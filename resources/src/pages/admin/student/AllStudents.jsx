@@ -1,6 +1,6 @@
 import useStudentList from '../../../hooks/students/useStudentList';
 import Loading from '../../../components/Loading';
-import {useHistory} from 'react-router-dom'
+import {useHistory, useParams} from 'react-router-dom'
 import {useMutation, useQueryClient} from 'react-query'
 import axios from 'axios'
 import API_URL from '../../../helper/APIHelper';
@@ -20,6 +20,8 @@ export default function AllStudents() {
 
     const queryClient = useQueryClient()
 
+    const params = useParams();
+    
     const options = {
         headers: {
             'Content-Type': 'Application/json',

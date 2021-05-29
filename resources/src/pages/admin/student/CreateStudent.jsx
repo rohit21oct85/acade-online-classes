@@ -36,6 +36,7 @@ export default function CreateStudent() {
         guardian_name: '',
         guardian_phone_no: '',
         school_id: '',
+        username: '',
     } 
     const [formData, setFormData] = useState(initialData);
 
@@ -87,17 +88,22 @@ export default function CreateStudent() {
         if(params?.student_id){
                 await updateMutation.mutate(SingleStudent);
         }else{
+            formData.school_id = params.school_id ? params.school_id : ''
+            formData.username = formData.first_name + formData.guardian_phone_no.substr(-4) + "";
             if(formData.school_id == ''){
                 setLoading(false);
                 addToast('Please Select a School', { appearance: 'error',autoDismiss: true });
-            }else if(formData.class_id == ''){
-                setLoading(false);
-                addToast('Please Select a Class', { appearance: 'error',autoDismiss: true });
-            }else if(!pattern.test(formData.guardian_phone_no)){
-                setLoading(false);
-                addToast('Please Enter a 10 digit phone no', { appearance: 'error',autoDismiss: true });
-            }else{
-                await mutation.mutate(formData);
+            }else {
+                formData.class_id = params.class_id ? params.class_id : ''
+                if(formData.class_id == ''){
+                    setLoading(false);
+                    addToast('Please Select a Class', { appearance: 'error',autoDismiss: true });
+                }else if(!pattern.test(formData.guardian_phone_no)){
+                    setLoading(false);
+                    addToast('Please Enter a 10 digit phone no', { appearance: 'error',autoDismiss: true });
+                }else{
+                    await mutation.mutate(formData);
+                }
             }
         }
     }
@@ -111,25 +117,29 @@ export default function CreateStudent() {
     }
 
     async function handleChangeSchool(e){
-        if(params?.student_id){
-            setSingleStudent({...SingleStudent, [e.target.name]: e.target.value})
-                history.push(`/admin/student-management/select-school/${e.target.value}/${params?.class_id}/${params?.student_id}`)
-        }else{
-            setFormData({...formData, ['school_id']: e.target.value})
-            params.class_id ?
-                history.push(`/admin/student-management/select-school/${e.target.value}/${params?.class_id}`)
-                :
-                history.push(`/admin/student-management/select-school/${e.target.value}`)
-            }
+        if(e.target.value != 999){
+            if(params?.student_id){
+                setSingleStudent({...SingleStudent, [e.target.name]: e.target.value})
+                    history.push(`/admin/student-management/select-school/${e.target.value}/${params?.class_id}/${params?.student_id}`)
+            }else{
+                setFormData({...formData, ['school_id']: e.target.value})
+                params.class_id ?
+                    history.push(`/admin/student-management/select-school/${e.target.value}/${params?.class_id}`)
+                    :
+                    history.push(`/admin/student-management/select-school/${e.target.value}`)
+                }
+        }
     }
 
     async function handleChangeClass(e){
-        if(params?.student_id){
-            setSingleStudent({...SingleStudent, [e.target.name]: e.target.value})
-            history.push(`/admin/student-management/select-school/${params?.school_id}/${e.target.value}/${params?.student_id}`)
-        }else{
-            setFormData({...formData, ['class_id']: e.target.value})
-            history.push(`/admin/student-management/select-school/${params.school_id}/${e.target.value}`)
+        if(e.target.value != 999){
+            if(params?.student_id){
+                setSingleStudent({...SingleStudent, [e.target.name]: e.target.value})
+                history.push(`/admin/student-management/select-school/${params?.school_id}/${e.target.value}/${params?.student_id}`)
+            }else{
+                setFormData({...formData, ['class_id']: e.target.value})
+                history.push(`/admin/student-management/select-school/${params.school_id}/${e.target.value}`)
+            }
         }
     }
 
@@ -140,8 +150,8 @@ export default function CreateStudent() {
             <hr className="mt-1"/>
             <form onSubmit={saveStudent}>
                 <div className="form-group">
-                    <select className="form-control" aria-label="Default select example" name="school_id" onChange={handleChangeSchool} value={params.school_id}>
-                        <option>Select School</option>
+                    <select className="form-control" aria-label="Default select example" name="school_id" onChange={handleChangeSchool} value={params.school_id ? params.school_id : 999}>
+                        <option value="999">Select School</option>
                         {!schoolIsLoading && schools?.map(school => {
                         return (
                             <option value={school._id} key={school._id}>{school.name}</option>
@@ -150,8 +160,8 @@ export default function CreateStudent() {
                     </select>
                 </div>
                 <div className="form-group">
-                    <select className="form-control" aria-label="Default select example" name="class_id" onChange={handleChangeClass}>
-                        <option>Select Class</option>
+                    <select className="form-control" aria-label="Default select example" name="class_id" onChange={handleChangeClass} value={params.class_id ? params.class_id : 999}>
+                        <option value="999">Select Class</option>
                         {!classesIsLoading && classes?.map(item => {
                         return (
                             <option value={item._id} key={item._id}>{item.class_name}</option>

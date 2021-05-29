@@ -22,6 +22,12 @@ const StudentSchema = new mongoose.Schema({
     school_id:{
         type:String
     },
+    username:{
+        type: String
+    },
+    password:{
+        type: String
+    },
     status:{
         type: Boolean,
         default: false
