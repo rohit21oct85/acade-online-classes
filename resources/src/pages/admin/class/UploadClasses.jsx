@@ -101,6 +101,7 @@ export default function UploadClasses() {
                         })}
                     </select>
                 </div>
+                
                 <div className="form-group">
                     <input 
                         type="file" 
@@ -108,6 +109,9 @@ export default function UploadClasses() {
                         name="file"
                         onChange={handelChangeUpload}
                         placeholder="Upload .csv"/>
+                        <small id="passwordHelpInline" class="text-muted">
+                            Upload Classes File in .csv format only.
+                        </small>
                 </div>
             
                 <div className="form-group flex">

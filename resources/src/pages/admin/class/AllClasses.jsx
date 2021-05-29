@@ -1,4 +1,5 @@
 import useClassList from '../../../hooks/classes/useClassList';
+import useSchoolLists from '../../../hooks/schools/useSchoolLists';
 import Loading from '../../../components/Loading';
 import {useHistory} from 'react-router-dom'
 import {useMutation, useQueryClient} from 'react-query'
@@ -12,10 +13,6 @@ import {useParams} from 'react-router-dom'
 export default function AllClasses() {
     const params = useParams();
 
-    const {data, isLoading} = useClassList();
-    
-    const [schooloradmin, setSchoolOrAdmin] = useState("admin");
-
     const history = useHistory();
 
     const { addToast } = useToasts();
@@ -24,6 +21,10 @@ export default function AllClasses() {
 
     const queryClient = useQueryClient()
 
+    const {data, isLoading} = useClassList();
+    const {data:schools, schoolIsLoading} = useSchoolLists();
+    const school = schools?.filter( school => school?._id == params?.school_id)
+    
     const options = {
         headers: {
             'Content-Type': 'Application/json',
@@ -49,7 +50,7 @@ export default function AllClasses() {
     return (
         <>
         <p className="form-heading">
-            <span className="fa fa-plus-circle mr-2"></span>All Classes</p>
+            <span className="fa fa-plus-circle mr-2"></span>{(school && school[0]?.name) ? "School: "+school[0].name: "All Classes"}</p>
         <hr className="mt-1"/>
         {/* <Loading isLoading={isLoading} />  */}
         <div className="col-md-12 row no-gutter data-container-category">

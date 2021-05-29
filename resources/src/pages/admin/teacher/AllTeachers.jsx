@@ -1,4 +1,5 @@
 import useTeacherList from '../../../hooks/teachers/useTeacherList';
+import useSchoolLists from '../../../hooks/schools/useSchoolLists';
 import Loading from '../../../components/Loading';
 import {useHistory, useParams} from 'react-router-dom'
 import {useMutation, useQueryClient} from 'react-query'
@@ -10,8 +11,6 @@ import React, {useState, useContext} from 'react'
 
 export default function AllTeachers() {
 
-    const {data, isLoading} = useTeacherList();
-    
     const history = useHistory();
 
     const { addToast } = useToasts();
@@ -21,6 +20,10 @@ export default function AllTeachers() {
     const params = useParams();
     
     const queryClient = useQueryClient()
+
+    const {data, isLoading} = useTeacherList();
+    const {data:schools, schoolIsLoading} = useSchoolLists();
+    const school = schools?.filter( school => school?._id == params?.school_id)
 
     const options = {
         headers: {
@@ -46,7 +49,7 @@ export default function AllTeachers() {
     return (
         <>
         <p className="form-heading">
-            <span className="fa fa-plus-circle mr-2"></span>All Teachers</p>
+            <span className="fa fa-plus-circle mr-2"></span>{(school && school[0]?.name) ? "School: "+school[0].name: "All Teachers"}</p>
         <hr className="mt-1"/>
         <Loading isLoading={isLoading} /> 
         <div className="col-md-12 row no-gutter data-container-category">

@@ -144,6 +144,9 @@ export default function UploadStudents() {
                         name="file"
                         onChange={handelChangeUpload}
                         placeholder="Upload .csv"/>
+                        <small id="passwordHelpInline" class="text-muted">
+                            Upload Classes File in .csv format only.
+                        </small>
                 </div>
             
                 <div className="form-group flex">
