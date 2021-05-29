@@ -61,9 +61,8 @@ export default function UploadStudents() {
         onSuccess: () => {
             let school_id =  params?.school_id;
             let class_id =  params?.class_id;
-            queryClient.invalidateQueries(`students-${school_id}-${class_id}`)
+            queryClient.invalidateQueries(`students`)
             setLoading(false);
-            // history.push(`${path}`);
             addToast('Student added successfully', { appearance: 'success', autoDismiss: true });
         }
     });

@@ -1,5 +1,5 @@
 import React, {useState, useContext, useEffect} from 'react'
-import {useHistory, useParams, useLocation} from 'react-router-dom'
+import {useHistory} from 'react-router-dom'
 import {AuthContext} from '../../../context/AuthContext';
 import {useMutation, useQueryClient} from 'react-query'
 import axios from 'axios'
@@ -58,7 +58,6 @@ export default function UploadSubjects() {
         onSuccess: () => {
             queryClient.invalidateQueries('subjects')
             setLoading(false);
-            history.push(`${path}`);
             addToast('Subjects added successfully', { appearance: 'success', autoDismiss: true });
         }
     });

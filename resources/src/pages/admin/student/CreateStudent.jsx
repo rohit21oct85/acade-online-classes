@@ -100,7 +100,7 @@ export default function CreateStudent() {
                     addToast('Please Select a Class', { appearance: 'error',autoDismiss: true });
                 }else if(!pattern.test(formData.guardian_phone_no)){
                     setLoading(false);
-                    addToast('Please Enter a 10 digit phone no', { appearance: 'error',autoDismiss: true });
+                    addToast('Please Enter a valid 10 digit phone no', { appearance: 'error',autoDismiss: true });
                 }else{
                     const domainName = schools.filter(school =>  school._id == params.school_id)
                     formData.username = formData.first_name + formData.guardian_phone_no.substr(-4) + `@${domainName[0].domain}`;

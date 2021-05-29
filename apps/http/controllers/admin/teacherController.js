@@ -1,4 +1,6 @@
 const Teacher = require('../../../models/admin/Teacher');
+const csv = require('csv-parser')
+const fs = require('fs')
 
 const CreateTeacher = async (req, res) => {
     const body = req.body;
@@ -78,10 +80,71 @@ const DeleteTeacher = async (req, res) =>{
     }
 };
 
+
+const uploadTeacher = async(req, res) => {
+    const data = req.body;
+    // console.log(req.body.subject_id)
+    let FinalData = [];
+    try {
+        let results = [];
+        // console.log(req.file.path)
+        fs.createReadStream(req.file.path)
+            .pipe(csv())
+            .on('data', (data) => results.push(data))
+            .on('end', () => {
+                results.forEach(book => {
+                    FinalData.push({ 
+                        first_name: book.first_name, 
+                        last_name: book.last_name, 
+                        phone_no: book.phone_no, 
+                        school_id:req.body.school_id
+                    })
+                })
+                otherFunction(res, FinalData, function() {
+                    fs.unlinkSync(req.file.path)
+                })
+            });
+    } catch (error) {
+        return res.status(409).json({
+            message: "External Error occured",
+            errors: error.message
+        });
+    }
+}
+
+const otherFunction = async(res, FinalData, callback) => {
+    await Teacher.insertMany(FinalData).then(() => {
+        res.status(200).send('Teachers Inserted')
+        callback()
+    }).catch(error => {
+        return res.status(409).json({
+            message: "Error occured while Inserting Data",
+            errors: error.message
+        });
+    })
+}
+
+const getTeacherBySchoolId = async (req, res) => {
+    try{
+        const filter = {school_id: req.params.id}
+        const TeacherData = await Teacher.find(filter,{__v: 0});
+        return res.status(200).json({ 
+            data: TeacherData
+        });    
+    } catch(error){
+        res.status(409).json({
+            message: "Error occured",
+            errors: error.message
+        });
+    }
+}
+
 module.exports = {
     CreateTeacher,
     UpdateTeacher,
     ViewTeacher,
     ViewAllTeacher,
     DeleteTeacher,
+    getTeacherBySchoolId,
+    uploadTeacher,
 }

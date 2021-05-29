@@ -21,7 +21,13 @@ export default function TeacherList() {
                             <button className="btn btn-sm dark mr-2" onClick={e => { history.push(`/admin/dashboard`)}}>
                                 <span className="fa fa-dashboard"></span>
                             </button>
-                            <button className="btn btn-sm dark" onClick={e => { history.push(`/admin/teachers-management/upload`)}}>
+                            <button className="btn btn-sm dark" onClick={e => { 
+                                 if(params.page_type == undefined){
+                                    history.push(`/admin/teachers-management/upload`)
+                                }else if(params.page_type == "upload"){
+                                    history.push(`/admin/teachers-management`)
+                                }
+                                }}>
                                 <span className="fa fa-upload"></span>   Upload Teachers
                             </button>
                         </div>
