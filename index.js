@@ -102,11 +102,8 @@ app.get(`/api/v1/test`, (req, res) => {
 app.use("/api/v1/admin", Routes.adminAuth);
 app.use("/api/v1/role", Routes.roleRoutes);
 app.use("/api/v1/module", Routes.moduleRoutes);
-<<<<<<< HEAD
 app.use("/api/v1/permission", Routes.permissionRoutes);
-=======
 app.use("/api/v1/class", Routes.classRoutes);
->>>>>>> 6e4c0e2259bc1c8c29e4e27db9d0600d3f1be40c
 app.use("/api/v1/school", Routes.schoolRoutes);
 app.use("/api/v1/subject", Routes.subjectRoutes);
 app.use("/api/v1/student", Routes.studentRoutes);
