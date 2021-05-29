@@ -26,7 +26,8 @@ const StudentSchema = new mongoose.Schema({
         type: String
     },
     password:{
-        type: String
+        type: String,
+        default: "password"
     },
     status:{
         type: Boolean,

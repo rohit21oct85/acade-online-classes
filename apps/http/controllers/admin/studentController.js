@@ -1,4 +1,5 @@
 const Student = require('../../../models/admin/Student');
+const School = require('../../../models/admin/School');
 const csv = require('csv-parser')
 const fs = require('fs')
 
@@ -97,7 +98,9 @@ const getStudentBySchoolIdAndClassId = async (req, res) => {
 
 const uploadStudent = async(req, res) => {
     const data = req.body;
-    console.log(req.body, req.file, req.body.class_id)
+    const filter = {_id: req.body.school_id}
+    const sch = await School.findOne(filter,{__v: 0});
+    const domainName = sch.domain;
     let FinalData = [];
     try {
         let results = [];
@@ -113,7 +116,8 @@ const uploadStudent = async(req, res) => {
                         guardian_name:book.guardian_name,
                         guardian_phone_no: book.guardian_phone,
                         school_id: req.body.school_id,
-                        class_id:req.body.class_id
+                        class_id:req.body.class_id,
+                        username: book.first_name + book.guardian_phone.substr(-4) + "@" + domainName
                     })
                 })
                 otherFunction(res, FinalData, function() {

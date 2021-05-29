@@ -89,7 +89,6 @@ export default function CreateStudent() {
                 await updateMutation.mutate(SingleStudent);
         }else{
             formData.school_id = params.school_id ? params.school_id : ''
-            formData.username = formData.first_name + formData.guardian_phone_no.substr(-4) + "";
             if(formData.school_id == ''){
                 setLoading(false);
                 addToast('Please Select a School', { appearance: 'error',autoDismiss: true });
@@ -102,6 +101,9 @@ export default function CreateStudent() {
                     setLoading(false);
                     addToast('Please Enter a 10 digit phone no', { appearance: 'error',autoDismiss: true });
                 }else{
+                    const domainName = schools.filter(school =>  school._id == params.school_id)
+                    console.log(domainName[0].domain)
+                    formData.username = formData.first_name + formData.guardian_phone_no.substr(-4) + `@${domainName[0].domain}`;
                     await mutation.mutate(formData);
                 }
             }
