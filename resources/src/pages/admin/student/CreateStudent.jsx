@@ -94,6 +94,7 @@ export default function CreateStudent() {
                 addToast('Please Select a School', { appearance: 'error',autoDismiss: true });
             }else {
                 formData.class_id = params.class_id ? params.class_id : ''
+                formData.password = "password"
                 if(formData.class_id == ''){
                     setLoading(false);
                     addToast('Please Select a Class', { appearance: 'error',autoDismiss: true });
@@ -102,7 +103,6 @@ export default function CreateStudent() {
                     addToast('Please Enter a 10 digit phone no', { appearance: 'error',autoDismiss: true });
                 }else{
                     const domainName = schools.filter(school =>  school._id == params.school_id)
-                    console.log(domainName[0].domain)
                     formData.username = formData.first_name + formData.guardian_phone_no.substr(-4) + `@${domainName[0].domain}`;
                     await mutation.mutate(formData);
                 }

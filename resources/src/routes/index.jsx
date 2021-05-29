@@ -74,7 +74,7 @@ export const privateRoutes = [
         component: StudentList
     },
     {
-        path: '/admin/subject-management/:page_type?/:subject_id?',
+        path: '/admin/subject-management/:page_type?/:school_id?/:subject_id?',
         component: SubjectList
     },
     {

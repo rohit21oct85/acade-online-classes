@@ -4,6 +4,9 @@ const TeacherSchema = new mongoose.Schema({
     first_name: {
         type: String,
     },
+    school_id:{
+        type: String,
+    },
     last_name: {
         type: String,
     },

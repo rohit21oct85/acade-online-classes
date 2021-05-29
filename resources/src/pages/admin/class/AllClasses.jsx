@@ -35,8 +35,9 @@ export default function AllClasses() {
         return axios.delete(`${API_URL}v1/class/delete/${class_id}`, options)
     },{
         onSuccess: () => {
-            let school_id =  params?.school_id;
-            queryClient.invalidateQueries(`classes-${school_id}`)
+            // let school_id =  params?.school_id;
+            const key = params?.school_id ? `classes-${params.school_id}` : `classes`
+            queryClient.invalidateQueries(key)
             addToast('Class Deleted successfully', { appearance: 'success',autoDismiss: true });
         }
     });

@@ -1,6 +1,6 @@
 import useSubjectList from '../../../hooks/subjects/useSubjectList';
 import Loading from '../../../components/Loading';
-import {useHistory} from 'react-router-dom'
+import {useHistory, useParams} from 'react-router-dom'
 import {useMutation, useQueryClient} from 'react-query'
 import axios from 'axios'
 import API_URL from '../../../helper/APIHelper';
@@ -20,6 +20,8 @@ export default function AllSubjects() {
 
     const queryClient = useQueryClient()
 
+    const params = useParams();
+    
     const options = {
         headers: {
             'Content-Type': 'Application/json',
@@ -31,7 +33,8 @@ export default function AllSubjects() {
         return axios.delete(`${API_URL}v1/subject/delete/${subject_id}`, options)
     },{
         onSuccess: () => {
-            queryClient.invalidateQueries('subjects')
+            const key = params?.school_id ? `subjects-${params.school_id}` : `subjects`
+            queryClient.invalidateQueries(key)
             addToast('Subject Deleted successfully', { appearance: 'success',autoDismiss: true });
         }
     });
@@ -65,7 +68,11 @@ export default function AllSubjects() {
                                     <button className="btn bg-primary text-white btn-sm mr-2" 
                                         onClick={
                                             e => {
-                                                    history.push(`/admin/subject-management/modify-subject/${item?._id}`)
+                                                if(params.school_id){
+                                                    history.push(`/admin/subject-management/modify-subject/${params?.school_id}/${item?._id}`)
+                                                }else{
+                                                    history.push(`/admin/subject-management/modify-subject/${item.school_id}/${item?._id}`)
+                                                }
                                             }
                                         }>
                                         <span className="fa fa-edit"></span>

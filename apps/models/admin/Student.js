@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
 const StudentSchema = new mongoose.Schema({
     first_name: {
@@ -27,7 +28,6 @@ const StudentSchema = new mongoose.Schema({
     },
     password:{
         type: String,
-        default: "password"
     },
     status:{
         type: Boolean,
@@ -39,5 +39,22 @@ const StudentSchema = new mongoose.Schema({
     }
 });
 
+
+StudentSchema.pre('save', function(next) {
+    const student = this;
+    if (!student.isModified || !student.isNew) {
+        next();
+    } else {
+        bcrypt.hash(student.password, 10, function(err, hash) {
+            if (err) {
+                console.log('Error hashing password for student', student.first_name);
+                next(err);
+            } else {
+                student.password = hash;
+                next();
+            }
+        })
+    }
+});
 
 module.exports = mongoose.model('Student', StudentSchema);

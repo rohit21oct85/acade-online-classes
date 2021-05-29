@@ -8,7 +8,6 @@ import * as utils from '../../../utils/utils'
 import { useToasts } from 'react-toast-notifications';
 import useSingleClass from '../../../hooks/classes/useSingleClass';
 import useSchoolLists from '../../../hooks/schools/useSchoolLists';
-import useClassList from '../../../hooks/classes/useClassList';
 
 export default function CreateClass() {
     const history = useHistory();
@@ -27,7 +26,6 @@ export default function CreateClass() {
     const {data} = useSingleClass();
     
     const {data : schools, isLoading } = useSchoolLists();
-    const {data : classes, classIsLoading} = useClassList();
 
     const [SingleClass, setSingleClass] = useState({});
 
