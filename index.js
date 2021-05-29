@@ -1,7 +1,8 @@
 const dotenv = require('dotenv').config();
 const express = require("express");
-var bb = require('express-busboy');
+// var bb = require('express-busboy');
 const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
 const cors = require("cors");
 const path = require("path");
 const session = require('express-session')
@@ -25,21 +26,24 @@ var job = new cronJob({
 job.start();
 
 app.use(cors());
-const bb_options = {
-    upload: true,
-    path: '/storage/admin',
-    allowedPath: /./
-}
-bb_options.mimeTypeLimit = [
-    'text/x-markdown',
-    'application/javascript',
-    'image/jpeg',
-    'image/png'
-];
-bb_options.allowedPath = function(url) {
-    return url == '/storage/admin';
-}
-bb.extend(app, bb_options);
+app.use(bodyParser.json({limit: '500mb'}));
+app.use(bodyParser.urlencoded({ extended: true, limit: '500mb' }));
+
+// const bb_options = {
+//     upload: true,
+//     path: '/storage/admin',
+//     allowedPath: /./
+// }
+// bb_options.mimeTypeLimit = [
+//     'text/x-markdown',
+//     'application/javascript',
+//     'image/jpeg',
+//     'image/png'
+// ];
+// bb_options.allowedPath = function(url) {
+//     return url == '/storage/admin';
+// }
+// bb.extend(app, bb_options);
 
 const PORT = process.env.PORT || 8080;
 
@@ -98,8 +102,17 @@ app.get(`/api/v1/test`, (req, res) => {
 app.use("/api/v1/admin", Routes.adminAuth);
 app.use("/api/v1/role", Routes.roleRoutes);
 app.use("/api/v1/module", Routes.moduleRoutes);
+<<<<<<< HEAD
 app.use("/api/v1/permission", Routes.permissionRoutes);
+=======
+app.use("/api/v1/class", Routes.classRoutes);
+>>>>>>> 6e4c0e2259bc1c8c29e4e27db9d0600d3f1be40c
 app.use("/api/v1/school", Routes.schoolRoutes);
+app.use("/api/v1/subject", Routes.subjectRoutes);
+app.use("/api/v1/student", Routes.studentRoutes);
+app.use("/api/v1/teacher", Routes.teacherRoutes);
+
+
 app.use("/api/v1/school-admin", Routes.schoolAdminRoutes);
 app.use("/api/v1/school-admin-auth", Routes.schoolAdminAuth);
 

@@ -13,6 +13,10 @@ import StudentLogin from '../pages/school/student_auth/StudentLogin'
 import AppModule from '../pages/admin/appModule/AppModule.jsx'
 import AppRole from '../pages/admin/appRole/AppRole.jsx'
 import AppPermission from '../pages/admin/appPermission/AppPermission.jsx'
+import ClassList from '../pages/admin/class/ClassList.jsx'
+import SubjectList from '../pages/admin/subject/SubjectList.jsx'
+import StudentList from '../pages/admin/student/StudentList.jsx'
+import TeacherList from '../pages/admin/teacher/TeacherList'
 
 export const webRoutes =  [
     { 
@@ -58,8 +62,28 @@ export const privateRoutes = [
         component: SchoolList
     },
     {
+        path: '/admin/class-management/:page_type?/:school_id?/:class_id?',
+        component: ClassList
+    },
+    {
+        path: '/admin/student-management/:page_type?/:school_id?/:class_id?/:student_id?',
+        component: StudentList
+    },
+    {
+        path: '/admin/students-management/:page_type?/:student_id?',
+        component: StudentList
+    },
+    {
+        path: '/admin/subject-management/:page_type?/:subject_id?',
+        component: SubjectList
+    },
+    {
         path: '/admin/auth-management/:page_type?/:school_id?/:school_admin_email?/:school_admin_id?',
         component: SchoolAuthList
+    },
+    {
+        path: '/admin/teachers-management/:page_type?/:teacher_id?',
+        component: TeacherList
     }
 
 ];
