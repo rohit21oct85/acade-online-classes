@@ -123,6 +123,7 @@ export default function Login() {
                     <button 
                         className="btn btn-md btn-block btn-success dark w-100" 
                         type="submit"
+                        disabled={loading}
                     >
                         {loading ? (
                             <>

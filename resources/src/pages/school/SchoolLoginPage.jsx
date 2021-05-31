@@ -1,23 +1,23 @@
 import React , {useState, useEffect,useRef, useContext} from 'react';
-import { NavLink, useHistory, useLocation } from 'react-router-dom'
+import { NavLink, useHistory, useLocation, useParams } from 'react-router-dom'
 
-
-import {AuthContext} from '../../../context/AuthContext';
-import './StudentLogin.css';
+import {AuthContext} from '../../context/AuthContext';
+import './admin_login.css';
 import axios from 'axios'
-import API_URL from '../../../helper/APIHelper.jsx';
+import API_URL from '../../helper/APIHelper.jsx';
 import { useToasts } from 'react-toast-notifications';
 
-export default function StudentLogin() {
+export default function SchoolLoginPage() {
     const history = useHistory();
     const location = useLocation();
+    const params = useParams();
     const { addToast } = useToasts();
     const emailRef = useRef();
     const passwordRef = useRef();
     const [error, setError] = useState(null);
     const {dispatch,state } = useContext(AuthContext);
     const [loading, setLoading] = useState(false);
-
+    
     const submitForm = async (e) => {
         e.preventDefault();
         const email = emailRef.current.value;
@@ -32,18 +32,21 @@ export default function StudentLogin() {
         }else{
             setLoading(true);
             const formData = {email: emailRef.current.value , password: passwordRef.current.value};
-            const response = await axios.post(`${API_URL}v1/admin/login`, formData);
+            const response = await axios.post(`${API_URL}v1/school-admin-auth/login`, formData);
             // console.log(response)
-            if(response.response && response.response.status){
-                addToast('Please enter valid email or password', { appearance: 'error',autoDismiss: true });
+            if(response?.status === 203){
+                addToast(`${response?.data?.message}`, { appearance: 'error',autoDismiss: true });
                 setLoading(false);
             }else{
                 let access_token = response.data.accessToken
                 let refresh_token = response.data.refreshToken
-                let fullname = response.data.admin.fullname
-                let email = response.data.admin.email
-                let role = response.data.admin.role
-                let user_type = 'student'
+                let fullname = response.data.admin.admin_name
+                let email = response.data.admin.admin_email
+                let role = 1
+                let user_type = 'school-admin'
+                let school_id = response.data.admin._id
+                let school_slug = response.data.admin.slug
+                let school_logo = response.data.admin.logo
                 let created_at = response.data.admin.created_at
                 
                 let isLoggedIn = true;
@@ -53,6 +56,9 @@ export default function StudentLogin() {
                 localStorage.setItem('email', email);
                 localStorage.setItem('role', role);
                 localStorage.setItem('user_type', user_type);
+                localStorage.setItem('school_id', school_id);
+                localStorage.setItem('school_slug', school_slug);
+                localStorage.setItem('school_logo', school_logo);
                 localStorage.setItem('created_at', created_at);
                 localStorage.setItem('isLoggedIn', isLoggedIn);
                 const payloadData = {
@@ -61,22 +67,17 @@ export default function StudentLogin() {
                     email,
                     role,
                     user_type,
+                    school_id,
+                    school_slug,
+                    school_logo,
                     created_at,
                     access_token,
                     refresh_token
                 }
                 if(isLoggedIn){
                     dispatch({type: 'LOGIN', payload: payloadData});
-
-                    if(role === "1"){
-                        history.push(`/school/admin/dashboard`)
-                    }
-                    else if(role === "2"){
-                        history.push('/school/teachers/dashboard')
-                    }   
-                    else if(role === "3"){
-                        history.push('/school/students/dashboard')
-                    }   
+                    history.push(`/school/${school_slug}/admin/dashboard`)
+                    
                 }
             }
             
@@ -86,32 +87,29 @@ export default function StudentLogin() {
     useEffect(checkLoggedInUser,[state]);
     async function checkLoggedInUser(){
         if(state?.isLoggedIn === true){
-            if(state?.role === "3"){
-                history.push('/school/students/dashboard')
-            }   
+            if(state?.role === "1"){
+                history.push(`/school/admin/dashboard`)
+            }  
         }else{
-            if(location?.pathname == '/school/student/login'){
-                history.push('/school/student/login');
+            if(location?.pathname === '/school/admin/login'){
+                history.push('/school/admin/login');
             }
         }
     }
 
     return (
-        <div className="container-fluid p-0 m-0 text-center StudentLoginBg" style={{
+        <div className="container-fluid p-0 m-0 text-center SchoolAdminLoginBg" style={{
             background: `url('/bg.jpg')`
         }}>
-            <div className="col-md-4" style={{ 
-                position: 'absolute'
-            }}>
+            <div className="col-md-12">
                 <NavLink to="/">
                     <img className="logo" alt="company Logo" src="/logo.png"/>
                 </NavLink>
             </div>
             <div className="row no-gutter">
-                <div className="col-md-3 StudentLoginDiv">
-                    <h4>School Student Login </h4>    
+                <div className="col-md-3 schoolAdminLoginDiv">
+                    <h4>School {params?.user_type} Login </h4>    
                     <hr />
-                
                 <form autoComplete="Off" onSubmit={submitForm}>
                     <div className="form-group text-left">
                         <label> <span className="fa fa-send mr-2"></span> Email address</label>
@@ -143,7 +141,6 @@ export default function StudentLogin() {
                             </>
                         )}
                     </button>
-                    <hr />
                     </form>
                 </div>
             </div>

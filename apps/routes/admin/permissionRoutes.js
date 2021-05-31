@@ -8,6 +8,7 @@ router
     .post('/create',checkAuth,adminAuth, Auth.CreatePermission)
     .patch('/update/:id',checkAuth,adminAuth, Auth.UpdatePermission)
     .get('/view/:id',checkAuth,adminAuth, Auth.ViewPermission)
+    .get('/module/:school_slug?/:role_slug?',checkAuth, Auth.OtherModules)
     .get('/view-all/:school_slug?/:role_slug?',checkAuth,adminAuth, Auth.ViewAllPermission)
     .post('/delete',checkAuth,adminAuth, Auth.DeletePermission);
 module.exports = router;

@@ -39,9 +39,12 @@ export default function CreateSchool() {
     const saveSchool = async (e) => {
         e.preventDefault();
         formData['name'] = params?.school_id ? SingleSchool?.name : formData?.name;
+        formData['admin_name'] = params?.school_id ? SingleSchool?.admin_name : formData?.admin_name;
+        formData['admin_password'] = params?.school_id ? SingleSchool?.admin_password : formData?.admin_password;
         formData['slug'] = utils.MakeSlug(params?.school_id ? SingleSchool?.name : formData?.name);
+        // console.log(formData); return;
         if(params?.school_id){
-                await updateMutation.mutate(SingleSchool);
+            await updateMutation.mutate(SingleSchool);
         }else{
             if(formData?.name == ''){
                 addToast('Please Enter school name', { appearance: 'error',autoDismiss: true });        
@@ -64,8 +67,11 @@ export default function CreateSchool() {
                 await createMutation.mutate(formData);
             }
         }
+        setFormData({});
+        setSingleSchool({});
       }
       async function handleDelete(e){
+            e.preventDefault();
             if(params?.school_id){
                 formData['school_id'] = params?.school_id
                 await deleteMutation.mutate(formData);
@@ -144,6 +150,16 @@ export default function CreateSchool() {
                         autoComplete="no-password"
                         placeholder="School Name"/>
                 </div>
+                <div className="form-group">
+                    <input 
+                        type="text" 
+                        className="form-control" 
+                        name="domain"
+                        value={params?.school_id ? SingleSchool?.domain : formData?.domain}
+                        onChange={handleChange}
+                        autoComplete="no-password"
+                        placeholder="Domain Name"/>
+                </div>
                 
                 <div className="form-group">
                     <input 
@@ -186,6 +202,16 @@ export default function CreateSchool() {
                     <input 
                         type="text" 
                         className="form-control" 
+                        name="admin_name"
+                        value={params?.school_id ? SingleSchool?.admin_name : formData?.admin_name}
+                        onChange={handleChange}
+                        autoComplete="no-password"
+                        placeholder="admin_name"/>
+                </div>
+                <div className="form-group">
+                    <input 
+                        type="text" 
+                        className="form-control" 
                         name="admin_email"
                         value={params?.school_id ? SingleSchool?.admin_email : formData?.admin_email}
                         onChange={handleChange}
@@ -204,6 +230,15 @@ export default function CreateSchool() {
                         onBlur={handleOnlyNumbers}
                         autoComplete="no-password"
                         placeholder="admin_mobile"/>
+                </div>
+                <div className="form-group">
+                    <input 
+                        type="text" 
+                        className="form-control" 
+                        name="admin_password"
+                        onChange={handleChange}
+                        autoComplete="no-password"
+                        placeholder="admin_password"/>
                 </div>
 
 
@@ -226,7 +261,9 @@ export default function CreateSchool() {
                     </button>
                     {params?.school_id && (
                         <>
-                        <button className="btn btn-sm bg-danger br-5 text-white ml-2"
+                        <button 
+                        type="button"
+                        className="btn btn-sm bg-danger br-5 text-white ml-2"
                         onClick={e => {
                             e.preventDefault();
                             setFormData({});
@@ -237,7 +274,9 @@ export default function CreateSchool() {
                             Cancel
                         </button>
                         
-                        <button className="btn btn-sm bg-warning br-5 text-white ml-2"
+                        <button 
+                        type="button"
+                        className="btn btn-sm bg-warning br-5 text-white ml-2"
                         onClick={handleDelete}>
                             {deleteMutation.isLoading ?
                             <><span className="fa fa-spinner mr-2"></span></>

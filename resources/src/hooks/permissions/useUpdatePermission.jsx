@@ -25,9 +25,9 @@ export default function useUpdatePermission(formData) {
             return axios.patch(`${API_URL}v1/permission/update/${id}`, formData, options)
         },{
         onSuccess: () => {
-            queryClient.invalidateQueries(['permissions'])
+            queryClient.invalidateQueries('permissions')
             addToast('Permissions Updated successfully', { appearance: 'success',autoDismiss: true });
-            history.push('/admin/app-permissions');
+            history.push(`${path}`);
         }
         });
       return status;

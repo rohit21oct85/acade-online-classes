@@ -5,49 +5,41 @@ import { Nav} from 'react-bootstrap'
 import {AuthContext} from '../context/AuthContext';
 import useAppModule from '../hooks/modules/useAppModule';
 import Loading from './Loading';
+import useOtherModule from '../hooks/modules/useOtherModule';
 
 export default function Navigation() {
     const history = useHistory();
     const location = useLocation();
     const params = useParams();
+
     const { state, dispatch } = useContext(AuthContext);
     const {data, isLoading} = useAppModule();
-    const [modules, setModules] = useState([]);
-    const [profileImage, setProfileImage] = useState("");
-    const [dashboardUrl, setDashboardUrl] = useState("");
-    useEffect(setAllModules,[state,data,params?.school_slug]);
-    let dashboard_url = '';
-    let profile = '';
-    async function setAllModules(){
-        if(state?.isLoggedIn === "true"){
-            if(state?.user_type === 'master_admin'){
-                profile = '/profile.jpg'
-                dashboard_url = '/admin/dashboard'
-            }else if(state?.user_type === 'school_admin'){
-                profile = `https://drive.google.com/uc?export=view&id=${state?.school_logo}`;
-                dashboard_url = `/school/${state?.school_slug}/admin/dashboard`;
-            }
-            setProfileImage(profile)
-            setDashboardUrl(dashboard_url)
-            setModules(data);
+    const {data:modules, isLoading: moduleLoading} = useOtherModule()
+    const [routes, setRoutes] = useState([]);
+    useEffect(setAppRoutes, [state,data,modules])
+    async function setAppRoutes(){
+        if(state?.user_type == 'master_admin'){
+            setRoutes(data);
+        }else if(state?.user_type == 'school-admin'){
+            setRoutes(modules);
         }
     }
+
     function logout(){
         dispatch({type: 'LOGOUT'})
         if(state?.user_type === 'master_admin'){
             history.push('/')
         }
-        else if(state?.user_type === 'school_admin'){
+        else if(state?.user_type === 'school-admin'){
             history.push('/school/admin/login')
         }
-        else if(state?.user_type === 'school_teacher'){
+        else if(state?.user_type === 'school-teacher'){
             history.push('/school/teacher/login')
         }
-        else if(state?.user_type === 'school_student'){
+        else if(state?.user_type === 'school-student'){
             history.push('/school/student/login')
         }
     }
-    
 return (
 <>
 
@@ -59,7 +51,13 @@ return (
     <div className="user_area">
         <div className="col-md-12 user_icon">
             <div className="col-md-12 p-0">
-                <img src={`${profileImage}`} className="profileImage"/>
+                {state?.user_type == "master_admin" && 
+                <img src={`/profile.jpg`} className="profileImage"/>
+                }
+                {state?.user_type !== "master_admin" && 
+                <img src={`https://drive.google.com/uc?export=view&id=${state?.school_logo}`} className="profileImage"/>
+                }
+
             </div>
         </div>
 
@@ -86,7 +84,15 @@ return (
         <ul>
             <li>
                 <Nav className="ml-auto">
-                    <NavLink to={dashboardUrl} > <span className="fa fa-dashboard"></span> Dashboard</NavLink>
+                    {state?.user_type == 'master_admin' && 
+                    <NavLink to={`/admin/dashboard`} > <span className="fa fa-dashboard"></span> Dashboard</NavLink>
+                    }
+                    
+                    {state?.user_type !== 'master_admin' && 
+                    <NavLink to={`/school/${state?.school_slug}/admin/dashboard`} > <span className="fa fa-dashboard"></span> Dashboard</NavLink>
+                    }
+
+
                 </Nav>
             </li>
             {state?.user_type === 'master_admin' && (
@@ -108,13 +114,18 @@ return (
                     </Nav>
                 </li>
 
-
+                <li>
+                    <Nav className="ml-auto">
+                        <NavLink to="/admin/school-management" > <span className="bi bi-building text-warning"></span> School Management </NavLink>
+                    </Nav>
+                </li>
+                
                 </>
             )}
 
-            {isLoading && <Loading isLoading={isLoading}/>}
+            {state?.user_type == 'master_admin' && isLoading && <Loading isLoading={isLoading}/>}
 
-            {data?.map( module => {
+            {state?.user_type == 'master_admin' && routes?.map( module => {
                 return (
                 <li key={module?._id} id={module?.module_slug}>
                     <Nav className="ml-auto">
@@ -123,6 +134,21 @@ return (
                 </li>
                 );
             })}
+
+            {state?.user_type == 'school-admin' && moduleLoading && <Loading isLoading={moduleLoading}/>}
+
+            {routes?.map( module => {
+                return (
+                <li key={module?._id} id={module?.module_slug}>
+                    <Nav className="ml-auto">
+                        <NavLink to={`/school/${state?.school_slug}/admin/${module?.module_slug}`}> <span className={`bi ${module?.module_icon}`}></span> {module?.module_slug?.replaceAll('-',' ')} </NavLink>
+                    </Nav>
+                </li>
+                );
+            })}
+
+
+
         </ul>
     </div>
             

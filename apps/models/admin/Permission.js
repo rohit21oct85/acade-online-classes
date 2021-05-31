@@ -10,7 +10,7 @@ const PermissionSchema = new mongoose.Schema({
             required: true
       },
       role_id:{
-            type: Number,
+            type: String,
             required: true,
       },
       role_slug: {
@@ -18,12 +18,15 @@ const PermissionSchema = new mongoose.Schema({
             required: true,
       },
       module_id:{
-            type: Number,
+            type: String,
             required: true,
       },
       module_slug: {
             type: String,
             required: true
+      },
+      module_icon: {
+            type: String,
       },
       status:{
             type: Boolean,

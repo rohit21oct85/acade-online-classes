@@ -65,7 +65,7 @@ const ViewAllSchool = async (req, res) => {
 const DeleteSchool = async (req, res) =>{
     const id = req.body.school_id;
     try {
-        await School.deleteOne({_id: id}).then( response => {
+        await School.findByIdAndDelete({_id: id}).then( response => {
             return res.status(201).json({
                 message: "School, deleted successfully"
               })
@@ -76,8 +76,18 @@ const DeleteSchool = async (req, res) =>{
         });
     }
 };
-
+const addFields = async (req, res) => {
+    await Book.updateMany({},
+    {
+        "bartlyby_imported": 0
+    });
+    res.status(201).json({
+        error: false,
+        message: "field cleared"
+    });
+}
 module.exports = {
+    addFields,
     CreateSchool,
     UpdateSchool,
     ViewSchool,

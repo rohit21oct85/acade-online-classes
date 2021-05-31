@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 
 module.exports = (req, res, next) => {
-    const accessTokenSecret = 'SHIVAMPARTS2021';
+    const accessTokenSecret = 'ACADEONLINE2021';
     const token = req.headers.authorization?req.headers.authorization.split(" ")[1]:null;
     if (!token) {
         res.status(401).json({

@@ -15,32 +15,28 @@ import useAppModule from '../../../hooks/modules/useAppModule';
 export default function CreateAppPermission() {
     const history = useHistory();
     const params  = useParams();
-    const location = useLocation();
     
-    const {state} = useContext(AuthContext);
-
-    const [RoleName, setRoleName] = useState("");
     const [loading, setLoading] = useState(false);
     const {data} = useSinglePermission();
     const {data:permissions} = useAppPermissions();
     const {data:schools} = useSchoolLists()
     const {data:roles} = useAppRoles();
     const {data:modules} = useAppModule();
-    const [appModules, setAppModules] = useState([]);
     const [singlePermission, setSinglePermission] = useState();
     
-    
+    const [checkedState, setCheckedState] = useState(
+        new Array(modules?.length).fill({checked: false})
+    );
     
     const [formData, setFormData] = useState({});
-    const AppModules = [];
-    useEffect(setModule, [modules]);
-    function setModule(){
-        modules?.map(module => {
-            module.isChecked = false;
-        });
-    }
+    const [AppModules, setAppModules] = useState([]);
+    
     function clearFields(){
         setSinglePermission({})
+        Array.from(document.querySelectorAll('.checkbox')).map(checkbox => {
+            checkbox.checked = false
+        })
+        
     }
     
     const createMutation = useCreatePermission(formData);
@@ -50,11 +46,36 @@ export default function CreateAppPermission() {
     const saveAppPermission = async (e) => {
         e.preventDefault();
         setLoading(true);
-        console.log(AppModules); return;
         
         if(params?.permission_id){
             await updateMutation.mutate(formData);
         }else{
+            let ArrayData = []
+            Array.from(document.querySelectorAll('.checkbox')).map(checkbox => {
+                if(checkbox.checked === true){
+                    let data = checkbox.value;
+                    let module_id = data.split('_')[0]
+                    let module_slug = data.split('_')[1]
+                    let module_icon = data.split('_')[2]
+                    ArrayData.push({role_id: params?.role_id,
+                        role_slug: params?.role_slug,
+                        school_id: params?.school_id,
+                        school_slug: params?.school_slug,
+                        module_id: module_id,
+                        module_slug: module_slug,
+                        module_icon: module_icon
+                    })
+                }
+            })
+            console.log(ArrayData)
+            
+            
+            formData['school_id'] = params?.school_id;
+            formData['role_id'] = params?.role_id;
+            formData['modules'] = ArrayData;
+
+            // console.log(formData); return; 
+
             await createMutation.mutate(formData);
         }
         clearFields();
@@ -64,22 +85,19 @@ export default function CreateAppPermission() {
         setFormData({...formData, permission_id: params?.permission_id});
         await deleteMutation.mutate(formData);
     }
-
-    async function handleCheckBox(e){
+    
+    function handleCheckBox(e){
         e.preventDefault();
         let data = e.target.value;
         let module_id = data.split('_')[0]
-        let module_slug = data.split('_')[1]
-        document.getElementById(`${module_id}`).style.checked = true;
-        AppModules.push({
-            role_id: params?.role_id,
-            role_slug: params?.role_slug,
-            school_id: params?.school_id,
-            school_slug: params?.school_slug,
-            module_id: module_id,
-            module_slug: module_slug,
+        Array.from(document.querySelectorAll('.checkbox')).map(checkbox => {
+            if(checkbox?._id === module_id){
+                checkbox.checked = true
+            }    
         })
+        
     }
+
     return (
         <>
             <p className="form-heading">
@@ -149,18 +167,22 @@ export default function CreateAppPermission() {
                         maxHeight: '280px',
                         overflow: 'scroll'
                     }}>
-                        {modules?.map(module => {
+                        {modules?.map((module, index) => {
+
                             return(
                                 <div className="card pl-2 pt-0 pb-0 mb-2" key={module?._id}>
-                                    <label className="pb-0 mb-0">
+                                    <label className="pb-0 mb-0"
+                                    htmlFor={`custom-checkbox-${index}`}>
                                     <input 
-                                        className="mr-2"
+                                        className="mr-2 checkbox"
                                         type="checkbox" 
+                                        id={`custom-checkbox-${index}`}
                                         name={`module-${module?._id}`}
-                                        value={`${module?._id}_${module?.module_slug}`}
+                                        value={`${module?._id}_${module?.module_slug}_${module?.module_icon}`}
                                         onChange={handleCheckBox}
+                                        checked={module?.checked?.toString()}
                                     />    
-                                    {module?.module_name}
+                                    <span className={`bi ${module?.module_icon} mr-2`}></span>{module?.module_name}
                                     </label>
                                 </div>
                             );
@@ -196,7 +218,6 @@ export default function CreateAppPermission() {
                         onClick={e => {
                             e.preventDefault();
                             clearFields();
-                            setSinglePermission({})
                             history.push(`/admin/app-permissions`)
                         }}>
                             <span className="fa fa-times mr-2"></span>

@@ -1,5 +1,5 @@
 import React from 'react'
-import {useHistory} from 'react-router-dom'
+import {useHistory, NavLink, Link} from 'react-router-dom'
 import useSchoolLists from '../../../hooks/schools/useSchoolLists';
 import Loading from '../../../components/Loading';
 
@@ -36,6 +36,16 @@ export default function AllSchools() {
                                           </div>
                                           <div className="name-main">
                                                 {school?.name}
+                                          </div>
+                                    </div>
+                                    <div className="admin-name"> 
+                                          <div className="name-label">
+                                                School Domain: 
+                                          </div>
+                                          <div className="name-main">
+                                                <a href={`http://www.${school?.domain}.com`} target="__blank">
+                                                {school?.domain}
+                                                </a>   
                                           </div>
                                     </div>
                                     <div className="admin-name"> 

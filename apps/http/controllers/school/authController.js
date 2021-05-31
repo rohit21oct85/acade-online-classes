@@ -1,4 +1,3 @@
-const SchoolAdmin = require('../../../models/school/SchoolAdmin.js');
 const School = require('../../../models/admin/School.js');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
@@ -8,9 +7,9 @@ let refreshTokens = [];
 const Login = async (req, res) => {
     try {
          
-        await SchoolAdmin.findOne({email: req.body.email},{__v: 0}).then( admin => {
+        await School.findOne({admin_email: req.body.email},{__v: 0}).then( admin => {
             if(admin){
-                bcrypt.compare(req.body.password, admin.password, async function(err,response){
+                bcrypt.compare(req.body.password, admin.admin_password, async function(err,response){
                     if(err){
                         res.status(203).json({ 
                             status: 203,
@@ -21,13 +20,11 @@ const Login = async (req, res) => {
                         if(response){
                             const accessToken = generateAccessToken(admin);
                             const refreshToken = generateRefreshToken(admin);
-                            let school = await getSchoolData(admin?.school_id);
                             refreshTokens.push(refreshToken);
                             res.status(200).json({ 
                                 accessToken, 
                                 refreshToken,
                                 admin,
-                                school
                             });
                         } else {
                             res.status(203).json({ 
@@ -58,18 +55,15 @@ const Login = async (req, res) => {
         });  
     }
 }
-async function getSchoolData(school_id){
-      return await School.findOne({_id: school_id});
-}
 const generateAccessToken = (user) => {
-    const accessTokenSecret = 'ADC-SA2021';
+    const accessTokenSecret = 'ACADEONLINE2021';
     return jwt.sign({ 
         id: user._id,  
         role: user.role 
     }, accessTokenSecret, {expiresIn: '1d'})
 }
 const generateRefreshToken = (user) => {
-    const refreshTokenSecret = 'ADC-SA2021';
+    const refreshTokenSecret = 'ACADEONLINE2021';
     return jwt.sign({
         id: user._id,   
         role: user.role
@@ -78,7 +72,7 @@ const generateRefreshToken = (user) => {
 
 const RefreshToken = async (req,res) => {
     
-    const refreshTokenSecret = 'ADC-SA2021';
+    const refreshTokenSecret = 'ACADEONLINE2021';
     const refreshToken = req.body.token;
     if(refreshToken === null) return res.status(401).json({message: 'Invalid refresh token'});
     if(!refreshTokens.includes(refreshToken)) return res.status(401).json({message: 'Invalid refresh token'});
@@ -92,7 +86,7 @@ const RefreshToken = async (req,res) => {
 }
 
 const Logout = async (req, res) => {
-    const accessTokenSecret = 'ADC-SA2021';
+    const accessTokenSecret = 'ACADEONLINE2021';
     const authorizationHeader = req.headers.authorization;
     if (authorizationHeader){
         const accessToken = req.headers.authorization.split(' ')[1];  

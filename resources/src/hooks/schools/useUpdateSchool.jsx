@@ -27,7 +27,7 @@ export default function useUpdateSchool(formData) {
         onSuccess: () => {
             queryClient.invalidateQueries('schools')
             addToast('Category Updated successfully', { appearance: 'success',autoDismiss: true });
-            history.push('/admin/school-management');
+            history.push(`${path}`);
         }
         });
       return status;

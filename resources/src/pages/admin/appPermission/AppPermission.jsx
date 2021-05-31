@@ -1,5 +1,5 @@
 import React from 'react'
-import {useHistory} from 'react-router-dom'
+import {useHistory, useParams} from 'react-router-dom'
 import CreateAppPermission from './CreateAppPermission';
 import AppPermissionList from './AppPermissionList.jsx';
 
@@ -7,6 +7,7 @@ import './style.css'
 
 export default function AppPermission() {
     const history = useHistory();
+
      return (
         <div className="col-lg-10 col-md-10 main_dash_area">
             <div className="main-area-all">
