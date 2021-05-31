@@ -63,15 +63,11 @@ export const privateRoutes = [
         component: SubjectList
     },
     {
-<<<<<<< HEAD
-        path: '/admin/teachers-management/:page_type?/:teacher_id?',
-=======
         path: '/admin/auth-management/:page_type?/:school_id?/:school_admin_email?/:school_admin_id?',
         component: SchoolAuthList
     },
     {
         path: '/admin/teachers-management/:page_type?/:school_id?/:teacher_id?',
->>>>>>> b774c76733d092945a792628e70a16acb54bedf8
         component: TeacherList
     }
 
