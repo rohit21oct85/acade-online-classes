@@ -17,6 +17,7 @@ import ClassList from '../pages/admin/class/ClassList.jsx'
 import SubjectList from '../pages/admin/subject/SubjectList.jsx'
 import StudentList from '../pages/admin/student/StudentList.jsx'
 import TeacherList from '../pages/admin/teacher/TeacherList'
+import TeacherStudentList from '../pages/admin/mappingTeacherStudent/TeacherStudentList'
 
 export const webRoutes =  [
     { 
@@ -84,6 +85,10 @@ export const privateRoutes = [
     {
         path: '/admin/teachers-management/:page_type?/:school_id?/:teacher_id?',
         component: TeacherList
+    },
+    {
+        path: '/admin/mapping-teacher-subjects/:page_type?/:school_id?/:teacher_id?',
+        component: TeacherStudentList
     }
 
 ];
