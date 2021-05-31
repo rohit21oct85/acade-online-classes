@@ -8,7 +8,6 @@ import * as utils from '../../../utils/utils'
 import { useToasts } from 'react-toast-notifications';
 import useSingleClass from '../../../hooks/classes/useSingleClass';
 import useSchoolLists from '../../../hooks/schools/useSchoolLists';
-import useClassList from '../../../hooks/classes/useClassList';
 
 export default function CreateClass() {
     const history = useHistory();
@@ -27,10 +26,9 @@ export default function CreateClass() {
     const {data} = useSingleClass();
     
     const {data : schools, isLoading } = useSchoolLists();
-    const {data : classes, classIsLoading} = useClassList();
 
     const [SingleClass, setSingleClass] = useState({});
-    const [school, setSchool] = useState();
+
     const [teacher, setTeacher] = useState();
 
     const initialData = {
@@ -89,13 +87,14 @@ export default function CreateClass() {
         if(params?.class_id){
                 await updateMutation.mutate(SingleClass);
         }else{
+            formData.school_id = params.school_id ? params.school_id : '' 
             if(formData.school_id == ''){
                 setLoading(false);
                 addToast('Please Select a School', { appearance: 'error',autoDismiss: true });
             }else{
                 await mutation.mutate(formData);
             }
-        }
+        }        
     }
 
     async function handleChange(e){
@@ -107,12 +106,14 @@ export default function CreateClass() {
     }
     
     async function handleChangeSchool(e){
-        if(params?.class_id){
-            setSingleClass({...SingleClass, [e.target.name]: e.target.value})
-            history.push(`/admin/class-management/select-school/${e.target.value}/${params.class_id}`)
-        }else{
-            setFormData({...formData, ['school_id']: e.target.value})
-            history.push(`/admin/class-management/select-school/${e.target.value}`)
+        if(e.target.value != 999){
+            if(params?.class_id){
+                setSingleClass({...SingleClass, [e.target.name]: e.target.value})
+                history.push(`/admin/class-management/select-school/${e.target.value}/${params.class_id}`)
+            }else{
+                setFormData({...formData, ['school_id']: e.target.value})
+                history.push(`/admin/class-management/select-school/${e.target.value}`)
+            }
         }
     }
 
@@ -123,8 +124,8 @@ export default function CreateClass() {
             <hr className="mt-1"/>
             <form onSubmit={saveClass}>
                 <div className="form-group">
-                    <select className="form-control" aria-label="Default select example" name="school_id" onChange={handleChangeSchool} value={params.school_id}>
-                        <option>Select School</option>
+                    <select className="form-control" aria-label="Default select example" name="school_id" onChange={handleChangeSchool} value={params.school_id ? params.school_id : 999}>
+                        <option value="999">Select School</option>
                         {!isLoading && schools?.map(school => {
                         return (
                             <option value={school._id} key={school._id}>{school.name}</option>

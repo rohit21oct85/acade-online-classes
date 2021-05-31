@@ -4,6 +4,9 @@ const SubjectSchema = new mongoose.Schema({
     subject_name: {
         type: String,
     },
+    school_id:{
+        type: String,
+    },
     subject_slug:{
         type: String
     },

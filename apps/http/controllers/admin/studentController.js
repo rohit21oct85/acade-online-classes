@@ -1,6 +1,8 @@
 const Student = require('../../../models/admin/Student');
+const School = require('../../../models/admin/School');
 const csv = require('csv-parser')
 const fs = require('fs')
+const bcrypt = require('bcryptjs');
 
 const CreateStudent = async (req, res) => {
     const body = req.body;
@@ -97,7 +99,10 @@ const getStudentBySchoolIdAndClassId = async (req, res) => {
 
 const uploadStudent = async(req, res) => {
     const data = req.body;
-    console.log(req.body, req.file, req.body.class_id)
+    const filter = {_id: req.body.school_id}
+    const sch = await School.findOne(filter,{__v: 0});
+    const domainName = sch.domain;
+    const hashedPassword = await bcrypt.hash("password", 10)
     let FinalData = [];
     try {
         let results = [];
@@ -113,7 +118,9 @@ const uploadStudent = async(req, res) => {
                         guardian_name:book.guardian_name,
                         guardian_phone_no: book.guardian_phone,
                         school_id: req.body.school_id,
-                        class_id:req.body.class_id
+                        class_id:req.body.class_id,
+                        username: book.first_name + book.guardian_phone.substr(-4) + "@" + domainName,
+                        password: hashedPassword,
                     })
                 })
                 otherFunction(res, FinalData, function() {

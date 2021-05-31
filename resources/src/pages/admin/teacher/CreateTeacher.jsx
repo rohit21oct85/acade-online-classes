@@ -7,6 +7,7 @@ import API_URL from '../../../helper/APIHelper';
 import * as utils from '../../../utils/utils'
 import { useToasts } from 'react-toast-notifications';
 import useSingleTeacher from '../../../hooks/teachers/useSingleTeacher';
+import useSchoolLists from '../../../hooks/schools/useSchoolLists';
 
 export default function CreateTeacher() {
     const history = useHistory();
@@ -24,10 +25,11 @@ export default function CreateTeacher() {
 
     const [SingleTeacher, setSingleTeacher] = useState({});
 
+    const {data : schools, isLoading } = useSchoolLists();
+    const pattern = /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/;
     const initialData = {
         first_name: '',
         last_name: '',
-        class_assigned: '',
         phone_no: '',
     } 
     const [formData, setFormData] = useState(initialData);
@@ -49,7 +51,8 @@ export default function CreateTeacher() {
         return axios.post(`${API_URL}v1/teacher/create`, formData, options)
     },{
         onSuccess: () => {
-            queryClient.invalidateQueries('teachers')
+            let school_id =  params?.school_id;
+            queryClient.invalidateQueries(`teachers-${school_id}`)
             setLoading(false);
             setFormData(initialData);
             history.push(`${path}`);
@@ -62,7 +65,8 @@ export default function CreateTeacher() {
         return axios.patch(`${API_URL}v1/teacher/update/${teacher_id}`, formData, options)
     },{
         onSuccess: () => {
-            queryClient.invalidateQueries('teachers')
+            let school_id =  params?.school_id;
+            queryClient.invalidateQueries(`teachers-${school_id}`)
             setLoading(false);
             setFormData(initialData);
             history.push(`${path}`);
@@ -76,9 +80,17 @@ export default function CreateTeacher() {
         if(params?.teacher_id){
                 await updateMutation.mutate(SingleTeacher);
         }else{
-
-                await mutation.mutate(formData);
-        }
+            formData.school_id = params.school_id ? params.school_id : ''
+            if(formData.school_id == ''){
+                setLoading(false);
+                addToast('Please Select a School', { appearance: 'error',autoDismiss: true });
+            }else if(!pattern.test(formData.phone_no)){
+                setLoading(false);
+                addToast('Please Enter a valid 10 digit phone no', { appearance: 'error',autoDismiss: true });
+            }else{
+                await mutation.mutate(formData); 
+            }
+        } 
     }
 
     async function handleChange(e){
@@ -89,12 +101,34 @@ export default function CreateTeacher() {
         }
     }
 
+    async function handleChangeSchool(e){
+        if(e.target.value != 999){
+            if(params?.teacher_id){
+                setSingleTeacher({...SingleTeacher, [e.target.name]: e.target.value})
+                history.push(`/admin/teachers-management/select-school/${e.target.value}/${params.teacher_id}`)
+            }else{
+                setFormData({...formData, ['school_id']: e.target.value})
+                history.push(`/admin/teachers-management/select-school/${e.target.value}`)
+            }
+        }
+    }
+
     return (
         <>
             <p className="form-heading">
             <span className="fa fa-plus-circle mr-2"></span>Add New Teacher</p>
             <hr className="mt-1"/>
             <form onSubmit={saveTeacher}>
+                <div className="form-group">
+                    <select className="form-control" aria-label="Default select example" name="school_id" onChange={handleChangeSchool} value={params.school_id ? params.school_id : 999}>
+                        <option value="999">Select School</option>
+                        {!isLoading && schools?.map(school => {
+                        return (
+                            <option value={school._id} key={school._id}>{school.name}</option>
+                        )
+                        })}
+                    </select>
+                </div>
                 <div className="form-group">
                     <input 
                         type="text" 
@@ -112,15 +146,6 @@ export default function CreateTeacher() {
                         value={params?.teacher_id ? SingleTeacher?.last_name : formData?.last_name}
                         onChange={handleChange}
                         placeholder="Last Name"/>
-                </div>
-                <div className="form-group">
-                    <input 
-                        type="text" 
-                        className="form-control" 
-                        name="class_assigned"
-                        value={params?.teacher_id ? SingleTeacher?.class_assigned : formData?.class_assigned}
-                        onChange={handleChange}
-                        placeholder="Class Assigned"/>
                 </div>
                 <div className="form-group">
                     <input 
@@ -151,7 +176,7 @@ export default function CreateTeacher() {
                         )}
                         
                     </button>
-                    {params?.teacher_id && (
+                    {(params?.teacher_id || params.school_id) && (
                         <button className="btn btn-sm red ml-2"
                         onClick={e => {
                             e.preventDefault();

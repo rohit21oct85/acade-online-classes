@@ -1,11 +1,12 @@
 import React, {useState, useContext, useEffect} from 'react'
-import {useHistory, useParams, useLocation} from 'react-router-dom'
+import {useHistory} from 'react-router-dom'
 import {AuthContext} from '../../../context/AuthContext';
 import {useMutation, useQueryClient} from 'react-query'
 import axios from 'axios'
 import API_URL from '../../../helper/APIHelper';
 import * as utils from '../../../utils/utils'
 import { useToasts } from 'react-toast-notifications';
+import useSchoolLists from '../../../hooks/schools/useSchoolLists';
 
 export default function UploadSubjects() {
     const [loading, setLoading] = useState(false);
@@ -17,8 +18,13 @@ export default function UploadSubjects() {
     const { addToast } = useToasts();
 
     const [file, setFile] = useState(null);
+    const [school, setSchool] = useState();
+
+    const [selectedSchool, setSelectedSchool] = useState(false);
     
     const history = useHistory();
+
+    const {data : schools, isLoading } = useSchoolLists();
 
     const queryClient = useQueryClient()
     const options = {
@@ -52,13 +58,23 @@ export default function UploadSubjects() {
         onSuccess: () => {
             queryClient.invalidateQueries('subjects')
             setLoading(false);
-            history.push(`${path}`);
             addToast('Subjects added successfully', { appearance: 'success', autoDismiss: true });
         }
     });
 
+    const handleChange = (e) => {
+        setSchool(e.target.value)
+        setSelectedSchool(true);
+    }
+
     const uploadFile = async(e) => {
         e.preventDefault();
+        if(!selectedSchool){
+            addToast('Please Select a School', { appearance: 'error', autoDismiss: true });
+            return;
+        }
+        formDataUpload.append('file',file);
+        formDataUpload.append('school_id',school);
         await mutation.mutate(formDataUpload);
     }
 
@@ -67,7 +83,22 @@ export default function UploadSubjects() {
             <p className="form-heading">
             <span className="fa fa-plus-circle mr-2"></span>Upload Subjects</p>
             <hr className="mt-1"/>
+
+            <a href="/sampledata/subjects.csv" download>
+            Download Sample File
+            </a>
+            <hr className="mt-1"/>
             <form onSubmit={uploadFile} method="POST" encType="multipart/form-data">
+                <div className="form-group">
+                    <select className="form-control" aria-label="Default select example" name="school_id" onChange={handleChange}>
+                        <option>Select School</option>
+                        {!isLoading && schools?.map(school => {
+                        return (
+                            <option value={school._id} key={school._id}>{school.name}</option>
+                        )
+                        })}
+                    </select>
+                </div>
                 <div className="form-group">
                     <input 
                         type="file" 
@@ -75,6 +106,9 @@ export default function UploadSubjects() {
                         name="file"
                         onChange={handelChangeUpload}
                         placeholder="Upload .csv"/>
+                        <small id="passwordHelpInline" class="text-muted">
+                            Upload Classes File in .csv format only.
+                        </small>
                 </div>
             
                 <div className="form-group flex">

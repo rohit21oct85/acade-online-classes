@@ -7,6 +7,7 @@ import API_URL from '../../../helper/APIHelper';
 import * as utils from '../../../utils/utils'
 import { useToasts } from 'react-toast-notifications';
 import useSingleSubject from '../../../hooks/subjects/useSingleSubject';
+import useSchoolLists from '../../../hooks/schools/useSchoolLists';
 
 export default function CreateSubject() {
     const history = useHistory();
@@ -23,6 +24,8 @@ export default function CreateSubject() {
     const {data} = useSingleSubject();
 
     const [SingleSubject, setSingleSubject] = useState({});
+    
+    const {data : schools, isLoading } = useSchoolLists();
 
     const initialData = {
         subject_name: '',
@@ -47,7 +50,8 @@ export default function CreateSubject() {
         return axios.post(`${API_URL}v1/subject/create`, formData, options)
     },{
         onSuccess: () => {
-            queryClient.invalidateQueries('subjects')
+            let school_id =  params?.school_id;
+            queryClient.invalidateQueries(`subjects-${school_id}`)
             setLoading(false);
             setFormData(initialData);
             history.push(`${path}`);
@@ -60,7 +64,8 @@ export default function CreateSubject() {
         return axios.patch(`${API_URL}v1/subject/update/${subject_id}`, formData, options)
     },{
         onSuccess: () => {
-            queryClient.invalidateQueries('subjects')
+            let school_id =  params?.school_id;
+            queryClient.invalidateQueries(`subjects-${school_id}`)
             setLoading(false);
             setFormData(initialData);
             history.push(`${path}`);
@@ -74,8 +79,16 @@ export default function CreateSubject() {
         if(params?.subject_id){
                 await updateMutation.mutate(SingleSubject);
         }else{
-
+            formData.school_id = params.school_id ? params.school_id : '' 
+            if(formData.school_id == ''){
+                setLoading(false);
+                addToast('Please Select a School', { appearance: 'error',autoDismiss: true });
+            }else if(formData.subject_name == ''){
+                setLoading(false);
+                addToast('Please Enter a Subject Name', { appearance: 'error',autoDismiss: true });                
+            }else{
                 await mutation.mutate(formData);
+            }
         }
     }
 
@@ -87,12 +100,34 @@ export default function CreateSubject() {
         }
     }
 
+    async function handleChangeSchool(e){
+        if(e.target.value != 999){
+            if(params?.subject_id){
+                setSingleSubject({...SingleSubject, [e.target.name]: e.target.value})
+                history.push(`/admin/subject-management/select-school/${e.target.value}/${params.subject_id}`)
+            }else{
+                setFormData({...formData, ['school_id']: e.target.value})
+                history.push(`/admin/subject-management/select-school/${e.target.value}`)
+            }
+        }
+    }
+
     return (
         <>
             <p className="form-heading">
             <span className="fa fa-plus-circle mr-2"></span>Add New Subejct</p>
             <hr className="mt-1"/>
             <form onSubmit={saveSubject}>
+                <div className="form-group">
+                    <select className="form-control" aria-label="Default select example" name="school_id" onChange={handleChangeSchool} value={params.school_id ? params.school_id : 999}>
+                        <option value="999">Select School</option>
+                        {!isLoading && schools?.map(school => {
+                        return (
+                            <option value={school._id} key={school._id}>{school.name}</option>
+                        )
+                        })}
+                    </select>
+                </div>
                 <div className="form-group">
                     <input 
                         type="text" 
@@ -122,7 +157,7 @@ export default function CreateSubject() {
                         )}
                         
                     </button>
-                    {params?.subject_id && (
+                    {(params?.subject_id || params?.school_id) && (
                         <button className="btn btn-sm red ml-2"
                         onClick={e => {
                             e.preventDefault();

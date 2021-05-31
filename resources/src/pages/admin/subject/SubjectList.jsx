@@ -20,7 +20,13 @@ export default function SubjectList() {
                             <button className="btn btn-sm dark mr-2" onClick={e => { history.push(`/admin/dashboard`)}}>
                                 <span className="fa fa-dashboard"></span>
                             </button>
-                            <button className="btn btn-sm dark" onClick={e => { history.push(`/admin/subject-management/upload`)}}>
+                            <button className="btn btn-sm dark" onClick={e => { 
+                                if(params.page_type == undefined){
+                                    history.push(`/admin/subject-management/upload`)
+                                }else if(params.page_type == "upload"){
+                                    history.push(`/admin/subject-management`)
+                                }
+                                }}>
                                 <span className="fa fa-upload"></span>   Upload Subjects 
                             </button>
                         </div>

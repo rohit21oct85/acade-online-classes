@@ -1,6 +1,7 @@
 import useTeacherList from '../../../hooks/teachers/useTeacherList';
+import useSchoolLists from '../../../hooks/schools/useSchoolLists';
 import Loading from '../../../components/Loading';
-import {useHistory} from 'react-router-dom'
+import {useHistory, useParams} from 'react-router-dom'
 import {useMutation, useQueryClient} from 'react-query'
 import axios from 'axios'
 import API_URL from '../../../helper/APIHelper';
@@ -10,15 +11,19 @@ import React, {useState, useContext} from 'react'
 
 export default function AllTeachers() {
 
-    const {data, isLoading} = useTeacherList();
-    
     const history = useHistory();
 
     const { addToast } = useToasts();
 
     const {state} = useContext(AuthContext);
 
+    const params = useParams();
+    
     const queryClient = useQueryClient()
+
+    const {data, isLoading} = useTeacherList();
+    const {data:schools, schoolIsLoading} = useSchoolLists();
+    const school = schools?.filter( school => school?._id == params?.school_id)
 
     const options = {
         headers: {
@@ -31,7 +36,8 @@ export default function AllTeachers() {
         return axios.delete(`${API_URL}v1/teacher/delete/${teacher_id}`, options)
     },{
         onSuccess: () => {
-            queryClient.invalidateQueries('teachers')
+            const key = params?.school_id ? `teachers-${params.school_id}` : `teachers`
+            queryClient.invalidateQueries(key)
             addToast('Teacher Deleted successfully', { appearance: 'success',autoDismiss: true });
         }
     });
@@ -43,7 +49,7 @@ export default function AllTeachers() {
     return (
         <>
         <p className="form-heading">
-            <span className="fa fa-plus-circle mr-2"></span>All Teachers</p>
+            <span className="fa fa-plus-circle mr-2"></span>{(school && school[0]?.name) ? "School: "+school[0].name: "All Teachers"}</p>
         <hr className="mt-1"/>
         <Loading isLoading={isLoading} /> 
         <div className="col-md-12 row no-gutter data-container-category">
@@ -53,7 +59,6 @@ export default function AllTeachers() {
                         <th scope="col">#</th>
                         <th scope="col">First Name</th>
                         <th scope="col">Last Name</th>
-                        <th scope="col">Class Assigned</th>
                         <th scope="col">Phone no</th>
                         </tr>
                     </thead>
@@ -64,13 +69,16 @@ export default function AllTeachers() {
                                 <th scope="row">{key}</th>
                                 <td>{item.first_name}</td>
                                 <td>{item.last_name}</td>
-                                <td>{item.class_assigned}</td>
                                 <td>{item.phone_no}</td>
                                 <td>
                                     <button className="btn bg-primary text-white btn-sm mr-2" 
                                         onClick={
                                             e => {
-                                                    history.push(`/admin/teachers-management/modify-teacher/${item?._id}`)
+                                                if(params.school_id){
+                                                    history.push(`/admin/teachers-management/modify-subject/${params?.school_id}/${item?._id}`)
+                                                }else{
+                                                    history.push(`/admin/teachers-management/modify-subject/${item.school_id}/${item?._id}`)
+                                                }
                                             }
                                         }>
                                         <span className="fa fa-edit"></span>
