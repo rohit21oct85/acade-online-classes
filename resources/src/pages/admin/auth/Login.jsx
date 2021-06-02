@@ -82,7 +82,7 @@ export default function Login() {
             if(state?.role === "1"){
                 history.push(`/admin/dashboard`)
             }else{
-                history.push('/dashboard')
+                history.push('/sub/dashboard')
             }   
         }else{
             history.push('/admin/login');
@@ -95,13 +95,13 @@ export default function Login() {
         }}>
             <div className="col-md-12">
                 <NavLink to="/">
-                    <img className="logo" alt="company Logo" src="/logo.png"/>
+                    <img className="logo img-responsive" style={{ width: '75px'}} alt="company Logo" src="/logo.png"/>
                 </NavLink>
             </div>
             <div className="row no-gutter">
                 <div className="col-md-3 adminLoginDiv">
-                <h4>Administrator Login </h4>    
-                <hr />
+                    <h4>Administrator Login </h4>    
+                    <hr />
                 
                 <form autoComplete="Off" onSubmit={submitForm}>
                     <div className="form-group text-left">
@@ -135,28 +135,6 @@ export default function Login() {
                             </>
                         )}
                     </button>
-                    <hr />
-                    <p>Do you have an Account details provided by your Schools ?</p>
-                    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>
-                    <button className="btn btn-sm dark mb-2"
-                    onClick={e => history.push('/school/admin/login')}
-                    >
-                        <span className="fa fa-lock text-warning mr-2"></span>
-                        Login As School Admin</button>
-                        
-                    <button className="btn btn-sm dark mb-2"
-                    onClick={e => history.push('/school/teacher/login')}
-                    >
-                        <span className="fa fa-lock text-warning mr-2"></span>
-                        Login As School Teacher</button>
-
-                    <button className="btn btn-sm dark"
-                    onClick={e => history.push('/school/student/login')}
-                    >
-                        <span className="fa fa-lock text-warning mr-2"></span>
-                        Login As School Student</button>
-                    </div>
-
                     </form>
                 </div>
             </div>

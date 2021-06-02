@@ -23,13 +23,8 @@ export default function CreateAppPermission() {
     const {data:roles} = useAppRoles();
     const {data:modules} = useAppModule();
     const [singlePermission, setSinglePermission] = useState();
-    
-    const [checkedState, setCheckedState] = useState(
-        new Array(modules?.length).fill({checked: false})
-    );
-    
+
     const [formData, setFormData] = useState({});
-    const [AppModules, setAppModules] = useState([]);
     
     function clearFields(){
         setSinglePermission({})
@@ -68,8 +63,7 @@ export default function CreateAppPermission() {
                 }
             })
             console.log(ArrayData)
-            
-            
+
             formData['school_id'] = params?.school_id;
             formData['role_id'] = params?.role_id;
             formData['modules'] = ArrayData;
@@ -89,13 +83,11 @@ export default function CreateAppPermission() {
     function handleCheckBox(e){
         e.preventDefault();
         let data = e.target.value;
-        let module_id = data.split('_')[0]
         Array.from(document.querySelectorAll('.checkbox')).map(checkbox => {
-            if(checkbox?._id === module_id){
-                checkbox.checked = true
+            if(checkbox?.module_slug === data){
+                e.target.checked = true
             }    
         })
-        
     }
 
     return (
@@ -104,6 +96,7 @@ export default function CreateAppPermission() {
             <span className="fa fa-plus-circle mr-2"></span>Add New Permission</p>
             <hr className="mt-1"/>
             <form onSubmit={saveAppPermission}>
+                
                 <div className="form-group">
                     <select 
                         className="form-control"
@@ -132,34 +125,7 @@ export default function CreateAppPermission() {
                         })}
                     </select>
                 </div>
-
-                <div className="form-group">
-                    <select className="form-control"
-                    value={`${params?.school_id}_${params?.school_slug}`}
-                    onChange={
-                        e => {
-                            if(e.target.value !== '_'){
-                                let data = e.target.value;
-                                let school_id = data.split('_')[0]
-                                let school_slug = data.split('_')[1]
-                                history.push(`/admin/app-permissions/${params?.role_id}/${params?.role_slug}/${school_id}/${school_slug}`)
-                            }else{
-                                history.push(`/admin/app-permissions`)
-                            }
-                        }
-                    }
-                    >
-                        <option value="_">Select School</option>
-                        {schools?.map(school => {
-                            return(
-                                <option value={`${school?._id}_${school?.slug}`}
-                                key={school?._id}>{school?.name}</option>
-                            );
-                        })}
-                    </select>
-                </div>    
-                            
-                    
+                
                 <div className="form-group">
                     <div className="col-md-12 pl-0 pr-2"
                     style={{
@@ -168,22 +134,30 @@ export default function CreateAppPermission() {
                         overflow: 'scroll'
                     }}>
                         {modules?.map((module, index) => {
-
+                            if(module?.module_type !== 'master_admin')
                             return(
-                                <div className="card pl-2 pt-0 pb-0 mb-2" key={module?._id}>
+                                <div className="card pt-0 pb-0 mb-2" key={module?._id}>
                                     <label className="pb-0 mb-0"
                                     htmlFor={`custom-checkbox-${index}`}>
+                                    <span className={`bi ${module?.module_icon} mr-2 ml-2 `}></span>
                                     <input 
                                         className="mr-2 checkbox"
                                         type="checkbox" 
                                         id={`custom-checkbox-${index}`}
-                                        name={`module-${module?._id}`}
-                                        value={`${module?._id}_${module?.module_slug}_${module?.module_icon}`}
+                                        name={`module-${module?.module_slug}`}
+                                        value={`${module?._id}-${module?.module_name}-${module?.module_slug}`}
                                         onChange={handleCheckBox}
-                                        checked={module?.checked?.toString()}
                                     />    
-                                    <span className={`bi ${module?.module_icon} mr-2`}></span>{module?.module_name}
+                                    {module?.module_name}
                                     </label>
+                                    <hr className="mt-0 mb-1"/>
+                                    <div className="flex ml-2 mr-2">
+                                        <label><input type="checkbox" name={`method-${module?.module_slug}`} className="mr-2" value={`create-${module?.module_slug}`}/>craete</label>
+                                        <label><input type="checkbox" name={`method-${module?.module_slug}`} className="mr-2" value={`update-${module?.module_slug}`}/>update</label>
+                                        <label><input type="checkbox" name={`method-${module?.module_slug}`} className="mr-2" value={`delete-${module?.module_slug}`}/>delete</label>
+                                        <label><input type="checkbox" name={`method-${module?.module_slug}`} className="mr-2" value={`upload-${module?.module_slug}`}/>upload</label>
+                                    </div>
+
                                 </div>
                             );
                         })}

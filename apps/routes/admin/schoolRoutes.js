@@ -11,6 +11,7 @@ router
     .get('/view/:id',checkAuth,adminAuth, School.ViewSchool)
     .get('/view-all',checkAuth,adminAuth, School.ViewAllSchool)
     .post('/addfields', checkAuth,adminAuth, School.addFields)
+    .post('/subdomain', checkAuth,adminAuth, School.checkSubDomain)
     .post('/delete', checkAuth,adminAuth, School.DeleteSchool);
 
 module.exports = router;

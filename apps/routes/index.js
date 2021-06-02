@@ -1,6 +1,6 @@
 const adminAuth = require('./admin/adminAuth');
 const roleRoutes = require('./admin/roleRoutes.js');
-const schoolAdminAuth = require('./school/schoolAdminAuth');
+const schoolAuth = require('./school/schoolAuth');
 const schoolRoutes = require('./admin/schoolRoutes');
 const moduleRoutes = require('./admin/moduleRoutes');
 const permissionRoutes = require('./admin/permissionRoutes');
@@ -12,7 +12,7 @@ const teacherRoutes = require('./admin/teacherRoutes');
 module.exports = {
     adminAuth,
     roleRoutes,
-    schoolAdminAuth,
+    schoolAuth,
     schoolRoutes,
     moduleRoutes,
     permissionRoutes,

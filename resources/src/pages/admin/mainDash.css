@@ -49,7 +49,6 @@ h2{
     padding: 10px 15px 50px 10px;
     height: 79vh;
     margin-bottom: 1em;
-    overflow: auto;
 }
 .dash-con-heading{
     background-color: #fff;
@@ -88,8 +87,14 @@ span.over_view_total_head {
     padding: 10px;
     border: 1px solid #e0e0e0;
     display: flex;
-    justify-content: space-between;
 }
+.justify-center{
+    justify-content: center;
+}
+.align-item{
+    align-items: center;
+}
+
 .view_total_breakout_part {
     display: flex;
     flex-flow: column;
@@ -358,12 +363,12 @@ label.form-lable.form-input{
     border-radius: 0px !important;
 }
 .dark{
-    background: #2f3348;
+    background: #fa7649;
     border: 0px;
     color: #fff;
 }
 .dark:hover{
-    background: #495280;
+    background: #ce5c37;
     border: 0px;
     color: #fff;
 }

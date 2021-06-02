@@ -5,9 +5,6 @@ const bcrypt = require('bcryptjs');
 let refreshTokens = [];
 
 const Register = async (req, res) => {
-    return res.status(405).json({
-        message: 'Register Routes Not Allowed'
-    })
     const body = req.body;
     try {
         const newAdmin = new Admin(body);
@@ -132,8 +129,36 @@ const ForgotPassword = async (req, res) => {
     }
 
 }
+const ViewAllSubAdmin = async (req, res) => {
+    try{
+        const AllSubAdmin = await Admin.find({role: {$gt: 1}},{__v: 0});
+        res.status(200).json({ 
+            data: AllSubAdmin 
+        });    
+    } catch(error){
+        res.status(409).json({
+            message: "Error occured",
+            errors: error.message
+        });
+    }
+}
+const ViewSubAdmin = async (req, res) => {
+    try{
+        const admin = await Admin.findOne({_id: req.params?.admin_id},{__v: 0});
+        res.status(200).json({ 
+            data: admin 
+        });    
+    } catch(error){
+        res.status(409).json({
+            message: "Error occured",
+            errors: error.message
+        });
+    }
+}
 
 module.exports = {
+    ViewSubAdmin,
+    ViewAllSubAdmin,
     Register,
     Login,
     Logout,

@@ -50,7 +50,7 @@ const ViewModule = async (req, res) => {
 }
 const ViewAllModule = async (req, res) => {
     try{
-        const AllModules = await Module.find({},{__v: 0});
+        const AllModules = await Module.find({},{__v: 0}).sort({module_sequence: 1});
         return res.status(200).json({ 
             data: AllModules 
         });    

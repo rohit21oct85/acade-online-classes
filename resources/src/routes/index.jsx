@@ -1,9 +1,8 @@
 import AdminLogin from '../pages/admin/auth/Login'
 import NotAuthorized from '../pages/NotAuthorized.jsx'
 import Dashboard from '../pages/admin/Dashboard.jsx'
+import SubAdminList from '../pages/admin/subAdmin/SubAdminList'
 import SchoolList from '../pages/admin/school/SchoolList'
-import SchoolLoginPage from '../pages/school/SchoolLoginPage'
-import SchoolAdminDashboard from '../pages/school/SchoolAdminDashboard'
 
 import AppModule from '../pages/admin/appModule/AppModule.jsx'
 import AppRole from '../pages/admin/appRole/AppRole.jsx'
@@ -26,11 +25,7 @@ export const webRoutes =  [
     {
         path:'/403',
         component: NotAuthorized
-    },
-    {
-        path: '/school/:user_type?/login',
-        component: SchoolLoginPage
-    },
+    }
 
 ];
 
@@ -43,10 +38,7 @@ export const privateRoutes = [
         path: '/admin',
         component: Dashboard
     },
-    {
-        path: '/admin/school-management/:page_type?/:school_id?',
-        component: SchoolList
-    },
+    
     {
         path: '/admin/class-management/:page_type?/:school_id?/:class_id?',
         component: ClassList
@@ -62,10 +54,6 @@ export const privateRoutes = [
     {
         path: '/admin/subject-management/:page_type?/:school_id?/:subject_id?',
         component: SubjectList
-    },
-    {
-        path: '/admin/auth-management/:page_type?/:school_id?/:school_admin_email?/:school_admin_id?',
-        component: SchoolAuthList
     },
     {
         path: '/admin/teachers-management/:page_type?/:school_id?/:teacher_id?',
@@ -92,33 +80,13 @@ export const adminRoutes = [
         path: '/admin/app-permissions/:role_id?/:role_slug?/:school_id?/:school_slug?/:permission_id?',
         component: AppPermission
     },
+    {
+        path: '/admin/school-management/:page_type?/:school_id?',
+        component: SchoolList
+    },
+    {
+        path: '/admin/manage-sub-admin/:page_type?/:admin_id?',
+        component: SubAdminList
+    },
 
 ]
-
-export const schoolAdminRoutes = [
-    {
-        path: '/school/:school_slug/admin/dashboard',
-        component: SchoolAdminDashboard
-    },
-    {
-        path: '/school/:school_slug/admin/class-management/:page_type?/:school_id?',
-        component: ClassList
-    },
-    {
-        path: '/school/:school_slug/admin/student-management/:page_type?/:school_id?/:class_id?/:student_id?',
-        component: StudentList
-    },
-    {
-        path: '/school/:school_slug/admin/students-management/:page_type?/:student_id?',
-        component: StudentList
-    },
-    {
-        path: '/school/:school_slug/admin/subject-management/:page_type?/:subject_id?',
-        component: SubjectList
-    },
-    {
-        path: '/school/:school_slug/admin/teachers-management/:page_type?/:teacher_id?',
-        component: TeacherList
-    }
-]
-

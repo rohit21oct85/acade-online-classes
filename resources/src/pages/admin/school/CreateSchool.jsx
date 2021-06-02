@@ -7,7 +7,8 @@ import { useToasts } from 'react-toast-notifications';
 import useSingleSchool from '../../../hooks/schools/useSingleSchool';
 import useCreateSchool from '../../../hooks/schools/useCreateSchool';
 import useUpdateSchool from '../../../hooks/schools/useUpdateSchool';
-import useDeleteSchool from '../../../hooks/roles/useDeleteRole';
+import useDeleteSchool from '../../../hooks/schools/useDeleteSchool';
+import useCheckSubDomain from '../../../hooks/schools/useCheckSubDomain';
 
 
 
@@ -17,9 +18,10 @@ export default function CreateSchool() {
     const { addToast } = useToasts();
     const {data} = useSingleSchool(params?.school_id);
     const [SingleSchool, setSingleSchool] = useState({});
-    const initialData = {name: '',address: '',
-            logo: '',zip_code: '',
-            admin_email: '',admin_mobile: ''}         
+    const [domain, setDomain] = useState(0)
+    const initialData = {school_name: '',address: '',city: '',
+            school_logo: '',pincode: '',state: '',
+            contact_name: '',contact_mobile: '',contact_email: ''}         
     const [formData, setFormData] = useState({});
     useEffect(()=>{
         setFormData(initialData);
@@ -35,32 +37,34 @@ export default function CreateSchool() {
     const createMutation = useCreateSchool(formData);
     const updateMutation = useUpdateSchool(SingleSchool);
     const deleteMutation = useDeleteSchool(formData);
+    const checkMutation = useCheckSubDomain(formData);
     
     const saveSchool = async (e) => {
         e.preventDefault();
-        formData['name'] = params?.school_id ? SingleSchool?.name : formData?.name;
-        formData['admin_name'] = params?.school_id ? SingleSchool?.admin_name : formData?.admin_name;
-        formData['admin_password'] = params?.school_id ? SingleSchool?.admin_password : formData?.admin_password;
-        formData['slug'] = utils.MakeSlug(params?.school_id ? SingleSchool?.name : formData?.name);
-        // console.log(formData); return;
+        formData['school_name'] = params?.school_id ? SingleSchool?.school_name : formData?.school_name;
+        formData['contact_name'] = params?.school_id ? SingleSchool?.contact_name : formData?.contact_name;
+        formData['school_slug'] = utils.MakeSlug(params?.school_id ? SingleSchool?.name : formData?.name);
         if(params?.school_id){
             await updateMutation.mutate(SingleSchool);
         }else{
-            if(formData?.name == ''){
+            if(formData?.school_name == ''){
                 addToast('Please Enter school name', { appearance: 'error',autoDismiss: true });        
-            }else if(formData?.admin_email == ''){
+            }else if(formData?.sub_domain == "1"){
+                addToast('Please check another domain', { appearance: 'error',autoDismiss: true });        
+            }
+            else if(formData?.contact_email == ''){
                 addToast('Please provide admin email', { appearance: 'error',autoDismiss: true });        
             }
-            else if(digits_only(formData?.zip_code) === false){
+            else if(digits_only(formData?.pincode) === false){
                 addToast('Please enter numbers only', { appearance: 'error',autoDismiss: true });        
             }
-            else if(formData?.zip_code?.length < 6){
+            else if(formData?.pincode?.length < 6){
                 addToast('Please provide valid zip code', { appearance: 'error',autoDismiss: true });        
             }
-            else if(formData?.mobile?.length < 10){
-                addToast('Please enter valid mobile number', { appearance: 'error',autoDismiss: true });        
+            else if(formData?.contact_mobile?.length < 10){
+                addToast('Please enter validcontact_ mobile number', { appearance: 'error',autoDismiss: true });        
             }
-            else if(digits_only(formData?.mobile) === false){
+            else if(digits_only(formData?.contact_mobile) === false){
                 addToast('Please enter valid mobile number', { appearance: 'error',autoDismiss: true });        
             }
             else{
@@ -122,18 +126,37 @@ export default function CreateSchool() {
       async function onBlurHandle(e){
             e.preventDefault();
             let image = e.target.value
-            let arrayImage = image.split('/');
-            let key = arrayImage[5];
+            let arrayImage = image.split('/d/');
+            let arrayImage2 = arrayImage[1].split('/');
+            let key = arrayImage2[0];
             if(image.length > 0){
-                //   let image_url = `https://drive.google.com/uc?export=view&id=${key}`
-                  if(params?.school_id){
-                        setSingleSchool({...SingleSchool, logo: key})
-                  }else{
-                        setFormData({...formData, logo: key})
-                  }
+                if(params?.school_id){
+                        setSingleSchool({...SingleSchool, school_logo: key})
+                }else{
+                        setFormData({...formData, school_logo: key})
+                }
             }
       }
-
+      const handleCheckSubDomain = async (e) => {
+        e.preventDefault();  
+        try {
+            if(e.target.value !== ""){
+                await checkMutation.mutate({sub_domain: e.target.value});
+                if(checkMutation?.status == "success"){
+                    if(checkMutation?.data?.data?.count == "1"){
+                        setDomain(1)
+                        e.target.value = "";
+                        e.target.focus();
+                    }else{
+                        setDomain(0)
+                        
+                    }
+                }
+            }
+        } catch (error) {
+            console.log(error.message)
+        }
+      }
     return (
         <>
             <p className="form-heading">
@@ -144,29 +167,30 @@ export default function CreateSchool() {
                     <input 
                         type="text" 
                         className="form-control" 
-                        name="name"
-                        value={params?.school_id ? SingleSchool?.name : formData?.name}
+                        name="school_name"
+                        value={params?.school_id ? SingleSchool?.school_name : formData?.school_name}
                         onChange={handleChange}
-                        autoComplete="no-password"
+                        autoComplete="Off"
                         placeholder="School Name"/>
                 </div>
                 <div className="form-group">
                     <input 
                         type="text" 
                         className="form-control" 
-                        name="domain"
-                        value={params?.school_id ? SingleSchool?.domain : formData?.domain}
+                        name="sub_domain"
+                        value={params?.school_id ? SingleSchool?.sub_domain : formData?.sub_domain}
                         onChange={handleChange}
+                        onBlur={handleCheckSubDomain}
                         autoComplete="no-password"
-                        placeholder="Domain Name"/>
+                        placeholder="sub domain name"/>
                 </div>
                 
                 <div className="form-group">
                     <input 
                         type="text" 
                         className="form-control" 
-                        name="logo"
-                        value={params?.school_id ? SingleSchool?.logo : formData?.logo}
+                        name="school_logo"
+                        value={params?.school_id ? SingleSchool?.school_logo : formData?.school_logo}
                         onChange={handleChange}
                         onBlur={onBlurHandle}
                         autoComplete="no-password"
@@ -185,63 +209,72 @@ export default function CreateSchool() {
                         autoComplete="no-password"
                         placeholder="address"/>
                 </div>
+                <div className="form-group">
+                    <input 
+                        type="text" 
+                        className="form-control" 
+                        name="city"
+                        value={params?.school_id ? SingleSchool?.city : formData?.city}
+                        onChange={handleChange}
+                        autoComplete="no-password"
+                        placeholder="city"/>
+                </div>
+                <div className="form-group">
+                    <input 
+                        type="text" 
+                        className="form-control" 
+                        name="state"
+                        value={params?.school_id ? SingleSchool?.state : formData?.state}
+                        onChange={handleChange}
+                        autoComplete="no-password"
+                        placeholder="state"/>
+                </div>
                 
                 <div className="form-group">
                     <input 
                         type="text" 
                         className="form-control" 
-                        name="zip_code"
+                        name="pincode"
                         maxLength={6}
-                        value={params?.school_id ? SingleSchool?.zip_code : formData?.zip_code}
+                        value={params?.school_id ? SingleSchool?.pincode : formData?.pincode}
                         onChange={handleChange}
                         autoComplete="no-password"
                         onBlur={handleOnlyNumbers}
-                        placeholder="zip_code"/>
+                        placeholder="pincode"/>
                 </div>
                 <div className="form-group">
                     <input 
                         type="text" 
                         className="form-control" 
-                        name="admin_name"
-                        value={params?.school_id ? SingleSchool?.admin_name : formData?.admin_name}
+                        name="contact_name"
+                        value={params?.school_id ? SingleSchool?.contact_name : formData?.contact_name}
                         onChange={handleChange}
                         autoComplete="no-password"
-                        placeholder="admin_name"/>
+                        placeholder="contact_name"/>
                 </div>
                 <div className="form-group">
                     <input 
                         type="text" 
                         className="form-control" 
-                        name="admin_email"
-                        value={params?.school_id ? SingleSchool?.admin_email : formData?.admin_email}
+                        name="contact_email"
+                        value={params?.school_id ? SingleSchool?.contact_email : formData?.contact_email}
                         onChange={handleChange}
                         onBlur={validateEmail}
                         autoComplete="no-password"
-                        placeholder="admin_email"/>
+                        placeholder="contact_email"/>
                 </div>
                 <div className="form-group">
                     <input 
                         type="text" 
                         className="form-control" 
-                        name="admin_mobile"
-                        value={params?.school_id ? SingleSchool?.admin_mobile : formData?.admin_mobile}
+                        name="contact_mobile"
+                        value={params?.school_id ? SingleSchool?.contact_mobile : formData?.contact_mobile}
                         onChange={handleChange}
                         maxLength={10}
                         onBlur={handleOnlyNumbers}
                         autoComplete="no-password"
-                        placeholder="admin_mobile"/>
+                        placeholder="contact_mobile"/>
                 </div>
-                <div className="form-group">
-                    <input 
-                        type="text" 
-                        className="form-control" 
-                        name="admin_password"
-                        onChange={handleChange}
-                        autoComplete="no-password"
-                        placeholder="admin_password"/>
-                </div>
-
-
                 <div className="form-group flex">
                     <button className="btn btn-sm dark br-5">
                         {(createMutation.isLoading || updateMutation.isLoading) ? (

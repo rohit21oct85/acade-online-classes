@@ -4,6 +4,7 @@ import {AuthContext} from '../../../context/AuthContext';
 
 import * as utils from '../../../utils/utils'
 import { useToasts } from 'react-toast-notifications';
+import useAppModule from '../../../hooks/modules/useAppModule';
 import useSingleModule from '../../../hooks/modules/useSingleModule';
 import useCreateModule from '../../../hooks/modules/useCreateModule';
 import useUpdateModule from '../../../hooks/modules/useUpdateModule';
@@ -17,11 +18,27 @@ export default function CreateAppModule() {
 
     const { addToast } = useToasts();
     const {state} = useContext(AuthContext);
+    const types = [
+        {
+            key: 'master_admin', value: 'Master Admin'
+        },
+        
+        {
+            key: 'sub_admin', value: 'Sub Admin'
+        },
+        
+        {
+            key: 'app_module', value: 'App Module'
+        },
 
+    ]
     const [moduleName, setModuleName] = useState("");
     const [moduleIcon, setModuleIcon] = useState("");
+    const [moduleSequence, setModuleSequence] = useState("");
+    const [moduleType, setModuleType] = useState("");
     const [loading, setLoading] = useState(false);
     const {data} = useSingleModule();
+    const {data:appModules} = useAppModule();
     const [singleModule, setSingleModule] = useState();
     const [formData, setFormData] = useState({});
     useEffect(setModule, [data]);
@@ -45,6 +62,12 @@ export default function CreateAppModule() {
         formData['module_name'] = params?.module_id ? singleModule?.module_name : moduleName;
         formData['module_slug'] = utils.MakeSlug(params?.module_id ? singleModule?.module_name : moduleName);
         formData['module_icon'] = params?.module_id ? singleModule?.module_icon : moduleIcon;
+        formData['module_sequence'] = params?.module_id ? singleModule?.module_sequence : moduleSequence;
+        if(params?.module_id){
+            formData['module_type'] = singleModule?.module_type;
+        }else{
+            formData['module_type'] = moduleType;
+        }
         if(params?.module_id){
             await updateMutation.mutate(formData);
         }else{
@@ -65,6 +88,27 @@ export default function CreateAppModule() {
             <span className="fa fa-plus-circle mr-2"></span>Create App Module</p>
             <hr className="mt-1"/>
             <form onSubmit={saveAppModule}>
+            <div className="form-group p-rel">
+                    <select 
+                    name="module_type"
+                    className="form-control"
+                    value={singleModule?.module_type}
+                    onChange={e => {
+                        if(params?.module_id){
+                            setSingleModule({...singleModule, module_type: e.target.value})
+                        }else{
+                            setModuleType(e.target.value)
+                        }
+                    }}
+                    >
+                        <option>Select Module Type</option>
+                        {types?.map(type => {
+                            return(
+                                <option value={type?.key}>{type?.value}</option>
+                            );
+                        })}
+                    </select>
+                </div>
                 <div className="form-group">
                     <input type="text" className="form-control" 
                         value={params?.module_id ? singleModule?.module_name : moduleName}
@@ -82,7 +126,6 @@ export default function CreateAppModule() {
                         value={params?.module_id ? singleModule?.module_icon: moduleIcon}
                         placeholder="Module Icon"
                         onChange={e => {
-                            
                             if(params?.module_id){
                                 setSingleModule({...singleModule, module_icon: e.target.value})
                             }else{
@@ -91,6 +134,29 @@ export default function CreateAppModule() {
                         }}/>
                         <span className={`fa p-abs tl10 ${singleModule?.module_icon}`}></span>
                 </div>
+                
+                <div className="form-group p-rel">
+                    <select 
+                    name="module_sequence"
+                    className="form-control"
+                    value={singleModule?.module_sequence}
+                    onChange={e => {
+                        if(params?.module_id){
+                            setSingleModule({...singleModule, module_sequence: e.target.value})
+                        }else{
+                            setModuleSequence(e.target.value)
+                        }
+                    }}
+                    >
+                        <option>Select Sequence</option>
+                        {appModules?.map((module, index) => {
+                            return(
+                                <option value={index} key={index}>{index}</option>
+                            )
+                        })}
+                    </select>
+                </div>
+
                 <div className="form-group flex">
                     <button className="btn btn-sm dark br-5">
                         {loading ? (

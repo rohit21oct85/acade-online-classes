@@ -6,13 +6,15 @@ import API_URL from '../../helper/APIHelper';
 import { useToasts } from 'react-toast-notifications';
 import {AuthContext} from '../../context/AuthContext';
 
-export default function useUpdateSchool(formData) {
+export default function useCheckSubDomain(formData) {
+      
+      const queryClient = useQueryClient()
+      const {state} = useContext(AuthContext);
       const params = useParams();
       const location = useLocation();
       const path = location.pathname;
       const history = useHistory();
-      const queryClient = useQueryClient()
-      const {state} = useContext(AuthContext);
+      
       const options = {
             headers: {
                   'Content-Type': 'Application/json',
@@ -20,15 +22,17 @@ export default function useUpdateSchool(formData) {
             }
       }      
       const { addToast } = useToasts();
-      const status =  useMutation((formData) => {
-            let school_id =  params?.school_id;
-            return axios.patch(`${API_URL}v1/school/update/${school_id}`, formData, options)
+      
+      return useMutation(formData => {
+            return axios.post(`${API_URL}v1/school/subdomain`, formData, options)
         },{
-        onSuccess: () => {
-            queryClient.invalidateQueries('schools')
-            addToast('Category Updated successfully', { appearance: 'success',autoDismiss: true });
-            history.push(`/admin/school-management`);
+        onSuccess: (response) => {
+            if(response?.data?.count === 1){
+                  addToast(response?.data?.message, { appearance: 'error',autoDismiss: true });
+            }else{
+                  addToast(response?.data?.message, { appearance: 'success',autoDismiss: true });
+            }  
         }
-        });
-      return status;
+      });
+      
 }

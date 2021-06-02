@@ -10,12 +10,7 @@ export default function AppPermissionList() {
     return (
         <>
             <p className="form-heading">
-            <span className="fa fa-plus-circle mr-2"></span>App Permissions -
-            <span className="badge-success br-5 ml-2 p-1"
-            style={{
-                fontSize: '0.90rem'
-            }}>{params?.school_slug?.replaceAll('-'," ")}</span>
-            
+            <span className="fa fa-plus-circle mr-2"></span>App Permissions for
             <span className="badge-danger br-5 ml-2 p-1"
             style={{
                 fontSize: '0.90rem'

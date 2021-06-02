@@ -166,7 +166,7 @@ export default function CreateStudent() {
                         <option value="999">Select Class</option>
                         {!classesIsLoading && classes?.map(item => {
                         return (
-                            <option value={item._id} key={item._id}>{item.class_name}</option>
+                            <option value={item._id} key={item._id}>{item.class_name}-{item.section}</option>
                         )
                         })}
                     </select>

@@ -9,9 +9,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import PrivateRoute from './helper/PrivateRoute.jsx';
 import AdminRoute from './helper/AdminRoute.jsx';
-import SchoolAdminRoute from './helper/SchoolAdminRoute.jsx';
 
-import { webRoutes, privateRoutes, adminRoutes, schoolAdminRoutes } from './routes/index.jsx';
+
+import { webRoutes, privateRoutes, adminRoutes } from './routes/index.jsx';
 
 import AuthProvider from './context/AuthContext.jsx';
 import { ToastProvider } from 'react-toast-notifications';
@@ -51,11 +51,6 @@ return (
     {adminRoutes?.map((route => (
       <AdminRoute exact={true} key={route.path} path={route.path} component={route.component} />
     )))}
-    
-    {schoolAdminRoutes?.map((route => (
-      <SchoolAdminRoute exact={true} key={route.path} path={route.path} component={route.component} />
-    )))}
-
 
     </Switch>
     </React.StrictMode>

@@ -11,6 +11,12 @@ const ModuleSchema = new mongoose.Schema({
     module_slug:{
         type: String
     },
+    module_type:{
+        type: String
+    },
+    module_sequence:{
+        type: Number
+    },
     status:{
         type: Boolean,
         default: true

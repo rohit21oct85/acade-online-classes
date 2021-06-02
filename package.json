@@ -1,7 +1,7 @@
 {
-  "name": "acadecraft-online-classess",
+  "name": "acade-learn",
   "version": "1.0.0",
-  "description": "Online Classes web app for schools, teachers and students",
+  "description": "Acade learn is a portal which provides and Online classes and Online assesment solutions",
   "main": "index.js",
   "scripts": {
     "start": "NODE_ENV='production' && node index.js",
@@ -9,7 +9,7 @@
     "backend": "nodemon index.js",
     "dev": "npm-run-all --parallel client backend",
     "create:build": "cd views && rm -rf build && cd ../resources && npm run build",
-    "clean:build": "cd views && rm -rf build"
+    "clear:build": "cd views && rm -rf build"
   },
   "keywords": [
     "express",

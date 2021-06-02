@@ -21,9 +21,7 @@ const AdminSchema = new mongoose.Schema({
         trim: true
     },
     role:{
-        type: String,
-        required: true,
-        default: 2
+        type: Number
     },
     status:{
         type: Boolean,
