@@ -1,19 +1,18 @@
-const Student = require('../../../models/admin/Student');
-const School = require('../../../models/admin/School');
+const Principal = require('../../../models/admin/Principal');
 const csv = require('csv-parser')
 const fs = require('fs')
-const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 let refreshTokens = [];
 
-const CreateStudent = async (req, res) => {
+const CreatePrincipal = async (req, res) => {
     const body = req.body;
     try {
-        const newStudent = new Student(body);
-        await newStudent.save();
+        const newPrincipal = new Principal(body);
+        await newPrincipal.save();
         return res.status(200).json({ 
-            message: "Student created sucessfully"
+            message: "Principal created sucessfully"
         });
     } catch (error) {
         res.status(502).json({
@@ -21,12 +20,12 @@ const CreateStudent = async (req, res) => {
         })
     }
 }
-const UpdateStudent = async (req, res) =>{
+const UpdatePrincipal = async (req, res) =>{
     try {
-        await Student.findOneAndUpdate({_id: req.params.id},req.body)
+        await Principal.findOneAndUpdate({_id: req.params.id},req.body)
                 .then(response => {
                     return res.status(202).json({
-                        message: "Student, Updated successfully"
+                        message: "Principal, Updated successfully"
                     })
                 })
                 .catch(error => {
@@ -43,11 +42,11 @@ const UpdateStudent = async (req, res) =>{
     }
 }
 
-const ViewStudent = async (req, res) => {
+const ViewPrincipal = async (req, res) => {
     try{
-        const StudentData = await Student.findOne({_id: req.params.id},{__v: 0});
+        const PrincipalData = await Principal.findOne({_id: req.params.id},{__v: 0});
         return res.status(200).json({ 
-            data: StudentData
+            data: PrincipalData
         });    
     } catch(error){
         res.status(409).json({
@@ -56,11 +55,11 @@ const ViewStudent = async (req, res) => {
         });
     }
 }
-const ViewAllStudent = async (req, res) => {
+const ViewAllPrincipal = async (req, res) => {
     try{
-        const AllStudents = await Student.find({},{__v: 0});
+        const AllPrincipal = await Principal.find({},{__v: 0});
         return res.status(200).json({ 
-            data: AllStudents 
+            data: AllPrincipal 
         });    
     } catch(error){
         res.status(409).json({
@@ -69,13 +68,12 @@ const ViewAllStudent = async (req, res) => {
         });
     }
 }
-
-const DeleteStudent = async (req, res) =>{
-    const id = req.params.id;
+const DeletePrincipal = async (req, res) =>{
+    const id = req.body.principal_id;
     try {
-        await Student.deleteOne({_id: id}).then( response => {
+        await Principal.deleteOne({_id: id}).then( response => {
             return res.status(201).json({
-                message: "Student, deleted successfully"
+                message: "Principal, deleted successfully"
               })
         });
     } catch (error) {
@@ -85,26 +83,9 @@ const DeleteStudent = async (req, res) =>{
     }
 };
 
-const getStudentBySchoolIdAndClassId = async (req, res) => {
-    try{
-        const filter = {school_id: req.params.sid, class_id: req.params.cid}
-        const StudentData = await Student.find(filter,{__v: 0});
-        return res.status(200).json({ 
-            data: StudentData
-        });    
-    } catch(error){
-        res.status(409).json({
-            message: "Error occured",
-            errors: error.message
-        });
-    }
-}
 
-const uploadStudent = async(req, res) => {
+const uploadPrincipal = async(req, res) => {
     const data = req.body;
-    const filter = {_id: req.body.school_id}
-    const sch = await School.findOne(filter,{__v: 0});
-    const domainName = sch.domain;
     const hashedPassword = await bcrypt.hash("password", 10)
     let FinalData = [];
     try {
@@ -114,26 +95,19 @@ const uploadStudent = async(req, res) => {
             .pipe(csv())
             .on('data', (data) => results.push(data))
             .on('end', () => {
-                results.forEach(student => {
+                results.forEach(principal => {
                     FinalData.push({ 
-                        name: student.name, 
-                        class: student.class, 
-                        section: student.section, 
-                        roll_no: student.roll_no, 
-                        mobile: student.mobile, 
-                        address: student.address, 
-                        city: student.city, 
-                        state: student.state, 
-                        pincode: student.pincode, 
-                        email: student.email, 
-                        status: student.status, 
-                        guardian_name: student.guardian_name,
-                        EMPID: student.EmpID,
-                        guardian_phone_no: student.guardian_phone,
-                        school_id: req.body.school_id,
-                        class_id: req.body.class_id,
-                        username: student.first_name + student?.guardian_phone?.substr(-4) + "@" + domainName,
-                        password: hashedPassword,
+                        title: principal.title, 
+                        name: principal.name, 
+                        EmpId: principal.EmpId, 
+                        address: principal.address, 
+                        city: principal.city, 
+                        state: principal.state, 
+                        pincode: principal.pincode, 
+                        email: principal.email, 
+                        password: hashedPassword, 
+                        mobile: principal.mobile, 
+                        status: principal.status, 
                     })
                 })
                 otherFunction(res, FinalData, function() {
@@ -149,8 +123,8 @@ const uploadStudent = async(req, res) => {
 }
 
 const otherFunction = async(res, FinalData, callback) => {
-    await Student.insertMany(FinalData).then(() => {
-        res.status(200).send('Students Inserted')
+    await Principal.insertMany(FinalData).then(() => {
+        res.status(200).send('Principals Inserted')
         callback()
     }).catch(error => {
         return res.status(409).json({
@@ -162,9 +136,9 @@ const otherFunction = async(res, FinalData, callback) => {
 
 const Login = async (req, res) => {
     try {
-        await Student.findOne({email: req.body.email},{__v: 0}).then( student => {
-            if(student){
-                bcrypt.compare(req.body.password, student.password, function(err,response){
+        await Principal.findOne({email: req.body.email},{__v: 0}).then( Principal => {
+            if(Principal){
+                bcrypt.compare(req.body.password, Principal.password, function(err,response){
                     if(err){
                         res.status(203).json({ 
                             message: "Password does not match"
@@ -172,14 +146,14 @@ const Login = async (req, res) => {
                     }
                     else{
                         if(response){
-                            const accessToken = generateAccessToken(student);
-                            const refreshToken = generateRefreshToken(student);
+                            const accessToken = generateAccessToken(Principal);
+                            const refreshToken = generateRefreshToken(Principal);
                             refreshTokens.push(refreshToken);
                             
                             res.status(200).json({ 
                                 accessToken, 
                                 refreshToken,
-                                student
+                                Principal
                             });
                         } else {
                             res.status(203).json({ 
@@ -238,46 +212,12 @@ const RefreshToken = async (req,res) => {
     })
 }
 
-const Logout = async (req, res) => {
-    const accessTokenSecret = 'SHIVAMPARTS2021';
-    const authorizationHeader = req.headers.authorization;
-    if (authorizationHeader){
-        const accessToken = req.headers.authorization.split(' ')[1];  
-        const decode = await jwt.verify(accessToken, accessTokenSecret);
-        const UserData = {id: decode.id, role: decode.role};
-        let newAccessToken = await jwt.sign(UserData, 'sasdasd', {expiresIn: '0s'});
-        return res.status(402).json({
-            message: "successfully loggedout",
-            accessToken: newAccessToken
-        });    
-    }
-}
-
-const ForgotPassword = async (req, res) => {
-    try {
-        const email = req.body.email;
-        const data = await Student.findOne({email: email});
-        if(data){
-            console.log(data);
-            return res.status(201).json(data)
-        }else{
-            return res.status(402).json({message: "Email does not belongs to our Database"})    
-        }
-    } catch (error) {
-        return res.status(502).json({message: "Somethign went wrong!"})
-    }
-
-}
-
 module.exports = {
-    CreateStudent,
-    UpdateStudent,
-    ViewStudent,
-    ViewAllStudent,
-    DeleteStudent,
-    uploadStudent,
-    getStudentBySchoolIdAndClassId,
+    CreatePrincipal,
+    UpdatePrincipal,
+    ViewPrincipal,
+    ViewAllPrincipal,
+    DeletePrincipal,
+    uploadPrincipal,
     Login,
-    ForgotPassword,
-    Logout,
 }

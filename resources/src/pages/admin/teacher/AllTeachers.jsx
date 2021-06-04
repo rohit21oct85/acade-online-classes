@@ -57,9 +57,13 @@ export default function AllTeachers() {
                     <thead>
                         <tr>
                         <th scope="col">#</th>
-                        <th scope="col">First Name</th>
-                        <th scope="col">Last Name</th>
-                        <th scope="col">Phone no</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Subject</th>
+                        <th scope="col">Class</th>
+                        <th scope="col">Section</th>
+                        <th scope="col">Mobile</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -67,17 +71,20 @@ export default function AllTeachers() {
                             return (
                                 <tr key={item?._id}>
                                 <th scope="row">{key}</th>
-                                <td>{item.first_name}</td>
-                                <td>{item.last_name}</td>
-                                <td>{item.phone_no}</td>
+                                <td>{item.name}</td>
+                                <td>{item.subject}</td>
+                                <td>{item.class}</td>
+                                <td>{item.section}</td>
+                                <td>{item.mobile}</td>
+                                <td>{item.email}</td>
                                 <td>
                                     <button className="btn bg-primary text-white btn-sm mr-2" 
                                         onClick={
                                             e => {
                                                 if(params.school_id){
-                                                    history.push(`/admin/teachers-management/modify-subject/${params?.school_id}/${item?._id}`)
+                                                    history.push(`/admin/teachers-management/modify-teacher/${params?.school_id}/${item?._id}`)
                                                 }else{
-                                                    history.push(`/admin/teachers-management/modify-subject/${item.school_id}/${item?._id}`)
+                                                    history.push(`/admin/teachers-management/modify-teacher/${item.school_id}/${item?._id}`)
                                                 }
                                             }
                                         }>

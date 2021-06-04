@@ -1,10 +1,10 @@
 import React from 'react'
 import {useHistory, useParams} from 'react-router-dom'
-import CreateSchool from './CreateSchool';
-import AllSchools from './AllSchools';
-import UploadSchools from './UploadSchools';
+import CreatePrincipal from './CreatePrincipal';
+import AllPrincipals from './AllPrincipals';
+import UploadPrincipals from './UploadPrincipals';
 
-export default function SchoolList() {
+export default function PrincipalList() {
     const params = useParams();
     const history = useHistory();
     
@@ -13,7 +13,7 @@ export default function SchoolList() {
             <div className="main-area-all">
                 <div className="dashboard_main-container">
                         <div className="dash-main-head">
-                              <h2>School List</h2>
+                              <h2>Principal List</h2>
                         </div>
                     <div className="dash-con-heading">
                         <div className="col-md-12 row">
@@ -23,12 +23,12 @@ export default function SchoolList() {
                             </button>
                             <button className="btn btn-sm dark" onClick={e => {
                                 if(params.page_type == undefined){
-                                    history.push(`/admin/school-management/upload`)
+                                    history.push(`/admin/principal-management/upload`)
                                 }else if(params.page_type == "upload"){
-                                    history.push(`/admin/school-management`)
+                                    history.push(`/admin/principal-management`)
                                 }
                                 }}>
-                                <span className="fa fa-upload"></span>   Upload Schools 
+                                <span className="fa fa-upload"></span>   Upload Principals 
                             </button>
                         </div>
                     </div>
@@ -36,11 +36,11 @@ export default function SchoolList() {
                     <div className="dash-cont-start">
                         <div className="row">
                             <div className="col-md-3">
-                            { params.page_type == "upload" ? <UploadSchools /> : <CreateSchool /> }
+                            { params.page_type == "upload" ? <UploadPrincipals /> : <CreatePrincipal /> }
                             </div>
                             
                             <div className="col-md-9 ">
-                               <AllSchools />
+                               <AllPrincipals />
                             </div>
 
                         </div>

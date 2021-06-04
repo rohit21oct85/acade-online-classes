@@ -45,7 +45,6 @@ const reducer = (state, action) => {
                 access_token: action.payload.access_token, 
                 refresh_token: action.payload.refresh_token, 
             }
-            
            
         case 'LOGOUT':
             localStorage.clear();

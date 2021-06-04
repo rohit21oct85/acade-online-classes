@@ -1,7 +1,6 @@
 const express =  require("express");
-const School = require('../../http/controllers/admin/schoolController.js');
+const Principal = require('../../http/controllers/admin/principalController.js');
 const checkAuth =  require("../../http/middleware/check-auth");
-const adminAuth =  require("../../http/middleware/admin-auth");
 
 const router = express.Router();
 
@@ -23,10 +22,12 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage })
 
 router
-    .post('/create',checkAuth,adminAuth, School.CreateSchool)
-    .patch('/update/:id',checkAuth,adminAuth, School.UpdateSchool)
-    .get('/view/:id',checkAuth,adminAuth, School.ViewSchool)
-    .get('/view-all',checkAuth,adminAuth, School.ViewAllSchool)
-    .post('/delete', checkAuth,adminAuth, School.DeleteSchool)
-    .post('/upload', upload.single('file'), checkAuth,adminAuth, School.uploadSchool);
+    .post('/login', Principal.Login)
+    .post('/create',checkAuth, Principal.CreatePrincipal)
+    .patch('/update/:id',checkAuth, Principal.UpdatePrincipal)
+    .get('/view/:id',checkAuth, Principal.ViewPrincipal)
+    .get('/view-all',checkAuth, Principal.ViewAllPrincipal)
+    .post('/delete', checkAuth, Principal.DeletePrincipal)
+    .post('/upload', upload.single('file'), checkAuth, Principal.uploadPrincipal);
+
 module.exports = router;

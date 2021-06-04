@@ -9,6 +9,5 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
             state.isLoggedIn ? <Component {...props} /> : <Redirect to={{ pathname: '/admin/login' }} />
         )} />
     )
-    
 }
 export default PrivateRoute;

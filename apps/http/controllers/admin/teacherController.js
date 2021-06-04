@@ -1,6 +1,10 @@
 const Teacher = require('../../../models/admin/Teacher');
 const csv = require('csv-parser')
 const fs = require('fs')
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+
+let refreshTokens = [];
 
 const CreateTeacher = async (req, res) => {
     const body = req.body;
@@ -83,6 +87,7 @@ const DeleteTeacher = async (req, res) =>{
 
 const uploadTeacher = async(req, res) => {
     const data = req.body;
+    const hashedPassword = await bcrypt.hash(req.body.password, 10)
     // console.log(req.body.subject_id)
     let FinalData = [];
     try {
@@ -92,11 +97,23 @@ const uploadTeacher = async(req, res) => {
             .pipe(csv())
             .on('data', (data) => results.push(data))
             .on('end', () => {
-                results.forEach(book => {
+                results.forEach(teacher => {
                     FinalData.push({ 
-                        first_name: book.first_name, 
-                        last_name: book.last_name, 
-                        phone_no: book.phone_no, 
+                        name: teacher.name, 
+                        EmpID: teacher.EmpID, 
+                        subject: teacher.subject, 
+                        class: teacher.class, 
+                        section: teacher.section, 
+                        mobile: teacher.mobile, 
+                        email: teacher.email, 
+                        password: hashedPassword, 
+                        address: teacher.address, 
+                        city: teacher.city, 
+                        state: teacher.state, 
+                        pincode: teacher.pincode, 
+                        first_name: teacher.first_name, 
+                        last_name: teacher.last_name, 
+                        phone_no: teacher.phone_no, 
                         school_id:req.body.school_id
                     })
                 })
@@ -139,6 +156,85 @@ const getTeacherBySchoolId = async (req, res) => {
     }
 }
 
+const Login = async (req, res) => {
+    try {
+        await Teacher.findOne({email: req.body.email},{__v: 0}).then( Teacher => {
+            if(Teacher){
+                bcrypt.compare(req.body.password, Teacher.password, function(err,response){
+                    if(err){
+                        res.status(203).json({ 
+                            message: "Password does not match"
+                        });
+                    }
+                    else{
+                        if(response){
+                            const accessToken = generateAccessToken(Teacher);
+                            const refreshToken = generateRefreshToken(Teacher);
+                            refreshTokens.push(refreshToken);
+                            
+                            res.status(200).json({ 
+                                accessToken, 
+                                refreshToken,
+                                Teacher
+                            });
+                        } else {
+                            res.status(203).json({ 
+                                status: 203,
+                                message: "Password does not match"
+                            });
+                        }                      
+                    }
+                });
+            }else{
+                res.status(401).json({ 
+                    status: 401,
+                    message: "Email or Password doesnot matched"
+                })
+            }
+        }).catch(error => {
+            res.status(401).json({
+                status: 401,
+                message: "Email Does not exists in our database",
+                errors: error.message
+            });     
+        })
+        
+    } catch (error) {
+        return res.status(401).json({
+            message: error.message
+        });  
+    }
+}
+const generateAccessToken = (user) => {
+    const accessTokenSecret = 'SHIVAMPARTS2021';
+    return jwt.sign({ 
+        id: user._id,  
+        role: user.role 
+    }, accessTokenSecret, {expiresIn: '30d'})
+}
+const generateRefreshToken = (user) => {
+    const refreshTokenSecret = 'SHIVAMPARTS2021';
+    return jwt.sign({
+        id: user._id,   
+        role: user.role
+    },refreshTokenSecret);
+}
+
+const RefreshToken = async (req,res) => {
+    const refreshTokenSecret = 'SHIVAMPARTS2021';
+    const refreshToken = req.body.token;
+    if(refreshToken === null) return res.status(401).json({message: 'Invalid refresh token'});
+    if(!refreshTokens.includes(refreshToken)) return res.status(401).json({message: 'Invalid refresh token'});
+    jwt.verify(refreshToken, refreshTokenSecret, (err, user) => {
+        if(err) return res.status(err).json({message: "Error found"});
+        const accessToken = generateAccessToken({email: user.email,role: user.role });
+        return res.status(200).json({ 
+            accessToken
+        });
+    })
+}
+
+
 module.exports = {
     CreateTeacher,
     UpdateTeacher,
@@ -147,4 +243,5 @@ module.exports = {
     DeleteTeacher,
     getTeacherBySchoolId,
     uploadTeacher,
+    Login,
 }
