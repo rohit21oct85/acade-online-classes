@@ -22,6 +22,7 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage })
 
 router
+    .post('/login', Teacher.Login)
     .post('/create', checkAuth, Teacher.CreateTeacher)
     .patch('/update/:id', checkAuth, Teacher.UpdateTeacher)
     .get('/view/:id', checkAuth, Teacher.ViewTeacher)

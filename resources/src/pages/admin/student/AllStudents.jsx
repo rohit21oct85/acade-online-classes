@@ -60,10 +60,13 @@ export default function AllStudents() {
                     <thead>
                         <tr>
                         <th scope="col">#</th>
-                        <th scope="col">First Name</th>
-                        <th scope="col">Last Name</th>
-                        <th scope="col">Guardian Name</th>
-                        <th scope="col">Guardian Phone</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Class</th>
+                        <th scope="col">Section</th>
+                        <th scope="col">Roll No</th>
+                        <th scope="col">Mobile</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -71,10 +74,12 @@ export default function AllStudents() {
                             return (
                                 <tr key={item?._id}>
                                 <th scope="row">{key}</th>
-                                <td>{item.first_name}</td>
-                                <td>{item.last_name}</td>
-                                <td>{item.guardian_name}</td>
-                                <td>{item.guardian_phone_no}</td>
+                                <td>{item.name}</td>
+                                <td>{item.class}</td>
+                                <td>{item.section}</td>
+                                <td>{item.roll_no}</td>
+                                <td>{item.mobile}</td>
+                                <td>{item.email}</td>
                                 <td>
                                     <button className="btn bg-primary text-white btn-sm mr-2" 
                                         onClick={

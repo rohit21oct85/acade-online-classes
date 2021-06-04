@@ -28,9 +28,18 @@ export default function CreateTeacher() {
     const {data : schools, isLoading } = useSchoolLists();
     const pattern = /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/;
     const initialData = {
-        first_name: '',
-        last_name: '',
-        phone_no: '',
+        name: '',
+        EmpID:"",
+        class: '',
+        section: '',
+        subject: '',
+        mobile: '',
+        email: '',
+        password: '',
+        address: '',
+        city: '',
+        state: '',
+        pincode: '',
     } 
     const [formData, setFormData] = useState(initialData);
 
@@ -84,7 +93,7 @@ export default function CreateTeacher() {
             if(formData.school_id == ''){
                 setLoading(false);
                 addToast('Please Select a School', { appearance: 'error',autoDismiss: true });
-            }else if(!pattern.test(formData.phone_no)){
+            }else if(!pattern.test(formData.mobile)){
                 setLoading(false);
                 addToast('Please Enter a valid 10 digit phone no', { appearance: 'error',autoDismiss: true });
             }else{
@@ -124,7 +133,7 @@ export default function CreateTeacher() {
                         <option value="999">Select School</option>
                         {!isLoading && schools?.map(school => {
                         return (
-                            <option value={school._id} key={school._id}>{school.name}</option>
+                            <option value={school._id} key={school._id}>{school.school_name}</option>
                         )
                         })}
                     </select>
@@ -133,28 +142,115 @@ export default function CreateTeacher() {
                     <input 
                         type="text" 
                         className="form-control" 
-                        name="first_name"
-                        value={params?.teacher_id ? SingleTeacher?.first_name : formData?.first_name}
+                        name="EmpID"
+                        value={params?.teacher_id ? SingleTeacher?.EmpID : formData?.EmpID}
                         onChange={handleChange}
-                        placeholder="First Name"/>
+                        placeholder="EmployeeId"/>
                 </div>
                 <div className="form-group">
                     <input 
                         type="text" 
                         className="form-control" 
-                        name="last_name"
-                        value={params?.teacher_id ? SingleTeacher?.last_name : formData?.last_name}
+                        name="name"
+                        value={params?.teacher_id ? SingleTeacher?.name : formData?.name}
                         onChange={handleChange}
-                        placeholder="Last Name"/>
+                        placeholder="Name"/>
                 </div>
                 <div className="form-group">
                     <input 
                         type="text" 
                         className="form-control" 
-                        name="phone_no"
-                        value={params?.teacher_id ? SingleTeacher?.phone_no : formData?.phone_no}
+                        name="subject"
+                        value={params?.teacher_id ? SingleTeacher?.subject : formData?.subject}
                         onChange={handleChange}
-                        placeholder="Phone no"/>
+                        placeholder="Subject"/>
+                </div>
+                <div className="form-group">
+                    <input 
+                        type="text" 
+                        className="form-control" 
+                        name="class"
+                        value={params?.teacher_id ? SingleTeacher?.class : formData?.class}
+                        onChange={handleChange}
+                        placeholder="Class"/>
+                </div>
+                <div className="form-group">
+                    <input 
+                        type="text" 
+                        className="form-control" 
+                        name="section"
+                        value={params?.teacher_id ? SingleTeacher?.section : formData?.section}
+                        onChange={handleChange}
+                        placeholder="Section"/>
+                </div>
+                <div className="form-group">
+                    <input 
+                        type="text" 
+                        className="form-control" 
+                        name="mobile"
+                        value={params?.teacher_id ? SingleTeacher?.mobile : formData?.mobile}
+                        onChange={handleChange}
+                        placeholder="Mobile"/>
+                </div>
+                <div className="form-group">
+                    <input 
+                        type="email" 
+                        className="form-control" 
+                        name="email"
+                        value={params?.teacher_id ? SingleTeacher?.email : formData?.email}
+                        onChange={handleChange}
+                        placeholder="Email"/>
+                </div>
+                <div className="form-group">
+                    <input 
+                        type="password" 
+                        className="form-control" 
+                        name="password"
+                        value={params?.teacher_id ? SingleTeacher?.password : formData?.password}
+                        onChange={handleChange}
+                        placeholder="Password"/>
+                </div>
+                <div className="form-group">
+                    <input 
+                        type="text" 
+                        className="form-control" 
+                        name="address"
+                        value={params?.teacher_id ? SingleTeacher?.address : formData?.address}
+                        onChange={handleChange}
+                        autoComplete="no-password"
+                        placeholder="Address"/>
+                </div>
+                <div className="form-group">
+                    <input 
+                        type="text" 
+                        className="form-control" 
+                        name="city"
+                        value={params?.teacher_id ? SingleTeacher?.city : formData?.city}
+                        onChange={handleChange}
+                        autoComplete="no-password"
+                        placeholder="City"/>
+                </div>
+                <div className="form-group">
+                    <input 
+                        type="text" 
+                        className="form-control" 
+                        name="state"
+                        value={params?.teacher_id ? SingleTeacher?.state : formData?.state}
+                        onChange={handleChange}
+                        autoComplete="no-password"
+                        placeholder="State"/>
+                </div>
+                
+                <div className="form-group">
+                    <input 
+                        type="text" 
+                        className="form-control" 
+                        name="pincode"
+                        maxLength={6}
+                        value={params?.teacher_id ? SingleTeacher?.pincode : formData?.pincode}
+                        onChange={handleChange}
+                        autoComplete="no-password"
+                        placeholder="Pincode"/>
                 </div>
             
                 <div className="form-group flex">

@@ -1,30 +1,42 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
 const SchoolSchema = new mongoose.Schema({
-    name: {
+    school_name: {
         type: String,
     },
-    slug:{
+    sub_domain:{
         type: String
     },
-    logo:{
+    school_logo:{
         type: String
     },
     address:{
         type: String
     },
-    zip_code:{
+    city:{
         type: String
     },
-    admin_email:{
-        type: String,
+    state:{
+        type: String
     },
-    admin_mobile:{
-        type: String,
+    pincode:{
+        type: String
+    },
+    contact_name:{
+        type: String
+    },
+    contact_email:{
+        type: String
+    },
+    contact_mobile:{
+        type: String
+    },
+    slug:{
+        type: String
     },
     status:{
-        type: Boolean,
-        default: false
+        type: String,
     },
     create_at: {
         type: Date,

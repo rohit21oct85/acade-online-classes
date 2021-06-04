@@ -29,14 +29,13 @@ export default function CreateStudent() {
     const {data : classes, classesIsLoading } = useClassList();
 
     const initialData = {
-        first_name: '',
-        last_name: '',
+        name: '',
         class_id: '',
-        class_name: '',
-        guardian_name: '',
-        guardian_phone_no: '',
-        school_id: '',
-        username: '',
+        class: '',
+        section: '',
+        roll_no: '',
+        mobile: '',
+        email: '',
     } 
     const [formData, setFormData] = useState(initialData);
 
@@ -98,12 +97,12 @@ export default function CreateStudent() {
                 if(formData.class_id == ''){
                     setLoading(false);
                     addToast('Please Select a Class', { appearance: 'error',autoDismiss: true });
-                }else if(!pattern.test(formData.guardian_phone_no)){
+                }else if(!pattern.test(formData.mobile)){
                     setLoading(false);
                     addToast('Please Enter a valid 10 digit phone no', { appearance: 'error',autoDismiss: true });
                 }else{
                     const domainName = schools.filter(school =>  school._id == params.school_id)
-                    formData.username = formData.first_name + formData.guardian_phone_no.substr(-4) + `@${domainName[0].domain}`;
+                    formData.username = formData.first_name + formData.mobile.substr(-4) + `@${domainName[0].domain}`;
                     await mutation.mutate(formData);
                 }
             }
@@ -156,7 +155,7 @@ export default function CreateStudent() {
                         <option value="999">Select School</option>
                         {!schoolIsLoading && schools?.map(school => {
                         return (
-                            <option value={school._id} key={school._id}>{school.name}</option>
+                            <option value={school._id} key={school._id}>{school.school_name}</option>
                         )
                         })}
                     </select>
@@ -175,37 +174,64 @@ export default function CreateStudent() {
                     <input 
                         type="text" 
                         className="form-control" 
-                        name="first_name"
-                        value={params?.student_id ? SingleStudent?.first_name : formData?.first_name}
+                        name="name"
+                        value={params?.student_id ? SingleStudent?.name : formData?.name}
                         onChange={handleChange}
-                        placeholder="First Name"/>
+                        placeholder="Name"/>
                 </div>
                 <div className="form-group">
                     <input 
                         type="text" 
                         className="form-control" 
-                        name="last_name"
-                        value={params?.student_id ? SingleStudent?.last_name : formData?.last_name}
+                        name="class"
+                        value={params?.student_id ? SingleStudent?.class : formData?.class}
                         onChange={handleChange}
-                        placeholder="Last Name"/>
+                        placeholder="Class"/>
                 </div>
                 <div className="form-group">
                     <input 
                         type="text" 
                         className="form-control" 
-                        name="guardian_name"
-                        value={params?.student_id ? SingleStudent?.guardian_name : formData?.guardian_name}
+                        name="section"
+                        value={params?.student_id ? SingleStudent?.section : formData?.section}
                         onChange={handleChange}
-                        placeholder="Guardian Name"/>
+                        placeholder="Section"/>
                 </div>
                 <div className="form-group">
                     <input 
                         type="text" 
                         className="form-control" 
-                        name="guardian_phone_no"
-                        value={params?.student_id ? SingleStudent?.guardian_phone_no : formData?.guardian_phone_no}
+                        name="mobile"
+                        value={params?.student_id ? SingleStudent?.mobile : formData?.mobile}
                         onChange={handleChange}
-                        placeholder="Guardian Phone"/>
+                        placeholder="Phone"/>
+                </div>
+                <div className="form-group">
+                    <input 
+                        type="text" 
+                        className="form-control" 
+                        name="email"
+                        value={params?.student_id ? SingleStudent?.email : formData?.email}
+                        onChange={handleChange}
+                        placeholder="Email"/>
+                </div>
+                <div className="form-group">
+                    <input 
+                        type="text" 
+                        className="form-control" 
+                        name="password"
+                        value={params?.student_id ? SingleStudent?.password : formData?.password}
+                        onChange={handleChange}
+                        placeholder="Password"/>
+                </div>
+                <div className="form-group">
+                    <input 
+                        type="text" 
+                        className="form-control" 
+                        name="roll_no"
+                        value={params?.student_id ? SingleStudent?.roll_no : formData?.roll_no}
+                        onChange={handleChange}
+                        placeholder="Roll No"/>
                 </div>
             
                 <div className="form-group flex">

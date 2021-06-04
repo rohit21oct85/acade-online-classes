@@ -35,32 +35,32 @@ export default function AllSchools() {
                                                 School Name: 
                                           </div>
                                           <div className="name-main">
-                                                {school?.name}
+                                                {school?.school_name}
                                           </div>
                                     </div>
                                     <div className="admin-name"> 
                                           <div className="name-label">
-                                                Zipcode: 
+                                                Pincode: 
                                           </div>
                                           <div className="name-main">
-                                                {school?.zip_code}
+                                                {school?.pincode}
                                           </div>
                                     </div>
                                     
                                     <div className="admin-name"> 
                                           <div className="name-label">
-                                                Admin Email: 
+                                                Contact Email: 
                                           </div>
                                           <div className="name-main text-lower">
-                                                {school?.admin_email}
+                                                {school?.contact_email}
                                           </div>
                                     </div>
                                     <div className="admin-name"> 
                                           <div className="name-label">
-                                                Admin Mobile: 
+                                                Contact Mobile: 
                                           </div>
                                           <div className="name-main">
-                                                {school?.admin_mobile}
+                                                {school?.contact_mobile}
                                           </div>
                                     </div>
                               </div>
