@@ -1,18 +1,13 @@
 const Permission = require('../../../models/admin/Permission');
+const RoleModule = require('../../../models/admin/RoleModule');
 
 
 const CreatePermission = async (req, res) => {
     try {
-        const moduleData = req?.body?.modules;
-        // moduleData?.map(async module => {
-        //     let check = await Permission.findOne({
-        //         school_id: module?.school_id,
-        //         role_id: module?.role_id,
-        //         module_id: module?.module_id,
-        //     });
-        // });
-
-        await Permission.insertMany(moduleData);
+        const methodData = req?.body?.method;
+        const moduleData = req?.body?.module;
+        await Permission.insertMany(methodData);
+        await RoleModule.insertMany(moduleData);
         res.status(200).json({ 
             message: "Permission created sucessfully"
         });
@@ -52,7 +47,10 @@ const UpdatePermission = async (req, res) =>{
 }
 const ViewPermission = async (req, res) => {
     try{
-        const PermissionData = await Permission.findOne({_id: req.params.id},{__v: 0});
+        const PermissionData = await Permission.findOne({
+            module_slug: req.params.module_slug,
+            role_slug: req.params.role_slug,
+        },{__v: 0});
         return res.status(200).json({ 
             data: PermissionData
         });    
@@ -66,10 +64,8 @@ const ViewPermission = async (req, res) => {
 const ViewAllPermission = async (req, res) => {
     try{
         let filter = {}
-        if(req?.params?.school_slug){
-            filter = {school_slug: req?.params?.school_slug}
-        }else if(req?.params?.school_slug && req?.params?.role_slug){
-            filter = {school_slug: req?.params?.school_slug, role_slug: req?.params?.role_slug}
+        if(req?.params?.role_slug){
+            filter = {role_slug: req?.params?.role_slug, email: req.params?.user_email}
         }
         const AllPermissions = await Permission.find(filter,{__v: 0});
         return res.status(200).json({ 
@@ -99,11 +95,11 @@ const DeletePermission = async (req, res) =>{
 };
 const OtherModules = async (req, res) => {
     try {
-        const filter = {school_slug: req?.params?.school_slug, role_slug: req?.params?.role_slug}
+        const filter = {role_slug: req?.params?.role_slug}
         // res.status(201).json(filter)
-        const AllPermissions = await Permission.find(filter,{module_slug:1,_id:1, module_icon: 1},{__v: 0});
+        const AllModules = await RoleModule.find(filter,{__v: 0});
         return res.status(200).json({ 
-            data: AllPermissions 
+            data: AllModules 
         });        
     } catch (error) {
         res.status(203).json({

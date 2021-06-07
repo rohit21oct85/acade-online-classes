@@ -1,6 +1,9 @@
 const MakeSlug = (str) => {
     return str?.trim()?.toLowerCase()?.replace(/[^\w ]+/g,'')?.replace(/ +/g,'-');   
 }
+const MakeScore = (str) => {
+    return str?.trim()?.toLowerCase()?.replace(/[^\w ]+/g,'')?.replace(/ +/g,'_');   
+}
 const SameSlug = (str) => {
     return str?.trim()?.replace(/[^\w ]+/g,'')?.replace(/ +/g,'-');   
 }
@@ -57,6 +60,7 @@ const downloadData = async (data,isbn) => {
 
 export {
     MakeSlug,
+    MakeScore,
     SameSlug,
     GetString,
     GetName,

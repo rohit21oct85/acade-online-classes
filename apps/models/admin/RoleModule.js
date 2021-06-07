@@ -1,9 +1,8 @@
 const mongoose = require('mongoose');
 
-const PermissionSchema = new mongoose.Schema({
+const RoleModuleSchema = new mongoose.Schema({
       role_id:{
             type: String,
-            required: true,
       },
       role_slug: {
             type: String,
@@ -15,13 +14,16 @@ const PermissionSchema = new mongoose.Schema({
       email: {
             type: String,
       },
+      module_id:{
+            type: String,
+      },
+      module_name:{
+            type: String
+      },
       module_slug: {
             type: String,
       },
       module_icon: {
-            type: String,
-      },
-      method_name: {
             type: String,
       },
       status:{
@@ -34,4 +36,4 @@ const PermissionSchema = new mongoose.Schema({
       }
 });
 
-module.exports = mongoose.model('Permission', PermissionSchema);
+module.exports = mongoose.model('RoleModule', RoleModuleSchema);

@@ -19,6 +19,7 @@ export default function CreateAppRole() {
     const [RoleName, setRoleName] = useState("");
     const [loading, setLoading] = useState(false);
     const {data} = useSingleRole();
+    console.log(data);
     const {data:roles} = useAppRoles();
     const [singleRole, setSingleRole] = useState();
     useEffect(()=> {
@@ -77,10 +78,10 @@ export default function CreateAppRole() {
         
         if(singleRole?.role_name !== RoleName && params?.role_id){
             formData['role_name'] = singleRole?.role_name;
-            formData['role_slug'] = utils.MakeSlug(singleRole?.role_name);
+            formData['role_slug'] = utils.MakeScore(singleRole?.role_name);
         }else{
             formData['role_name'] = RoleName;   
-            formData['role_slug'] = utils.MakeSlug(RoleName);
+            formData['role_slug'] = utils.MakeScore(RoleName);
         }
         
         if(singleRole?.role_id !== RoleId && params?.role_id){

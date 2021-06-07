@@ -133,7 +133,7 @@ export default function CreateNewAdmin() {
                         
                   <div className="form-group flex">
                     <button className="btn btn-sm dark br-5">
-                        {loading ? (
+                        {(createMutation?.isLoading ||updateMutation?.isLoading ) ? (
                             <><span className="fa fa-spinner mr-2"></span></>
                         ) : (
                             <>

@@ -129,6 +129,19 @@ const ForgotPassword = async (req, res) => {
     }
 
 }
+const ViewSubAdminByRole = async (req, res) => {
+    try{
+        const AllSubAdmin = await Admin.find({role: req.params.role},{__v: 0});
+        res.status(200).json({ 
+            data: AllSubAdmin 
+        });    
+    } catch(error){
+        res.status(409).json({
+            message: "Error occured",
+            errors: error.message
+        });
+    }
+}
 const ViewAllSubAdmin = async (req, res) => {
     try{
         const AllSubAdmin = await Admin.find({role: {$gt: 1}},{__v: 0});
@@ -142,6 +155,7 @@ const ViewAllSubAdmin = async (req, res) => {
         });
     }
 }
+
 const ViewSubAdmin = async (req, res) => {
     try{
         const admin = await Admin.findOne({_id: req.params?.admin_id},{__v: 0});
@@ -157,6 +171,7 @@ const ViewSubAdmin = async (req, res) => {
 }
 
 module.exports = {
+    ViewSubAdminByRole,
     ViewSubAdmin,
     ViewAllSubAdmin,
     Register,

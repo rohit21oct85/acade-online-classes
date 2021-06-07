@@ -31,7 +31,7 @@ export const webRoutes =  [
 
 export const privateRoutes = [
     {
-        path: '/admin/dashboard',
+        path: '/:user_type?/dashboard',
         component: Dashboard
     },
     {
@@ -77,7 +77,7 @@ export const adminRoutes = [
         component: AppRole
     },
     {
-        path: '/admin/app-permissions/:role_id?/:role_slug?/:school_id?/:school_slug?/:permission_id?',
+        path: '/admin/app-permissions/:role_id?/:role_slug?/:role?/:admin_email?',
         component: AppPermission
     },
     {

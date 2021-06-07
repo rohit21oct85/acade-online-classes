@@ -19,7 +19,7 @@ export default function AppPermission() {
                     </div>
                     <div className="dash-con-heading">
                         <div className="col-md-12 row">
-                            <button className="btn btn-sm dark" onClick={e => { history.push(`/dashboard`)}}>
+                            <button className="btn btn-sm dark" onClick={e => { history.push(`/admin/dashboard`)}}>
                                 <span className="fa fa-dashboard"></span>
                             </button>
                         </div>

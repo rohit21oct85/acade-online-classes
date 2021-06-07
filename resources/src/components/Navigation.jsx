@@ -14,24 +14,18 @@ export default function Navigation() {
 
     const { state, dispatch } = useContext(AuthContext);
     const {data, isLoading} = useAppModule();
-    const {data:modules, isLoading: moduleLoading} = useOtherModule()
-    const [routes, setRoutes] = useState([]);
-    useEffect(setAppRoutes, [state,data,modules])
-    async function setAppRoutes(){
-        if(state?.user_type == 'master_admin'){
-            setRoutes(data);
-        }else if(state?.user_type == 'school-admin'){
-            setRoutes(modules);
-        }
-    }
-
+    const {data:modules, isLoading: moduleIsLoading} = useOtherModule()
+    
     function logout(){
         dispatch({type: 'LOGOUT'})
-        if(state?.user_type === 'master_admin'){
+        if(state?.user_type == 'master_admin'){
             history.push('/')
         }
-        else if(state?.user_type === 'sub_admin'){
-            history.push('/subadmin/login')
+        else if(state?.user_type == 'sub_admin'){
+            history.push('/admin/login')
+        }
+        else if(state?.user_type == 'mapping_admin'){
+            history.push('/admin/login')
         }
     }
 return (
@@ -46,12 +40,7 @@ return (
     <div className="user_area">
         <div className="col-md-12 user_icon">
             <div className="col-md-12 p-0">
-                {state?.user_type == "master_admin" && 
                 <img src={`/profile.jpg`} className="profileImage"/>
-                }
-                {state?.user_type !== "master_admin" && 
-                <img src={`https://drive.google.com/uc?export=view&id=${state?.school_logo}`} className="profileImage"/>
-                }
 
             </div>
         </div>
@@ -62,7 +51,7 @@ return (
             </div>
             <ul>
                 <li as={Link}>
-                    <button className="bg-warning dark br-10 pl-2 pr-2">
+                    <button className="bg-success dark br-10 pl-2 pr-2">
                         <span className="fa fa-lock mr-2"></span> {state?.user_type?.replace('_'," ")}
                     </button>
                 </li>
@@ -80,11 +69,14 @@ return (
             <li>
                 <Nav className="ml-auto">
                     {state?.user_type == 'master_admin' && 
-                    <NavLink to={`/admin/dashboard`} > <span className="fa fa-dashboard"></span> Dashboard</NavLink>
+                    <NavLink to={`/master-admin/dashboard`} > <span className="fa fa-dashboard"></span> Dashboard</NavLink>
                     }
                     
-                    {state?.user_type !== 'master_admin' && 
-                    <NavLink to={`/school/${state?.school_slug}/admin/dashboard`} > <span className="fa fa-dashboard"></span> Dashboard</NavLink>
+                    {state?.user_type === 'sub_admin' && 
+                    <NavLink to={`/sub-admin/dashboard`} > <span className="fa fa-dashboard"></span> Dashboard</NavLink>
+                    }
+                    {state?.user_type === 'mapping_admin' && 
+                    <NavLink to={`/mapping-admin/dashboard`} > <span className="fa fa-dashboard"></span> Dashboard</NavLink>
                     }
 
 
@@ -92,7 +84,7 @@ return (
             </li>
             {state?.user_type == 'master_admin' && isLoading && <Loading isLoading={isLoading}/>}
 
-            {state?.user_type == 'master_admin' && routes?.map( module => {
+            {state?.user_type == 'master_admin' && data?.map( module => {
                 if(module?.module_type === 'master_admin')
                 {
                     return (
@@ -105,13 +97,39 @@ return (
                 }
             })}
             
-            {state?.user_type == 'master_admin' && routes?.map( module => {
+            {state?.user_type == 'master_admin' && data?.map( module => {
                 if(module?.module_type === 'sub_admin')
                 {
                     return (
                     <li key={module?._id} id={module?.module_slug}>
                         <Nav className="ml-auto">
                             <NavLink to={`/admin/${module?.module_slug}`}> <span className={`bi ${module?.module_icon}`}></span> {module?.module_name} </NavLink>
+                        </Nav>
+                    </li>
+                    );
+                }
+            })}
+            {state?.user_type == 'sub_admin' && moduleIsLoading && <Loading isLoading={isLoading}/>}
+            {state?.user_type === 'sub_admin' && modules?.map( module => {
+                if(module?.role_slug == 'sub_admin')
+                {
+                    return (
+                    <li key={module?._id} id={module?.module_slug}>
+                        <Nav className="ml-auto">
+                            <NavLink to={`/admin/${module?.module_slug}`}> <span className={`bi ${module?.module_icon}`}></span> {module?.module_slug} </NavLink>
+                        </Nav>
+                    </li>
+                    );
+                }
+            })}
+            {state?.user_type == 'mapping_admin' && moduleIsLoading && <Loading isLoading={isLoading}/>}
+            {state?.user_type === 'mapping_admin' && modules?.map( module => {
+                if(module?.role_slug == 'mapping_admin')
+                {
+                    return (
+                    <li key={module?._id} id={module?.module_slug}>
+                        <Nav className="ml-auto">
+                            <NavLink to={`/admin/${module?.module_slug}`}> <span className={`bi ${module?.module_icon}`}></span> {module?.module_slug} </NavLink>
                         </Nav>
                     </li>
                     );

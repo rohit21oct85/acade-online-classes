@@ -7,27 +7,43 @@ import useSinglePermission from '../../../hooks/permissions/useSinglePermission.
 import useCreatePermission from '../../../hooks/permissions/useCreatePermission.jsx';
 import useUpdatePermission from '../../../hooks/permissions/useUpdatePermission';
 import useAppPermissions from '../../../hooks/permissions/useAppPermissions'
-import useDeletePermission from '../../../hooks/permissions/useDeletePermission';
+
 import useSchoolLists from '../../../hooks/schools/useSchoolLists';
 import useAppRoles from '../../../hooks/roles/useAppRoles';
 import useAppModule from '../../../hooks/modules/useAppModule';
+import useSubAdminByRole from '../../../hooks/subadmin/useSubAdminByRole';
 
 export default function CreateAppPermission() {
     const history = useHistory();
     const params  = useParams();
-    
+    const methods = [
+        {
+            key: 'create',
+            value: 'Create'
+        },
+        {
+            key: 'update',
+            value: 'Update'
+        },
+        {
+            key: 'delete',
+            value: 'Delete'
+        },
+        {
+            key: 'upload',
+            value: 'Upload'
+        }
+    ]
     const [loading, setLoading] = useState(false);
     const {data} = useSinglePermission();
     const {data:permissions} = useAppPermissions();
-    const {data:schools} = useSchoolLists()
     const {data:roles} = useAppRoles();
     const {data:modules} = useAppModule();
-    const [singlePermission, setSinglePermission] = useState();
+    const {data:subAdmins, isLoading: sAdminLoading} = useSubAdminByRole();
 
     const [formData, setFormData] = useState({});
     
     function clearFields(){
-        setSinglePermission({})
         Array.from(document.querySelectorAll('.checkbox')).map(checkbox => {
             checkbox.checked = false
         })
@@ -36,8 +52,7 @@ export default function CreateAppPermission() {
     
     const createMutation = useCreatePermission(formData);
     const updateMutation = useUpdatePermission(formData);
-    const deleteMutation = useDeletePermission(formData);
-
+    
     const saveAppPermission = async (e) => {
         e.preventDefault();
         setLoading(true);
@@ -45,49 +60,53 @@ export default function CreateAppPermission() {
         if(params?.permission_id){
             await updateMutation.mutate(formData);
         }else{
-            let ArrayData = []
-            Array.from(document.querySelectorAll('.checkbox')).map(checkbox => {
-                if(checkbox.checked === true){
-                    let data = checkbox.value;
-                    let module_id = data.split('_')[0]
-                    let module_slug = data.split('_')[1]
-                    let module_icon = data.split('_')[2]
-                    ArrayData.push({role_id: params?.role_id,
+            let ArrayMethod = []
+            Array.from(document.querySelectorAll('.module-methods')).map( method => {
+                if(method.checked === true){
+                    let data = method.value
+                    let splitData = data.split('_')
+                    ArrayMethod.push({
+                        role_id: params?.role_id,
                         role_slug: params?.role_slug,
-                        school_id: params?.school_id,
-                        school_slug: params?.school_slug,
-                        module_id: module_id,
-                        module_slug: module_slug,
-                        module_icon: module_icon
+                        role: params?.role,
+                        email: params?.admin_email,
+                        module_slug: splitData[0],
+                        module_icon: splitData[1],
+                        method_name: splitData[2]
                     })
                 }
             })
-            console.log(ArrayData)
+            
+            let ArrayModule = []
+            Array.from(document.querySelectorAll('.module')).map( method => {
+                if(method.checked === true){
+                    let data = method.value
+                    let splitData = data.split('_')
+                    ArrayModule.push({
+                        role_id: params?.role_id,
+                        role_slug: params?.role_slug,
+                        role: params?.role,
+                        email: params?.admin_email,
+                        module_id: splitData[0],
+                        module_name: splitData[1],
+                        module_slug: splitData[2],
+                        module_icon: splitData[3],
+                    })
+                }
+            })
 
-            formData['school_id'] = params?.school_id;
-            formData['role_id'] = params?.role_id;
-            formData['modules'] = ArrayData;
-
-            // console.log(formData); return; 
-
-            await createMutation.mutate(formData);
+            await createMutation.mutate({module: ArrayModule, method: ArrayMethod});
         }
         clearFields();
-    }
-    async function handleDelete(e){
-        e.preventDefault()
-        setFormData({...formData, permission_id: params?.permission_id});
-        await deleteMutation.mutate(formData);
     }
     
     function handleCheckBox(e){
         e.preventDefault();
-        let data = e.target.value;
-        Array.from(document.querySelectorAll('.checkbox')).map(checkbox => {
-            if(checkbox?.module_slug === data){
-                e.target.checked = true
-            }    
-        })
+        e.target.checked = true;
+    }
+    console.log(permissions)
+    function checkMethods(slug){
+        return permissions && permissions.some(permission => permission?.method_name == slug);
     }
 
     return (
@@ -100,14 +119,15 @@ export default function CreateAppPermission() {
                 <div className="form-group">
                     <select 
                         className="form-control"
-                        value={`${params?.role_id}_${params?.role_slug}`}
+                        value={`${params?.role_id}-${params?.role_slug}-${params?.role}`}
                         onChange={
                             e => {
                                 if(e.target.value !== '_'){
                                     let data = e.target.value;
-                                    let role_id = data.split('_')[0]
-                                    let role_slug = data.split('_')[1]
-                                    history.push(`/admin/app-permissions/${role_id}/${role_slug}`)
+                                    let role_id = data.split('-')[0]
+                                    let role_slug = data.split('-')[1]
+                                    let role = data.split('-')[2]
+                                    history.push(`/admin/app-permissions/${role_id}/${role_slug}/${role}`)
                                 }else{
                                     history.push(`/admin/app-permissions`)
                                 }
@@ -116,15 +136,40 @@ export default function CreateAppPermission() {
                     >
                         <option value="_">Select Roles</option>
                         {roles?.map(role => {
-                            if(role?.role_slug !== 'master-admin'){
+                            if(role?.role_slug !== 'master_admin'){
                                 return(
-                                    <option value={`${role?._id}_${role?.role_slug}`}
+                                    <option value={`${role?._id}-${role?.role_slug}-${role?.role_id}`}
                                     key={role?._id}>{role?.role_name}</option>
                                 );
                             }
                         })}
                     </select>
                 </div>
+                
+                <div className="form-group">
+                    <select 
+                        className="form-control"
+                        onChange={
+                            e => {
+                                if(e.target.value !== '_'){
+                                    let data = e.target.value;
+                                    history.push(`/admin/app-permissions/${params?.role_id}/${params?.role_slug}/${params?.role}/${data}`)
+                                }else{
+                                    history.push(`/admin/app-permissions`)
+                                }
+                            }
+                        }
+                        value={params?.admin_email}
+                    >
+                        <option value="_">{sAdminLoading ? 'loading...' : 'Select User'}</option>
+                        {subAdmins?.map(admin => {
+                            return(
+                                <option value={admin.email}>{admin.first_name} {admin.last_name}</option>
+                            )
+                        })}
+                    </select>
+                </div>
+
                 
                 <div className="form-group">
                     <div className="col-md-12 pl-0 pr-2"
@@ -134,28 +179,35 @@ export default function CreateAppPermission() {
                         overflow: 'scroll'
                     }}>
                         {modules?.map((module, index) => {
+
                             if(module?.module_type !== 'master_admin')
+                            
                             return(
                                 <div className="card pt-0 pb-0 mb-2" key={module?._id}>
                                     <label className="pb-0 mb-0"
-                                    htmlFor={`custom-checkbox-${index}`}>
+                                    htmlFor={`${module?.module_slug}`}>
                                     <span className={`bi ${module?.module_icon} mr-2 ml-2 `}></span>
                                     <input 
-                                        className="mr-2 checkbox"
-                                        type="checkbox" 
-                                        id={`custom-checkbox-${index}`}
-                                        name={`module-${module?.module_slug}`}
-                                        value={`${module?._id}-${module?.module_name}-${module?.module_slug}`}
-                                        onChange={handleCheckBox}
-                                    />    
+                                        type="checkbox" name={`method-${module?.module_slug}`} 
+                                        id={`${module?.module_slug}`}
+                                        className="module mr-2" 
+                                        value={`${module?._id}_${module?.module_name}_${module?.module_slug}_${module?.module_icon}`}
+                                    />
                                     {module?.module_name}
                                     </label>
                                     <hr className="mt-0 mb-1"/>
                                     <div className="flex ml-2 mr-2">
-                                        <label><input type="checkbox" name={`method-${module?.module_slug}`} className="mr-2" value={`create-${module?.module_slug}`}/>craete</label>
-                                        <label><input type="checkbox" name={`method-${module?.module_slug}`} className="mr-2" value={`update-${module?.module_slug}`}/>update</label>
-                                        <label><input type="checkbox" name={`method-${module?.module_slug}`} className="mr-2" value={`delete-${module?.module_slug}`}/>delete</label>
-                                        <label><input type="checkbox" name={`method-${module?.module_slug}`} className="mr-2" value={`upload-${module?.module_slug}`}/>upload</label>
+                                        {methods?.map( method => {
+                                            return(
+                                            <div className="col-md-3 pl-0" key={method?._id}>
+                                              <label className="mb-0">
+                                                <input type="checkbox" name={`method-${module?.module_slug}`} className="module-methods mr-1" 
+                                                value={`${module?.module_slug}_${module?.module_icon}_${method?.key}-${module?.module_slug}`}
+                                                />{method?.value}</label>
+                                            </div>
+                                            )
+                                        })}
+                                        
                                     </div>
 
                                 </div>

@@ -8,8 +8,9 @@ const router = express.Router();
 router
     .post('/register', auth.Register)
     .post('/login', auth.Login)
-    .get('/view-all',checkAuth, adminAuth,auth.ViewAllSubAdmin)
-    .get('/view/:admin_id',checkAuth, adminAuth,auth.ViewSubAdmin)
+    .get('/view-all',checkAuth,auth.ViewAllSubAdmin)
+    .get('/role-view-all/:role?',checkAuth,auth.ViewSubAdminByRole)
+    .get('/view/:admin_id', checkAuth, auth.ViewSubAdmin)
     .post('/forgot-password', auth.ForgotPassword)
     .post('/refresh-token', auth.RefreshToken)
     .delete('/logout', auth.Logout)

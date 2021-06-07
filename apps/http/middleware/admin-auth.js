@@ -15,7 +15,7 @@ module.exports = (req, res, next) => {
                 message: 'Authorization failed'
             });
         } else {
-            if(decoded.role === "1"){
+            if(decoded.role == "1"){
                 req.body.user_id = decoded.id;
                 req.body.user_role = decoded.role;
                 next()

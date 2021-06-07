@@ -43,7 +43,15 @@ export default function Login() {
                 let fullname = response?.data?.admin?.fullname
                 let email = response?.data?.admin?.email
                 let role = response?.data?.admin?.role
-                let user_type = "master_admin"
+                let user_type = ''; 
+                if(role == "1"){
+                    user_type = 'master_admin'
+                }else if(role == "2"){
+                    user_type = "sub_admin"
+                }else if(role == "3"){
+                    user_type = "mapping_admin"
+                }
+                    
                 let created_at = response?.data?.admin?.created_at
                 
                 let isLoggedIn = true;
@@ -79,10 +87,14 @@ export default function Login() {
     useEffect(checkLoggedInUser,[state]);
     async function checkLoggedInUser(){
         if(state?.isLoggedIn === true){
-            if(state?.role === "1"){
-                history.push(`/admin/dashboard`)
-            }else{
-                history.push('/sub/dashboard')
+            if(state?.role == "1"){
+                history.push(`/master-admin/dashboard`)
+            }
+            else if(state?.role == "2"){
+                history.push('/sub-admin/dashboard')
+            }   
+            else if(state?.role == "3"){
+                history.push('/mapping-admin/dashboard')
             }   
         }else{
             history.push('/admin/login');

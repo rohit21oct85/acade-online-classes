@@ -8,11 +8,11 @@ import API_URL from '../../helper/APIHelper'
 export default function useAppPermissions() {
     const {state } = useContext(AuthContext);
     const params = useParams();
-    const school_slug = params?.school_slug
     const role_slug = params?.role_slug
-    return useQuery([`permissions-${school_slug}-${role_slug}`], async () => {
-        if(state?.access_token && school_slug !== undefined && role_slug !== undefined){
-            const result = await axios.get(`${API_URL}v1/permission/view-all/${school_slug}/${role_slug}`,{
+    const admin_email = params?.admin_email
+    return useQuery([`permissions-${role_slug}-${admin_email}`], async () => {
+        if(state?.access_token && role_slug !== undefined){
+            const result = await axios.get(`${API_URL}v1/permission/view-all/${role_slug}/${admin_email}`,{
                 headers: {
                     'Content-Type': 'Application/json',
                     'Authorization':'Bearer '+state.access_token
