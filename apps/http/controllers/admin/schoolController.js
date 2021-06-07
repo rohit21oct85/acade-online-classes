@@ -1,8 +1,10 @@
 const School = require('../../../models/admin/School');
+const csv = require('csv-parser')
+const fs = require('fs')
+const bcrypt = require('bcryptjs');
 
 const CreateSchool = async (req, res) => {
     const body = req.body;
-    res.send(req.body);
     try {
 
         const newSchool = new School(body);
@@ -119,6 +121,54 @@ const addFields = async (req, res) => {
         message: "field cleared"
     });
 }
+const uploadSchool = async(req, res) => {
+    const data = req.body;
+    let FinalData = [];
+    try {
+        let results = [];
+        // console.log(req.file.path)
+        fs.createReadStream(req.file.path)
+            .pipe(csv())
+            .on('data', (data) => results.push(data))
+            .on('end', () => {
+                results.forEach(school => {
+                    FinalData.push({ 
+                        school_name: school.school_name, 
+                        sub_domain: school.sub_domain, 
+                        school_logo: school.school_logo, 
+                        address: school.address, 
+                        city: school.city, 
+                        state: school.state, 
+                        pincode: school.pincode, 
+                        contact_name: school.contact_name, 
+                        contact_email: school.contact_email, 
+                        contact_mobile: school.contact_mobile, 
+                        status: school.status, 
+                    })
+                })
+                otherFunction(res, FinalData, function() {
+                    fs.unlinkSync(req.file.path)
+                })
+            });
+    } catch (error) {
+        return res.status(409).json({
+            message: "External Error occured",
+            errors: error.message
+        });
+    }
+}
+
+const otherFunction = async(res, FinalData, callback) => {
+    await School.insertMany(FinalData).then(() => {
+        res.status(200).send('Schools Inserted')
+        callback()
+    }).catch(error => {
+        return res.status(409).json({
+            message: "Error occured while Inserting Data",
+            errors: error.message
+        });
+    })
+};
 
 module.exports = {
     checkSubDomain,
@@ -128,4 +178,5 @@ module.exports = {
     ViewSchool,
     ViewAllSchool,
     DeleteSchool,
+    uploadSchool
 }

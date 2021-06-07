@@ -4,52 +4,54 @@ import {useHistory, useParams} from 'react-router-dom'
 import * as utils from '../../../utils/utils'
 import { useToasts } from 'react-toast-notifications';
 
-import useSingleSchool from '../../../hooks/schools/useSingleSchool';
-import useCreateSchool from '../../../hooks/schools/useCreateSchool';
-import useUpdateSchool from '../../../hooks/schools/useUpdateSchool';
-import useDeleteSchool from '../../../hooks/schools/useDeleteSchool';
-import useCheckSubDomain from '../../../hooks/schools/useCheckSubDomain';
+import useSinglePrincipal from '../../../hooks/principals/useSinglePrincipal';
+import useCreatePrincipal from '../../../hooks/principals/useCreatePrincipal';
+import useUpdatePrincipal from '../../../hooks/principals/useUpdatePrincipal';
+import useDeletePrincipal from '../../../hooks/principals/useDeletePrincipal';
 
+import useSchoolLists from '../../../hooks/schools/useSchoolLists';
 
-
-export default function CreateSchool() {
+export default function CreatePrincipal() {
     const history = useHistory();
     const params  = useParams();
     const { addToast } = useToasts();
-    const {data} = useSingleSchool(params?.school_id);
-    const [SingleSchool, setSingleSchool] = useState({});
-    const initialData = {name: '',address: '',
-            school_logo: '',pincode: '',
-            contact_email: '',conatct_mobile: ''}         
+    const {data} = useSinglePrincipal(params?.principal_id);
+    const [SinglePrincipal, setSinglePrincipal] = useState({});
+    const initialData = {title:'',name: '',address: '',state:'',city:'',password:'',
+            pincode: '',
+            email: '',mobile: ''}         
     const [formData, setFormData] = useState({});
     useEffect(()=>{
         setFormData(initialData);
-        setSingleSchool(initialData);
+        setSinglePrincipal(initialData);
     },[params?.page_type])
     useEffect(setModule, [data]);
 
     function setModule(){
         if(data !== undefined){
-            setSingleSchool(data)
+            setSinglePrincipal(data)
         }
     }
-    const createMutation = useCreateSchool(formData);
-    const updateMutation = useUpdateSchool(SingleSchool);
-    const deleteMutation = useDeleteSchool(formData);
-    const checkMutation = useCheckSubDomain(formData);
+    const createMutation = useCreatePrincipal(formData);
+    const updateMutation = useUpdatePrincipal(SinglePrincipal);
+    const deleteMutation = useDeletePrincipal(formData);
+    const { data: schools, schoolIsLoading} = useSchoolLists(formData);
     
-    const saveSchool = async (e) => {
+    const savePrincipal = async (e) => {
         e.preventDefault();
-        formData['school_name'] = params?.school_id ? SingleSchool?.school_name : formData?.school_name;
-        formData['slug'] = utils.MakeSlug(params?.school_id ? SingleSchool?.school_name : formData?.school_name);
+        formData['name'] = params?.principal_id ? SinglePrincipal?.name : formData?.name;
         console.log(formData)
-        if(params?.school_id){
-            await updateMutation.mutate(SingleSchool);
+        // formData['slug'] = utils.MakeSlug(params?.principal_id ? SinglePrincipal?.name : formData?.name);
+        if(params?.principal_id){
+                await updateMutation.mutate(SinglePrincipal);
         }else{
-            if(formData?.school_name == ''){
-                addToast('Please Enter school name', { appearance: 'error',autoDismiss: true });        
-            }else if(formData?.contact_email == ''){
-                addToast('Please provide contact email', { appearance: 'error',autoDismiss: true });        
+            formData.school_id = params.school_id ? params.school_id : ''
+            if(formData.school_id == ''){
+                addToast('Please Select a School', { appearance: 'error',autoDismiss: true });
+            }else if(formData?.name == ''){
+                addToast('Please Enter Principal name', { appearance: 'error',autoDismiss: true });        
+            }else if(formData?.email == ''){
+                addToast('Please provide admin email', { appearance: 'error',autoDismiss: true });        
             }
             else if(digits_only(formData?.pincode) === false){
                 addToast('Please enter numbers only', { appearance: 'error',autoDismiss: true });        
@@ -57,30 +59,27 @@ export default function CreateSchool() {
             else if(formData?.pincode?.length < 6){
                 addToast('Please provide valid zip code', { appearance: 'error',autoDismiss: true });        
             }
-            else if(formData?.contact_mobile?.length < 10){
-                addToast('Please enter validcontact_ mobile number', { appearance: 'error',autoDismiss: true });        
+            else if(formData?.mobile?.length < 10){
+                addToast('Please enter valid mobile number', { appearance: 'error',autoDismiss: true });        
             }
-            else if(digits_only(formData?.contact_mobile) === false){
+            else if(digits_only(formData?.mobile) === false){
                 addToast('Please enter valid mobile number', { appearance: 'error',autoDismiss: true });        
             }
             else{
                 await createMutation.mutate(formData);
             }
         }
-        setFormData({});
-        setSingleSchool({});
       }
       async function handleDelete(e){
-            e.preventDefault();
-            if(params?.school_id){
-                formData['school_id'] = params?.school_id
+            if(params?.principal_id){
+                formData['principal_id'] = params?.principal_id
                 await deleteMutation.mutate(formData);
             }
       }
       
       async function handleChange(e){
-            if(params?.school_id){
-                  setSingleSchool({...SingleSchool, [e.target.name]: e.target.value})
+            if(params?.principal_id){
+                  setSinglePrincipal({...SinglePrincipal, [e.target.name]: e.target.value})
             }else{
                   setFormData({...formData, [e.target.name]: e.target.value})
             }
@@ -105,6 +104,7 @@ export default function CreateSchool() {
             document.getElementsByName(`${e.target.name}`)[0].focus()
         }
         else if(e.target.name === 'pincode' && e.target.value?.length < 6){
+            console.log("asA")
             addToast(`Please provide valid ${e.target.name}`, { appearance: 'error',autoDismiss: true });        
             document.getElementsByName(`${e.target.name}`)[0].innerHTML = null
             document.getElementsByName(`${e.target.name}`)[0].focus()
@@ -122,85 +122,106 @@ export default function CreateSchool() {
       async function onBlurHandle(e){
             e.preventDefault();
             let image = e.target.value
-            let arrayImage = image.split('/d/');
-            let arrayImage2 = arrayImage[1].split('/');
-            let key = arrayImage2[0];
+            let arrayImage = image.split('/');
+            let key = arrayImage[5];
             if(image.length > 0){
                 //   let image_url = `https://drive.google.com/uc?export=view&id=${key}`
-                  if(params?.school_id){
-                        setSingleSchool({...SingleSchool, school_logo: key})
+                  if(params?.principal_id){
+                        setSinglePrincipal({...SinglePrincipal})
                   }else{
-                        setFormData({...formData, school_logo: key})
+                        setFormData({...formData})
                   }
             }
       }
-      const handleCheckSubDomain = async (e) => {
-        e.preventDefault();  
-        try {
-            if(e.target.value !== ""){
-                await checkMutation.mutate({sub_domain: e.target.value});
-                if(checkMutation?.status == "success"){
-                    if(checkMutation?.data?.data?.count == "1"){
-                        setDomain(1)
-                        e.target.value = "";
-                        e.target.focus();
-                    }else{
-                        setDomain(0)
-                        
-                    }
+
+      async function handleChangeSchool(e){
+        if(e.target.value != 999){
+            if(params?.principal_id){
+                setSinglePrincipal({...SinglePrincipal, [e.target.name]: e.target.value})
+                    history.push(`/admin/principal-management/select-school/${e.target.value}/${params?.principal_id}`)
+            }else{
+                setFormData({...formData, ['school_id']: e.target.value})
+                // params.class_id ?
+                //     history.push(`/admin/principal-management/select-school/${e.target.value}/${params?.class_id}`)
+                //     :
+                history.push(`/admin/principal-management/select-school/${e.target.value}`)
                 }
-            }
-        } catch (error) {
-            console.log(error.message)
         }
-      }
+    }
+
     return (
         <>
             <p className="form-heading">
-            <span className="fa fa-plus-circle mr-2"></span>Add New School</p>
+            <span className="fa fa-plus-circle mr-2"></span>Add New Principal</p>
             <hr className="mt-1"/>
-            <form onSubmit={saveSchool}>
+            <form onSubmit={savePrincipal}>
                 <div className="form-group">
-                    <input 
-                        type="text" 
-                        className="form-control" 
-                        name="school_name"
-                        value={params?.school_id ? SingleSchool?.school_name : formData?.school_name}
-                        onChange={handleChange}
-                        autoComplete="Off"
-                        placeholder="School Name"/>
+                    <select className="form-control" aria-label="Default select example" name="school_id" onChange={handleChangeSchool} value={params.school_id ? params.school_id : 999}>
+                        <option value="999">Select School</option>
+                        {!schoolIsLoading && schools?.map(school => {
+                        return (
+                            <option value={school._id} key={school._id}>{school.school_name}</option>
+                        )
+                        })}
+                    </select>
                 </div>
                 <div className="form-group">
                     <input 
                         type="text" 
                         className="form-control" 
-                        name="sub_domain"
-                        value={params?.school_id ? SingleSchool?.sub_domain : formData?.sub_domain}
+                        name="title"
+                        value={params?.principal_id ? SinglePrincipal?.title : formData?.title}
                         onChange={handleChange}
                         autoComplete="no-password"
-                        placeholder="Sub domain"/>
+                        placeholder="Mr / Mrs"/>
                 </div>
-                
                 <div className="form-group">
                     <input 
                         type="text" 
                         className="form-control" 
-                        name="school_logo"
-                        value={params?.school_id ? SingleSchool?.school_logo : formData?.school_logo}
+                        name="name"
+                        value={params?.principal_id ? SinglePrincipal?.name : formData?.name}
                         onChange={handleChange}
-                        onBlur={onBlurHandle}
                         autoComplete="no-password"
-                        placeholder="School logo image urls"/>
-                        <span style={{ fontSize: '0.7rem'}}>
-                              Note: Please copy public image url. 
-                        </span>
+                        placeholder="Principal Name"/>
+                </div>
+                <div className="form-group">
+                    <input 
+                        type="text" 
+                        className="form-control" 
+                        name="email"
+                        value={params?.principal_id ? SinglePrincipal?.email : formData?.email}
+                        onChange={handleChange}
+                        autoComplete="no-password"
+                        placeholder="Email"/>
+                </div>
+                <div className="form-group">
+                    <input 
+                        type="password" 
+                        className="form-control" 
+                        name="password"
+                        value={params?.principal_id ? SinglePrincipal?.password : formData?.password}
+                        onChange={handleChange}
+                        autoComplete="no-password"
+                        placeholder="Password"/>
+                </div>
+                <div className="form-group">
+                    <input 
+                        type="text" 
+                        className="form-control" 
+                        name="mobile"
+                        value={params?.principal_id ? SinglePrincipal?.Mobile : formData?.Mobile}
+                        onChange={handleChange}
+                        onBlur={handleOnlyNumbers}
+                        autoComplete="no-Mobile"
+                        placeholder="Mobile"/>
                 </div>
                 <div className="form-group">
                     <input 
                         type="text" 
                         className="form-control" 
                         name="address"
-                        value={params?.school_id ? SingleSchool?.address : formData?.address}
+                        value={params?.principal_id ? SinglePrincipal?.address : formData?.address}
                         onChange={handleChange}
                         autoComplete="no-password"
                         placeholder="address"/>
@@ -210,18 +231,17 @@ export default function CreateSchool() {
                         type="text" 
                         className="form-control" 
                         name="city"
-                        value={params?.school_id ? SingleSchool?.city : formData?.city}
+                        value={params?.principal_id ? SinglePrincipal?.city : formData?.city}
                         onChange={handleChange}
                         autoComplete="no-password"
                         placeholder="city"/>
                 </div>
-                
                 <div className="form-group">
                     <input 
                         type="text" 
                         className="form-control" 
                         name="state"
-                        value={params?.school_id ? SingleSchool?.state : formData?.state}
+                        value={params?.principal_id ? SinglePrincipal?.state : formData?.state}
                         onChange={handleChange}
                         autoComplete="no-password"
                         placeholder="state"/>
@@ -233,45 +253,14 @@ export default function CreateSchool() {
                         className="form-control" 
                         name="pincode"
                         maxLength={6}
-                        value={params?.school_id ? SingleSchool?.pincode : formData?.pincode}
+                        value={params?.principal_id ? SinglePrincipal?.pincode : formData?.pincode}
                         onChange={handleChange}
                         autoComplete="no-password"
                         onBlur={handleOnlyNumbers}
                         placeholder="pincode"/>
                 </div>
-                <div className="form-group">
-                    <input 
-                        type="text" 
-                        className="form-control" 
-                        name="contact_name"
-                        value={params?.school_id ? SingleSchool?.contact_name : formData?.contact_name}
-                        onChange={handleChange}
-                        autoComplete="no-password"
-                        placeholder="contact_name"/>
-                </div>
-                <div className="form-group">
-                    <input 
-                        type="email" 
-                        className="form-control" 
-                        name="contact_email"
-                        value={params?.school_id ? SingleSchool?.contact_email : formData?.contact_email}
-                        onChange={handleChange}
-                        onBlur={validateEmail}
-                        autoComplete="no-password"
-                        placeholder="contact_email"/>
-                </div>
-                <div className="form-group">
-                    <input 
-                        type="text" 
-                        className="form-control" 
-                        name="contact_mobile"
-                        value={params?.school_id ? SingleSchool?.contact_mobile : formData?.contact_mobile}
-                        onChange={handleChange}
-                        maxLength={10}
-                        onBlur={handleOnlyNumbers}
-                        autoComplete="no-password"
-                        placeholder="contact_mobile"/>
-                </div>
+                
+
                 <div className="form-group flex">
                     <button className="btn btn-sm dark br-5">
                         {(createMutation.isLoading || updateMutation.isLoading) ? (
@@ -280,7 +269,7 @@ export default function CreateSchool() {
                             </>
                         ) : (
                             <>
-                            {params?.school_id ? (
+                            {params?.principal_id ? (
                                 <><span className="fa fa-save mr-2"></span>Update</>
                                 ):(
                                 <><span className="fa fa-save mr-2"></span>Save</>
@@ -289,24 +278,23 @@ export default function CreateSchool() {
                         )}
                         
                     </button>
-                    {params?.school_id && (
+                    {(params?.principal_id || params.school_id) && (
                         <>
-                        <button 
-                        type="button"
-                        className="btn btn-sm bg-danger br-5 text-white ml-2"
+                        <button className="btn btn-sm bg-danger br-5 text-white ml-2"
                         onClick={e => {
                             e.preventDefault();
                             setFormData({});
-                            setSingleSchool({});
-                            history.push(`/admin/school-management`)
+                            setSinglePrincipal({});
+                            history.push(`/admin/principal-management`)
                         }}>
                             <span className="fa fa-times mr-2"></span>
                             Cancel
                         </button>
-                        
-                        <button 
-                        type="button"
-                        className="btn btn-sm bg-warning br-5 text-white ml-2"
+                        </>
+                    )}
+                    {params?.principal_id && (
+                        <>                   
+                        <button className="btn btn-sm bg-warning br-5 text-white ml-2"
                         onClick={handleDelete}>
                             {deleteMutation.isLoading ?
                             <><span className="fa fa-spinner mr-2"></span></>

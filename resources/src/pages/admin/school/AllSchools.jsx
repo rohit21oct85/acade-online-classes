@@ -39,71 +39,33 @@ export default function AllSchools() {
                                                       {school?.school_name}
                                                 </div>
                                           </div>
-                                          <div className="admin-name"> 
-                                                <div className="name-label mr-3">
-                                                      School Domain: 
-                                                </div>
-                                                <div className="name-main text-lower">
-                                                      <a href={`https://${school?.sub_domain?.toLowerCase()}.acadelearn.com/`} target="__blank">
-                                                      {school?.sub_domain}
-                                                      </a>   
-                                                </div>
+                                          <div className="name-main">
+                                                {school?.school_name}
                                           </div>
                                     </div>
-                                    <div className="flex">
-                                          <div className="admin-name"> 
-                                                <div className="name-label mr-3">
-                                                      Address: 
-                                                </div>
-                                                <div className="name-main">
-                                                      {school?.address}
-                                                </div>
+                                    <div className="admin-name"> 
+                                          <div className="name-label">
+                                                Pincode: 
                                           </div>
-                                          
-                                          <div className="admin-name"> 
-                                                <div className="name-label mr-3">
-                                                      Contact Location: 
-                                                </div>
-                                                <div className="name-main text-lower">
-                                                      {school?.city},{school?.state}
-                                                </div>
+                                          <div className="name-main">
+                                                {school?.pincode}
                                           </div>
                                     </div>
-                                    <div className="flex">
-                                          <div className="admin-name"> 
-                                                <div className="name-label mr-3">
-                                                      Pincode: 
-                                                </div>
-                                                <div className="name-main">
-                                                      {school?.pincode}
-                                                </div>
+                                    
+                                    <div className="admin-name"> 
+                                          <div className="name-label">
+                                                Contact Email: 
                                           </div>
-                                          
-                                          <div className="admin-name"> 
-                                                <div className="name-label mr-3">
-                                                      Contact person: 
-                                                </div>
-                                                <div className="name-main text-lower">
-                                                      {school?.contact_name}
-                                                </div>
+                                          <div className="name-main text-lower">
+                                                {school?.contact_email}
                                           </div>
                                     </div>
-                                    <div className="flex">
-                                          <div className="admin-name"> 
-                                                <div className="name-label mr-3">
-                                                      Contact Email: 
-                                                </div>
-                                                <div className="name-main text-lower">
-                                                      {school?.contact_email}
-                                                </div>
+                                    <div className="admin-name"> 
+                                          <div className="name-label">
+                                                Contact Mobile: 
                                           </div>
-                                          <div className="admin-name"> 
-                                                <div className="name-label mr-3">
-                                                      Contact Mobile: 
-                                                </div>
-                                                <div className="name-main">
-                                                      {school?.contact_mobile}
-                                                </div>
+                                          <div className="name-main">
+                                                {school?.contact_mobile}
                                           </div>
                                     </div>
 

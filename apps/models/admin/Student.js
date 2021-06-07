@@ -2,22 +2,22 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
 const StudentSchema = new mongoose.Schema({
-    first_name: {
+    name: {
         type: String,
     },
-    last_name:{
+    class: {
+        type: String,
+    },
+    section: {
+        type: String,
+    },
+    roll_no: {
+        type: String,
+    },
+    mobile: {
         type: String,
     },
     class_id:{
-        type:String
-    },
-    class_name:{
-        type:String
-    },
-    guardian_name:{
-        type:String
-    },
-    guardian_phone_no:{
         type:String
     },
     school_id:{
@@ -26,12 +26,29 @@ const StudentSchema = new mongoose.Schema({
     username:{
         type: String
     },
+    email:{
+        type: String
+    },
     password:{
         type: String,
     },
+    address:{
+        type: String,
+    },
+    EMPID:{
+        type: String,
+    },
+    city:{
+        type: String,
+    },
+    state:{
+        type: String,
+    },
+    pincode:{
+        type: String,
+    },
     status:{
-        type: Boolean,
-        default: false
+        type: String,
     },
     create_at: {
         type: Date,
@@ -47,7 +64,7 @@ StudentSchema.pre('save', function(next) {
     } else {
         bcrypt.hash(student.password, 10, function(err, hash) {
             if (err) {
-                console.log('Error hashing password for student', student.first_name);
+                console.log('Error hashing password for student', student.name);
                 next(err);
             } else {
                 student.password = hash;

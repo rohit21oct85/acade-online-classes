@@ -16,17 +16,15 @@ import { webRoutes, privateRoutes, adminRoutes } from './routes/index.jsx';
 import AuthProvider from './context/AuthContext.jsx';
 import { ToastProvider } from 'react-toast-notifications';
 
-import {
-  QueryClient,
-  QueryClientProvider,
-} from 'react-query'
+import { QueryClient, QueryClientProvider, } from 'react-query'
 const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
+    defaultOptions: {
+        queries: {
+            refetchOnWindowFocus: false,
+        },
     },
-  },
 })
+
 export default function App() {
 return (
 <Router>

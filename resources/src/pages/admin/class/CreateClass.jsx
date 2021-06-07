@@ -128,7 +128,7 @@ export default function CreateClass() {
                         <option value="999">Select School</option>
                         {!isLoading && schools?.map(school => {
                         return (
-                            <option value={school._id} key={school._id}>{school.name}</option>
+                            <option value={school._id} key={school._id}>{school.school_name}</option>
                         )
                         })}
                     </select>

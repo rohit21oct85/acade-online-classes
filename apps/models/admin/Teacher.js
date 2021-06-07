@@ -1,24 +1,48 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
 const TeacherSchema = new mongoose.Schema({
-    first_name: {
+    name: {
+        type: String,
+    },
+    EmpID: {
+        type: String,
+    },
+    subject: {
+        type: String,
+    },
+    class: {
+        type: String,
+    },
+    section: {
+        type: String,
+    },
+    mobile: {
+        type: String,
+    },
+    email: {
+        type: String,
+    },
+    password: {
+        type: String,
+    },
+    address: {
+        type: String,
+    },
+    city: {
+        type: String,
+    },
+    state: {
+        type: String,
+    },
+    pincode: {
         type: String,
     },
     school_id:{
         type: String,
     },
-    last_name: {
-        type: String,
-    },
-    class_assigned:{
-        type:String
-    },
-    phone_no:{
-        type:String
-    },
     status:{
-        type: Boolean,
-        default: false
+        type: String
     },
     create_at: {
         type: Date,
@@ -26,5 +50,21 @@ const TeacherSchema = new mongoose.Schema({
     }
 });
 
+TeacherSchema.pre('save', function(next) {
+    const teacher = this;
+    if (!teacher.isModified || !teacher.isNew) {
+        next();
+    } else {
+        bcrypt.hash(teacher.password, 10, function(err, hash) {
+            if (err) {
+                console.log('Error hashing password for teacher', teacher.name);
+                next(err);
+            } else {
+                teacher.password = hash;
+                next();
+            }
+        })
+    }
+});
 
 module.exports = mongoose.model('Teacher', TeacherSchema);

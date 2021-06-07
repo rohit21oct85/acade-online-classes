@@ -1,10 +1,14 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
 const SchoolSchema = new mongoose.Schema({
     school_name: {
         type: String,
     },
     school_slug:{
+        type: String
+    },
+    sub_domain:{
         type: String
     },
     sub_domain:{
@@ -34,9 +38,11 @@ const SchoolSchema = new mongoose.Schema({
     contact_mobile:{
         type: String,
     },
+    slug:{
+        type: String
+    },
     status:{
-        type: Boolean,
-        default: false
+        type: String,
     },
     create_at: {
         type: Date,
