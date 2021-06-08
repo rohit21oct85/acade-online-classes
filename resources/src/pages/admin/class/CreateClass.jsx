@@ -7,7 +7,7 @@ import API_URL from '../../../helper/APIHelper';
 import * as utils from '../../../utils/utils'
 import { useToasts } from 'react-toast-notifications';
 import useSingleClass from '../../../hooks/classes/useSingleClass';
-import useSchoolLists from '../../../hooks/schools/useSchoolLists';
+// import useSchoolLists from '../../../hooks/schools/useSchoolLists';
 
 export default function CreateClass() {
     const history = useHistory();
@@ -25,7 +25,7 @@ export default function CreateClass() {
 
     const {data} = useSingleClass();
     
-    const {data : schools, isLoading } = useSchoolLists();
+    // const {data : schools, isLoading } = useSchoolLists();
 
     const [SingleClass, setSingleClass] = useState({});
 
@@ -59,7 +59,7 @@ export default function CreateClass() {
     },{
         onSuccess: () => {
             let school_id =  params?.school_id;
-            queryClient.invalidateQueries(`classes-${school_id}`)
+            queryClient.invalidateQueries(`classes`)
             setLoading(false);
             setFormData(initialData);
             history.push(`${path}`);
@@ -73,7 +73,7 @@ export default function CreateClass() {
     },{
         onSuccess: () => {
             let school_id =  params?.school_id;
-            queryClient.invalidateQueries(`classes-${school_id}`)
+            queryClient.invalidateQueries(`classes`)
             setLoading(false);
             setFormData(initialData);
             history.push(`${path}`);
@@ -87,13 +87,13 @@ export default function CreateClass() {
         if(params?.class_id){
                 await updateMutation.mutate(SingleClass);
         }else{
-            formData.school_id = params.school_id ? params.school_id : '' 
-            if(formData.school_id == ''){
-                setLoading(false);
-                addToast('Please Select a School', { appearance: 'error',autoDismiss: true });
-            }else{
+            // formData.school_id = params.school_id ? params.school_id : '' 
+            // if(formData.school_id == ''){
+            //     setLoading(false);
+            //     addToast('Please Select a School', { appearance: 'error',autoDismiss: true });
+            // }else{
                 await mutation.mutate(formData);
-            }
+            // }
         }        
     }
 
@@ -123,7 +123,7 @@ export default function CreateClass() {
             <span className="fa fa-plus-circle mr-2"></span>Add New Class</p>
             <hr className="mt-1"/>
             <form onSubmit={saveClass}>
-                <div className="form-group">
+                {/* <div className="form-group">
                     <select className="form-control" aria-label="Default select example" name="school_id" onChange={handleChangeSchool} value={params.school_id ? params.school_id : 999}>
                         <option value="999">Select School</option>
                         {!isLoading && schools?.map(school => {
@@ -132,7 +132,7 @@ export default function CreateClass() {
                         )
                         })}
                     </select>
-                </div>
+                </div> */}
                 <div className="form-group">
                     <input 
                         type="text" 

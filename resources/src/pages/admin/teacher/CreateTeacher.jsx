@@ -165,24 +165,31 @@ export default function CreateTeacher() {
                         onChange={handleChange}
                         placeholder="Subject"/>
                 </div>
-                <div className="form-group">
-                    <input 
-                        type="text" 
-                        className="form-control" 
-                        name="class"
-                        value={params?.teacher_id ? SingleTeacher?.class : formData?.class}
-                        onChange={handleChange}
-                        placeholder="Class"/>
+                <div className="row">
+                    <div className="col-md-6">
+                        <div className="form-group">
+                            <input 
+                                type="text" 
+                                className="form-control" 
+                                name="class"
+                                value={params?.teacher_id ? SingleTeacher?.class : formData?.class}
+                                onChange={handleChange}
+                                placeholder="Class"/>
+                        </div>
+                    </div>
+                    <div className="col-md-6">
+                        <div className="form-group">
+                        <input 
+                            type="text" 
+                            className="form-control" 
+                            name="section"
+                            value={params?.teacher_id ? SingleTeacher?.section : formData?.section}
+                            onChange={handleChange}
+                            placeholder="Section"/>
+                        </div>
+                    </div>
                 </div>
-                <div className="form-group">
-                    <input 
-                        type="text" 
-                        className="form-control" 
-                        name="section"
-                        value={params?.teacher_id ? SingleTeacher?.section : formData?.section}
-                        onChange={handleChange}
-                        placeholder="Section"/>
-                </div>
+                
                 <div className="form-group">
                     <input 
                         type="text" 
@@ -220,27 +227,33 @@ export default function CreateTeacher() {
                         autoComplete="no-password"
                         placeholder="Address"/>
                 </div>
-                <div className="form-group">
-                    <input 
-                        type="text" 
-                        className="form-control" 
-                        name="city"
-                        value={params?.teacher_id ? SingleTeacher?.city : formData?.city}
-                        onChange={handleChange}
-                        autoComplete="no-password"
-                        placeholder="City"/>
+                <div className="row">
+                    <div className="col-md-6">
+                        <div className="form-group">
+                        <input 
+                            type="text" 
+                            className="form-control" 
+                            name="city"
+                            value={params?.teacher_id ? SingleTeacher?.city : formData?.city}
+                            onChange={handleChange}
+                            autoComplete="no-password"
+                            placeholder="City"/>
+                        </div>
+                    </div>
+                    <div className="col-md-6">
+                        <div className="form-group">
+                        <input 
+                            type="text" 
+                            className="form-control" 
+                            name="state"
+                            value={params?.teacher_id ? SingleTeacher?.state : formData?.state}
+                            onChange={handleChange}
+                            autoComplete="no-password"
+                            placeholder="State"/>
+                        </div>
+                    </div>
                 </div>
-                <div className="form-group">
-                    <input 
-                        type="text" 
-                        className="form-control" 
-                        name="state"
-                        value={params?.teacher_id ? SingleTeacher?.state : formData?.state}
-                        onChange={handleChange}
-                        autoComplete="no-password"
-                        placeholder="State"/>
-                </div>
-                
+                                
                 <div className="form-group">
                     <input 
                         type="text" 

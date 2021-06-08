@@ -9,6 +9,9 @@ const subjectRoutes = require('./admin/subjectRoutes');
 const studentRoutes = require('./admin/studentRoutes');
 const teacherRoutes = require('./admin/teacherRoutes');
 const principalRoutes = require('./admin/principalRoutes');
+const teacherSubjectMappingRoutes = require('./admin/teacherSubjectMappingRoutes');
+const teacherClassMappingRoutes = require('./admin/teacherClassMappingRoutes');
+const classSubjectMappingRoutes = require('./admin/classSubjectMappingRoutes');
 
 module.exports = {
     adminAuth,
@@ -22,4 +25,7 @@ module.exports = {
     studentRoutes,
     teacherRoutes,
     principalRoutes,
+    teacherSubjectMappingRoutes,
+    teacherClassMappingRoutes,
+    classSubjectMappingRoutes,
 }
