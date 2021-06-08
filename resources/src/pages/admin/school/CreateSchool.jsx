@@ -205,28 +205,33 @@ export default function CreateSchool() {
                         autoComplete="no-password"
                         placeholder="address"/>
                 </div>
-                <div className="form-group">
-                    <input 
-                        type="text" 
-                        className="form-control" 
-                        name="city"
-                        value={params?.school_id ? SingleSchool?.city : formData?.city}
-                        onChange={handleChange}
-                        autoComplete="no-password"
-                        placeholder="city"/>
+                <div className="row">
+                    <div className="col-md-6">
+                        <div className="form-group">
+                            <input 
+                                type="text" 
+                                className="form-control" 
+                                name="city"
+                                value={params?.school_id ? SingleSchool?.city : formData?.city}
+                                onChange={handleChange}
+                                autoComplete="no-password"
+                                placeholder="city"/>
+                        </div>
+                    </div>
+                    <div className="col-md-6">
+                        <div className="form-group">
+                            <input 
+                                type="text" 
+                                className="form-control" 
+                                name="state"
+                                value={params?.school_id ? SingleSchool?.state : formData?.state}
+                                onChange={handleChange}
+                                autoComplete="no-password"
+                                placeholder="state"/>
+                        </div>
+                    </div>
                 </div>
-                
-                <div className="form-group">
-                    <input 
-                        type="text" 
-                        className="form-control" 
-                        name="state"
-                        value={params?.school_id ? SingleSchool?.state : formData?.state}
-                        onChange={handleChange}
-                        autoComplete="no-password"
-                        placeholder="state"/>
-                </div>
-                
+                               
                 <div className="form-group">
                     <input 
                         type="text" 

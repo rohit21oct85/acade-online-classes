@@ -36,7 +36,8 @@ export default function AllSubjects() {
         return axios.delete(`${API_URL}v1/subject/delete/${subject_id}`, options)
     },{
         onSuccess: () => {
-            const key = params?.school_id ? `subjects-${params.school_id}` : `subjects`
+            // const key = params?.school_id ? `subjects-${params.school_id}` : `subjects`
+            const key = `subjects`
             queryClient.invalidateQueries(key)
             addToast('Subject Deleted successfully', { appearance: 'success',autoDismiss: true });
         }

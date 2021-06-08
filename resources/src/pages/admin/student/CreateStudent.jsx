@@ -179,24 +179,31 @@ export default function CreateStudent() {
                         onChange={handleChange}
                         placeholder="Name"/>
                 </div>
-                <div className="form-group">
-                    <input 
-                        type="text" 
-                        className="form-control" 
-                        name="class"
-                        value={params?.student_id ? SingleStudent?.class : formData?.class}
-                        onChange={handleChange}
-                        placeholder="Class"/>
+                <div className="row">
+                    <div className="col-md-6">
+                        <div className="form-group">
+                            <input 
+                                type="text" 
+                                className="form-control" 
+                                name="class"
+                                value={params?.student_id ? SingleStudent?.class : formData?.class}
+                                onChange={handleChange}
+                                placeholder="Class"/>
+                        </div>
+                    </div> 
+                    <div className="col-md-6">
+                        <div className="form-group">
+                            <input 
+                                type="text" 
+                                className="form-control" 
+                                name="section"
+                                value={params?.student_id ? SingleStudent?.section : formData?.section}
+                                onChange={handleChange}
+                                placeholder="Section"/>
+                        </div>
+                    </div>
                 </div>
-                <div className="form-group">
-                    <input 
-                        type="text" 
-                        className="form-control" 
-                        name="section"
-                        value={params?.student_id ? SingleStudent?.section : formData?.section}
-                        onChange={handleChange}
-                        placeholder="Section"/>
-                </div>
+                 
                 <div className="form-group">
                     <input 
                         type="text" 

@@ -1,9 +1,9 @@
 import React from 'react'
 import {useHistory, useParams} from 'react-router-dom'
-import CreateTeacherStudentMap from './CreateTeacherStudentMap';
-// import AllTeachers from './AllTeachers';
+import CreateClassSubjectMap from './CreateClassSubjectMap';
+import AllClassSubjectMapping from './AllClassSubjectMapping';
 
-export default function TeacherStudentList() {
+export default function ClassSubjectList() {
     const params = useParams();
     const history = useHistory();
     
@@ -26,11 +26,11 @@ export default function TeacherStudentList() {
                     <div className="dash-cont-start">
                         <div className="row">
                             <div className="col-md-3">
-                                <CreateTeacherStudentMap />
+                                <CreateClassSubjectMap />
                             </div>
                             
                             <div className="col-md-9 ">
-                            {/* <AllTeachers /> */}
+                                <AllClassSubjectMapping />
                             </div>
 
                         </div>

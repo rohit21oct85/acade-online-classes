@@ -12,7 +12,7 @@ export default function useClassList() {
     const key = params.school_id ? `classes-${params.school_id}` : `classes`
     return useQuery(key, async () => {
         if(state.access_token ){
-            if(!params.school_id){
+            // if(!params.school_id){
                 const result = await axios.get(`${API_URL}v1/class/view-all`,{
                     headers: {
                         'Content-Type': 'Application/json',
@@ -20,15 +20,16 @@ export default function useClassList() {
                     }
                 });
                 return result.data.data; 
-            }else{
-                const result = await axios.get(`${API_URL}v1/class/class-by-school-id/${params.school_id}`,{
-                    headers: {
-                        'Content-Type': 'Application/json',
-                        'Authorization':'Bearer '+ state.access_token
-                    }
-                });
-                return result.data.data; 
-            }
+            // }
+            // else{
+            //     const result = await axios.get(`${API_URL}v1/class/class-by-school-id/${params.school_id}`,{
+            //         headers: {
+            //             'Content-Type': 'Application/json',
+            //             'Authorization':'Bearer '+ state.access_token
+            //         }
+            //     });
+            //     return result.data.data; 
+            // }
         }
     });
 }

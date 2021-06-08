@@ -51,7 +51,8 @@ export default function CreateSubject() {
     },{
         onSuccess: () => {
             let school_id =  params?.school_id;
-            queryClient.invalidateQueries(`subjects-${school_id}`)
+            // queryClient.invalidateQueries(`subjects-${school_id}`)
+            queryClient.invalidateQueries(`subjects`)
             setLoading(false);
             setFormData(initialData);
             history.push(`${path}`);
@@ -65,7 +66,8 @@ export default function CreateSubject() {
     },{
         onSuccess: () => {
             let school_id =  params?.school_id;
-            queryClient.invalidateQueries(`subjects-${school_id}`)
+            // queryClient.invalidateQueries(`subjects-${school_id}`)
+            queryClient.invalidateQueries(`subjects`)
             setLoading(false);
             setFormData(initialData);
             history.push(`${path}`);
@@ -79,11 +81,12 @@ export default function CreateSubject() {
         if(params?.subject_id){
                 await updateMutation.mutate(SingleSubject);
         }else{
-            formData.school_id = params.school_id ? params.school_id : '' 
-            if(formData.school_id == ''){
-                setLoading(false);
-                addToast('Please Select a School', { appearance: 'error',autoDismiss: true });
-            }else if(formData.subject_name == ''){
+            // formData.school_id = params.school_id ? params.school_id : '' 
+            // if(formData.school_id == ''){
+            //     setLoading(false);
+            //     addToast('Please Select a School', { appearance: 'error',autoDismiss: true });
+            // }else 
+            if(formData.subject_name == ''){
                 setLoading(false);
                 addToast('Please Enter a Subject Name', { appearance: 'error',autoDismiss: true });                
             }else{
@@ -118,16 +121,16 @@ export default function CreateSubject() {
             <span className="fa fa-plus-circle mr-2"></span>Add New Subejct</p>
             <hr className="mt-1"/>
             <form onSubmit={saveSubject}>
-                <div className="form-group">
+                {/* <div className="form-group">
                     <select className="form-control" aria-label="Default select example" name="school_id" onChange={handleChangeSchool} value={params.school_id ? params.school_id : 999}>
                         <option value="999">Select School</option>
                         {!isLoading && schools?.map(school => {
                         return (
-                            <option value={school._id} key={school._id}>{school.name}</option>
+                            <option value={school._id} key={school._id}>{school.school_name}</option>
                         )
                         })}
                     </select>
-                </div>
+                </div> */}
                 <div className="form-group">
                     <input 
                         type="text" 

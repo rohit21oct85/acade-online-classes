@@ -12,7 +12,9 @@ import SubjectList from '../pages/admin/subject/SubjectList.jsx'
 import StudentList from '../pages/admin/student/StudentList.jsx'
 import TeacherList from '../pages/admin/teacher/TeacherList'
 import PrincipalList from '../pages/admin/principal/PrincipalList'
-import TeacherStudentList from '../pages/admin/mappingTeacherStudent/TeacherStudentList'
+import TeacherSubjectList from '../pages/admin/mappingTeacherSubject/TeacherSubjectList'
+import TeacherClassList from '../pages/admin/mappingTeacherClass/TeacherClassList'
+import ClassSubjectList from '../pages/admin/mappingClassSubject/ClassSubjectList'
 
 export const webRoutes =  [
     { 
@@ -65,8 +67,16 @@ export const privateRoutes = [
         component: PrincipalList
     },
     {
-        path: '/admin/mapping-teacher-subjects/:page_type?/:school_id?/:teacher_id?',
-        component: TeacherStudentList
+        path: '/admin/mapping-teacher-subjects/:page_type?/:school_id?/:school_slug?/:teacher_id?/:teacher_slug?/:teacher_sub_id?',
+        component: TeacherSubjectList
+    },
+    {
+        path: '/admin/mapping-teacher-class/:page_type?/:school_id?/:school_slug?/:teacher_id?/:teacher_slug?/:teacher_class_id?',
+        component: TeacherClassList
+    },
+    {
+        path: '/admin/mapping-class-subjects/:page_type?/:class_id?/:class_slug?/:class_subject_id?',
+        component: ClassSubjectList
     }
 
 ];
