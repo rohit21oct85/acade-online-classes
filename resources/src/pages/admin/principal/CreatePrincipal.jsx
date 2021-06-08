@@ -143,7 +143,7 @@ export default function CreatePrincipal() {
             }
       }
 
-      async function handleChangeSchool(e){
+    async function handleChangeSchool(e){
         if(e.target.value != 999){
             if(params?.principal_id){
                 setSinglePrincipal({...SinglePrincipal, [e.target.name]: e.target.value})
@@ -239,25 +239,31 @@ export default function CreatePrincipal() {
                         autoComplete="no-password"
                         placeholder="address"/>
                 </div>
-                <div className="form-group">
-                    <input 
-                        type="text" 
-                        className="form-control" 
-                        name="city"
-                        value={params?.principal_id ? SinglePrincipal?.city : formData?.city}
-                        onChange={handleChange}
-                        autoComplete="no-password"
-                        placeholder="city"/>
-                </div>
-                <div className="form-group">
-                    <input 
-                        type="text" 
-                        className="form-control" 
-                        name="state"
-                        value={params?.principal_id ? SinglePrincipal?.state : formData?.state}
-                        onChange={handleChange}
-                        autoComplete="no-password"
-                        placeholder="state"/>
+                <div className="row">
+                    <div className="col-md-6">
+                        <div className="form-group">
+                            <input 
+                                type="text" 
+                                className="form-control" 
+                                name="city"
+                                value={params?.principal_id ? SinglePrincipal?.city : formData?.city}
+                                onChange={handleChange}
+                                autoComplete="no-password"
+                                placeholder="city"/>
+                        </div>
+                    </div>
+                    <div className="col-md-6">
+                        <div className="form-group">
+                            <input 
+                                type="text" 
+                                className="form-control" 
+                                name="state"
+                                value={params?.principal_id ? SinglePrincipal?.state : formData?.state}
+                                onChange={handleChange}
+                                autoComplete="no-password"
+                                placeholder="state"/>
+                        </div>
+                    </div>
                 </div>
                 
                 <div className="form-group">

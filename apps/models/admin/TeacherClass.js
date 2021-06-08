@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const TeacherSubjectSchema = new mongoose.Schema({
+const TeacherClassSchema = new mongoose.Schema({
     teacher_id: {
       type: String,
       required: true
@@ -9,7 +9,7 @@ const TeacherSubjectSchema = new mongoose.Schema({
       type: String,
       required: true
     },
-    subject_id: {
+    class_id: {
       type: String,
       required: true
     },
@@ -17,7 +17,7 @@ const TeacherSubjectSchema = new mongoose.Schema({
       type: String,
       required: true
     },
-    subject_name: {
+    class_name: {
       type: String,
       required: true
     },
@@ -35,4 +35,4 @@ const TeacherSubjectSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('TeacherSubject', TeacherSubjectSchema);
+module.exports = mongoose.model('TeacherClass', TeacherClassSchema);

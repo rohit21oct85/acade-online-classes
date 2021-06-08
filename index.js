@@ -109,6 +109,9 @@ app.use("/api/v1/subject", Routes.subjectRoutes);
 app.use("/api/v1/student", Routes.studentRoutes);
 app.use("/api/v1/teacher", Routes.teacherRoutes);
 app.use("/api/v1/principal", Routes.principalRoutes);
+app.use("/api/v1/teacher-subject-mapping", Routes.teacherSubjectMappingRoutes);
+app.use("/api/v1/teacher-class-mapping", Routes.teacherClassMappingRoutes);
+app.use("/api/v1/class-subject-mapping", Routes.classSubjectMappingRoutes);
 
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static('views/build'));

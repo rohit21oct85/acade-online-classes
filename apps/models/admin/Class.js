@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 
 const ClassSchema = new mongoose.Schema({
-    school_id: {
-        type: 'string', 
-    },
+    // school_id: {
+    //     type: 'string', 
+    // },
     teacher_id:{
         type: String,
     },
