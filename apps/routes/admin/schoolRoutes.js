@@ -26,7 +26,7 @@ router
     .post('/create',checkAuth,adminAuth, School.CreateSchool)
     .patch('/update/:id',checkAuth,adminAuth, School.UpdateSchool)
     .get('/view/:id',checkAuth,adminAuth, School.ViewSchool)
-    .get('/view-all',checkAuth,adminAuth, School.ViewAllSchool)
+    .get('/view-all',checkAuth, School.ViewAllSchool)
     .post('/addfields', checkAuth,adminAuth, School.addFields)
     .post('/subdomain', checkAuth,adminAuth, School.checkSubDomain)
     .post('/delete', checkAuth,adminAuth, School.DeleteSchool)

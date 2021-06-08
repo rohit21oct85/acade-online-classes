@@ -70,9 +70,11 @@ export default function CreateAppPermission() {
                         role_slug: params?.role_slug,
                         role: params?.role,
                         email: params?.admin_email,
-                        module_slug: splitData[0],
-                        module_icon: splitData[1],
-                        method_name: splitData[2]
+                        module_id: splitData[0],
+                        module_name: splitData[1],
+                        module_slug: splitData[2],
+                        module_icon: splitData[3],
+                        method_name: splitData[4]
                     })
                 }
             })
@@ -104,9 +106,11 @@ export default function CreateAppPermission() {
         e.preventDefault();
         e.target.checked = true;
     }
-    console.log(permissions)
+    function checkModules(module_slug){
+        return permissions && permissions.some(permission => permission?.module_slug === module_slug);
+    }
     function checkMethods(slug){
-        return permissions && permissions.some(permission => permission?.method_name == slug);
+        return permissions && permissions.some(permission => permission?.method_name === slug);
     }
 
     return (
@@ -115,7 +119,6 @@ export default function CreateAppPermission() {
             <span className="fa fa-plus-circle mr-2"></span>Add New Permission</p>
             <hr className="mt-1"/>
             <form onSubmit={saveAppPermission}>
-                
                 <div className="form-group">
                     <select 
                         className="form-control"
@@ -136,12 +139,10 @@ export default function CreateAppPermission() {
                     >
                         <option value="_">Select Roles</option>
                         {roles?.map(role => {
-                            if(role?.role_slug !== 'master_admin'){
-                                return(
-                                    <option value={`${role?._id}-${role?.role_slug}-${role?.role_id}`}
-                                    key={role?._id}>{role?.role_name}</option>
-                                );
-                            }
+                            return(
+                                <option value={`${role?._id}-${role?.role_slug}-${role?.role_id}`}
+                                        key={role?._id}>{role?.role_name}</option>
+                            );
                         })}
                     </select>
                 </div>
@@ -164,7 +165,14 @@ export default function CreateAppPermission() {
                         <option value="_">{sAdminLoading ? 'loading...' : 'Select User'}</option>
                         {subAdmins?.map(admin => {
                             return(
-                                <option value={admin.email}>{admin.first_name} {admin.last_name}</option>
+                                <option value={admin.email}
+                                key={admin?._id}>
+                                    {admin.first_name} {admin.last_name} 
+                                    &nbsp; 
+                                    - 
+                                    &nbsp; 
+                                    {admin.email}
+                                </option>
                             )
                         })}
                     </select>
@@ -179,9 +187,6 @@ export default function CreateAppPermission() {
                         overflow: 'scroll'
                     }}>
                         {modules?.map((module, index) => {
-
-                            if(module?.module_type !== 'master_admin')
-                            
                             return(
                                 <div className="card pt-0 pb-0 mb-2" key={module?._id}>
                                     <label className="pb-0 mb-0"
@@ -192,6 +197,7 @@ export default function CreateAppPermission() {
                                         id={`${module?.module_slug}`}
                                         className="module mr-2" 
                                         value={`${module?._id}_${module?.module_name}_${module?.module_slug}_${module?.module_icon}`}
+                                        
                                     />
                                     {module?.module_name}
                                     </label>
@@ -202,7 +208,7 @@ export default function CreateAppPermission() {
                                             <div className="col-md-3 pl-0" key={method?._id}>
                                               <label className="mb-0">
                                                 <input type="checkbox" name={`method-${module?.module_slug}`} className="module-methods mr-1" 
-                                                value={`${module?.module_slug}_${module?.module_icon}_${method?.key}-${module?.module_slug}`}
+                                                value={`${module?._id}_${module?.module_name}_${module?.module_slug}_${module?.module_icon}_${method?.key}-${module?.module_slug}`}
                                                 />{method?.value}</label>
                                             </div>
                                             )

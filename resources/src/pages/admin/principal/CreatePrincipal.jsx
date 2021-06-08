@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {useHistory, useParams} from 'react-router-dom'
+import {useHistory, useLocation, useParams} from 'react-router-dom'
 
 import * as utils from '../../../utils/utils'
 import { useToasts } from 'react-toast-notifications';
@@ -10,13 +10,22 @@ import useUpdatePrincipal from '../../../hooks/principals/useUpdatePrincipal';
 import useDeletePrincipal from '../../../hooks/principals/useDeletePrincipal';
 
 import useSchoolLists from '../../../hooks/schools/useSchoolLists';
+import useAccess from '../../../hooks/useAccess';
 
 export default function CreatePrincipal() {
     const history = useHistory();
     const params  = useParams();
+    const del = useAccess('delete');
+
+
     const { addToast } = useToasts();
     const {data} = useSinglePrincipal(params?.principal_id);
     const [SinglePrincipal, setSinglePrincipal] = useState({});
+    const salutations = [
+        {key: 'mr', value:'Mr'},
+        {key: 'mrs', value:'Mrs'},
+        {key: 'miss', value:'Miss'}
+    ];
     const initialData = {title:'',name: '',address: '',state:'',city:'',password:'',
             pincode: '',
             email: '',mobile: ''}         
@@ -138,17 +147,14 @@ export default function CreatePrincipal() {
         if(e.target.value != 999){
             if(params?.principal_id){
                 setSinglePrincipal({...SinglePrincipal, [e.target.name]: e.target.value})
-                    history.push(`/admin/principal-management/select-school/${e.target.value}/${params?.principal_id}`)
+                    history.push(`/admin/principal-management/create/${e.target.value}/${params?.principal_id}`)
             }else{
                 setFormData({...formData, ['school_id']: e.target.value})
-                // params.class_id ?
-                //     history.push(`/admin/principal-management/select-school/${e.target.value}/${params?.class_id}`)
-                //     :
-                history.push(`/admin/principal-management/select-school/${e.target.value}`)
+                history.push(`/admin/principal-management/create/${e.target.value}`)
                 }
         }
     }
-
+    
     return (
         <>
             <p className="form-heading">
@@ -156,7 +162,10 @@ export default function CreatePrincipal() {
             <hr className="mt-1"/>
             <form onSubmit={savePrincipal}>
                 <div className="form-group">
-                    <select className="form-control" aria-label="Default select example" name="school_id" onChange={handleChangeSchool} value={params.school_id ? params.school_id : 999}>
+                    <select 
+                        className="form-control" aria-label="Default select example" 
+                        name="school_id" 
+                        onChange={handleChangeSchool} value={params.school_id ? params.school_id : 999}>
                         <option value="999">Select School</option>
                         {!schoolIsLoading && schools?.map(school => {
                         return (
@@ -166,14 +175,18 @@ export default function CreatePrincipal() {
                     </select>
                 </div>
                 <div className="form-group">
-                    <input 
-                        type="text" 
-                        className="form-control" 
+                    <select className="form-control"
                         name="title"
-                        value={params?.principal_id ? SinglePrincipal?.title : formData?.title}
                         onChange={handleChange}
-                        autoComplete="no-password"
-                        placeholder="Mr / Mrs"/>
+                        value={params?.principal_id ? SinglePrincipal?.title : formData?.title}
+                        >
+                            <option>Select Salutation</option>
+                            {salutations?.map(salute => {
+                                return(
+                                    <option value={salute?.key}>{salute?.value}</option>
+                                )
+                            })}    
+                        </select>
                 </div>
                 <div className="form-group">
                     <input 
@@ -278,33 +291,28 @@ export default function CreatePrincipal() {
                         )}
                         
                     </button>
-                    {(params?.principal_id || params.school_id) && (
-                        <>
-                        <button className="btn btn-sm bg-danger br-5 text-white ml-2"
+                    <div>                
+                    <button className="btn btn-sm bg-danger br-5 text-white ml-2"
                         onClick={e => {
                             e.preventDefault();
                             setFormData({});
                             setSinglePrincipal({});
                             history.push(`/admin/principal-management`)
                         }}>
-                            <span className="fa fa-times mr-2"></span>
-                            Cancel
-                        </button>
-                        </>
-                    )}
-                    {params?.principal_id && (
-                        <>                   
-                        <button className="btn btn-sm bg-warning br-5 text-white ml-2"
+                        <span className="fa fa-times"></span>
+                    </button>
+
+                    {params?.principal_id && del == true && (
+                        <button className="btn btn-sm bg-danger br-5 text-white ml-2"
                         onClick={handleDelete}>
                             {deleteMutation.isLoading ?
-                            <><span className="fa fa-spinner mr-2"></span></>
+                            <><span className="fa fa-spinner"></span></>
                             :
-                            <span className="fa fa-trash mr-2"></span>
+                            <span className="fa fa-trash"></span>
                             }
-                            Delete
                         </button>
-                        </>
                     )}
+                    </div>
                 </div>
 
             </form>  
