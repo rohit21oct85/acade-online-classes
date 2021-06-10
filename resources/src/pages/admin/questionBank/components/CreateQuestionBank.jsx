@@ -1,6 +1,6 @@
 import React from 'react'
 import { useHistory, useParams } from 'react-router-dom';
-import useClassList from '../../../../hooks/classes/useClassList'
+import useClassList from '../../class/hooks/useClassList'
 import useClassSubjectList from '../../../../hooks/classSubjectMapping/useClassSubjectList';
 
 export default function CreateQuestionBank() {

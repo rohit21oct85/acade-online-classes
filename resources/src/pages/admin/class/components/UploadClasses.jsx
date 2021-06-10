@@ -6,10 +6,10 @@ import axios from 'axios'
 import API_URL from '../../../../helper/APIHelper';
 import * as utils from '../../../../utils/utils'
 import { useToasts } from 'react-toast-notifications';
-import useSchoolLists from '../../school/hooks/useSchoolLists';
-import useUploadTeacher from '../hooks/useUploadTeacher';
 
-export default function UploadTeachers() {
+export default function UploadClasses() {
+    const formDataUpload = new FormData();
+
     const [loading, setLoading] = useState(false);
 
     const [btnDisabled, setBtnDisbaled] = useState(true)
@@ -19,14 +19,13 @@ export default function UploadTeachers() {
     const { addToast } = useToasts();
 
     const [file, setFile] = useState(null);
-    
     const [school, setSchool] = useState();
 
     const [selectedSchool, setSelectedSchool] = useState(false);
+    
+    const [schooloradmin, setSchoolOrAdmin] = useState("admin");
 
     const history = useHistory();
-    
-    const {data : schools, isLoading } = useSchoolLists();
 
     const queryClient = useQueryClient()
     const options = {
@@ -35,7 +34,6 @@ export default function UploadTeachers() {
             'Authorization':'Bearer '+state.access_token
         }
     }
-    const formDataUpload = new FormData();
 
     async function handelChangeUpload(e){
         const filename = e.target.files[0].name;
@@ -45,50 +43,48 @@ export default function UploadTeachers() {
         if(ext === "csv"){
             setBtnDisbaled(false);
             setFile(e.target.files[0]);
-            formDataUpload.append('file', e.target.files[0]);
             formDataUpload.append('test', "testdata");
+            // formDataUpload.append('file', e.target.files[0]);
         }else{
             setBtnDisbaled(true);
             addToast('Only .csv files are allowed', { appearance: 'error', autoDismiss: true });
         }
     }
 
-    const uploadMutation = useUploadTeacher(formDataUpload);
+    const mutation = useMutation(formDataUpload => {
+        return axios.post(`${API_URL}v1/class/upload`, formDataUpload, options)
+    },{
+        onSuccess: () => {
+            queryClient.invalidateQueries(`classes`)
+            setLoading(false);
+            addToast('Classes added successfully', { appearance: 'success', autoDismiss: true });
+        }
+    });
+
     const handleChange = (e) => {
         setSchool(e.target.value)
         setSelectedSchool(true);
     }
+
     const uploadFile = async(e) => {
         e.preventDefault();
-        if(!selectedSchool){
-            addToast('Please Select a School', { appearance: 'error', autoDismiss: true });
-            return;
-        }
         formDataUpload.append('file',file);
-        formDataUpload.append('school_id',school);
-        await uploadMutation.mutate(formDataUpload);
+        // formDataUpload.append('school_id',school);
+        await mutation.mutate(formDataUpload);
     }
 
     return (
         <>
             <p className="form-heading">
-            <span className="fa fa-plus-circle mr-2"></span>Upload Teachers</p>
+            <span className="fa fa-plus-circle mr-2"></span>Upload Classes</p>
             <hr className="mt-1"/>
-            <a href="/sampledata/teachers.csv" download>
+
+            <a href="/sampledata/classes.csv" download>
             Download Sample File
             </a>
             <hr className="mt-1"/>
             <form onSubmit={uploadFile} method="POST" encType="multipart/form-data">
-                <div className="form-group">
-                    <select className="form-control" aria-label="Default select example" name="school_id" onChange={handleChange}>
-                        <option>Select School</option>
-                        {!isLoading && schools?.map(school => {
-                        return (
-                            <option value={school._id} key={school._id}>{school.name}</option>
-                        )
-                        })}
-                    </select>
-                </div>
+                
                 <div className="form-group">
                     <input 
                         type="file" 
@@ -96,9 +92,9 @@ export default function UploadTeachers() {
                         name="file"
                         onChange={handelChangeUpload}
                         placeholder="Upload .csv"/>
-                    <small id="passwordHelpInline" class="text-muted">
-                        Upload Classes File in .csv format only.
-                    </small>
+                        <small id="passwordHelpInline" class="text-muted">
+                            Upload Classes File in .csv format only.
+                        </small>
                 </div>
             
                 <div className="form-group flex">
@@ -118,7 +114,7 @@ export default function UploadTeachers() {
                     <button className="btn btn-sm dark bg-danger ml-2"
                         onClick={e => {
                             e.preventDefault();
-                            history.push(`/admin/teachers-management`)
+                            history.push(`/admin/class-management`)
                         }}>
                         <span className="fa fa-times"></span>
                     </button>

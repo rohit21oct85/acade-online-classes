@@ -7,8 +7,8 @@ import API_URL from '../../../../helper/APIHelper';
 import * as utils from '../../../../utils/utils'
 import { useToasts } from 'react-toast-notifications';
 import useSingleStudent from '../hooks/useSingleStudent';
-import useSchoolLists from '../../../../hooks/schools/useSchoolLists';
-import useClassList from '../../../../hooks/classes/useClassList';
+import useSchoolLists from '../../school/hooks/useSchoolLists';
+import useClassList from '../../class/hooks/useClassList';
 import useCreateStudent from '../hooks/useCreateStudent';
 import useUpdateStudent from '../hooks/useUpdateStudent';
 

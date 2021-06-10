@@ -8,7 +8,7 @@ import useCreatePermission from '../../../hooks/permissions/useCreatePermission.
 import useUpdatePermission from '../../../hooks/permissions/useUpdatePermission';
 import useAppPermissions from '../../../hooks/permissions/useAppPermissions'
 
-import useSchoolLists from '../../../hooks/schools/useSchoolLists';
+import useSchoolLists from '../school/hooks/useSchoolLists';
 import useAppRoles from '../../../hooks/roles/useAppRoles';
 import useAppModule from '../../../hooks/modules/useAppModule';
 import useSubAdminByRole from '../../../hooks/subadmin/useSubAdminByRole';

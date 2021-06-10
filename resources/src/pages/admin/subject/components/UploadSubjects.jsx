@@ -6,10 +6,9 @@ import axios from 'axios'
 import API_URL from '../../../../helper/APIHelper';
 import * as utils from '../../../../utils/utils'
 import { useToasts } from 'react-toast-notifications';
-import useSchoolLists from '../../school/hooks/useSchoolLists';
-import useUploadTeacher from '../hooks/useUploadTeacher';
+// import useSchoolLists from '../../school/hooks/useSchoolLists';
 
-export default function UploadTeachers() {
+export default function UploadSubjects() {
     const [loading, setLoading] = useState(false);
 
     const [btnDisabled, setBtnDisbaled] = useState(true)
@@ -19,14 +18,13 @@ export default function UploadTeachers() {
     const { addToast } = useToasts();
 
     const [file, setFile] = useState(null);
-    
     const [school, setSchool] = useState();
 
     const [selectedSchool, setSelectedSchool] = useState(false);
-
-    const history = useHistory();
     
-    const {data : schools, isLoading } = useSchoolLists();
+    const history = useHistory();
+
+    // const {data : schools, isLoading } = useSchoolLists();
 
     const queryClient = useQueryClient()
     const options = {
@@ -53,33 +51,45 @@ export default function UploadTeachers() {
         }
     }
 
-    const uploadMutation = useUploadTeacher(formDataUpload);
+    const mutation = useMutation(formDataUpload => {
+        console.log(formDataUpload.file)
+        return axios.post(`${API_URL}v1/subject/upload`, formDataUpload, options)
+    },{
+        onSuccess: () => {
+            queryClient.invalidateQueries('subjects')
+            setLoading(false);
+            addToast('Subjects added successfully', { appearance: 'success', autoDismiss: true });
+        }
+    });
+
     const handleChange = (e) => {
         setSchool(e.target.value)
         setSelectedSchool(true);
     }
+
     const uploadFile = async(e) => {
         e.preventDefault();
-        if(!selectedSchool){
-            addToast('Please Select a School', { appearance: 'error', autoDismiss: true });
-            return;
-        }
+        // if(!selectedSchool){
+        //     addToast('Please Select a School', { appearance: 'error', autoDismiss: true });
+        //     return;
+        // }
         formDataUpload.append('file',file);
-        formDataUpload.append('school_id',school);
-        await uploadMutation.mutate(formDataUpload);
+        // formDataUpload.append('school_id',school);
+        await mutation.mutate(formDataUpload);
     }
 
     return (
         <>
             <p className="form-heading">
-            <span className="fa fa-plus-circle mr-2"></span>Upload Teachers</p>
+            <span className="fa fa-plus-circle mr-2"></span>Upload Subjects</p>
             <hr className="mt-1"/>
-            <a href="/sampledata/teachers.csv" download>
+
+            <a href="/sampledata/subjects.csv" download>
             Download Sample File
             </a>
             <hr className="mt-1"/>
             <form onSubmit={uploadFile} method="POST" encType="multipart/form-data">
-                <div className="form-group">
+                {/* <div className="form-group">
                     <select className="form-control" aria-label="Default select example" name="school_id" onChange={handleChange}>
                         <option>Select School</option>
                         {!isLoading && schools?.map(school => {
@@ -88,7 +98,7 @@ export default function UploadTeachers() {
                         )
                         })}
                     </select>
-                </div>
+                </div> */}
                 <div className="form-group">
                     <input 
                         type="file" 
@@ -96,9 +106,9 @@ export default function UploadTeachers() {
                         name="file"
                         onChange={handelChangeUpload}
                         placeholder="Upload .csv"/>
-                    <small id="passwordHelpInline" class="text-muted">
-                        Upload Classes File in .csv format only.
-                    </small>
+                        <small id="passwordHelpInline" className="text-muted">
+                            Upload Classes File in .csv format only.
+                        </small>
                 </div>
             
                 <div className="form-group flex">
@@ -115,10 +125,10 @@ export default function UploadTeachers() {
                         )}
                         
                     </button>
-                    <button className="btn btn-sm dark bg-danger ml-2"
+                    <button className="btn btn-sm dark bg-danger  ml-2"
                         onClick={e => {
                             e.preventDefault();
-                            history.push(`/admin/teachers-management`)
+                            history.push(`/admin/subject-management`)
                         }}>
                         <span className="fa fa-times"></span>
                     </button>

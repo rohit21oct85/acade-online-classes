@@ -1,5 +1,5 @@
 import useStudentList from '../hooks/useStudentList';
-import useSchoolLists from '../../../../hooks/schools/useSchoolLists';
+import useSchoolLists from '../../school/hooks/useSchoolLists';
 import Loading from '../../../../components/Loading';
 import {useHistory, useParams} from 'react-router-dom'
 import React from 'react'
