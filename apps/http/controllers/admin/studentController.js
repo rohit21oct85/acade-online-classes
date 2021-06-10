@@ -87,7 +87,7 @@ const DeleteStudent = async (req, res) =>{
 
 const getStudentBySchoolIdAndClassId = async (req, res) => {
     try{
-        const filter = {school_id: req.params.sid, class_id: req.params.cid}
+        const filter = {school_id: req.params.sid}
         const StudentData = await Student.find(filter,{__v: 0});
         return res.status(200).json({ 
             data: StudentData

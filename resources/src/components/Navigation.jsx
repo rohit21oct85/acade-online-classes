@@ -59,7 +59,11 @@ return (
     </div>
     <div className="navbar_menus">
         <ul>
-            
+            <li>
+                <Nav className="ml-auto">
+                    <NavLink to={`/admin/dashboard`}> <span className={`bi bi-speedometer text-warning`}></span> Dashboard </NavLink>
+                </Nav>
+            </li>
             {state?.user_type == 'master_admin' && isLoading && <Loading isLoading={isLoading}/>}
 
             {state?.user_type == 'master_admin' && data?.map( module => {

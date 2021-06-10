@@ -15,6 +15,7 @@ import PrincipalList from '../pages/admin/principal/PrincipalList'
 import TeacherSubjectList from '../pages/admin/mappingTeacherSubject/TeacherSubjectList'
 import TeacherClassList from '../pages/admin/mappingTeacherClass/TeacherClassList'
 import ClassSubjectList from '../pages/admin/mappingClassSubject/ClassSubjectList'
+import QuestionBank from '../pages/admin/questionBank/QuestionBank'
 
 export const webRoutes =  [
     { 
@@ -47,11 +48,7 @@ export const privateRoutes = [
         component: ClassList
     },
     {
-        path: '/admin/student-management/:page_type?/:school_id?/:class_id?/:student_id?',
-        component: StudentList
-    },
-    {
-        path: '/admin/students-management/:page_type?/:student_id?',
+        path: '/admin/students-management/:page_type?/:school_id?/:student_id?',
         component: StudentList
     },
     {
@@ -77,6 +74,10 @@ export const privateRoutes = [
     {
         path: '/admin/mapping-class-subjects/:page_type?/:class_id?/:class_slug?/:class_subject_id?',
         component: ClassSubjectList
+    },
+    {
+        path: '/admin/question-bank/:page_type?/:class_id?/:subject_id?/:qtype?/:atype?/:qbank_id?',
+        component: QuestionBank
     }
 
 ];

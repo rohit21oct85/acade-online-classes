@@ -3,7 +3,6 @@ import {useLocation, useHistory} from 'react-router-dom'
 import './mainDash.css';
 
 import {AuthContext} from '../../context/AuthContext.jsx';
-import useModule from '../../hooks/useModule';
 
 export default function Dashboard() {
     const history = useHistory();

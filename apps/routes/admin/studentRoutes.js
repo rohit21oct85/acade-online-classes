@@ -31,7 +31,7 @@ router
     .delete('/delete/:id', checkAuth, Student.DeleteStudent)
     .post('/upload', upload.single('file'), checkAuth, Student.uploadStudent)
 
-    .get('/student-by-school-id-class-id/:sid/:cid', checkAuth, Student.getStudentBySchoolIdAndClassId)
+    .get('/student-by-school-id/:sid', checkAuth, Student.getStudentBySchoolIdAndClassId)
 ;
 
 module.exports = router;

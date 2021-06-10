@@ -110,7 +110,7 @@ export default function Login() {
                 <form autoComplete="Off" onSubmit={submitForm}>
                     <div className="form-group text-left">
                         <label> <span className="fa fa-send mr-2"></span> Email address</label>
-                        <input className="form-control" value="madmin@adc.com" type="email" autoComplete="off" ref={emailRef} placeholder="Enter email" />
+                        <input className="form-control" type="email" autoComplete="off" ref={emailRef} placeholder="Enter email" />
                         <p className="text-muted mt-2">
                             We'll never share your email with anyone else.
                         </p>

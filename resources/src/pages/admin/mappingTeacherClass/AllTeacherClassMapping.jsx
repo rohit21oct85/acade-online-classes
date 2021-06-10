@@ -28,7 +28,9 @@ export default function AllTeacherClassMapping() {
                 <table className="table table-hover">
                     <thead>
                         <tr>
-                        <th scope="col">Class</th>
+                        <th scope="col">Class Name</th>
+                        <th scope="col">School</th>
+                        <th scope="col">Teacher Name</th>
                         <th scope="col">Action</th>
                         </tr>
                     </thead>
