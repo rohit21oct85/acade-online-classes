@@ -6,7 +6,6 @@ export default function SinglePermission({permission}) {
         <div className="lg-card" id={permission?._id}>
             <div className="admin-name"> 
                 <div>
-                    
                     <div className="label-name">
                         <span className={`fa fa-gear mt-1 mr-3`}></span>
                         {permission?.method_name}

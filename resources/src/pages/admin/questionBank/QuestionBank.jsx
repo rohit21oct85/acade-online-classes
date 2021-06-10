@@ -48,7 +48,7 @@ export default function QuestionBank() {
                                 onClick={ e => {
                                     history.push(`/admin/question-bank/create`)
                                 }}>
-                                    <span className="fa fa-plus mr-2"></span>Create teachers 
+                                    <span className="fa fa-plus mr-2"></span>Create Question 
                                 </button>
                             )}
                             {upload && (
@@ -56,7 +56,7 @@ export default function QuestionBank() {
                                 onClick={ e => {
                                     history.push(`/admin/question-bank/upload`)
                                 }}>
-                                    <span className="fa fa-upload mr-2"></span>Upload teachers 
+                                    <span className="fa fa-upload mr-2"></span>Upload Question 
                                 </button>
                             )}
                             
@@ -65,12 +65,12 @@ export default function QuestionBank() {
                     <div className="clearfix"></div>
                     <div className="dash-cont-start">
                         <div className="row">
-                            <div className="col-md-4">
+                            <div className="col-md-7">
                                 { upload === true  && params.page_type === 'upload' && <UploadQuestions />  }
                                 { (create === true || update === true )  &&  (params.page_type === 'create' ||params.page_type === 'update' ) && <CreateQuestionBank />  }
                             </div>
                             
-                            <div className={`${(params?.page_type === 'create' || params?.page_type === 'update' || params?.page_type === 'upload') ? 'col-md-8':'col-md-12'}`}>
+                            <div className={`${(params?.page_type === 'create' || params?.page_type === 'update' || params?.page_type === 'upload') ? 'col-md-5':'col-md-12'}`}>
                                 <AllQuestions update={update} Delete={Delete}/>
                             </div>
 

@@ -76,7 +76,7 @@ export const privateRoutes = [
         component: ClassSubjectList
     },
     {
-        path: '/admin/question-bank/:page_type?/:class_id?/:subject_id?/:qtype?/:atype?/:qbank_id?',
+        path: '/admin/question-bank/:page_type?/:class_id?/:subject_id?/:unit_id?/:chapter_id?/:qtype?/:atype?/:qbank_id?',
         component: QuestionBank
     }
 
