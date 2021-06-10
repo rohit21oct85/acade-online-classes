@@ -109,14 +109,15 @@ export default function CreateAppPermission() {
         return permissions && permissions.some(permission => permission?.method_name === slug);
     }
     function handleSelectMethods(slug){
-
-        Array.from(document.getElementsByName(`modules-${slug}`)).map( module => {
-            module.checked = true;
-        })
-        Array.from(document.getElementsByName(`method-${slug}`)).map( module => {
-            
-            module.checked = true;
-            
+        let module = "module-"+slug
+        let method = "method-"+slug
+        let moduleCheked = document.getElementById(module).checked;
+        Array.from(document.getElementsByName(method)).map( module => {
+            if(moduleCheked){
+                module.checked = true;
+            }else{
+                module.checked = false;
+            }
         })
     }
     return (
@@ -201,6 +202,7 @@ export default function CreateAppPermission() {
                                     <input 
                                         type="checkbox" 
                                         name={`module-${module?.module_slug}`} 
+                                        id={`module-${module?.module_slug}`} 
                                         className="module mr-2" 
                                         disabled={checkModules(`${module?.module_slug}`)}
                                         value={`${module?._id}_${module?.module_name}_${module?.module_slug}_${module?.module_icon}`}
@@ -214,7 +216,6 @@ export default function CreateAppPermission() {
                                             if(module?.module_slug !== 'dashboard')
                                             return(
                                             <>    
-                                            <hr className="mt-0 mb-0"/>
                                             <div className="col-md-3 pl-0 pt-2 pb-2" key={method?._id}
                                             style={{display: `${checkMethods(`${method?.key}-${module?.module_slug}`) ? 'none': 'block'}`}}
                                             >
