@@ -75,7 +75,7 @@ export default function Login() {
                 }
                 if(isLoggedIn){
                     dispatch({type: 'LOGIN', payload: payloadData});
-                    history.push('/admin/dashboard');
+                    // window.location.href = `/admin/dashboard`;
                 }
             }
             
@@ -86,16 +86,8 @@ export default function Login() {
     
     useEffect(checkLoggedInUser,[state]);
     async function checkLoggedInUser(){
-        if(state?.isLoggedIn === true){
-            if(state?.role == "1"){
-                history.push(`/master-admin/dashboard`)
-            }
-            else if(state?.role == "2"){
-                history.push('/sub-admin/dashboard')
-            }   
-            else if(state?.role == "3"){
-                history.push('/mapping-admin/dashboard')
-            }   
+        if(state?.isLoggedIn){
+            window.location.href = `/admin/dashboard`;
         }else{
             history.push('/admin/login');
         }
@@ -118,7 +110,7 @@ export default function Login() {
                 <form autoComplete="Off" onSubmit={submitForm}>
                     <div className="form-group text-left">
                         <label> <span className="fa fa-send mr-2"></span> Email address</label>
-                        <input className="form-control" type="email" autoComplete="off" ref={emailRef} placeholder="Enter email" />
+                        <input className="form-control" value="madmin@adc.com" type="email" autoComplete="off" ref={emailRef} placeholder="Enter email" />
                         <p className="text-muted mt-2">
                             We'll never share your email with anyone else.
                         </p>

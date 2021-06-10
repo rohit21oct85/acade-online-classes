@@ -15,6 +15,12 @@ const PermissionSchema = new mongoose.Schema({
       email: {
             type: String,
       },
+      module_id: {
+            type: String,
+      },
+      module_name: {
+            type: String,
+      },
       module_slug: {
             type: String,
       },

@@ -26,7 +26,9 @@ export default function useCreatePermission(formData) {
             return axios.post(`${API_URL}v1/permission/create`, formData, options)
         },{
         onSuccess: () => {
-            queryClient.invalidateQueries([`permissions-${params?.school_slug}-${params?.role_slug}`])
+            queryClient.invalidateQueries(`role-permissions-${params?.role_slug}-${params?.admin_email}`);
+            queryClient.invalidateQueries(`role-modules-${params?.role_slug}-${params?.admin_email}`);
+
             addToast('Permission added successfully', { appearance: 'success',autoDismiss: true });
             history.push(`${path}`);
         }

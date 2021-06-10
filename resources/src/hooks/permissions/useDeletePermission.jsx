@@ -9,6 +9,7 @@ import {AuthContext} from '../../context/AuthContext';
 export default function useDeletePermission() {
       const location = useLocation();
       const path  = location.pathname;
+      const params  = useLocation();
       
       const history = useHistory();
       const queryClient = useQueryClient()
@@ -24,9 +25,11 @@ export default function useDeletePermission() {
             return axios.post(`${API_URL}v1/permission/delete`,formData, options)
         },{
         onSuccess: () => {
-            queryClient.invalidateQueries(['permissions'])
-            history.push('/admin/app-permissions');
+            queryClient.invalidateQueries(`role-permissions-${params?.role_slug}-${params?.admin_email}`);
+            queryClient.invalidateQueries(`role-modules-${params?.role_slug}-${params?.admin_email}`);
+
             addToast('Permission deleted successfully', { appearance: 'success',autoDismiss: true });
+            history.push(`${path}`);
         }
         });
       return status;

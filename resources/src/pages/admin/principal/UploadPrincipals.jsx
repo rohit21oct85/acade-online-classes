@@ -70,11 +70,11 @@ export default function UploadPrincipals() {
     return (
         <>
             <p className="form-heading">
-            <span className="fa fa-plus-circle mr-2"></span>Upload Principals</p>
-            <hr className="mt-1"/>
-            <a href="/sampledata/principals.csv" download>
-            Download Sample File
+            <span className="fa fa-plus-circle mr-2"></span>Upload Principals
+            <a href="/sampledata/principals.csv" title="download sample file" className="btn-sm pull-right dark bg-success br-15" download>
+               <span className="fa fa-download"></span>
             </a>
+            </p>
             <hr className="mt-1"/>
             <form onSubmit={uploadFile} method="POST" encType="multipart/form-data">
                 <div className="form-group">
@@ -103,13 +103,12 @@ export default function UploadPrincipals() {
                         )}
                         
                     </button>
-                    <button className="btn btn-sm red ml-2"
+                    <button className="btn btn-sm dark bg-danger ml-2"
                         onClick={e => {
                             e.preventDefault();
                             history.push(`/admin/principal-management`)
                         }}>
-                        <span className="fa fa-times mr-2"></span>
-                        Cancel
+                        <span className="fa fa-times"></span>
                     </button>
                 </div>
 

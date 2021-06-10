@@ -3,14 +3,15 @@ import {useLocation, useHistory} from 'react-router-dom'
 import './mainDash.css';
 
 import {AuthContext} from '../../context/AuthContext.jsx';
+import useModule from '../../hooks/useModule';
 
 export default function Dashboard() {
     const history = useHistory();
     const location = useLocation();
     const path = location?.pathname;
-
-    const { state } = useContext(AuthContext);
+    const { state, dispatch } = useContext(AuthContext);
     useEffect(checkURL, [state]);
+
     async function checkURL(){
         if(path === '/admin/'){
             history.push(`/admin/dashboard`);

@@ -18,15 +18,8 @@ export default function Navigation() {
     
     function logout(){
         dispatch({type: 'LOGOUT'})
-        if(state?.user_type == 'master_admin'){
-            history.push('/')
-        }
-        else if(state?.user_type == 'sub_admin'){
-            history.push('/admin/login')
-        }
-        else if(state?.user_type == 'mapping_admin'){
-            history.push('/admin/login')
-        }
+        history.push('/admin/login')
+        
     }
 return (
 <>
@@ -66,22 +59,7 @@ return (
     </div>
     <div className="navbar_menus">
         <ul>
-            <li>
-                <Nav className="ml-auto">
-                    {state?.user_type == 'master_admin' && 
-                    <NavLink to={`/master-admin/dashboard`} > <span className="fa fa-dashboard"></span> Dashboard</NavLink>
-                    }
-                    
-                    {state?.user_type === 'sub_admin' && 
-                    <NavLink to={`/sub-admin/dashboard`} > <span className="fa fa-dashboard"></span> Dashboard</NavLink>
-                    }
-                    {state?.user_type === 'mapping_admin' && 
-                    <NavLink to={`/mapping-admin/dashboard`} > <span className="fa fa-dashboard"></span> Dashboard</NavLink>
-                    }
-
-
-                </Nav>
-            </li>
+            
             {state?.user_type == 'master_admin' && isLoading && <Loading isLoading={isLoading}/>}
 
             {state?.user_type == 'master_admin' && data?.map( module => {
@@ -109,6 +87,7 @@ return (
                     );
                 }
             })}
+
             {state?.user_type == 'sub_admin' && moduleIsLoading && <Loading isLoading={isLoading}/>}
             {state?.user_type === 'sub_admin' && modules?.map( module => {
                 if(module?.role_slug == 'sub_admin')
@@ -122,6 +101,7 @@ return (
                     );
                 }
             })}
+
             {state?.user_type == 'mapping_admin' && moduleIsLoading && <Loading isLoading={isLoading}/>}
             {state?.user_type === 'mapping_admin' && modules?.map( module => {
                 if(module?.role_slug == 'mapping_admin')
@@ -135,6 +115,7 @@ return (
                     );
                 }
             })}
+            
 
 
         </ul>
