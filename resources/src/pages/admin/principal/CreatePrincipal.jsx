@@ -147,7 +147,7 @@ export default function CreatePrincipal() {
         if(e.target.value != 999){
             if(params?.principal_id){
                 setSinglePrincipal({...SinglePrincipal, [e.target.name]: e.target.value})
-                    history.push(`/admin/principal-management/create/${e.target.value}/${params?.principal_id}`)
+                    history.push(`/admin/principal-management/update/${e.target.value}/${params?.principal_id}`)
             }else{
                 setFormData({...formData, ['school_id']: e.target.value})
                 history.push(`/admin/principal-management/create/${e.target.value}`)

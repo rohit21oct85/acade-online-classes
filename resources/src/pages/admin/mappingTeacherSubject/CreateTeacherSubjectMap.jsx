@@ -7,7 +7,7 @@ import API_URL from '../../../helper/APIHelper';
 import * as utils from '../../../utils/utils'
 import { useToasts } from 'react-toast-notifications';
 import useSchoolLists from '../../../hooks/schools/useSchoolLists';
-import useTeacherList from '../../../hooks/teachers/useTeacherList';
+import useTeacherList from '../../../pages/admin/teacher/hooks/useTeacherList';
 import useSubjectList from '../../../hooks/subjects/useSubjectList';
 import {MakeSlug} from '../../../utils/utils'
 

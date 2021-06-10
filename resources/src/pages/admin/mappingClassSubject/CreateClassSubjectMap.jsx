@@ -119,7 +119,7 @@ export default function CreateClassSubjectMap() {
                         <option value="999">Select Class</option>
                         {!classesIsLoading && classes?.map(classs => {
                         return (
-                            <option value={classs._id} key={classs._id} data-class_name={classs.class_name}>{classs.class_name} Class -&nbsp; {classs.section}, Capacity:&nbsp;{classs.capacity}</option>
+                            <option value={classs._id} key={classs._id} data-class_name={classs.class_name}>{classs.class_name} -&nbsp; Section {classs.section}, Capacity:&nbsp;{classs.capacity}</option>
                         )
                         })}
                     </select>

@@ -102,17 +102,23 @@ export default function CreateAppPermission() {
         clearFields();
     }
     
-    function handleCheckBox(e){
-        e.preventDefault();
-        e.target.checked = true;
-    }
     function checkModules(module_slug){
         return permissions && permissions.some(permission => permission?.module_slug === module_slug);
     }
     function checkMethods(slug){
         return permissions && permissions.some(permission => permission?.method_name === slug);
     }
+    function handleSelectMethods(slug){
 
+        Array.from(document.getElementsByName(`modules-${slug}`)).map( module => {
+            module.checked = true;
+        })
+        Array.from(document.getElementsByName(`method-${slug}`)).map( module => {
+            
+            module.checked = true;
+            
+        })
+    }
     return (
         <>
             <p className="form-heading">
@@ -178,7 +184,7 @@ export default function CreateAppPermission() {
                     </select>
                 </div>
 
-                
+                {params?.admin_email && (
                 <div className="form-group">
                     <div className="col-md-12 pl-0 pr-2"
                     style={{
@@ -187,30 +193,37 @@ export default function CreateAppPermission() {
                         overflow: 'scroll'
                     }}>
                         {modules?.map((module, index) => {
+                            
                             return(
                                 <div className="card pt-0 pb-0 mb-2" key={module?._id}>
-                                    <label className="pb-0 mb-0"
-                                    htmlFor={`${module?.module_slug}`}>
+                                    <label className="pb-2 pt-2 mb-0 ac-heading">
                                     <span className={`bi ${module?.module_icon} mr-2 ml-2 `}></span>
                                     <input 
-                                        type="checkbox" name={`method-${module?.module_slug}`} 
-                                        id={`${module?.module_slug}`}
+                                        type="checkbox" 
+                                        name={`module-${module?.module_slug}`} 
                                         className="module mr-2" 
+                                        disabled={checkModules(`${module?.module_slug}`)}
                                         value={`${module?._id}_${module?.module_name}_${module?.module_slug}_${module?.module_icon}`}
-                                        
+                                        onChange={handleSelectMethods.bind(this, module?.module_slug)}
                                     />
                                     {module?.module_name}
                                     </label>
-                                    <hr className="mt-0 mb-1"/>
+                                    
                                     <div className="flex ml-2 mr-2">
                                         {methods?.map( method => {
+                                            if(module?.module_slug !== 'dashboard')
                                             return(
-                                            <div className="col-md-3 pl-0" key={method?._id}>
+                                            <>    
+                                            <hr className="mt-0 mb-0"/>
+                                            <div className="col-md-3 pl-0 pt-2 pb-2" key={method?._id}
+                                            style={{display: `${checkMethods(`${method?.key}-${module?.module_slug}`) ? 'none': 'block'}`}}
+                                            >
                                               <label className="mb-0">
                                                 <input type="checkbox" name={`method-${module?.module_slug}`} className="module-methods mr-1" 
                                                 value={`${module?._id}_${module?.module_name}_${module?.module_slug}_${module?.module_icon}_${method?.key}-${module?.module_slug}`}
                                                 />{method?.value}</label>
                                             </div>
+                                            </>
                                             )
                                         })}
                                         
@@ -221,8 +234,7 @@ export default function CreateAppPermission() {
                         })}
                     </div>                
                 </div>    
-
-                
+                )}
                 <div className="form-group flex">
                     <button className="btn btn-sm dark br-5"
                     disabled={(createMutation?.isLoading || updateMutation?.isLoading)}>

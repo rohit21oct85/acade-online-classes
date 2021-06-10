@@ -20,11 +20,11 @@ export default function CreateNewAdmin() {
     const [loading, setLoading] = useState(false);
     const {data} = useSingleAdmin();
     const {data:appRoles} = useAppRoles();
-    const [singleModule, setSingleModule] = useState();
+    const [singleAdmin, setSingleAdmin] = useState();
     const [formData, setFormData] = useState({});
-    useEffect(setModule, [data]);
-    function setModule(){
-        setSingleModule(data)
+    useEffect(setSubAdmin, [data]);
+    function setSubAdmin(){
+        setSingleAdmin(data)
     }
     function clearFields(){
         setFormData({})
@@ -38,7 +38,7 @@ export default function CreateNewAdmin() {
     const saveAppModule = async (e) => {
         e.preventDefault();
         setLoading(true);
-        if(params?.module_id){
+        if(params?.admin_id){
             await updateMutation.mutate(formData);
         }else{
             await createMutation.mutate(formData);
@@ -48,7 +48,7 @@ export default function CreateNewAdmin() {
 
     async function handleDelete(e){
         e.preventDefault();
-        formData['module_id'] = params?.module_id;
+        formData['module_id'] = params?.admin_id;
         await deleteMutation.mutate(formData);
     }
 
@@ -63,8 +63,8 @@ export default function CreateNewAdmin() {
                     <select className="form-control"
                     name="role"
                     onChange={e => {
-                        if(params?.module_id){
-                            setSingleModule({...singleModule, role: e.target.value})
+                        if(params?.admin_id){
+                            setSingleAdmin({...singleAdmin, role: e.target.value})
                         }else{
                               setFormData({...formData, [e.target.name]: e.target.value})
                         }
@@ -81,10 +81,10 @@ export default function CreateNewAdmin() {
                   <div className="form-group">
                     <input type="text" className="form-control"
                         name="first_name" 
-                        value={params?.module_id ? singleModule?.first_name : formData?.first_name}
+                        value={params?.admin_id ? singleAdmin?.first_name : formData?.first_name}
                         onChange={e => {
-                            if(params?.module_id){
-                                setSingleModule({...singleModule, first_name: e.target.value})
+                            if(params?.admin_id){
+                                setSingleAdmin({...singleAdmin, first_name: e.target.value})
                             }else{
                               setFormData({...formData, [e.target.name]: e.target.value})
                             }
@@ -94,10 +94,10 @@ export default function CreateNewAdmin() {
                   <div className="form-group">
                     <input type="text" className="form-control"
                         name="last_name" 
-                        value={params?.module_id ? singleModule?.last_name : formData?.last_name}
+                        value={params?.admin_id ? singleAdmin?.last_name : formData?.last_name}
                         onChange={e => {
-                            if(params?.module_id){
-                                setSingleModule({...singleModule, last_name: e.target.value})
+                            if(params?.admin_id){
+                                setSingleAdmin({...singleAdmin, last_name: e.target.value})
                             }else{
                               setFormData({...formData, [e.target.name]: e.target.value})
                             }
@@ -107,10 +107,10 @@ export default function CreateNewAdmin() {
                   <div className="form-group">
                     <input type="text" className="form-control"
                         name="email" 
-                        value={params?.module_id ? singleModule?.email : formData?.email}
+                        value={params?.admin_id ? singleAdmin?.email : formData?.email}
                         onChange={e => {
-                            if(params?.module_id){
-                                setSingleModule({...singleModule, email: e.target.value})
+                            if(params?.admin_id){
+                                setSingleAdmin({...singleAdmin, email: e.target.value})
                             }else{
                               setFormData({...formData, [e.target.name]: e.target.value})
                             }
@@ -120,10 +120,9 @@ export default function CreateNewAdmin() {
                   <div className="form-group">
                     <input type="text" className="form-control"
                         name="password" 
-                        value={params?.module_id ? singleModule?.password : formData?.password}
                         onChange={e => {
-                            if(params?.module_id){
-                                setSingleModule({...singleModule, password: e.target.value})
+                            if(params?.admin_id){
+                                setSingleAdmin({...singleAdmin, password: e.target.value})
                             }else{
                               setFormData({...formData, [e.target.name]: e.target.value})
                             }
@@ -152,9 +151,7 @@ export default function CreateNewAdmin() {
                         <button className="btn btn-sm dark bg-warning ml-2 br-5"
                         onClick={e => {
                             e.preventDefault();
-                            clearFields();
-                            setSingleModule({})
-                            history.push(`/admin/app-module`)
+                            history.push(`/admin/manage-sub-admin`)
                         }}>
                             <span className="fa fa-times mr-2"></span>
                             Cancel

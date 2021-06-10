@@ -1,12 +1,35 @@
-import React from 'react'
+import React , {useEffect} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
 import CreateSubject from './CreateSubject';
 import UploadSubjects from './UploadSubjects';
 import AllSubjects from './AllSubjects';
 
+import useModule from '../../../hooks/useModule';
+import useAccess from '../../../hooks/useAccess';
+
 export default function SubjectList() {
     const params = useParams();
     const history = useHistory();
+    const accessUrl = useModule();
+    useEffect(checkPageAccessControl,[accessUrl]);
+    function checkPageAccessControl(){
+        if(accessUrl === false){
+            history.push('/403');
+        }
+    }
+    const create = useAccess('create');
+    const update = useAccess('update');
+    const upload = useAccess('upload');
+    
+    useEffect(manageAccess,[create, update, upload]);
+    function manageAccess(){
+        if(create === false){
+            history.push(`/admin/subject-management`)
+        }
+        if(update === false){
+            history.push(`/admin/subject-management`)
+        }
+    }
     
     return (
         <div className="col-lg-10 col-md-10 main_dash_area">

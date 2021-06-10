@@ -7,7 +7,7 @@ import API_URL from '../../../helper/APIHelper';
 import * as utils from '../../../utils/utils'
 import { useToasts } from 'react-toast-notifications';
 import useSchoolLists from '../../../hooks/schools/useSchoolLists';
-import useTeacherList from '../../../hooks/teachers/useTeacherList';
+import useTeacherList from '../../../pages/admin/teacher/hooks/useTeacherList';
 import useClassList from '../../../hooks/classes/useClassList';
 import {MakeSlug} from '../../../utils/utils'
 
@@ -164,7 +164,7 @@ export default function CreateTeacherStudentMap() {
     return (
         <>
             <p className="form-heading">
-            <span className="fa fa-plus-circle mr-2"></span>Add New Teacher-Class Mapping</p>
+            <span className="fa fa-plus-circle mr-2"></span>Teacher-Class Mapping</p>
             <hr className="mt-1"/>
             <form onSubmit={saveMapping}>
                 <div className="form-group">
@@ -208,7 +208,7 @@ export default function CreateTeacherStudentMap() {
                                         checked={checkedState[index]}
                                         onChange={(e)=>{handleCheckBox(e,index)}}
                                     />    
-                                    {classs?.class_name}
+                                    {classs?.class_name} th &nbsp; Section: {classs?.section}
                                     </label>
                                 </div>
                             );

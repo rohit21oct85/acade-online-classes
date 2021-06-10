@@ -7,16 +7,17 @@ import useAccess from '../../../hooks/useAccess';
 import useModule from '../../../hooks/useModule';
 
 export default function PrincipalList() {
+    
+    const params = useParams();
+    const history = useHistory();
+    
     const accessUrl = useModule();
-    console.log(accessUrl)
     useEffect(checkPageAccessControl,[accessUrl]);
     function checkPageAccessControl(){
         if(accessUrl === false){
             history.push('/403');
         }
     }
-    const params = useParams();
-    const history = useHistory();
     const create = useAccess('create');
     const update = useAccess('update');
     const upload = useAccess('upload');

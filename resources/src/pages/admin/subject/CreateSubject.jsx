@@ -81,11 +81,6 @@ export default function CreateSubject() {
         if(params?.subject_id){
                 await updateMutation.mutate(SingleSubject);
         }else{
-            // formData.school_id = params.school_id ? params.school_id : '' 
-            // if(formData.school_id == ''){
-            //     setLoading(false);
-            //     addToast('Please Select a School', { appearance: 'error',autoDismiss: true });
-            // }else 
             if(formData.subject_name == ''){
                 setLoading(false);
                 addToast('Please Enter a Subject Name', { appearance: 'error',autoDismiss: true });                
@@ -107,10 +102,10 @@ export default function CreateSubject() {
         if(e.target.value != 999){
             if(params?.subject_id){
                 setSingleSubject({...SingleSubject, [e.target.name]: e.target.value})
-                history.push(`/admin/subject-management/select-school/${e.target.value}/${params.subject_id}`)
+                history.push(`/admin/subjects-management/select-school/${e.target.value}/${params.subject_id}`)
             }else{
                 setFormData({...formData, ['school_id']: e.target.value})
-                history.push(`/admin/subject-management/select-school/${e.target.value}`)
+                history.push(`/admin/subjects-management/select-school/${e.target.value}`)
             }
         }
     }
@@ -121,16 +116,6 @@ export default function CreateSubject() {
             <span className="fa fa-plus-circle mr-2"></span>Add New Subejct</p>
             <hr className="mt-1"/>
             <form onSubmit={saveSubject}>
-                {/* <div className="form-group">
-                    <select className="form-control" aria-label="Default select example" name="school_id" onChange={handleChangeSchool} value={params.school_id ? params.school_id : 999}>
-                        <option value="999">Select School</option>
-                        {!isLoading && schools?.map(school => {
-                        return (
-                            <option value={school._id} key={school._id}>{school.school_name}</option>
-                        )
-                        })}
-                    </select>
-                </div> */}
                 <div className="form-group">
                     <input 
                         type="text" 

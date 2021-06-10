@@ -24,6 +24,7 @@ export default function AllTeacherClassMapping() {
                     <thead>
                         <tr>
                         <th scope="col">Class</th>
+                        <th scope="col">Subject</th>
                         <th scope="col">Action</th>
                         </tr>
                     </thead>
