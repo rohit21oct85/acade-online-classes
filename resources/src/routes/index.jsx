@@ -43,7 +43,7 @@ export const privateRoutes = [
     },
     
     {
-        path: '/admin/class-management/:page_type?/:school_id?/:class_id?',
+        path: '/admin/class-management/:page_type?/:class_id?',
         component: ClassList
     },
     {

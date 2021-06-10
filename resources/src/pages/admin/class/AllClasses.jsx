@@ -76,11 +76,11 @@ export default function AllClasses() {
                                     <button className="btn bg-primary text-white btn-sm mr-2" 
                                         onClick={
                                             e => {
-                                                if(params.school_id){
-                                                    history.push(`/admin/class-management/modify-class/${params?.school_id}/${item?._id}`)
-                                                }else{
-                                                    history.push(`/admin/class-management/modify-class/${item.school_id}/${item?._id}`)
-                                                }
+                                                // if(params.school_id){
+                                                //     history.push(`/admin/class-management/modify-class/${params?.school_id}/${item?._id}`)
+                                                // }else{
+                                                    history.push(`/admin/class-management/modify-class/${item?._id}`)
+                                                // }
                                             }
                                         }>
                                         <span className="fa fa-edit"></span>

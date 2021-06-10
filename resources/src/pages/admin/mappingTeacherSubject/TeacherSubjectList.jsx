@@ -12,7 +12,7 @@ export default function TeacherSubjectList() {
             <div className="main-area-all">
                 <div className="dashboard_main-container">
                         <div className="dash-main-head">
-                            <h2>Teacher List</h2>
+                            <h2>Mapping Teacher-Subject List</h2>
                         </div>
                     <div className="dash-con-heading">
                         <div className="col-md-12 row"> 
