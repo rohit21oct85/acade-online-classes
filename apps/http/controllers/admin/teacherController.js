@@ -1,4 +1,5 @@
 const Teacher = require('../../../models/admin/Teacher');
+const School = require('../../../models/admin/School');
 const csv = require('csv-parser')
 const fs = require('fs')
 const jwt = require('jsonwebtoken');
@@ -158,7 +159,14 @@ const getTeacherBySchoolId = async (req, res) => {
 
 const Login = async (req, res) => {
     try {
-        await Teacher.findOne({email: req.body.email},{__v: 0}).then( Teacher => {
+        const school = await School.findOne({sub_domain: req.body.sub_domain},{__v: 0});
+        if(!school){
+            return res.status(401).json({ 
+                status: 401,
+                message: "No Such School Found"
+            })
+        }
+        await Teacher.findOne({email: req.body.email, school_id: school._id},{__v: 0}).then( Teacher => {
             if(Teacher){
                 bcrypt.compare(req.body.password, Teacher.password, function(err,response){
                     if(err){

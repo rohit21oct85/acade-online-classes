@@ -162,7 +162,14 @@ const otherFunction = async(res, FinalData, callback) => {
 
 const Login = async (req, res) => {
     try {
-        await Student.findOne({email: req.body.email},{__v: 0}).then( student => {
+        const school = await School.findOne({sub_domain: req.body.sub_domain},{__v: 0});
+        if(!school){
+            return res.status(401).json({ 
+                status: 401,
+                message: "No Such School Found"
+            })
+        }
+        await Student.findOne({email: req.body.email, school_id: school._id},{__v: 0}).then( student => {
             if(student){
                 bcrypt.compare(req.body.password, student.password, function(err,response){
                     if(err){

@@ -11,9 +11,6 @@ const SchoolSchema = new mongoose.Schema({
     sub_domain:{
         type: String
     },
-    sub_domain:{
-        type: String
-    },
     school_logo:{
         type: String
     },
