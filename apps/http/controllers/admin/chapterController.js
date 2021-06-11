@@ -3,8 +3,9 @@ const Chapter = require('../../../models/admin/Chapter');
 const CreateChapter = async (req, res) => {
     const body = req.body;
     try {
-        const newChapter = new Chapter(body);
-        await newChapter.save();
+        // const newChapter = new Chapter(body);
+        // await newChapter.save();
+        await Chapter.insertMany(body);
         return res.status(200).json({ 
             message: "Chapter created sucessfully"
         });

@@ -6,8 +6,8 @@ import axios from 'axios'
 import API_URL from '../../../helper/APIHelper';
 import * as utils from '../../../utils/utils'
 import { useToasts } from 'react-toast-notifications';
-import useClassList from '../../../hooks/classes/useClassList';
-import useSubjectList from '../../../hooks/subjects/useSubjectList';
+import useClassList from '../class/hooks/useClassList';
+import useSubjectList from '../subject/hooks/useSubjectList';
 import {MakeSlug} from '../../../utils/utils'
 
 export default function CreateClassSubjectMap() {
@@ -174,13 +174,12 @@ export default function CreateClassSubjectMap() {
                         
                     </button>
                     {(params.class_id) && (
-                        <button className="btn btn-sm red ml-2"
+                        <button className="btn btn-sm dark bg-danger ml-2"
                         onClick={e => {
                             e.preventDefault();
                             history.push(`/admin/mapping-class-subjects`)
                         }}>
-                            <span className="fa fa-times mr-2"></span>
-                            Cancel
+                            <span className="fa fa-times"></span>
                         </button>
                     )}
                 </div>

@@ -6,9 +6,9 @@ import axios from 'axios'
 import API_URL from '../../../helper/APIHelper';
 import * as utils from '../../../utils/utils'
 import { useToasts } from 'react-toast-notifications';
-import useSchoolLists from '../../../hooks/schools/useSchoolLists';
+import useSchoolLists from '../school/hooks/useSchoolLists';
 import useTeacherList from '../../../pages/admin/teacher/hooks/useTeacherList';
-import useSubjectList from '../../../hooks/subjects/useSubjectList';
+import useSubjectList from '../subject/hooks/useSubjectList';
 import {MakeSlug} from '../../../utils/utils'
 
 export default function CreateTeacherSubjectMap() {
@@ -237,12 +237,12 @@ export default function CreateTeacherSubjectMap() {
                         
                     </button>
                     {(params.school_id) && (
-                        <button className="btn btn-sm red ml-2"
+                        <button className="btn btn-sm dark bg-danger ml-2"
                         onClick={e => {
                             e.preventDefault();
                             history.push(`/admin/mapping-teacher-subjects`)
                         }}>
-                            <span className="fa fa-times mr-2"></span>
+                            <span className="fa fa-times"></span>
                             Cancel
                         </button>
                     )}

@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
 import {useHistory, useParams} from 'react-router-dom'
-import CreatePrincipal from './CreatePrincipal';
-import AllPrincipals from './AllPrincipals';
-import UploadPrincipals from './UploadPrincipals';
+import CreatePrincipal from './components/CreatePrincipal';
+import AllPrincipals from './components/AllPrincipals';
+import UploadPrincipals from './components/UploadPrincipals';
 import useAccess from '../../../hooks/useAccess';
 import useModule from '../../../hooks/useModule';
 
