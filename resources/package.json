@@ -7,6 +7,7 @@
     "@testing-library/jest-dom": "^5.11.10",
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^12.8.3",
+    "@wiris/mathtype-ckeditor5": "^7.26.1",
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
     "ckeditor5-classic-with-mathtype": "^1.0.0",

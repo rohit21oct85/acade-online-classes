@@ -57,7 +57,13 @@ const ViewQuestion = async (req, res) => {
 }
 const ViewAllQuestion = async (req, res) => {
     try{
-        const AllQuestions = await Question.find({},{__v: 0});
+        let filter = {
+            class_id: req.params?.class_id,
+            subject_id: req.params?.subject_id,
+            unit_id: req.params?.unit_id,
+            chapter_id: req.params?.chapter_id,
+        }
+        const AllQuestions = await Question.find(filter,{__v: 0});
         return res.status(200).json({ 
             data: AllQuestions 
         });    

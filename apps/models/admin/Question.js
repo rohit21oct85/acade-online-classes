@@ -13,6 +13,27 @@ const QuestionSchema = new mongoose.Schema({
       subject_slug: {
             type: String,
       },
+      
+      unit_id: {
+            type: String,
+      },
+      unit_no: {
+            type: String,
+      },
+      unit_name: {
+            type: String,
+      },
+      
+      chapter_id: {
+            type: String,
+      },
+      chapter_no: {
+            type: String,
+      },
+      chapter_name: {
+            type: String,
+      },
+      
       question:{
         type: String
       },

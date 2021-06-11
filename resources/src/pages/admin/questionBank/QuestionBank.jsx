@@ -2,7 +2,6 @@ import React,{useEffect} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
 
 import CreateQuestionBank from './components/CreateQuestionBank';
-import UploadQuestions from './components/UploadQuestions';
 import AllQuestions from './components/AllQuestions';
 
 import useModule from '../../../hooks/useModule';
@@ -65,12 +64,10 @@ export default function QuestionBank() {
                     <div className="clearfix"></div>
                     <div className="dash-cont-start">
                         <div className="row">
-                            <div className="col-md-7">
-                                { upload === true  && params.page_type === 'upload' && <UploadQuestions />  }
-                                { (create === true || update === true )  &&  (params.page_type === 'create' ||params.page_type === 'update' ) && <CreateQuestionBank />  }
+                            <div className="col-md-5">
+                                { (create === true || update === true || upload === true)  &&  (params.page_type === 'create' ||params.page_type === 'update' || params.page_type === 'upload') && <CreateQuestionBank />  }
                             </div>
-                            
-                            <div className={`${(params?.page_type === 'create' || params?.page_type === 'update' || params?.page_type === 'upload') ? 'col-md-5':'col-md-12'}`}>
+                            <div className={`${(params?.page_type === 'create' || params?.page_type === 'update' || params?.page_type === 'upload') ? 'col-md-7':'col-md-12'}`}>
                                 <AllQuestions update={update} Delete={Delete}/>
                             </div>
 

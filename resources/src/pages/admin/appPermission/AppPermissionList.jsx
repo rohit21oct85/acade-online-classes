@@ -38,14 +38,14 @@ export default function AppPermissionList() {
             <hr className="mt-1"/>
             {isLoading && (<Loading isLoading={isLoading}/>)}
             
-            <div className="col-md-12 no-gutter data-container">
+            <div className="col-md-12 pl-0 no-gutter data-container">
             
             {modules?.map( module => {
                 let filter_methods = data?.filter( method => method?.module_slug === module?.module_slug);
                 return (
-                    <div className="col-md-12 pl-2 pr-0" id={`${module?._id}`} key={module?._id}>
-                        <h4>
-                            <span className={`bi ${module?.module_icon} mr-3 mb-2`}></span>
+                    <div className="col-md-12 card pl-0 pr-0 ml-0 mb-3" id={`${module?._id}`} key={module?._id}>
+                        <h5 className="mt-2 pr-2 ml-0 pl-2">
+                            <span className={`bi ${module?.module_icon} mr-2 mb-1`}></span>
                             {module?.module_name}
                             <button className="dark btn-sm pull-right"
                             onClick={handleDeleteModule.bind(this, module?._id, module?.module_slug)}>
@@ -56,9 +56,8 @@ export default function AppPermissionList() {
                                 <span className="fa fa-trash"></span>
                                 }
                             </button>
-                        </h4>
-                        <hr className="mt-2 mb-2"/>
-                        <div className="clearfix"></div>
+                        </h5>
+                        <hr className="mt-0 mb-2"/>
                         <div className="col-md-12 row">
                         {filter_methods?.map( methos => 
                             <SinglePermission permission={methos} key={methos?._id}/>

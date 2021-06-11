@@ -837,6 +837,15 @@ span.chapter {
     margin-bottom: 0.5rem;
 }
 .ac-heading{
-    background-color: #17698f;
+    background-color: #00641f;
     color: #fff;
+}
+.option > div > span > p {
+    margin-bottom: 3px !important;
+}
+.bg-head{
+    background-color:#cccccc;
+    color: #000;
+    padding: 10px 0;
+    cursor: pointer;
 }

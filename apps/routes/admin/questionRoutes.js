@@ -25,7 +25,7 @@ router
     .post('/create', checkAuth, Question.CreateQuestion)
     .patch('/update/:id', checkAuth, Question.UpdateQuestion)
     .get('/view/:id', checkAuth, Question.ViewQuestion)
-    .get('/view-all', checkAuth, Question.ViewAllQuestion)
+    .get('/view-all/:class_id?/:subject_id?/:unit_id?/:chapter_id?', checkAuth, Question.ViewAllQuestion)
     .delete('/delete/:id', checkAuth, Question.DeleteQuestion)
     .post('/upload', upload.single('file'), checkAuth, Question.uploadQuestion)
 ;
