@@ -17,6 +17,7 @@ import TeacherClassList from '../pages/admin/mappingTeacherClass/TeacherClassLis
 import ClassSubjectList from '../pages/admin/mappingClassSubject/ClassSubjectList'
 import QuestionBank from '../pages/admin/questionBank/QuestionBank'
 import UnitsList from '../pages/admin/units/UnitsList'
+import SubjectChapterList from '../pages/admin/mappingSubjectChapter/SubjectChapterList'
 
 export const webRoutes =  [
     { 
@@ -83,7 +84,11 @@ export const privateRoutes = [
         {
         path: '/admin/manage-units/:page_type?/:class_id?/:subject_id?/:unit_id?',
         component: UnitsList
-    }
+    },
+    {
+        path: '/admin/mapping-subject-chapters/:page_type?/:class_id?/:class_slug?/:subject_id?/:subject_slug?/:unit_id?/:unit_slug?/:subject_chapter_id?',
+        component: SubjectChapterList
+    },
 
 ];
 

@@ -6,7 +6,7 @@ import API_URL from '../../../../helper/APIHelper';
 import { useToasts } from 'react-toast-notifications';
 import {AuthContext} from '../../../../context/AuthContext';
 
-export default function useUploadQuestion(formDataUpload) {
+export default function useUpdateUnit(formData) {
       
       const queryClient = useQueryClient()
       const {state} = useContext(AuthContext);
@@ -22,14 +22,17 @@ export default function useUploadQuestion(formDataUpload) {
             }
       }      
       const { addToast } = useToasts();
-      return useMutation(formDataUpload => {
-            return axios.post(`${API_URL}v1/question-bank/upload`, formDataUpload, options)
+      const key = params.unit_id ? `units-${params.unit_id}` : `units`
+      return useMutation((formData) => {
+            let unit_id =  params?.unit_id;
+            return axios.patch(`${API_URL}v1/unit/update/${unit_id}`, formData, options)
         },{
             onSuccess: () => {
-                queryClient.invalidateQueries('questions')
-                setLoading(false);
-                addToast('Questions added successfully', { appearance: 'success', autoDismiss: true });
+                queryClient.invalidateQueries(`${key}`)
+            //     setLoading(false);
+            //     setFormData(initialData);
+            //     history.push(`${path}`);
+                addToast('Unit Updated successfully', { appearance: 'success',autoDismiss: true });
             }
         });
-    
 }

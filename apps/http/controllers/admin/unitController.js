@@ -3,8 +3,9 @@ const Unit = require("../../../models/admin/Unit");
 const CreateUnit = async (req, res) => {
   const body = req.body;
   try {
-    const newUnit = new Unit(body);
-    await newUnit.save();
+    // const newUnit = new Unit(body);
+    await Unit.insertMany(body);
+    // await newUnit.save();
     return res.status(200).json({
       message: "Unit created sucessfully",
     });
@@ -51,9 +52,9 @@ const ViewUnit = async (req, res) => {
 const ViewAllUnit = async (req, res) => {
   try {
     let filter = {};
-    if (req.params?.subject_id && req.params?.calss_id) {
+    if (req.params?.subject_id && req.params?.class_id) {
       filter = {
-        calss_id: req.params?.calss_id,
+        class_id: req.params?.class_id,
         subject_id: req.params?.subject_id,
       };
     }
@@ -71,7 +72,7 @@ const ViewAllUnit = async (req, res) => {
 
 const DeleteUnit = async (req, res) => {
   try {
-    const unit_id = req.params.unit_id;
+    const unit_id = req.params.id;
     await Unit.deleteOne({ _id: unit_id });
     res.status(201).json({ message: "deleted" });
   } catch (error) {

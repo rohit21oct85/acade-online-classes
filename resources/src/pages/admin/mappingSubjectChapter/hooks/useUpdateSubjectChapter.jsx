@@ -6,7 +6,7 @@ import API_URL from '../../../../helper/APIHelper';
 import { useToasts } from 'react-toast-notifications';
 import {AuthContext} from '../../../../context/AuthContext';
 
-export default function useCreateQuestion(formData) {
+export default function useUpdateSubjectChapter(formData) {
       
       const queryClient = useQueryClient()
       const {state} = useContext(AuthContext);
@@ -22,18 +22,17 @@ export default function useCreateQuestion(formData) {
             }
       }      
       const { addToast } = useToasts();
-      const key = params.qbank_id ? `questions-${params.qbank_id}` : `questions`
-    
-      return useMutation(formData => {
-            return axios.post(`${API_URL}v1/question-bank/create`, formData, options)
+      const key = params.subject_chapter_id ? `subject-chapter-mapping-${params.subject_chapter_id}` : `subject-chapter-mapping`
+      return useMutation((formData) => {
+            let subject_chapter_id =  params?.subject_chapter_id;
+            return axios.patch(`${API_URL}v1/chapter/update/${subject_chapter_id}`, formData, options)
         },{
             onSuccess: () => {
                 queryClient.invalidateQueries(`${key}`)
-                setLoading(false);
-                setFormData(initialData);
-                history.push(`${path}`);
-                addToast('Questions added successfully', { appearance: 'success', autoDismiss: true });
+            //     setLoading(false);
+            //     setFormData(initialData);
+            //     history.push(`${path}`);
+                addToast('Chapter Updated successfully', { appearance: 'success',autoDismiss: true });
             }
         });
-      
 }

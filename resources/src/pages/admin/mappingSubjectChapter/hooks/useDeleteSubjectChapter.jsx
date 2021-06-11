@@ -6,7 +6,7 @@ import API_URL from '../../../../helper/APIHelper';
 import { useToasts } from 'react-toast-notifications';
 import {AuthContext} from '../../../../context/AuthContext';
 
-export default function useDeleteUnit(formData) {
+export default function useDeleteSubjectChapter(formData) {
       const params = useParams()
 
       const location = useLocation();
@@ -22,13 +22,13 @@ export default function useDeleteUnit(formData) {
             }
       }      
       const { addToast } = useToasts();
-      const status =  useMutation((unit_id) => {
-            return axios.delete(`${API_URL}v1/unit/delete/${unit_id}`, options)
+      const status =  useMutation((chapter_subject_id) => {
+            return axios.delete(`${API_URL}v1/chapter/delete/${chapter_subject_id}`, options)
         },{
             onSuccesss: () => {
-                  const key = params.subject_id ? `units-${params.subject_id}` : `units`
+                  const key = params.unit_id ? `subject-chapter-mapping-${params.unit_id}` : `subject-chapter-mapping`
                   queryClient.invalidateQueries(`${key}`)
-                  addToast('Unit Deleted successfully', { appearance: 'success',autoDismiss: true });
+                  addToast('Chapter Deleted successfully', { appearance: 'success',autoDismiss: true });
             }
         });
       return status;

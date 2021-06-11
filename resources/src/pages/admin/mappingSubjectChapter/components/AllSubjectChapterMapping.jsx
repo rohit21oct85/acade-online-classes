@@ -1,22 +1,23 @@
-import useUnitList from '../hooks/useUnitList';
+import useSubjectChapterList from '../hooks/useSubjectChapterList';
 import Loading from '../../../../components/Loading';
 import {useHistory, useParams} from 'react-router-dom'
 import {useMutation, useQueryClient} from 'react-query'
 import {AuthContext} from '../../../../context/AuthContext';
+import { MakeSlug } from '../../../../utils/utils';
 
 import React, {useState, useContext} from 'react'
-import useDeleteUnit from '../hooks/useDeleteUnit';
+import useDeleteSubjectChapter from '../hooks/useDeleteSubjectChapter';
 
-export default function AllUnits({update, Delete}) {
+export default function AllSubjectChapterMapping({update, Delete}) {
 
-      const history = useHistory();
-      const {state} = useContext(AuthContext);
-      const params = useParams();
-      const {data:units, isLoading} = useUnitList();
-      const deleteMutation = useDeleteUnit();
-      const deleteUnit = async (id) => {
-            await deleteMutation.mutate(id)
-      }
+    const history = useHistory();
+    const {state} = useContext(AuthContext);
+    const params = useParams();
+    const {data:chapters, isLoading} = useSubjectChapterList();
+    const deleteMutation = useDeleteSubjectChapter();
+    const deleteChapter = async (id) => {
+        await deleteMutation.mutate(id)
+    }
 
     return (
         <>
@@ -28,6 +29,8 @@ export default function AllUnits({update, Delete}) {
         <table className="table table-hover">
                     <thead>
                         <tr>
+                        <th scope="col">Chapter No</th>
+                        <th scope="col">Chapter Name</th>
                         <th scope="col">Unit No</th>
                         <th scope="col">Unit Name</th>
                         <th scope="col">Class Name</th>
@@ -36,9 +39,11 @@ export default function AllUnits({update, Delete}) {
                         </tr>
                     </thead>
                     <tbody>
-                        {units && units?.map( (item,key) => { 
+                        {chapters && chapters?.map( (item,key) => { 
                             return (
                                 <tr key={item?._id}>
+                                <td>{item.chapter_no}</td>
+                                <td>{item.chapter_name}</td>
                                 <td>{item.unit_no}</td>
                                 <td>{item.unit_name}</td>
                                 <td>{item.class_name}</td>
@@ -48,7 +53,7 @@ export default function AllUnits({update, Delete}) {
                                         <button className="btn bg-primary text-white btn-sm mr-2" 
                                             onClick={
                                                 e => {
-                                                        history.push(`/admin/manage-units/update/${item.class_id}/${item?.subject_id}/${item?._id}`)
+                                                        history.push(`/admin/mapping-subject-chapters/update/${item.class_id}/${MakeSlug(item.class_name)}/${item?.subject_id}/${MakeSlug(item?.subject_name)}/${item?.unit_id}/${MakeSlug(item?.unit_name)}/${item?._id}`)
                                                 }
                                             }>
                                             <span className="fa fa-edit"></span>
@@ -57,7 +62,7 @@ export default function AllUnits({update, Delete}) {
 
                                     {Delete === true && (
                                         <button className="btn bg-danger text-white btn-sm"
-                                            onClick={() => deleteUnit(item?._id)}>
+                                            onClick={() => deleteChapter(item?._id)}>
                                             {deleteMutation?.isLoading ?
                                             <span className="fa fa-spinner"></span>
                                             :
