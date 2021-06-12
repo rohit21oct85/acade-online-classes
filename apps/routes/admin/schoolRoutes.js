@@ -31,6 +31,7 @@ router
     .post('/subdomain', checkAuth,adminAuth, School.checkSubDomain)
     .post('/delete', checkAuth,adminAuth, School.DeleteSchool)
     .post('/delete', checkAuth,adminAuth, School.DeleteSchool)
+    .post('/search-school', School.searchSchool)
     .post('/upload', upload.single('file'), checkAuth,adminAuth, School.uploadSchool);
     
 module.exports = router;

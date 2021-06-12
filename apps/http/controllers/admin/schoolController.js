@@ -170,6 +170,38 @@ const otherFunction = async(res, FinalData, callback) => {
     })
 };
 
+const searchSchool = async (req, res) => {
+    // const search = req.params.search;
+    // const limit = parseInt(req.params.limit);
+    const search = req.body.search; // only recieve 100 chars in search
+    const limit = parseInt(req.body.limit);
+    // working with special charcters
+    // let searchString = regexEscape(search)
+
+    const schools = await School.find({ 
+        $or:
+        // [{book_isbn: { $regex: search}},{book_name:{ $regex:search }},{question:{$regex:search}}]
+        [{school_name: {$regex:search, '$options' : 'i'}}]
+    },{
+        _id:0,
+        school_name:1,
+        sub_domain:1,
+        school_logo:1,
+        address:1,
+        city:1,
+        state:1,
+        pincode:1,
+        contact_name:1,
+        contact_email:1,
+        slug:1,
+        contact_mobile:1,
+    }).limit(limit);
+
+    res.status(200).json({
+        schools
+    });
+}
+
 module.exports = {
     checkSubDomain,
     addFields,
@@ -178,5 +210,6 @@ module.exports = {
     ViewSchool,
     ViewAllSchool,
     DeleteSchool,
-    uploadSchool
+    uploadSchool,
+    searchSchool,
 }
