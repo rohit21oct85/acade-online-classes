@@ -7,7 +7,7 @@ import AllQuestions from './components/AllQuestions';
 import useModule from '../../../hooks/useModule';
 import useAccess from '../../../hooks/useAccess';
 
-export default function QuestionBank() {
+export default function UnitsList() {
     const params = useParams();
     const history = useHistory();
     const accessUrl = useModule();
@@ -64,10 +64,10 @@ export default function QuestionBank() {
                     <div className="clearfix"></div>
                     <div className="dash-cont-start">
                         <div className="row">
-                            <div className="col-md-5">
+                            <div className="col-md-6 pr-0">
                                 { (create === true || update === true || upload === true)  &&  (params.page_type === 'create' ||params.page_type === 'update' || params.page_type === 'upload') && <CreateQuestionBank />  }
                             </div>
-                            <div className={`${(params?.page_type === 'create' || params?.page_type === 'update' || params?.page_type === 'upload') ? 'col-md-7':'col-md-12'}`}>
+                            <div className={`${(params?.page_type === 'create' || params?.page_type === 'update' || params?.page_type === 'upload') ? 'col-md-6 pr-0':'col-md-12'}`}>
                                 <AllQuestions update={update} Delete={Delete}/>
                             </div>
 

@@ -11,12 +11,12 @@ export default function AllTeacherSubjectMapping() {
         <>
             <p className="form-heading">
                 <span className="fa fa-plus-circle mr-2"></span>Mappings
-                <span className="badge-danger br-5 ml-2 p-1"
+                <span className="dark bg-success br-15 pl-3 pr-3 ml-2"
                 style={{
                     fontSize: '0.90rem'
                 }}>
                     {params?.school_slug?.replaceAll('-'," ")}</span>
-                <span className="badge-danger br-5 ml-2 p-1"
+                <span className="dark bg-success br-15 pl-3 pr-3 ml-2"
                 style={{
                     fontSize: '0.90rem'
                 }}>

@@ -1,5 +1,5 @@
 import useTeacherList from '../hooks/useTeacherList';
-import useSchoolLists from '../../../../hooks/schools/useSchoolLists';
+import useSchoolLists from '../../school/hooks/useSchoolLists';
 import Loading from '../../../../components/Loading';
 import {useHistory, useParams} from 'react-router-dom'
 import {useMutation, useQueryClient} from 'react-query'

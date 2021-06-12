@@ -6,7 +6,7 @@ import axios from 'axios'
 import API_URL from '../../../../helper/APIHelper';
 import * as utils from '../../../../utils/utils'
 import { useToasts } from 'react-toast-notifications';
-import useSchoolLists from '../../../../hooks/schools/useSchoolLists';
+import useSchoolLists from '../../school/hooks/useSchoolLists';
 import useUploadTeacher from '../hooks/useUploadTeacher';
 
 export default function UploadTeachers() {
@@ -115,7 +115,7 @@ export default function UploadTeachers() {
                         )}
                         
                     </button>
-                    <button className="btn btn-sm red ml-2"
+                    <button className="btn btn-sm dark bg-danger ml-2"
                         onClick={e => {
                             e.preventDefault();
                             history.push(`/admin/teachers-management`)

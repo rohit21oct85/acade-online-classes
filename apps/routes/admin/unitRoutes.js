@@ -9,7 +9,7 @@ router
     .patch('/update/:id', checkAuth, Unit.UpdateUnit)
     .get('/view/:id', checkAuth, Unit.ViewUnit)
     .get('/view-all/:class_id?/:subject_id?', checkAuth, Unit.ViewAllUnit)
-    .delete('/delete/:id', checkAuth, Unit.DeleteUnit)
+    .post('/delete', checkAuth, Unit.DeleteUnit)
 ;
 
 module.exports = router;
