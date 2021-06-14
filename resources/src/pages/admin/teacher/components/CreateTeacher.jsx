@@ -31,9 +31,6 @@ export default function CreateTeacher() {
     const pattern = /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/;
     const initialData = {
         name: '',
-        class: '',
-        section: '',
-        subject: '',
         mobile: '',
         email: '',
         password: '',
@@ -125,39 +122,6 @@ export default function CreateTeacher() {
                         value={params?.teacher_id ? SingleTeacher?.name : formData?.name}
                         onChange={handleChange}
                         placeholder="Name"/>
-                </div>
-                <div className="form-group">
-                    <input 
-                        type="text" 
-                        className="form-control" 
-                        name="subject"
-                        value={params?.teacher_id ? SingleTeacher?.subject : formData?.subject}
-                        onChange={handleChange}
-                        placeholder="Subject"/>
-                </div>
-                <div className="row">
-                    <div className="col-md-6">
-                        <div className="form-group">
-                            <input 
-                                type="text" 
-                                className="form-control" 
-                                name="class"
-                                value={params?.teacher_id ? SingleTeacher?.class : formData?.class}
-                                onChange={handleChange}
-                                placeholder="Class"/>
-                        </div>
-                    </div>
-                    <div className="col-md-6">
-                        <div className="form-group">
-                        <input 
-                            type="text" 
-                            className="form-control" 
-                            name="section"
-                            value={params?.teacher_id ? SingleTeacher?.section : formData?.section}
-                            onChange={handleChange}
-                            placeholder="Section"/>
-                        </div>
-                    </div>
                 </div>
                 
                 <div className="form-group">

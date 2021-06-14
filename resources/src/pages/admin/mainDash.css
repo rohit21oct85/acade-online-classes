@@ -837,15 +837,34 @@ span.chapter {
     margin-bottom: 0.5rem;
 }
 .ac-heading{
-    background-color: #00641f;
-    color: #fff;
+    width: 100%;
+    background: rgb(0, 55, 77);
+    color: #f0d01a;
+    padding: 5px;
 }
 .option > div > span > p {
-    margin-bottom: 3px !important;
+    margin-bottom: 2px !important;
 }
+.question > div > div > p {
+    margin-bottom: 2px !important;
+}
+
 .bg-head{
     background-color:#cccccc;
     color: #000;
-    padding: 10px 0;
+    padding: 5px 0;
     cursor: pointer;
+}
+.b1{
+    background: #e3e3e3;
+    border: 1px solid #fdfdfd;
+    padding: 5px 10px
+
+}
+input[disabled]{
+    color: #f00;
+    cursor: no-drop;
+}
+:disabled{
+    cursor: no-drop;
 }

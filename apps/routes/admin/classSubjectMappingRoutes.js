@@ -6,9 +6,6 @@ const router = express.Router();
 
 router
     .post('/create',checkAuth,adminAuth, classSubjectMapping.CreateClassSubjectMapping)
-    // .patch('/update/:id',checkAuth,adminAuth, classSubjectMapping.UpdateclassSubjectMapping)
-    // .get('/view/:module_slug/:role_slug',checkAuth,adminAuth, classSubjectMapping.ViewclassSubjectMapping)
-    // .get('/module/:role_slug?',checkAuth, classSubjectMapping.OtherModules)
     .get('/view-all/:class_id?',checkAuth,adminAuth, classSubjectMapping.ViewAllClassSubjectMapping)
     .post('/delete',checkAuth,adminAuth, classSubjectMapping.DeleteClassSubjectMapping);
     

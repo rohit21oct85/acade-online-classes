@@ -27,10 +27,10 @@ export default function AppPermission() {
                     <div className="clearfix"></div>
                     <div className="dash-cont-start">
                         <div className="row">
-                            <div className="col-md-4">
+                            <div className="col-md-4 pr-0">
                                 <CreateAppPermission />
                             </div>
-                            <div className="col-md-8">
+                            <div className="col-md-8 pr-0">
                                 <AppPermissionList />
                             </div>
                         </div>

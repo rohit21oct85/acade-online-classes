@@ -1,4 +1,9 @@
 const jwt = require("jsonwebtoken");
+const Role = require('../../models/admin/Role');
+
+async function checkRole(arr, el){
+    return arr && arr.some(e => e.role_id === el);
+}
 
 module.exports = (req, res, next) => {
     const accessTokenSecret = 'ACADEONLINE2021';
@@ -15,7 +20,8 @@ module.exports = (req, res, next) => {
                 message: 'Authorization failed'
             });
         } else {
-            if(decoded.role == "1"){
+            let Roles = Role.find({});
+            if(checkRole(Roles, decoded.role)){
                 req.body.user_id = decoded.id;
                 req.body.user_role = decoded.role;
                 next()

@@ -3,6 +3,8 @@ import {useHistory, useParams, useLocation} from 'react-router-dom'
 import {AuthContext} from '../../../context/AuthContext';
 
 import * as utils from '../../../utils/utils'
+import * as helper from '../../../utils/helper'
+
 import useSinglePermission from '../../../hooks/permissions/useSinglePermission.jsx';
 import useCreatePermission from '../../../hooks/permissions/useCreatePermission.jsx';
 import useUpdatePermission from '../../../hooks/permissions/useUpdatePermission';
@@ -12,26 +14,30 @@ import useSchoolLists from '../school/hooks/useSchoolLists';
 import useAppRoles from '../../../hooks/roles/useAppRoles';
 import useAppModule from '../../../hooks/modules/useAppModule';
 import useSubAdminByRole from '../../../hooks/subadmin/useSubAdminByRole';
-
+import {checkExists} from '../../../utils/helper'
 export default function CreateAppPermission() {
     const history = useHistory();
     const params  = useParams();
     const methods = [
         {
             key: 'create',
-            value: 'Create'
+            value: 'Create',
+            icon: `<span class="bi bi-plus-circle-fill"></span>`
         },
         {
             key: 'update',
-            value: 'Update'
+            value: 'Update',
+            icon: `<span class="bi bi-pencil-fill"></span>`
         },
         {
             key: 'delete',
-            value: 'Delete'
+            value: 'Delete',
+            icon: `<span class="bi bi-trash-fill"></span>`
         },
         {
             key: 'upload',
-            value: 'Upload'
+            value: 'Upload',
+            icon: `<span class="bi bi-cloud-upload-fill"></span>`
         }
     ]
     const [loading, setLoading] = useState(false);
@@ -102,12 +108,12 @@ export default function CreateAppPermission() {
         clearFields();
     }
     
-    function checkModules(module_slug){
-        return permissions && permissions.some(permission => permission?.module_slug === module_slug);
-    }
-    function checkMethods(slug){
-        return permissions && permissions.some(permission => permission?.method_name === slug);
-    }
+    // function checkModules(module_slug){
+    //     return permissions && permissions.some(permission => permission?.module_slug === module_slug);
+    // }
+    // function checkMethods(slug){
+    //     return permissions && permissions.some(permission => permission?.method_name === slug);
+    // }
     function handleSelectMethods(slug){
         let module = "module-"+slug
         let method = "method-"+slug
@@ -194,17 +200,17 @@ export default function CreateAppPermission() {
                         overflow: 'scroll'
                     }}>
                         {modules?.map((module, index) => {
-                            
+                            let chkModuleDisabled = checkExists(permissions, 'module_slug' ,`${module?.module_slug}`) 
                             return(
                                 <div className="card pt-0 pb-0 mb-2" key={module?._id}>
-                                    <label className="pb-2 pt-2 mb-0 ac-heading">
+                                    <label className="mb-0 ac-heading">
                                     <span className={`bi ${module?.module_icon} mr-2 ml-2 `}></span>
                                     <input 
                                         type="checkbox" 
                                         name={`module-${module?.module_slug}`} 
                                         id={`module-${module?.module_slug}`} 
                                         className="module mr-2" 
-                                        disabled={checkModules(`${module?.module_slug}`)}
+                                        disabled={chkModuleDisabled}
                                         value={`${module?._id}_${module?.module_name}_${module?.module_slug}_${module?.module_icon}`}
                                         onChange={handleSelectMethods.bind(this, module?.module_slug)}
                                     />
@@ -213,16 +219,22 @@ export default function CreateAppPermission() {
                                     
                                     <div className="flex ml-2 mr-2">
                                         {methods?.map( method => {
+                                            let chkMethodDisabled = checkExists(permissions, 'method_name', `${method?.key}-${module?.module_slug}`);
                                             if(module?.module_slug !== 'dashboard')
                                             return(
                                             <>    
-                                            <div className="col-md-3 pl-0 pt-2 pb-2" key={method?._id}
-                                            style={{display: `${checkMethods(`${method?.key}-${module?.module_slug}`) ? 'none': 'block'}`}}
-                                            >
-                                              <label className="mb-0">
-                                                <input type="checkbox" name={`method-${module?.module_slug}`} className="module-methods mr-1" 
+                                            <div className="col-md-3 pl-0 pr-0 pt-1 pb-1" key={method?._id}>
+                                              <label className="mb-0"
+                                                style={{fontSize: '0.85rem'}}
+                                              >
+                                                <input type="checkbox" name={`method-${module?.module_slug}`} 
+                                                className={`module-methods mr-1 mr-1`} 
                                                 value={`${module?._id}_${module?.module_name}_${module?.module_slug}_${module?.module_icon}_${method?.key}-${module?.module_slug}`}
-                                                />{method?.value}</label>
+                                                disabled={chkMethodDisabled}
+                                                />
+                                                <span className="ml-0 mr-1" style={{ fontSize: '0.80rem'}} dangerouslySetInnerHTML={{ __html: method?.icon}}/>
+                                                {method?.value}
+                                                </label>
                                             </div>
                                             </>
                                             )

@@ -17,7 +17,6 @@ export default function Login() {
     const [error, setError] = useState(null);
     const {dispatch,state } = useContext(AuthContext);
     const [loading, setLoading] = useState(false);
-
     const submitForm = async (e) => {
         e.preventDefault();
         const email = emailRef.current.value;
@@ -43,7 +42,8 @@ export default function Login() {
                 let fullname = response?.data?.admin?.fullname
                 let email = response?.data?.admin?.email
                 let role = response?.data?.admin?.role
-                let user_type = ''; 
+                let user_type = response?.data?.admin?.role_name
+                
                 if(role == "1"){
                     user_type = 'master_admin'
                 }else if(role == "2"){

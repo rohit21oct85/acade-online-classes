@@ -58,20 +58,6 @@ export default function CreateTeacherSubjectMap() {
             history.push('/admin/mapping-teacher-subjects');
         }
     });
-    
-    // const updateMutation = useMutation((formData) => {
-    //     let teacher_id =  params?.teacher_id;
-    //     return axios.patch(`${API_URL}v1/teacher/update/${teacher_id}`, formData, options)
-    // },{
-    //     onSuccess: () => {
-    //         let school_id =  params?.school_id;
-    //         queryClient.invalidateQueries(`teachers-${school_id}`)
-    //         setLoading(false);
-    //         setFormData(initialData);
-    //         history.push(`${path}`);
-    //         addToast('Teacher Updated successfully', { appearance: 'success',autoDismiss: true });
-    //     }
-    // });
 
     const saveMapping = async (e) => {
         e.preventDefault();
@@ -109,13 +95,7 @@ export default function CreateTeacherSubjectMap() {
         } 
     }
 
-    // async function handleChange(e){
-    //     if(params?.teacher_sub_id){
-    //             setSingleTeacher({...SingleTeacher, [e.target.name]: e.target.value})
-    //     }else{
-    //             setFormData({...formData, [e.target.name]: e.target.value})
-    //     }
-    // }
+  
 
     async function handleChangeTeacher(e){
         if(e.target.value != 999){
@@ -147,17 +127,12 @@ export default function CreateTeacherSubjectMap() {
 
     async function handleChangeSchool(e){
         if(e.target.value != 999){
-            // if(params?.principal_id){
-            //     setSinglePrincipal({...SinglePrincipal, [e.target.name]: e.target.value})
-            //         history.push(`/admin/mapping-teacher-subjects/select-school/${e.target.value}/${params?.principal_id}`)
-            // }else{
-                const school_name = e.target.options[e.target.selectedIndex].dataset.school_name
-                setFormData({...formData, ['school_id']: e.target.value,['school_name']:school_name})
-                // params.class_id ?
-                //     history.push(`/admin/mapping-teacher-subjects/select-school/${e.target.value}/${params?.class_id}`)
-                //     :
-                history.push(`/admin/mapping-teacher-subjects/select-school/${e.target.value}/${MakeSlug(school_name)}`)
-                // }
+            
+            const school_name = e.target.options[e.target.selectedIndex].dataset.school_name
+            setFormData({...formData, ['school_id']: e.target.value,['school_name']:school_name})
+            
+            history.push(`/admin/mapping-teacher-subjects/select-school/${e.target.value}/${MakeSlug(school_name)}`)
+            
         }
     }
 
@@ -198,12 +173,13 @@ export default function CreateTeacherSubjectMap() {
                         {subjects?.map((subject, index) => {
                             return(
                                 <div className="card pl-2 pt-0 pb-0 mb-2" key={subject?._id}>
-                                    <label className="pb-0 mb-0">
+                                    <label className="pb-0 mb-0"
+                                    htmlfor={`subject-${index}`}>
                                     <input 
                                         className="mr-2 subjects"
-                                        type="checkbox" 
-                                        id={`custom-checkbox-${index}`}
-                                        name={subject?.subject_name}
+                                        type="radio" 
+                                        id={`subject-${index}`}
+                                        name="subject"
                                         value={`${subject?._id}_${subject?.subject_name}`}
                                         checked={checkedState[index]}
                                         onChange={(e)=>{handleCheckBox(e,index)}}

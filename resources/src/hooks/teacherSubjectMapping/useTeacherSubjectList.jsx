@@ -9,10 +9,9 @@ export default function useTeacherSubjectList() {
     const {state } = useContext(AuthContext);
     const params = useParams();
     const school_id = params?.school_id
-    const teacher_id = params?.teacher_id
-    return useQuery(`teacher-subject-mapping-${school_id}-${teacher_id}`, async () => {
-        if(state?.access_token && teacher_id!== undefined){
-            const result = await axios.get(`${API_URL}v1/teacher-subject-mapping/view-all/${school_id}/${teacher_id}`,{
+    return useQuery(`teacher-subject-mapping-${school_id}`, async () => {
+        if(state?.access_token){
+            const result = await axios.get(`${API_URL}v1/teacher-subject-mapping/view-all/${school_id}`,{
                 headers: {
                     'Content-Type': 'Application/json',
                     'Authorization':'Bearer '+state.access_token

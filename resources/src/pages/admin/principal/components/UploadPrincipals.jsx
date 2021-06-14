@@ -6,6 +6,7 @@ import axios from 'axios'
 import API_URL from '../../../../helper/APIHelper';
 import * as utils from '../../../../utils/utils'
 import { useToasts } from 'react-toast-notifications';
+import useSchoolLists from '../../school/hooks/useSchoolLists';
 
 export default function UploadPrincipals() {
     const [loading, setLoading] = useState(false);
@@ -21,9 +22,9 @@ export default function UploadPrincipals() {
     const [file, setFile] = useState(null);
     const [principal, setPrincipal] = useState(null);
     const [clas, setClas] = useState(null);
-    
+    const { data: schools, schoolIsLoading} = useSchoolLists();
     const history = useHistory();
-
+    const [formData, setFormData] = useState({})
     const queryClient = useQueryClient()
     const options = {
         headers: {
@@ -42,14 +43,14 @@ export default function UploadPrincipals() {
             setBtnDisbaled(false);
             setFile(e.target.files[0]);
             formDataUpload.append('file', e.target.files[0]);
-            formDataUpload.append('test', "testdata");
+            
         }else{
             setBtnDisbaled(true);
             addToast('Only .csv files are allowed', { appearance: 'error', autoDismiss: true });
         }
     }
 
-    const mutation = useMutation(formDataUpload => {
+    const uploadMutation = useMutation(formDataUpload => {
         console.log(formDataUpload.file)
         return axios.post(`${API_URL}v1/principal/upload`, formDataUpload, options)
     },{
@@ -63,9 +64,20 @@ export default function UploadPrincipals() {
     const uploadFile = async(e) => {
         e.preventDefault();
         formDataUpload.append('file',file);
-        await mutation.mutate(formDataUpload);
+        formDataUpload.append('school_id', formData.school_id);
+        await uploadMutation.mutate(formDataUpload);
     }
-
+    async function handleChangeSchool(e){
+        if(e.target.value != 999){
+            if(params?.principal_id){
+                setSinglePrincipal({...SinglePrincipal, [e.target.name]: e.target.value})
+                history.push(`/admin/principal-management/update/${e.target.value}/${params?.principal_id}`)
+            }else{
+                setFormData({...formData, ['school_id']: e.target.value})
+                history.push(`/admin/principal-management/create/${e.target.value}`)
+            }
+        }
+    }
 
     return (
         <>
@@ -77,6 +89,19 @@ export default function UploadPrincipals() {
             </p>
             <hr className="mt-1"/>
             <form onSubmit={uploadFile} method="POST" encType="multipart/form-data">
+            <div className="form-group">
+                    <select 
+                        className="form-control" aria-label="Default select example" 
+                        name="school_id" 
+                        onChange={handleChangeSchool} value={params.school_id ? params.school_id : 999}>
+                        <option value="999">Select School</option>
+                        {!schoolIsLoading && schools?.map(school => {
+                        return (
+                            <option value={school._id} key={school._id}>{school.school_name}</option>
+                        )
+                        })}
+                    </select>
+                </div>
                 <div className="form-group">
                     <input 
                         type="file" 

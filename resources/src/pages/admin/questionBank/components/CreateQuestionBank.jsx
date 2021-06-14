@@ -4,13 +4,13 @@ import useClassList from '../../class/hooks/useClassList'
 import useClassSubjectList from '../../../../hooks/classSubjectMapping/useClassSubjectList';
 import { useState } from 'react';
 import useUnitList from '../../units/hooks/useUnitList';
-import useChapterList from '../../chapter/hooks/useChapterList';
 import { getFilteredData } from '../../../../utils/helper';
 import useCreateQuestion from '../hooks/useCreateQuestion';
 import useSingleQuestion from '../hooks/useSingleQuestion';
-
+import {romanize} from '../../../../utils/helper';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from 'ckeditor5-classic-with-mathtype';
+import useSubjectChapterList from '../../mappingSubjectChapter/hooks/useSubjectChapterList';
 
 export default function CreateQuestionBank() {
       const params = useParams();
@@ -18,7 +18,7 @@ export default function CreateQuestionBank() {
       const {data:classDatas} = useClassList();
       const {data:subjects, isLoading: subjectLoading} = useClassSubjectList();
       const {data:units, isLoading: unitLoading} = useUnitList();
-      const {data:chapters, isLoading: chapterLoading} = useChapterList();
+      const {data:chapters, isLoading: chapterLoading} = useSubjectChapterList();
       const {data:chapter} = useSingleQuestion();
       const questionTypes = [
             {key: 'mcq', value: 'Multiple Choice'}
@@ -67,9 +67,7 @@ export default function CreateQuestionBank() {
             formData.atype = params?.atype
             console.log(formData);
             await createMutation.mutate(formData);
-            setFormData({})
             
-
       }
       return (
             <div>
@@ -130,7 +128,7 @@ export default function CreateQuestionBank() {
                         <option value="_">{unitLoading ? 'loading ...':'Units'}</option>
                         {units?.map( unit => {
                               return(
-                                    <option value={unit?._id} key={unit?._id}>{unit?.unit_no}-{unit?.unit_name}</option>
+                                    <option value={unit?._id} key={unit?._id}>{romanize(unit?.unit_no)}-{unit?.unit_name}</option>
                               )
                         })}
                   </select>

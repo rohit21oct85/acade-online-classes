@@ -169,8 +169,26 @@ const ViewSubAdmin = async (req, res) => {
         });
     }
 }
+const UpdateSubAdmin = async (req, res) => {
+    try{
+        const admin = await Admin.findOneAndUpdate({_id: req.body?.admin_id},{$set: {
+            first_name: req?.body?.first_name,
+            last_name: req?.body?.last_name,
+            role_name: req?.body?.role_name
+        }},{__v: 0});
+        res.status(200).json({ 
+            data: admin 
+        });    
+    } catch(error){
+        res.status(409).json({
+            message: "Error occured",
+            errors: error.message
+        });
+    }
+}
 
 module.exports = {
+    UpdateSubAdmin,
     ViewSubAdminByRole,
     ViewSubAdmin,
     ViewAllSubAdmin,

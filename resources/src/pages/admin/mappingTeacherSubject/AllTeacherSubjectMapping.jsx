@@ -15,19 +15,17 @@ export default function AllTeacherSubjectMapping() {
                 style={{
                     fontSize: '0.90rem'
                 }}>
-                    {params?.school_slug?.replaceAll('-'," ")}</span>
-                <span className="dark bg-success br-15 pl-3 pr-3 ml-2"
-                style={{
-                    fontSize: '0.90rem'
-                }}>
-                    {params?.teacher_slug?.replaceAll('-'," ")}</span>
+                {params?.school_slug?.replaceAll('-'," ")}</span>
+                
             </p>
             <hr className="mt-1"/>
-                {isLoading && (<Loading isLoading={isLoading}/>)}
+            {isLoading && (<Loading isLoading={isLoading}/>)}
             <div className="col-md-12 row no-gutter data-container">
             <table className="table table-hover">
                     <thead>
                         <tr>
+                        <th scope="col">School</th>
+                        <th scope="col">Teacher</th>
                         <th scope="col">Subject</th>
                         <th scope="col">Action</th>
                         </tr>
