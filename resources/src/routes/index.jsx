@@ -50,7 +50,7 @@ export const privateRoutes = [
         component: ClassList
     },
     {
-        path: '/admin/students-management/:page_type?/:school_id?/:student_id?',
+        path: '/admin/students-management/:page_type?/:school_id?/:class_id?/:student_id?',
         component: StudentList
     },
     {

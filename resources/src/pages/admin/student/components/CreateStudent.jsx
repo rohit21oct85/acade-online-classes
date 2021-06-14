@@ -93,7 +93,7 @@ export default function CreateStudent() {
         if(e.target.value != 999){
             if(params?.student_id){
                 setSingleStudent({...SingleStudent, [e.target.name]: e.target.value})
-                    history.push(`/admin/student-management/update/${e.target.value}/${params?.class_id}/${params?.student_id}`)
+                    history.push(`/admin/students-management/update/${e.target.value}/${params?.class_id}/${params?.student_id}`)
             }else{
                 setFormData({...formData, ['school_id']: e.target.value})
                 params.class_id ?
@@ -103,6 +103,24 @@ export default function CreateStudent() {
                 }
         }
     }
+
+    async function handleChangeClass(e){
+        const class_name = e.target.options[e.target.selectedIndex].dataset.class_name
+        if(e.target.value != 999){
+            if(params?.student_id){
+                setSingleStudent({...SingleStudent, [e.target.name]: e.target.value, ['class']:class_name })
+                    history.push(`/admin/students-management/update/${params?.school_id}/${e.target.value}/${params?.student_id}`)
+            }else{
+                setFormData({...formData, ['class_id']: e.target.value,['class']:class_name})
+                params.school_id ?
+                    history.push(`/admin/students-management/create/${params?.school_id}/${e.target.value}`)
+                    :
+                    history.push(`/admin/students-management/create/${e.target.value}`)
+                }
+        }
+    }
+
+
 
     return (
         <>
@@ -132,7 +150,7 @@ export default function CreateStudent() {
                 </div>
                 <div className="row">
                     <div className="col-md-6">
-                        <div className="form-group">
+                        {/* <div className="form-group">
                             <input 
                                 type="text" 
                                 className="form-control" 
@@ -140,6 +158,17 @@ export default function CreateStudent() {
                                 value={params?.student_id ? SingleStudent?.class : formData?.class}
                                 onChange={handleChange}
                                 placeholder="Class"/>
+                        </div> */}
+
+                        <div className="form-group">
+                            <select className="form-control" aria-label="Default select example" name="class_id" onChange={handleChangeClass} value={params.class_id ? params.class_id : 999}>
+                                <option value="999">Select Class</option>
+                                {!classesIsLoading && classes?.map(classs => {
+                                return (
+                                    <option value={classs._id} key={classs._id} data-class_name={classs.class_name}>{classs.class_name}</option>
+                                )
+                                })}
+                            </select>
                         </div>
                     </div> 
                     <div className="col-md-6">
