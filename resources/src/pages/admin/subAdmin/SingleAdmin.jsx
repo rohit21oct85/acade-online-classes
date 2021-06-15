@@ -16,8 +16,7 @@ export default function SingleAdmin({sub_admin}) {
                     </div>
                     <div className="label-name">
                         <span className={`fa fa-lock mt-1 mr-3`}></span>
-                        {sub_admin?.role === 2 && 'sub_admin'}
-                        {sub_admin?.role === 3 && 'mapping admin'}
+                        {sub_admin?.role_name}
                     </div>
 
                 </div>

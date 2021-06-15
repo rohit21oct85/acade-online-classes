@@ -44,7 +44,7 @@ export default function CreatePrincipal() {
     const createMutation = useCreatePrincipal(formData);
     const updateMutation = useUpdatePrincipal(SinglePrincipal);
     const deleteMutation = useDeletePrincipal(formData);
-    const { data: schools, schoolIsLoading} = useSchoolLists(formData);
+    const { data: schools, schoolIsLoading} = useSchoolLists();
     
     const savePrincipal = async (e) => {
         e.preventDefault();

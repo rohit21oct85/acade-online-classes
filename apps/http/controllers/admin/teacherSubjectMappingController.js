@@ -41,7 +41,7 @@ const ViewAllTeacherSubjectMapping = async (req, res) => {
     try{
         let filter = {}
         if(req?.params?.school_id){
-            filter = {school_id: req?.params?.school_id, teacher_id: req.params?.teacher_id}
+            filter = {school_id: req?.params?.school_id}
         }
         const AllTeacherSubject = await TeacherSubject.find(filter,{__v: 0});
         return res.status(200).json({ 

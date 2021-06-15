@@ -17,6 +17,7 @@ import TeacherClassList from '../pages/admin/mappingTeacherClass/TeacherClassLis
 import ClassSubjectList from '../pages/admin/mappingClassSubject/ClassSubjectList'
 import QuestionBank from '../pages/admin/questionBank/QuestionBank'
 import UnitsList from '../pages/admin/units/UnitsList'
+import UnitTests from '../pages/admin/unitTest/UnitTest'
 import SubjectChapterList from '../pages/admin/mappingSubjectChapter/SubjectChapterList'
 
 export const webRoutes =  [
@@ -81,13 +82,17 @@ export const privateRoutes = [
         path: '/admin/question-bank/:page_type?/:class_id?/:subject_id?/:unit_id?/:chapter_id?/:qtype?/:atype?/:qbank_id?',
         component: QuestionBank
     },
-        {
+    {
+        path: '/admin/mapping-subject-chapters/:page_type?/:class_id?/:class_slug?/:subject_id?/:subject_slug?/:unit_id?/:unit_slug?/:subject_chapter_id?',
+        component: SubjectChapterList
+    },
+    {
         path: '/admin/manage-units/:page_type?/:class_id?/:subject_id?/:unit_id?',
         component: UnitsList
     },
     {
-        path: '/admin/mapping-subject-chapters/:page_type?/:class_id?/:class_slug?/:subject_id?/:subject_slug?/:unit_id?/:unit_slug?/:subject_chapter_id?',
-        component: SubjectChapterList
+        path: '/admin/manage-unit-test/:page_type?/:class_id?/:subject_id?/:unit_id?/:chapter_id?/:test_id?',
+        component: UnitTests
     },
 
 ];
@@ -111,7 +116,7 @@ export const adminRoutes = [
         component: SchoolList
     },
     {
-        path: '/admin/manage-sub-admin/:page_type?/:admin_id?',
+        path: '/admin/manage-sub-admin/:page_type?/:role?/:admin_id?',
         component: SubAdminList
     },
 

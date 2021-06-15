@@ -14,8 +14,9 @@ export default function ActionMenu({permission}) {
         },1500)
     }
     return (
-        <div style={{ display: 'flex', justifyContent: 'flex-start', flexDirection: 'column'}}>
-            <button className="btn btn-sm dark br-5"
+        <div style={{ display: 'flex', justifyContent: 'flex-start', flexDirection: 'row'}}>
+            <span style={{ cursor: 'pointer'}}
+            className="text-danger"
             onClick={handleDelete.bind(this, permission?._id)}>
             {deleteMutation?.isLoading 
             ?
@@ -23,7 +24,7 @@ export default function ActionMenu({permission}) {
             :
                 <span className="fa fa-trash"></span>
             }    
-            </button>
+            </span>
         </div>
     )
 }

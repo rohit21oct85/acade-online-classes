@@ -98,6 +98,7 @@ const uploadPrincipal = async(req, res) => {
             .on('end', () => {
                 results.forEach(principal => {
                     FinalData.push({ 
+                        school_id: req.body.school_id, 
                         title: principal.title, 
                         name: principal.name, 
                         EmpId: principal.EmpId, 

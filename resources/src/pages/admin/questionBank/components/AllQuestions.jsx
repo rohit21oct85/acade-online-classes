@@ -39,35 +39,38 @@ export default function AllQuestions({update, Delete}) {
                         <div className="row ml-3 pb-3 option">
                             <div className="row col-md-6 pr-0">
                                 <div className="pl-3 pr-3">option A: </div>
-                                <div className="pl-3 pr-3"  dangerouslySetInnerHTML={{ __html: q?.option_a }}/>
                                 {(q?.answer === 'option_a') ? 
                                     <span className="bi bi-check-circle-fill text-success"></span>: 
                                     <span className="bi bi-x-circle-fill text-danger ml-1"></span>
                                 }
+                                <div className="pl-3 pr-3"  dangerouslySetInnerHTML={{ __html: q?.option_a }}/>
+                                
                             </div>
                             <div className="row col-md-6 pr-0">
                                 <div className="pl-3 pr-3">option B: </div>
-                                <div className="pl-3 pr-3"  dangerouslySetInnerHTML={{ __html: q?.option_b }}/>
+                                
                                 {(q?.answer === 'option_b') ? 
                                     <span className="bi bi-check-circle-fill text-success"></span>: 
                                     <span className="bi bi-x-circle-fill text-danger ml-1"></span>
                                 }
+                                <div className="pl-3 pr-3"  dangerouslySetInnerHTML={{ __html: q?.option_b }}/>
                             </div>
                             <div className="row col-md-6 pr-0">
                                 <div className="pl-3 pr-3">option C: </div>
-                                <div className="pl-3 pr-3"  dangerouslySetInnerHTML={{ __html: q?.option_c }}/>
+                                
                                 {(q?.answer === 'option_c') ? 
                                     <span className="bi bi-check-circle-fill text-success"></span>: 
                                     <span className="bi bi-x-circle-fill text-danger ml-1"></span>
                                 }
+                                <div className="pl-3 pr-3"  dangerouslySetInnerHTML={{ __html: q?.option_c }}/>
                             </div>
                             <div className="row col-md-6 pr-0">
                                 <div className="pl-3 pr-3">option D: </div>
-                                <div className="pl-3 pr-3"  dangerouslySetInnerHTML={{ __html: q?.option_d }}/>
                                 {(q?.answer === 'option_d') ? 
                                     <span className="bi bi-check-circle-fill text-success"></span>: 
                                     <span className="bi bi-x-circle-fill text-danger ml-1"></span>
                                 }
+                                <div className="pl-3 pr-3"  dangerouslySetInnerHTML={{ __html: q?.option_d }}/>
                             </div>
                             
                         </div>

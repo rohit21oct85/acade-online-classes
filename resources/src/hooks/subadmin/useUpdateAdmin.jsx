@@ -23,12 +23,12 @@ export default function useUpdateAdmin(formData) {
 
       const { addToast } = useToasts();
       return useMutation(formData => {
-                  return axios.patch(`${API_URL}v1/sub-admin/update/${params?.admin_id}`, formData, options)
+                  return axios.post(`${API_URL}v1/admin/update`, formData, options)
             },{
             onSuccess: () => {
                   queryClient.invalidateQueries('sub-admins')
                   addToast('Module updated successfully', { appearance: 'success',autoDismiss: true });
-                  history.push('/admin/manage-sub-admins');
+                  history.push('/admin/manage-sub-admin');
             },
             onError: () => {
                   addToast('Error White Updating Modules', { appearance: 'error',autoDismiss: true });

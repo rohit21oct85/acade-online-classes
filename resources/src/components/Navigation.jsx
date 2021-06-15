@@ -26,7 +26,7 @@ return (
 
 {state.isLoggedIn && (
 <div className="login_menu col-lg-2 col-md-2 col-12" bg="dark" variant="dark" expand="lg">
-    <div className="webLogo flex">
+    <div className="webLogo row" style={{ paddingLeft: '30px'}}>
         <img src="/logo.png" className="mr-2" style={{ width: '15%'}} alt="User"/>
         <h4>AcadeLearn</h4>
     </div>
@@ -92,9 +92,9 @@ return (
                 }
             })}
 
-            {state?.user_type == 'sub_admin' && moduleIsLoading && <Loading isLoading={isLoading}/>}
-            {state?.user_type === 'sub_admin' && modules?.map( module => {
-                if(module?.role_slug == 'sub_admin')
+            {state?.user_type == state.user_type && state?.user_type !== 'master_admin' && moduleIsLoading && <Loading isLoading={isLoading}/>}
+            {state?.user_type === state.user_type && state?.user_type !== 'master_admin' && modules?.map( module => {
+                if(module?.role_slug == state.user_type)
                 {
                     return (
                     <li key={module?._id} id={module?.module_slug}>
@@ -106,19 +106,7 @@ return (
                 }
             })}
 
-            {state?.user_type == 'mapping_admin' && moduleIsLoading && <Loading isLoading={isLoading}/>}
-            {state?.user_type === 'mapping_admin' && modules?.map( module => {
-                if(module?.role_slug == 'mapping_admin')
-                {
-                    return (
-                    <li key={module?._id} id={module?.module_slug}>
-                        <Nav className="ml-auto">
-                            <NavLink to={`/admin/${module?.module_slug}`}> <span className={`bi ${module?.module_icon}`}></span> {module?.module_slug} </NavLink>
-                        </Nav>
-                    </li>
-                    );
-                }
-            })}
+            
             
 
 
