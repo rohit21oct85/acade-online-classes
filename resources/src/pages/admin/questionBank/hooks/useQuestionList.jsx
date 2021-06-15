@@ -17,7 +17,8 @@ export default function useQuestionList() {
             state.access_token && 
             params?.class_id && 
             params?.subject_id && 
-            params?.unit_id
+            params?.unit_id && 
+            params?.chapter_id
         ){
             const result = await axios.get(`${API_URL}v1/question-bank/view-all/${params?.class_id}/${params?.subject_id}/${params?.unit_id}/${params?.chapter_id}`,{
                 headers: {

@@ -197,7 +197,7 @@ export default function CreateQuestionBank() {
                   <div className="form-group">
                   <label>Add Questions and Options </label>
                   <hr className="mt-0 mb-1"/>
-                  <div className="pr-2" style={{ height: '300px', overflowY: 'scroll', overflowX: 'hidden'}}>
+                  <div className="pr-2" style={{ height: '350px', overflowY: 'scroll', overflowX: 'hidden'}}>
                   <div className="form-group">
                         <label>Question: </label>
                         <CKEditor
@@ -262,8 +262,6 @@ export default function CreateQuestionBank() {
                   </div>
                   )})}
                   </div>
-                  </div>
-                  </div>
                   <div className="form-group">
                               <select className="form-control"
                               onChange={e => {
@@ -277,6 +275,39 @@ export default function CreateQuestionBank() {
                                     )})}
                               </select>
                   </div>
+                  <div className="form-group">
+                        <label>Solution: </label>
+                        <CKEditor
+                              editor={ ClassicEditor }
+                              config={{
+                              toolbar: {
+                                    items: [
+                                          'MathType', 'ChemType','heading', 
+                                          '|',
+                                          'bold',
+                                          'italic',
+                                          'link',
+                                          'bulletedList',
+                                          'numberedList',
+                                          'imageUpload',
+                                          'mediaEmbed',
+                                          'insertTable',
+                                          'blockQuote',
+                                          'undo',
+                                          'redo'
+                                    ]
+                              },
+                              }}
+
+                              onChange={ ( event, editor ) => {
+                              const data = editor.getData();
+                              setFormData( { ...formData, solution: data } );
+                              } }
+                        />
+                  </div> 
+                  </div>
+                  </div>
+                  
                                           
                   <div className="form-group mt-2">
                         <button className="btn btn-sm dark"

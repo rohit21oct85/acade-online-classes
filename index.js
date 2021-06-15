@@ -107,6 +107,7 @@ app.use("/api/v1/class", Routes.classRoutes);
 app.use("/api/v1/school", Routes.schoolRoutes);
 app.use("/api/v1/subject", Routes.subjectRoutes);
 app.use("/api/v1/unit", Routes.unitRoutes);
+app.use("/api/v1/unit-test", Routes.unitTestRoutes);
 app.use("/api/v1/chapter", Routes.chapterRoutes);
 app.use("/api/v1/student", Routes.studentRoutes);
 app.use("/api/v1/teacher", Routes.teacherRoutes);

@@ -10,8 +10,11 @@ import useUnitList from '../../units/hooks/useUnitList';
 import useQuestionList from '../../questionBank/hooks/useQuestionList';
 
 import * as helper from '../../../../utils/helper'
+import * as utils from '../../../../utils/utils'
+
 import useSubjectChapterList from '../../mappingSubjectChapter/hooks/useSubjectChapterList';
-import { json } from 'body-parser';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export default function CreateTest() {
       const params = useParams();
@@ -26,7 +29,11 @@ export default function CreateTest() {
       const {data:unitTest} = useSingleUnitTest();
       
       const [formData, setFormData] = useState({});
-      
+      const [startDate, setStartDate] = useState(new Date());
+      const isWeekday = (date) => {
+            const day = date.getDay(date);
+            return day !== 0;
+          };
       const createMutation = useCreateUnitTest(formData);
 
       const [selectedQuestions, setSelectedQuestions] = useState([]);
@@ -50,12 +57,21 @@ export default function CreateTest() {
 
       async function handleSubmit(e){
             e.preventDefault();
-            let sample_id = params?.sample_id
-            let classDatas = ["Data Which is already in List Like Schools, classess, subjects"];
-            let class_name = getFilteredData(classDatas, sample_id, 'class_name'); 
+            let class_id = params?.class_id
+            let subject_id = params?.subject_id
+            let class_name = getFilteredData(sClassess, class_id, 'class_name'); 
+            let subject_name = getFilteredData(subjects, subject_id, 'subject_name'); 
+            formData['class_id'] = class_id
+            formData['class_name'] = class_name
+            formData['subject_id'] = subject_id
+            formData['subject_name'] = subject_name
+            formData['test_slug'] = utils.MakeSlug(formData.test_name)
+            formData['test_date'] = startDate
+            formData['test_question'] = selectedQuestions
             console.log(formData);
-            //await createMutation.mutate(formData);
-            
+            await createMutation.mutate(formData);
+            localStorage.removeItem('selectedQuestions')
+            setSelectedQuestions({});
       }
       async function handleSelectQuestion(id){
             setClicked(true)
@@ -171,28 +187,64 @@ export default function CreateTest() {
                               if(!sel)
                               return(
                               <div 
-                              className={`card question col-md-12 pl-2 pr-0 mb-2 mr-2`}
+                              className={`card question col-md-12 pl-2 pr-2 mb-2`}
                               key={q?._id}
                               id={`${q?._id}`}
                               onClick={handleSelectQuestion.bind(this, q?._id)}
                               >
                                     <div className="flex">
-                                          <div className="col-md-2 pl-0 pr-0">Que. {i+1} </div>
-                                          <div className="pb-0 mb-0" dangerouslySetInnerHTML={{ __html: q?.question  }} />
+                                          <div>{i+1}. </div>
+                                          <div dangerouslySetInnerHTML={{ __html: q?.question  }} />
                                     </div>
                               </div>
                               )
                         })}
                         </div>
                   </div>
-                  <div className="col-md-6">
-                        <p className="text-success mb-1">Selected Questions: </p>
-                        <div className="pr-2" style={{ height: '300px', overflowY: 'scroll'}}>
+                  <div className="col-md-6 pl-0 pr-0">
+                        <div className="row">
+                              <div className="col-md-6 form-group">
+                                    <input type="text" name="test_name" 
+                                          value={formData?.test_name} 
+                                          onChange={ e => {
+
+                                                setFormData({...formData, test_name: e.target.value})
+                                          }}
+                                          className="form-control" placeholder="test name"/>
+                              </div>
+                              <div className="col-md-6 pr-0">
+                                    <div className="row col-md-12">
+                                    <div className="col-md-8 pl-0 form-group">
+                                    <DatePicker 
+                                          className="form-control"
+                                          selected={startDate} onChange={(date) => setStartDate(date)}
+                                          dateFormat="yyyy-MM-dd"
+                                          filterDate={isWeekday}
+                                          minDate={new Date()}
+                                          /> 
+                                    </div>
+                                    <div className="col-md-4 pl-0 pr-0">
+                                          <input type="text" className="form-control"
+                                          value={formData?.test_duration} 
+                                          onChange={ e => {
+
+                                                setFormData({...formData, test_duration: e.target.value})
+                                          }}
+                                          placeholder="20"/>
+                                    </div>
+                                    </div>
+                              </div>       
+                        </div>
+                        <p className="text-success mb-1">Selected Questions: {selectedQuestions?.length}
+                        <span className="pull-right mr-3 pointer dark bg-danger fa fa-trash"
+                        onClick={e => localStorage.removeItem('selectedQuestions')}></span>
+                        </p>
+                        <div className="pr-2" style={{ height: '260px', overflowY: 'scroll'}}>
                         {selectedQuestions?.map((selQue, i) => {
                               return (
-                              <div className="card question col-md-12 pl-2 pr-0 mb-2 mr-2" key={selQue?._id}>
+                              <div className="card question col-md-12 pl-2 pr-2 mb-2" key={selQue?._id}>
                                     <div className="flex">
-                                          <div className="col-md-2 pl-0 pr-0">Que. {i+1} </div>
+                                          <div className="pr-2">{i+1}. </div>
                                           <div className="pb-0 mb-0" dangerouslySetInnerHTML={{ __html: selQue?.question  }} />
                                     </div>
                                     
