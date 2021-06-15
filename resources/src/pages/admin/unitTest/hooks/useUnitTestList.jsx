@@ -15,11 +15,9 @@ export default function useUnitTestList() {
     return useQuery(`${key}`, async () => {
         if(
             state.access_token && 
-            params?.class_id && 
-            params?.subject_id &&
-            params?.unit_id
+            params?.class_id
         ){
-            const result = await axios.get(`${API_URL}v1/unit-test/view-all/${params?.class_id}/${params?.subject_id}/${params?.unit_test}`,{
+            const result = await axios.get(`${API_URL}v1/unit-test/view-all/${params?.class_id}/${params?.subject_id}`,{
                 headers: {
                     'Content-Type': 'Application/json',
                     'Authorization':'Bearer '+ state.access_token

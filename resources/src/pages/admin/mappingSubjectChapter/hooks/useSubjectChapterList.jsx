@@ -11,7 +11,7 @@ export default function useSubjectChapterList() {
     const params = useParams();
     const key = `subject-chapter-mappings-${params?.class_id}-${params?.subject_id}-${params?.unit_id}`;
     return useQuery(key, async () => {
-        if(params.class_id && params.subject_id){
+        if(params.class_id && params.subject_id && params.unit_id){
             const result = await axios.get(`${API_URL}v1/chapter/view-all/${params.class_id}/${params.subject_id}/${params?.unit_id}`,{
                 headers: {
                     'Content-Type': 'Application/json',

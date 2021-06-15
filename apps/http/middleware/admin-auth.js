@@ -2,7 +2,11 @@ const jwt = require("jsonwebtoken");
 const Role = require('../../models/admin/Role');
 
 async function checkRole(arr, el){
-    return arr && arr.some(e => e.role_id === el);
+    try {
+        return await arr && arr.some(e => e.role_id === el);
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 module.exports = (req, res, next) => {

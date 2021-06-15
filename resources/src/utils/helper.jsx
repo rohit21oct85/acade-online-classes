@@ -26,3 +26,6 @@ export function romanize(num) {
 export function getMethodName(method){
   return method.split('-')[0];
 }
+export function getDateValue(el){
+  return el.split('T')[0];
+}

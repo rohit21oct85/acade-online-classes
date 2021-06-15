@@ -73,6 +73,13 @@ export default function AllQuestions({update, Delete}) {
                                 <div className="pl-3 pr-3"  dangerouslySetInnerHTML={{ __html: q?.option_d }}/>
                             </div>
                             
+                            
+
+                            
+                        </div>
+                        <div className="pl-3">Solutions: </div>
+                        <div className="row col-md-12 pr-0">
+                            <div className="pl-3 pr-3"  dangerouslySetInnerHTML={{ __html: q?.solution }}/>
                         </div>
                     </div>
                 )

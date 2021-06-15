@@ -50,7 +50,10 @@ const QuestionSchema = new mongoose.Schema({
             type: String
       },
       answer:{
-        type: String
+             type: String
+      },
+      solution:{
+            type: String
       },
       qtype:{
         type: String
