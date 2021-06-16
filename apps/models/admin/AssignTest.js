@@ -1,10 +1,19 @@
 const mongoose = require('mongoose');
 
-const UnitTestSchema = new mongoose.Schema({
-      test_name: {
+const AssignTestSchema = new mongoose.Schema({
+      school_id: {
             type: String,
       },
-      test_slug: {
+      school_name: {
+            type: String,
+      },
+      test_id: {
+            type: String,
+      },
+      teacher_id: {
+            type: String,
+      },
+      teacher_name: {
             type: String,
       },
       class_id: {
@@ -19,26 +28,6 @@ const UnitTestSchema = new mongoose.Schema({
       subject_name: {
             type: String,
       },
-      
-      unit_id: {
-            type: String,
-      },
-      unit_name: {
-            type: String,
-      },
-      test_date: {
-            type: String,
-      },
-      test_duration: {
-            type: String,
-      },
-      total_question: {
-            type: Number,
-      },
-
-      test_question: {
-            type: Array,
-      },
       status:{
         type: Boolean,
         default: false
@@ -50,4 +39,4 @@ const UnitTestSchema = new mongoose.Schema({
 });
 
 
-module.exports = mongoose.model('UnitTest', UnitTestSchema);
+module.exports = mongoose.model('AssignTest', AssignTestSchema);

@@ -59,16 +59,30 @@ export default function CreateTest() {
             e.preventDefault();
             let class_id = params?.class_id
             let subject_id = params?.subject_id
-            let class_name = getFilteredData(sClassess, class_id, 'class_name'); 
-            let subject_name = getFilteredData(subjects, subject_id, 'subject_name'); 
+            let unit_id = params?.unit_id
+            let chapter_id = params?.chapter_id
+            
+            let class_name = getFilteredData(sClassess,'_id' ,class_id, 'class_name');
+            let subject_name = getFilteredData(subjects,'subject_id' , subject_id, 'subject_name');
+            let unit_name = getFilteredData(units,'_id' , unit_id, 'unit_name');
+            let selectedQuestionsId = selectedQuestions?.map((i) => {
+                  return {
+                        question_id: i?._id
+                  }
+            });
             formData['class_id'] = class_id
             formData['class_name'] = class_name
             formData['subject_id'] = subject_id
             formData['subject_name'] = subject_name
+            formData['unit_id'] = unit_id
+            formData['unit_name'] = unit_name
             formData['test_slug'] = utils.MakeSlug(formData.test_name)
             formData['test_date'] = startDate
-            formData['test_question'] = selectedQuestions
-            console.log(formData);
+            formData['total_question'] = selectedQuestions?.length
+            formData['test_question'] = selectedQuestionsId
+            console.log(selectedQuestionsId);
+            // return;
+            if(class_id && subject_id && unit_id && chapter_id)
             await createMutation.mutate(formData);
             localStorage.removeItem('selectedQuestions')
             setSelectedQuestions({});
@@ -79,12 +93,10 @@ export default function CreateTest() {
             const filtered = await questions?.filter(q => q._id === id);
             // console.log(selectedQuestions?.length); return;
             if(selectedQuestions?.length > 0){
-                  console.log('after Update code execute')
                   setSelectedQuestions((selectedQuestions) => [...selectedQuestions, filtered[0]]);
                   localStorage.setItem('selectedQuestions', JSON.stringify(selectedQuestions))
                   setClicked(false)
             }else{
-                  console.log('first code execute')
                   setSelectedQuestions((selectedQuestions) => [...selectedQuestions, filtered[0]]);
                   localStorage.setItem('selectedQuestions', JSON.stringify(selectedQuestions))
                   setClicked(false)
@@ -136,7 +148,7 @@ export default function CreateTest() {
                                     <option value="_">{subjectLoading ? 'Loading...':'Select Subjects'}</option>
                                     {subjects?.map(subject => {
                                           return(
-                                                <option value={subject?._id} key={subject?._id}>{subject?.subject_name}</option>
+                                                <option value={subject?.subject_id} key={subject?.subject_id}>{subject?.subject_name}</option>
                                           );
                                     })}
                               </select>
@@ -237,10 +249,13 @@ export default function CreateTest() {
                         </div>
                         <p className="text-success mb-1">Selected Questions: {selectedQuestions?.length}
                         <span className="pull-right mr-3 pointer dark bg-danger fa fa-trash"
-                        onClick={e => localStorage.removeItem('selectedQuestions')}></span>
+                        onClick={e => {
+                              localStorage.removeItem('selectedQuestions');
+                              setSelectedQuestions([])
+                        }}></span>
                         </p>
                         <div className="pr-2" style={{ height: '260px', overflowY: 'scroll'}}>
-                        {selectedQuestions?.map((selQue, i) => {
+                        {selectedQuestions?.length > 0 && selectedQuestions?.map((selQue, i) => {
                               return (
                               <div className="card question col-md-12 pl-2 pr-2 mb-2" key={selQue?._id}>
                                     <div className="flex">

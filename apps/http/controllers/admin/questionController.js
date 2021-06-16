@@ -41,6 +41,27 @@ const UpdateQuestion = async (req, res) =>{
         });
     }
 }
+const UpdateSubjectQuestion = async (req, res) =>{
+    try {
+        await Question.updateMany({},{subject_id: req.params.subject_id})
+                .then(response => {
+                    return res.status(202).json({
+                        message: "Question, Updated successfully"
+                    })
+                })
+                .catch(error => {
+                    return res.status(500).json({
+                        message: "Error Found",
+                        errors: error.message
+                    })
+                });
+
+    } catch (error) {
+        res.status(409).json({
+            message: error.message
+        });
+    }
+}
 
 const ViewQuestion = async (req, res) => {
     try{
@@ -148,6 +169,7 @@ const otherFunction = async(res, FinalData, callback) => {
 module.exports = {
     CreateQuestion,
     UpdateQuestion,
+    UpdateSubjectQuestion,
     ViewQuestion,
     ViewAllQuestion,
     DeleteQuestion,

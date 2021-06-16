@@ -49,9 +49,6 @@ export default function AllTeachers({update, Delete}) {
                         <tr>
                         <th scope="col">#</th>
                         <th scope="col">Name</th>
-                        <th scope="col">Subject</th>
-                        <th scope="col">Class</th>
-                        <th scope="col">Section</th>
                         <th scope="col">Mobile</th>
                         <th scope="col">Email</th>
                         <th scope="col">Action</th>
@@ -63,9 +60,6 @@ export default function AllTeachers({update, Delete}) {
                                 <tr key={item?._id}>
                                 <th scope="row">{key}</th>
                                 <td>{item.name}</td>
-                                <td>{item.subject}</td>
-                                <td>{item.class}</td>
-                                <td>{item.section}</td>
                                 <td>{item.mobile}</td>
                                 <td>{item.email}</td>
                                 <td>

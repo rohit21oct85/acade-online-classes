@@ -40,7 +40,7 @@ export default function CreateNewAdmin() {
         e.preventDefault();
         setLoading(true);
         if(params?.admin_id){
-            formData['role_name'] = helper.getData(appRoles, 'role_id' ,params?.role, 'role_slug');
+            formData['role_name'] = helper.getFilteredData(appRoles, 'role_id' ,params?.role, 'role_slug');
             formData['first_name'] = formData?.first_name ?? singleAdmin?.first_name
             formData['last_name'] = formData?.last_name ?? singleAdmin?.last_name
             formData['admin_id'] = params?.admin_id

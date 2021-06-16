@@ -64,22 +64,22 @@ const CreateTeacherClassMapping = async (req, res) => {
 //     }
 // }
 
-// const ViewTeacherClassMapping = async (req, res) => {
-//     try{
-//         const PermissionData = await Permission.findOne({
-//             module_slug: req.params.module_slug,
-//             role_slug: req.params.role_slug,
-//         },{__v: 0});
-//         return res.status(200).json({ 
-//             data: PermissionData
-//         });    
-//     } catch(error){
-//         res.status(409).json({
-//             message: "Error occured",
-//             errors: error.message
-//         });
-//     }
-// }
+const ViewTeacherClassMapping = async (req, res) => {
+    try{
+        const TeacherClassData = await TeacherClass.findOne({
+            school_id: req.params.school_id,
+            teacher_id: req.params.teacher_id,
+        },{class_id:1, class_name: 1},{__v: 0});
+        return res.status(200).json({ 
+            data: TeacherClassData
+        });    
+    } catch(error){
+        res.status(409).json({
+            message: "Error occured",
+            errors: error.message
+        });
+    }
+}
 const ViewAllTeacherClassMapping = async (req, res) => {
     try{
         let filter = {}
@@ -135,7 +135,7 @@ module.exports = {
     // OtherModules,
     CreateTeacherClassMapping,
     // UpdateTeacherClassMapping,
-    // ViewTeacherClassMapping,
+    ViewTeacherClassMapping,
     ViewAllTeacherClassMapping,
     DeleteTeacherClassMapping
 }

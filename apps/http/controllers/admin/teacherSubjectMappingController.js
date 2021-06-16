@@ -55,6 +55,22 @@ const ViewAllTeacherSubjectMapping = async (req, res) => {
         });
     }
 }
+const ViewTeacherSubject = async (req, res) => {
+    try{
+        let filter = {school_id: req?.params?.school_id, subject_id: req?.params?.subject_id}
+        
+        const TSubject = await TeacherSubject.find(filter,{__v: 0});
+        return res.status(200).json({ 
+            data: TSubject 
+        });    
+    } catch(error){
+        res.status(203).json({
+            status: 203,
+            message: "Error occured",
+            errors: error.message
+        });
+    }
+}
 const DeleteTeacherSubjectMapping = async (req, res) =>{
     const id = req.body.teacher_sub_id;
     console.log(req.body)
@@ -75,5 +91,6 @@ const DeleteTeacherSubjectMapping = async (req, res) =>{
 module.exports = {
     CreateTeacherSubjectMapping,
     ViewAllTeacherSubjectMapping,
-    DeleteTeacherSubjectMapping
+    DeleteTeacherSubjectMapping,
+    ViewTeacherSubject
 }

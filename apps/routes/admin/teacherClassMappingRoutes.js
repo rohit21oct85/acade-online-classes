@@ -6,9 +6,7 @@ const router = express.Router();
 
 router
     .post('/create',checkAuth,adminAuth, teacherClassMapping.CreateTeacherClassMapping)
-    // .patch('/update/:id',checkAuth,adminAuth, teacherClassMapping.UpdateTeacherClassMapping)
-    // .get('/view/:module_slug/:role_slug',checkAuth,adminAuth, teacherClassMapping.ViewTeacherClassMapping)
-    // .get('/module/:role_slug?',checkAuth, teacherClassMapping.OtherModules)
+     .get('/view/:school_id?/:teacher_id?',checkAuth,adminAuth, teacherClassMapping.ViewTeacherClassMapping)
     .get('/view-all/:school_id?/:teacher_id?',checkAuth,adminAuth, teacherClassMapping.ViewAllTeacherClassMapping)
     .post('/delete',checkAuth,adminAuth, teacherClassMapping.DeleteTeacherClassMapping);
     
