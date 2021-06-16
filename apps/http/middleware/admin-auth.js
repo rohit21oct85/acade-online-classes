@@ -3,7 +3,7 @@ const Role = require('../../models/admin/Role');
 
 async function checkRole(arr, el){
     try {
-        return await arr && arr.some(e => e.role_id === el);
+        return await Array.from(arr)?.some(e => e.role_id === el);
     } catch (error) {
         console.log(error);
     }
