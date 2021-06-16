@@ -46,12 +46,12 @@ export default function CreateQuestionBank() {
             let unit_id = params?.unit_id
             let chapter_id = params?.chapter_id
       
-            let class_name = getFilteredData(classDatas, class_id, 'class_name');
-            let subject_name = getFilteredData(subjects, subject_id, 'subject_name');
-            let unit_no = getFilteredData(units, unit_id, 'unit_no');
-            let unit_name = getFilteredData(units, unit_id, 'unit_name');
-            let chapter_no = getFilteredData(chapters, chapter_id, 'chapter_no');
-            let chapter_name = getFilteredData(chapters, chapter_id, 'chapter_name');
+            let class_name = getFilteredData(classDatas,'_id' ,class_id, 'class_name');
+            let subject_name = getFilteredData(subjects,'subject_id' , subject_id, 'subject_name');
+            let unit_no = getFilteredData(units,'_id' , unit_id, 'unit_no');
+            let unit_name = getFilteredData(units,'_id' , unit_id, 'unit_name');
+            let chapter_no = getFilteredData(chapters,'_id' , chapter_id, 'chapter_no');
+            let chapter_name = getFilteredData(chapters,'_id' , chapter_id, 'chapter_name');
             
             formData.class_id = class_id
             formData.class_name = class_name
@@ -66,7 +66,8 @@ export default function CreateQuestionBank() {
             formData.qtype = params?.qtype
             formData.atype = params?.atype
             console.log(formData);
-            await createMutation.mutate(formData);
+
+            //await createMutation.mutate(formData);
             
       }
       return (
@@ -109,7 +110,7 @@ export default function CreateQuestionBank() {
                         <option value="_">{subjectLoading ? 'loading ...':'Subjects'}</option>
                         {subjects?.map( subject => {
                               return(
-                                    <option value={subject?._id} key={subject?._id}>{subject?.subject_name}</option>
+                                    <option value={subject?.subject_id} key={subject?.subject_id}>{subject?.subject_name}</option>
                               )
                         })}
                   </select>

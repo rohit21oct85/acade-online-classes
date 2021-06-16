@@ -8,6 +8,8 @@ const classRoutes = require('./admin/classRoutes');
 const subjectRoutes = require('./admin/subjectRoutes');
 const unitRoutes = require('./admin/unitRoutes');
 const unitTestRoutes = require('./admin/unitTestRoutes');
+const assignTestRoutes = require('./admin/assignTestRoutes');
+
 const chapterRoutes = require('./admin/chapterRoutes');
 const studentRoutes = require('./admin/studentRoutes');
 const teacherRoutes = require('./admin/teacherRoutes');
@@ -28,6 +30,7 @@ module.exports = {
     subjectRoutes,
     unitRoutes,
     unitTestRoutes,
+    assignTestRoutes,
     chapterRoutes,
     studentRoutes,
     teacherRoutes,

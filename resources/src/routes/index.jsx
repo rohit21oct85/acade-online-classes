@@ -18,6 +18,7 @@ import ClassSubjectList from '../pages/admin/mappingClassSubject/ClassSubjectLis
 import QuestionBank from '../pages/admin/questionBank/QuestionBank'
 import UnitsList from '../pages/admin/units/UnitsList'
 import UnitTests from '../pages/admin/unitTest/UnitTest'
+import AssignTests from '../pages/admin/assignTest/AssignTests'
 import SubjectChapterList from '../pages/admin/mappingSubjectChapter/SubjectChapterList'
 
 export const webRoutes =  [
@@ -94,6 +95,12 @@ export const privateRoutes = [
         path: '/admin/manage-unit-test/:page_type?/:class_id?/:subject_id?/:unit_id?/:chapter_id?/:test_id?',
         component: UnitTests
     },
+    
+    {
+        path: '/admin/assign-test/:page_type?/:school_id?/:class_id?/:subject_id?/:teacher_id?',
+        component: AssignTests
+    },
+    
 
 ];
 

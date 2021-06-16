@@ -6,7 +6,8 @@ import API_URL from '../../../../helper/APIHelper';
 import { useToasts } from 'react-toast-notifications';
 import {AuthContext} from '../../../../context/AuthContext';
 
-export default function useCreateUnitTest(formData) {
+export default function useUpdateSample(formData) {
+      
       const queryClient = useQueryClient()
       const {state} = useContext(AuthContext);
       const params = useParams();
@@ -21,17 +22,17 @@ export default function useCreateUnitTest(formData) {
             }
       }      
       const { addToast } = useToasts();
-      const key = `unit-tests-${params?.class_id}-${params?.subject_id}-${params?.unit_id}`;
-    
-      return useMutation(formData => {
-            return axios.post(`${API_URL}v1/unit-test/create`, formData, options)
+      const key = params.sample_id ? `questions-${params.sample_id}` : `questions`
+      return useMutation((formData) => {
+            let sample_id =  params?.sample_id;
+            return axios.patch(`${API_URL}v1/sample/update/${sample_id}`, formData, options)
         },{
             onSuccess: () => {
                 queryClient.invalidateQueries(`${key}`)
-                history.push(`/admin/manage-unit-test/create/${params?.class_id}/${params?.subject_id}/${params?.unit_id}/${params?.chapter_id}`);
-                addToast('Questions added successfully', { appearance: 'success', autoDismiss: true });
-                
+                setLoading(false);
+                setFormData(initialData);
+                history.push(`${path}`);
+                addToast('Question Updated successfully', { appearance: 'success',autoDismiss: true });
             }
         });
-      
 }

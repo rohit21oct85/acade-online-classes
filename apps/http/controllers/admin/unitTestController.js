@@ -34,6 +34,27 @@ const UpdateUnitTest = async (req, res) => {
     });
   }
 };
+const UpdateSubjectUnitTest = async (req, res) => {
+  try {
+    await UnitTest.updateMany({},{subject_id: req.params.subject_id})
+      .then(() => {
+        return res.status(202).json({
+          message: "UnitTest, Updated successfully",
+        });
+      })
+      .catch((error) => {
+        return res.status(500).json({
+          message: "Error Found",
+          errors: error.message,
+        });
+      });
+  } catch (error) {
+    res.status(409).json({
+      message: error.message,
+    });
+  }
+};
+
 
 const ViewUnitTest = async (req, res) => {
   try {
@@ -51,19 +72,51 @@ const ViewUnitTest = async (req, res) => {
 const ViewAllUnitTest = async (req, res) => {
   try {
     let filter = {};
-    if (req.params?.subject_id && req.params?.class_id) {
+    if (req.params?.subject_id && req.params?.class_id && req.params?.unit_id) {
       filter = {
         class_id: req.params?.class_id,
         subject_id: req.params?.subject_id,
+        unit_id: req.params?.unit_id,
       };
     }
     const AllUnitTests = await UnitTest.find(filter,{
           test_name: 1, 
           class_name: 1, 
           subject_name: 1, 
+          unit_name: 1, 
           test_slug: 1,
           test_date: 1,
           test_duration: 1,
+          total_question: 1,
+      },{__v:0,test_question: 0 });
+    res.status(200).json({
+      data: AllUnitTests,
+    });
+  } catch (error) {
+    res.status(409).json({
+      message: "Error occured",
+      errors: error.message,
+    });
+  }
+};
+const ViewUnitTestByClassSubjects = async (req, res) => {
+  try {
+    let filter = {};
+    if (req.params?.subject_id && req.params?.class_id) {
+      filter = {
+        class_id: req.params?.class_id,
+        subject_id: req.params?.subject_id
+      };
+    }
+    const AllUnitTests = await UnitTest.find(filter,{
+          test_name: 1, 
+          class_name: 1, 
+          subject_name: 1, 
+          unit_name: 1, 
+          test_slug: 1,
+          test_date: 1,
+          test_duration: 1,
+          total_question: 1,
       },{__v:0,test_question: 0 });
     res.status(200).json({
       data: AllUnitTests,
@@ -87,8 +140,10 @@ const DeleteUnitTest = async (req, res) => {
 };
 
 module.exports = {
+  ViewUnitTestByClassSubjects,
   CreateUnitTest,
   UpdateUnitTest,
+  UpdateSubjectUnitTest,
   ViewUnitTest,
   ViewAllUnitTest,
   DeleteUnitTest

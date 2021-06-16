@@ -149,7 +149,7 @@ export default function CreateSubjectChapterMap() {
                               <option value="_">{subjectLoading ? 'loading ...':'Select Subjects'}</option>
                               {subjects?.map( subject => {
                                     return(
-                                          <option value={subject?._id} key={subject?._id} data-subject_name={subject?.subject_name}>{subject?.subject_name}</option>
+                                          <option value={subject?.subject_id} key={subject?.subject_id} data-subject_name={subject?.subject_name}>{subject?.subject_name}</option>
                                     )
                               })}
                         </select>
