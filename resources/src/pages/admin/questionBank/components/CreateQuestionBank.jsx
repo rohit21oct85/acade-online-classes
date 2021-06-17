@@ -67,7 +67,7 @@ export default function CreateQuestionBank() {
             formData.atype = params?.atype
             console.log(formData);
 
-            //await createMutation.mutate(formData);
+            await createMutation.mutate(formData);
             
       }
       return (

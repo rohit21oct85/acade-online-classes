@@ -97,7 +97,7 @@ export const privateRoutes = [
     },
     
     {
-        path: '/admin/assign-test/:page_type?/:school_id?/:class_id?/:subject_id?/:teacher_id?',
+        path: '/admin/assign-test/:page_type?/:class_id?/:subject_id?',
         component: AssignTests
     },
     

@@ -1,6 +1,6 @@
 export function getFilteredData(arrayData, match_field,field_value,field_name){
-  const filtereData = arrayData.filter(element => element[match_field] == field_value);
-  return filtereData[0][field_name];
+  const filtereData = Array.from(arrayData)?.filter(element => element[match_field] == field_value);
+  return filtereData && filtereData[0][field_name];
 }
 
 export function checkExists(arr = [], field, el){

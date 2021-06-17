@@ -6,6 +6,7 @@ const router = express.Router();
 
 router
     .post('/create', checkAuth, AssignTest.CreateAssignTest)
+    .get('/view-all/:class_id?/:subject_id?/:school_id?', checkAuth, AssignTest.ViewAllAssignedTest)
 ;
 
 module.exports = router;

@@ -46,22 +46,42 @@ export default function SubjectChapterList() {
                             {create && (
                                 <button className="btn btn-sm dark mr-2" 
                                 onClick={ e => {
-                                    history.push(`/admin/mapping-subject-chapters/create`)
+                                    if(params?.class_id !== undefined && params?.subject_id !== undefined){
+                                        history.push(`/admin/mapping-subject-chapters/create/${params?.class_id}/${params?.class_slug}/${params?.subject_id}/${params?.subject_slug}`)
+                                    }else{
+                                        history.push(`/admin/mapping-subject-chapters/create`)
+                                    }
+                                    
                                 }}>
                                     <span className="fa fa-plus mr-2"></span>Create Mapping 
                                 </button>
                             )}
+                            
+                            {upload && (
+                                <button className="btn btn-sm dark mr-2" 
+                                onClick={ e => {
+                                    if(params?.class_id !== undefined && params?.subject_id !== undefined){
+                                        history.push(`/admin/mapping-subject-chapters/upload/${params?.class_id}/${params?.class_slug}/${params?.subject_id}/${params?.subject_slug}`)
+                                    }else{
+                                        history.push(`/admin/mapping-subject-chapters/upload`)
+                                    }
+                                    
+                                }}>
+                                    <span className="fa fa-upload mr-2"></span>Upload Mapping 
+                                </button>
+                            )}
+
                             
                         </div>
                     </div>
                     <div className="clearfix"></div>
                     <div className="dash-cont-start">
                         <div className="row">
-                            <div className="col-md-3">
-                                { (create === true || update === true )  &&  (params.page_type === 'create' ||params.page_type === 'update' ) && <CreateSubjectChapterMap />  }
+                            <div className="col-md-4">
+                                { (create === true || update === true )  &&  (params.page_type === 'create' ||params.page_type === 'update' || params?.page_type === 'upload') && <CreateSubjectChapterMap />  }
                             </div>
                             
-                            <div className={`${(params?.page_type === 'create' || params?.page_type === 'update' || params?.page_type === 'upload') ? 'col-md-9':'col-md-12'}`}>
+                            <div className={`${(params?.page_type === 'create' || params?.page_type === 'update' || params?.page_type === 'upload') ? 'col-md-8':'col-md-12'}`}>
                                 <AllSubjectChapterMapping update={update} Delete={Delete}/>
                             </div>
 

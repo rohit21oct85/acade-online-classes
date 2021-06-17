@@ -19,9 +19,8 @@ export default function AllUnits({update, Delete}) {
       const deleteUnit = async (id) => {
             setFormData({...formData, id: id});
             await deleteMutation.mutate(formData);
-            if(deleteMutation?.status === 'success'){
-                document.getElementById(id).style.display = 'none'
-            }
+            document.getElementById(id).style.display = 'none'
+            
       }
 
     return (

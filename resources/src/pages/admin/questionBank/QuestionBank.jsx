@@ -24,7 +24,7 @@ export default function UnitsList() {
     
     useEffect(manageAccess,[create, update, upload]);
     function manageAccess(){
-        if(create === false || update === false || upload === false){
+        if(create === false && update === false){
             history.push(`/admin/question-bank`)
         }
     }

@@ -1,11 +1,11 @@
 const Unit = require("../../../models/admin/Unit");
+const csv = require('csv-parser')
+const fs = require('fs')
 
 const CreateUnit = async (req, res) => {
   const body = req.body;
   try {
-    // const newUnit = new Unit(body);
     await Unit.insertMany(body);
-    // await newUnit.save();
     return res.status(200).json({
       message: "Unit created sucessfully",
     });
@@ -79,9 +79,57 @@ const DeleteUnit = async (req, res) => {
     res.status(409).json({ message: error.message });
   }
 };
+  const UploadUnit = async(req, res) => {
+    const data = req.body;
+    let FinalData = [];
+    try {
+        let results = [];
+        // console.log(req.file.path)
+        fs.createReadStream(req.file.path)
+            .pipe(csv())
+            .on('data', (data) => results.push(data))
+            .on('end', () => {
+                results.forEach(unit => {
+                    FinalData.push({ 
+                        class_id: req.body.class_id, 
+                        class_name: req.body.class_name, 
+                        subject_id: req.body.subject_id, 
+                        subject_name: req.body.subject_name, 
+                        unit_no: unit.unit_no, 
+                        unit_name: unit.unit_name, 
+                        marks: unit.marks, 
+                        
+                    })
+                })
+
+                otherFunction(res, FinalData, function() {
+                    fs.unlinkSync(req.file.path)
+                })
+            });
+    } catch (error) {
+        return res.status(409).json({
+            message: "External Error occured",
+            errors: error.message
+        });
+    }
+  }
+
+const otherFunction = async(res, FinalData, callback) => {
+  await Unit.insertMany(FinalData).then(() => {
+      res.status(200).send('Unit Inserted')
+      callback()
+  }).catch(error => {
+      return res.status(409).json({
+          message: "Error occured while Inserting Data",
+          errors: error.message
+      });
+  })
+}
+
 
 module.exports = {
   CreateUnit,
+  UploadUnit,
   UpdateUnit,
   ViewUnit,
   ViewAllUnit,

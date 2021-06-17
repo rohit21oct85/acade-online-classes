@@ -1,0 +1,17 @@
+class_id,class_no,subject_id,subject_name,unit_id,unit_no,unit_name,chapter_no,chapter_name
+60bf71d1d38e530a98c857fd,10,60c0bcabebcff34e68fad7c1,math,60c1e58677133d445c83827b,1,Number Systems,1,Real Numbers
+60bf71d1d38e530a98c857fd,10,60c0bcabebcff34e68fad7c1,math,60c1e58677133d445c83827c,2,Algebra,2,Polynomial
+60bf71d1d38e530a98c857fd,10,60c0bcabebcff34e68fad7c1,math,60c1e58677133d445c83827c,2,Algebra,3,Pair of Linear Equations in Two Variables
+60bf71d1d38e530a98c857fd,10,60c0bcabebcff34e68fad7c1,math,60c1e58677133d445c83827c,2,Algebra,4,Quadratic Equations
+60bf71d1d38e530a98c857fd,10,60c0bcabebcff34e68fad7c1,math,60c1e58677133d445c83827c,2,Algebra,5,Arithmetic Progressions
+60bf71d1d38e530a98c857fd,10,60c0bcabebcff34e68fad7c1,math,60c1e58677133d445c83827d,3,Coordinate Geometry,6,Lines
+60bf71d1d38e530a98c857fd,10,60c0bcabebcff34e68fad7c1,math,60c1e58677133d445c83827e,4,Geometry,7,Triangles
+60bf71d1d38e530a98c857fd,10,60c0bcabebcff34e68fad7c1,math,60c1e58677133d445c83827e,4,Geometry,8,Circles
+60bf71d1d38e530a98c857fd,10,60c0bcabebcff34e68fad7c1,math,60c1e58677133d445c83827e,4,Geometry,9,Constructions
+60bf71d1d38e530a98c857fd,10,60c0bcabebcff34e68fad7c1,math,60c1e58677133d445c83827f,5,Trigonometry,10,Introduction to Trigonometry
+60bf71d1d38e530a98c857fd,10,60c0bcabebcff34e68fad7c1,math,60c1e58677133d445c83827f,5,Trigonometry,11,Trigonomatry Identities
+60bf71d1d38e530a98c857fd,10,60c0bcabebcff34e68fad7c1,math,60c1e58677133d445c83827f,5,Trigonometry,12,Height And Distance
+60bf71d1d38e530a98c857fd,10,60c0bcabebcff34e68fad7c1,math,60c1e58677133d445c838280,6,Mensuration,13,Areas Related to Circles
+60bf71d1d38e530a98c857fd,10,60c0bcabebcff34e68fad7c1,math,60c1e58677133d445c838280,6,Mensuration,14,Surface Areas and Volumes
+60bf71d1d38e530a98c857fd,10,60c0bcabebcff34e68fad7c1,math,60c1e58677133d445c838281,7,Statistics and Probability,15,Statistics
+60bf71d1d38e530a98c857fd,10,60c0bcabebcff34e68fad7c1,math,60c1e58677133d445c838281,7,Statistics and Probability,16,Probability

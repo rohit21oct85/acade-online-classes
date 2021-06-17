@@ -6,6 +6,8 @@ import useCreateUnit from '../hooks/useCreateUnit';
 import useUpdateUnit from '../hooks/useUpdateUnit';
 import useSingleUnit from '../hooks/useSingleUnit';
 import { useToasts } from 'react-toast-notifications';
+import useUploadUnit from '../hooks/useUploadUnit';
+import * as helper from '../../../../utils/helper'
 
 export default function CreateUnits() {
       const params = useParams();
@@ -17,7 +19,9 @@ export default function CreateUnits() {
       const [counter, setCounter] = useState(1);
       const [loading, setLoading] = useState(false);
       const [SingleUnit, setSingleUnit] = useState({});
-
+      const [btnDisabled, setBtnDisbaled] = useState(true)
+      const [file, setFile] = useState(null);
+      const formDataUpload = new FormData();
       const addCounter = () => {
             setCounter(counter + 1);
       }
@@ -34,9 +38,11 @@ export default function CreateUnits() {
       function setModule(){
             setSingleUnit(dataset)
       }
+      
 
       const createMutation = useCreateUnit(formData);
       const updateMutation = useUpdateUnit(formData);
+      const uploadMutation = useUploadUnit(formDataUpload);  
 
       async function handleChange(e){
             if(params?.unit_id){
@@ -93,6 +99,38 @@ export default function CreateUnits() {
             setLoading(false);
             clearFields();
       }
+      
+
+      async function handelChangeUpload(e){
+            const filename = e.target.files[0].name;
+            console.log('file onchange ' ,  filename);
+            const ext = filename.split('.')[1];
+            console.log(ext)
+            if(ext === "csv"){
+                setBtnDisbaled(false);
+                setFile(e.target.files[0]);
+                formDataUpload.append('file', e.target.files[0]);
+                
+            }else{
+                setBtnDisbaled(true);
+                addToast('Only .csv files are allowed', { appearance: 'error', autoDismiss: true });
+            }
+        }
+      
+      async function uploadUnitFile(e){
+            e.preventDefault();
+            let class_id = params?.class_id
+            let subject_id = params?.subject_id
+            console.log(subjects);
+            let class_name = helper.getFilteredData(data,'_id' ,class_id, 'class_name');
+            let subject_name = helper.getFilteredData(subjects,'subject_id' , subject_id, 'subject_name');
+            formDataUpload.append('file',file);
+            formDataUpload.append('class_id', class_id);
+            formDataUpload.append('class_name', class_name);
+            formDataUpload.append('subject_id', subject_id);
+            formDataUpload.append('subject_name', subject_name);
+            await uploadMutation.mutate(formDataUpload);
+      }
       function clearFields(){
             Array.from(document.querySelectorAll('.addedItems')).map(el => {
                   el.value = ''
@@ -100,7 +138,7 @@ export default function CreateUnits() {
       }
       return (
             <div>
-                  <form onSubmit={saveUnits}>
+                  <form>
                         <p className="form-heading">
                         <span className="fa fa-plus-circle mr-2"></span>Add Multiple Unit</p>
                         <hr className="mt-1"/>
@@ -110,9 +148,9 @@ export default function CreateUnits() {
                         onChange={e => {
                               handleChangeV(e)
                               if(e.target.value === '_'){
-                                    history.push(`/admin/manage-units/create/`)  
+                                    history.push(`/admin/manage-units/${params?.page_type}/`)  
                               }else{
-                                    history.push(`/admin/manage-units/create/${e.target.value}`)  
+                                    history.push(`/admin/manage-units/${params?.page_type}/${e.target.value}`)  
                               }
                         }}>
                               <option value="_">Select Classes</option>
@@ -130,9 +168,9 @@ export default function CreateUnits() {
                         onChange={e => {
                               handleChangeV(e)
                               if(e.target.value === '_'){
-                                    history.push(`/admin/manage-units/create/${params?.class_id}`)                          
+                                    history.push(`/admin/manage-units/${params?.page_type}/${params?.class_id}`)                          
                               }else{
-                                    history.push(`/admin/manage-units/create/${params?.class_id}/${e.target.value}`)                          
+                                    history.push(`/admin/manage-units/${params?.page_type}/${params?.class_id}/${e.target.value}`)                          
                               }
                         }} 
                         >
@@ -144,7 +182,10 @@ export default function CreateUnits() {
                               })}
                         </select>
                         </div>
-                        <div className="form-group">
+                        {(params?.page_type === 'create' || params?.page_type === 'update') 
+                              && (
+                              <>      
+                              <div className="form-group">
                               <button className="btn btn-sm dark mr-2"
                                     onClick={e => {
                                           e.preventDefault()
@@ -190,12 +231,35 @@ export default function CreateUnits() {
                                     </div>
                               </span>
                         )}
-
+                        </>
                         
+                              )
+                        }      
+                        {params?.page_type === 'upload' && (
+                              <div className="col-md-12 pl-0 pr-0">
+                                    <label>Upload Files</label>
+                                    <a href="/sampledata/units.csv" className="pull-right" download>Download Sample</a>
+                                    <input 
+                                    type="file" 
+                                    className="form-control" 
+                                    name="file"
+                                    onChange={handelChangeUpload}
+                                    placeholder="Upload .csv"/>
+                                    <small id="passwordHelpInline" class="text-muted">
+                                    Upload Classes File in .csv format only.
+                                    </small>
+                              </div>
+                        )}
                         
-                        <div className="form-group flex">
-                              <button className="btn btn-sm dark">
-                                    {loading ? (
+                        <hr className="mt-1 mb-1"/>
+                        <div className="form-group flex mt-2">
+                              
+                              {params?.page_type !== 'upload' && (
+                              <button
+                              type="button"
+                              className="btn btn-sm dark"
+                              onClick={saveUnits}>
+                                    {(createMutation?.isLoading || updateMutation?.isLoading) ? (
                                     <>
                                     <span className="fa fa-spinner mr-2"></span>
                                     processing ....
@@ -206,17 +270,42 @@ export default function CreateUnits() {
                                           <><span className="fa fa-save mr-2"></span> Update Unit</>
                                           ):(
                                                 
-                                                <><span className="fa fa-save mr-2"></span> Save Unit</>
+                                    <><span className="fa fa-save mr-2"></span> Save Unit</>
                                     )}
                                     </>
                               )}
                               
                               </button>
-                        
+                              )}
+                              
+
+                              {params?.page_type === 'upload' && (
+                                   <button className="btn btn-sm dark"
+                                   type="button"
+                                   disabled={btnDisabled}
+                                   onClick={uploadUnitFile}>
+                                         {uploadMutation?.isLoading ? (
+                                         <>
+                                         <span className="fa fa-spinner mr-2"></span>
+                                         processing ....
+                                         </>
+                                         ) : (
+                                         <>
+                                         {params?.unit_id ? (
+                                               <><span className="fa fa-save mr-2"></span> Update Unit</>
+                                               ):(
+                                                     
+                                         <><span className="bi bi-upload mr-2"></span> Upload Unit</>
+                                         )}
+                                         </>
+                                   )}
+                                   
+                                   </button> 
+                              )}                  
                               <button className="btn btn-sm dark bg-danger ml-2"
                                     onClick={e => {
                                     e.preventDefault();
-                                    history.push(`/admin/manage-units/${params?.page_type}/${params?.class_id}/${params?.subject_id}`)
+                                    history.push(`/admin/manage-units`)
                                     clearFields()
                                     }}>
                                     <span className="fa fa-times"></span>

@@ -46,19 +46,27 @@ export default function UnitsList() {
                             {create && (
                                 <button className="btn btn-sm dark mr-2" 
                                 onClick={ e => {
-                                    history.push(`/admin/manage-units/create`)
+                                    if(params?.class_id !== undefined && params?.subject_id !== undefined){
+                                        history.push(`/admin/manage-units/create/${params?.class_id}/${params?.subject_id}`)
+                                    }else{
+                                        history.push(`/admin/manage-units/create`)
+                                    }
                                 }}>
                                     <span className="fa fa-plus mr-2"></span>Create Units 
                                 </button>
                             )}
-                            {/* {upload && (
+                            {upload && (
                                 <button className="btn btn-sm dark" 
                                 onClick={ e => {
-                                    history.push(`/admin/question-bank/upload`)
+                                    if(params?.class_id !== undefined && params?.subject_id !== undefined){
+                                        history.push(`/admin/manage-units/upload/${params?.class_id}/${params?.subject_id}`)
+                                    }else{
+                                        history.push(`/admin/manage-units/upload`)
+                                    }
                                 }}>
                                     <span className="fa fa-upload mr-2"></span>Upload teachers 
                                 </button>
-                            )} */}
+                            )}
                             
                         </div>
                     </div>
@@ -67,7 +75,7 @@ export default function UnitsList() {
                         <div className="row">
                             <div className="col-md-4">
                                 {/* { upload === true  && params.page_type === 'upload' && <UploadQuestions />  } */}
-                                { (create === true || update === true )  &&  (params.page_type === 'create' ||params.page_type === 'update' ) && <CreateUnits />  }
+                                { (create === true || update === true )  &&  (params.page_type === 'create' ||params.page_type === 'update' || params?.page_type === 'upload') && <CreateUnits />  }
                             </div>
                             
                             <div className={`${(params?.page_type === 'create' || params?.page_type === 'update' || params?.page_type === 'upload') ? 'col-md-8':'col-md-12'}`}>

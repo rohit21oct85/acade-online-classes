@@ -9,17 +9,30 @@ import {useParams} from 'react-router-dom'
 export default function useSubjectChapterList() {
     const {state } = useContext(AuthContext);
     const params = useParams();
-    const key = `subject-chapter-mappings-${params?.class_id}-${params?.subject_id}-${params?.unit_id}`;
+    let key= '';
+    let url= '';
+    if(params?.class_id && params?.subject_id && params?.unit_id){
+        key = `subject-chapter-mappings-${params?.class_id}-${params?.subject_id}-${params?.unit_id}`;
+        url = `${API_URL}v1/chapter/view-all/${params.class_id}/${params.subject_id}/${params?.unit_id}`;
+    }
+    else if(params?.class_id && params?.subject_id){
+        key = `subject-chapter-mappings-${params?.class_id}-${params?.subject_id}`;
+        url = `${API_URL}v1/chapter/view-all/${params.class_id}/${params.subject_id}`;
+
+    }else{
+        key = `subject-chapter-mappings`;
+        url = `${API_URL}v1/chapter/view-all`;
+        
+    }
+    
     return useQuery(key, async () => {
-        if(params.class_id && params.subject_id && params.unit_id){
-            const result = await axios.get(`${API_URL}v1/chapter/view-all/${params.class_id}/${params.subject_id}/${params?.unit_id}`,{
-                headers: {
-                    'Content-Type': 'Application/json',
-                    'Authorization':'Bearer '+ state.access_token
-                }
-            });
-            return result.data.data; 
-        }
+        const result = await axios.get(`${url}`,{
+            headers: {
+                'Content-Type': 'Application/json',
+                'Authorization':'Bearer '+ state.access_token
+            }
+        });
+        return result.data.data; 
     });
     
 }

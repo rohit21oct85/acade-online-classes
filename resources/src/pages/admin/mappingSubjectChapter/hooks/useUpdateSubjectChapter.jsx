@@ -22,16 +22,28 @@ export default function useUpdateSubjectChapter(formData) {
             }
       }      
       const { addToast } = useToasts();
-      const key = params.subject_chapter_id ? `subject-chapter-mapping-${params.subject_chapter_id}` : `subject-chapter-mapping`
+      
+      let key= '';
+      let url= '';
+      if(params?.class_id && params?.subject_id && params?.unit_id){
+            key = `subject-chapter-mappings-${params?.class_id}-${params?.subject_id}-${params?.unit_id}`;
+            
+        }
+        else if(params?.class_id && params?.subject_id){
+            key = `subject-chapter-mappings-${params?.class_id}-${params?.subject_id}`;
+            
+    
+        }else{
+            key = `subject-chapter-mappings`;
+            
+        }
+        
       return useMutation((formData) => {
             let subject_chapter_id =  params?.subject_chapter_id;
             return axios.patch(`${API_URL}v1/chapter/update/${subject_chapter_id}`, formData, options)
         },{
             onSuccess: () => {
                 queryClient.invalidateQueries(`${key}`)
-            //     setLoading(false);
-            //     setFormData(initialData);
-            //     history.push(`${path}`);
                 addToast('Chapter Updated successfully', { appearance: 'success',autoDismiss: true });
             }
         });

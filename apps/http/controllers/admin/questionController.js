@@ -9,6 +9,7 @@ let refreshTokens = [];
 const CreateQuestion = async (req, res) => {
     const body = req.body;
     try {
+        // res.send(body); return;
         const newQuestion = new Question(body);
         await newQuestion.save();
         return res.status(200).json({ 

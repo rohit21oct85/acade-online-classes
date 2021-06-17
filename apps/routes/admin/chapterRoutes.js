@@ -3,13 +3,29 @@ const Chapter = require('../../http/controllers/admin/chapterController.js');
 const checkAuth =  require("../../http/middleware/check-auth");
 const adminAuth =  require("../../http/middleware/admin-auth");
 const router = express.Router();
+var multer = require('multer')
+var storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        console.log(req,file)
+        cb(null, 'apps/uploads/')
+    },
+    fileFilter: function(req, file, cb) {
+        console.log(file.mimetype, "dadasd")
+    },
+    filename: function(req, file, cb) {
+        console.log(file)
+        cb(null, file.fieldname + '-' + Date.now() + '.csv')
+    },
+})
+var upload = multer({ storage: storage })
 
 router
-    .post('/create', checkAuth, Chapter.CreateChapter)
-    .patch('/update/:id', checkAuth, Chapter.UpdateChapter)
-    .get('/view/:id', checkAuth, Chapter.ViewChapter)
-    .get('/view-all/:class_id?/:subject_id?/:unit_id?', checkAuth, Chapter.ViewAllChapter)
-    .delete('/delete/:id', checkAuth, Chapter.DeleteChapter)
+    .post('/create', checkAuth, Chapter.Create)
+    .post('/upload', upload.single('file'), checkAuth, Chapter.Upload)
+    .patch('/update/:id', checkAuth, Chapter.Update)
+    .get('/view/:id', checkAuth, Chapter.View)
+    .get('/view-all/:class_id?/:subject_id?/:unit_id?', checkAuth, Chapter.ViewAll)
+    .delete('/delete/:id', checkAuth, Chapter.Delete)
 ;
 
 module.exports = router;

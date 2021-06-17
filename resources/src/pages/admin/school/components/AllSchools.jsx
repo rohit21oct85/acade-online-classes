@@ -19,26 +19,21 @@ export default function AllSchools({update}) {
                   return (
                   <div 
                         key={school?._id}
-                        className="card mb-2 pl-3 pr-2 col-md-12 no-gutter" 
+                        className="card mb-2 pl-3 pr-2 col-md-6 no-gutter" 
                         
                   >
                         <div className="row">
-                              <div className="col-md-2 pl-2 pt-2">
+                              <div className="col-md-2 pl-2 pt-3">
                                     <img 
                                           src={`https://drive.google.com/uc?export=view&id=${school?.school_logo}`} style={{ height:'100px'}}
                                           className="img-responsive"
                                     />  
                               </div>
-                              <div className="col-md-9 pr-4 pl-3">   
+                              <div className="col-md-9 pr-3 ml-4 pt-3">   
                                     <div className="flex">
-                                          <div className="admin-name"> 
-                                                <div className="name-label mr-3">
+                                          <div className="name-label">
                                                       School Name: 
                                                 </div>
-                                                <div className="name-main">
-                                                      {school?.school_name}
-                                                </div>
-                                          </div>
                                           <div className="name-main">
                                                 {school?.school_name}
                                           </div>

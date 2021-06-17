@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 
 const QuestionSchema = new mongoose.Schema({
+      user_id: {
+            type: String,
+      },
       class_id: {
             type: String,
       },
