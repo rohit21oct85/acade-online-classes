@@ -25,12 +25,10 @@ export default function useUpdateQuestion(formData) {
       const key = params.qbank_id ? `questions-${params.qbank_id}` : `questions`
       return useMutation((formData) => {
             let qbank_id =  params?.qbank_id;
-            return axios.patch(`${API_URL}v1/question-bank/update/${qbank_id}`, formData, options)
+            return axios.post(`${API_URL}v1/question-bank/update/${qbank_id}`, formData, options)
         },{
             onSuccess: () => {
                 queryClient.invalidateQueries(`${key}`)
-                setLoading(false);
-                setFormData(initialData);
                 history.push(`${path}`);
                 addToast('Question Updated successfully', { appearance: 'success',autoDismiss: true });
             }

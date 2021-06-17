@@ -23,7 +23,7 @@ var upload = multer({ storage: storage })
 
 router
     .post('/create', checkAuth, Question.CreateQuestion)
-    .patch('/update/:id', checkAuth, Question.UpdateQuestion)
+    .post('/update/:id', checkAuth, Question.UpdateQuestion)
     .post('/update-subject/:subject_id?', checkAuth, Question.UpdateSubjectQuestion)
     .get('/view/:id', checkAuth, Question.ViewQuestion)
     .get('/view-all/:class_id?/:subject_id?/:unit_id?/:chapter_id?', checkAuth, Question.ViewAllQuestion)

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useHistory, useParams } from 'react-router-dom';
 import useClassList from '../../class/hooks/useClassList'
 import useClassSubjectList from '../../../../hooks/classSubjectMapping/useClassSubjectList';
@@ -11,8 +11,11 @@ import {romanize} from '../../../../utils/helper';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from 'ckeditor5-classic-with-mathtype';
 import useSubjectChapterList from '../../mappingSubjectChapter/hooks/useSubjectChapterList';
+import useUpdateQuestion from '../hooks/useUpdateQuestion';
+
 
 export default function CreateQuestionBank() {
+      
       const params = useParams();
       const history = useHistory();
       const {data:classDatas} = useClassList();
@@ -20,9 +23,7 @@ export default function CreateQuestionBank() {
       const {data:units, isLoading: unitLoading} = useUnitList();
       const {data:chapters, isLoading: chapterLoading} = useSubjectChapterList();
       const {data:chapter} = useSingleQuestion();
-      const questionTypes = [
-            {key: 'mcq', value: 'Multiple Choice'}
-      ]
+      
       const options = [
             {key: 'option_a', value: 'Option A'},
             {key: 'option_b', value: 'Option B'},
@@ -30,17 +31,15 @@ export default function CreateQuestionBank() {
             {key: 'option_d', value: 'Option D'},
       ]
 
-      const answerTypes = [
-            {key: 'cma', value: 'Choose Multiple'},
-            {key: 'csa', value: 'Choose Single'}
-      ]
-
       const [formData, setFormData] = useState({});
       
       const createMutation = useCreateQuestion(formData);
+      const updateMutation = useUpdateQuestion(formData);
 
       async function handleSubmit(e){
             e.preventDefault();
+            let qbank_id = params?.qbank_id
+            
             let class_id = params?.class_id
             let subject_id = params?.subject_id
             let unit_id = params?.unit_id
@@ -63,13 +62,19 @@ export default function CreateQuestionBank() {
             formData.chapter_id = chapter_id
             formData.chapter_no = chapter_no
             formData.chapter_name = chapter_name
-            formData.qtype = params?.qtype
-            formData.atype = params?.atype
             console.log(formData);
-
-            await createMutation.mutate(formData);
-            
+            if(qbank_id){
+                  await updateMutation.mutate(formData);
+            }else{
+                  await createMutation.mutate(formData);
+            }
       }
+      useEffect(() => {
+            const script = document.createElement("script");
+            script.src = "https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image";
+            script.async = true;
+            document.body.appendChild(script);
+      },[params?.unit_id, params?.chapter_id])
       return (
             <div>
                   
@@ -78,7 +83,7 @@ export default function CreateQuestionBank() {
                   </p>
                   <hr className="mt-1"/>
                   <div className="row">
-                  <div className="form-group col-md-4">
+                  <div className="form-group col-md-3">
                   <select className="form-control"
                   value={params?.class_id}
                   onChange={e => {
@@ -96,7 +101,7 @@ export default function CreateQuestionBank() {
                         })}
                   </select>
                   </div>
-                  <div className="form-group col-md-4 pl-0">
+                  <div className="form-group col-md-3 pl-0">
                   <select className="form-control"
                   value={params?.subject_id}
                   onChange={e => {
@@ -115,7 +120,7 @@ export default function CreateQuestionBank() {
                         })}
                   </select>
                   </div>
-                  <div className="form-group col-md-4 pl-0">
+                  <div className="form-group col-md-3 pl-0">
                   <select className="form-control"
                   value={params?.unit_id}
                   onChange={e => {
@@ -134,7 +139,7 @@ export default function CreateQuestionBank() {
                         })}
                   </select>
                   </div>
-                  <div className="form-group col-md-4">
+                  <div className="form-group col-md-3">
                   <select className="form-control"
                   value={params?.chapter_id}
                   onChange={e => {
@@ -153,46 +158,8 @@ export default function CreateQuestionBank() {
                         })}
                   </select>
                   </div>
-
-                  <div className="form-group col-md-4 pl-0">
-                  <select className="form-control"
-                  value={params?.qtype}
-                  onChange={e => {
-                        if(e.target.value === '_'){
-                              history.push(`/admin/question-bank/${params?.page_type}/${params?.class_id}/${params?.subject_id}/${params?.unit_id}/${params?.chapter_id}`)                          
-                        }else{
-                              history.push(`/admin/question-bank/${params?.page_type}/${params?.class_id}/${params?.subject_id}/${params?.unit_id}/${params?.chapter_id}/${e.target.value}`)                          
-                        }
-                  }}     
-                  > 
-                        <option value="_">Ques Type</option>
-                        {questionTypes?.map( (questiontype, index) => {
-                              return(
-                              <option value={questiontype?.key} key={index}>{questiontype?.value}</option>
-                              )
-                        })}
-                  </select>
                   </div>
-                  <div className="form-group col-md-4 pl-0">
-                  <select className="form-control"
-                        value={params?.atype}
-                        onChange={e => {
-                        if(e.target.value === '_'){
-                              history.push(`/admin/question-bank/${params?.page_type}/${params?.class_id}/${params?.subject_id}/${params?.unit_id}/${params?.chapter_id}/${params?.qtype}`)                          
-                        }else{
-                              history.push(`/admin/question-bank/${params?.page_type}/${params?.class_id}/${params?.subject_id}/${params?.unit_id}/${params?.chapter_id}/${params?.qtype}/${e.target.value}`)                          
-                        }
-                        }}         
-                  > <option value="_">Ans Type</option>
-                        {answerTypes?.map( (answertype, index) => {
-                              return(
-                              <option value={answertype?.key} key={index}>{answertype?.value}</option>
-                              )
-                        })}
-                  </select>
-                  </div>
-                  </div>
-            {params?.page_type === 'create' && (
+            {(params?.page_type === 'create' || params?.page_type === 'update') && (
                           
             <form>
                   <div className="form-group">
@@ -201,12 +168,25 @@ export default function CreateQuestionBank() {
                   <div className="pr-2" style={{ height: '350px', overflowY: 'scroll', overflowX: 'hidden'}}>
                   <div className="form-group">
                         <label>Question: </label>
+                        
                         <CKEditor
+                              id="question"
                               editor={ ClassicEditor }
                               config={{
+                                    fontSize: {
+                                          options: [
+                                              9,
+                                              11,
+                                              13,
+                                              'default',
+                                              17,
+                                              19,
+                                              21
+                                          ]
+                                      },          
                               toolbar: {
                                     items: [
-                                          'MathType', 'ChemType','heading', 
+                                          'MathType', 'ChemType','heading','fontSize', 
                                           '|',
                                           'bold',
                                           'italic',
@@ -222,7 +202,7 @@ export default function CreateQuestionBank() {
                                     ]
                               },
                               }}
-
+                              data={params?.qbank_id ? chapter?.question : formData?.question}
                               onChange={ ( event, editor ) => {
                               const data = editor.getData();
                               setFormData( { ...formData, question: data } );
@@ -230,7 +210,20 @@ export default function CreateQuestionBank() {
                         />
                   </div>      
                   <div className="row">
-                  {options?.map( option => {
+                  {options?.map( (option,index) => {
+                  let option_answer = '';      
+                  if(index === 0){
+                        option_answer = params?.qbank_id ? chapter?.option_a : formData?.option_a
+                  }
+                  else if(index === 1){
+                        option_answer = params?.qbank_id ? chapter?.option_b : formData?.option_b
+                  }      
+                  else if(index === 2){
+                        option_answer = params?.qbank_id ? chapter?.option_c : formData?.option_c
+                  }      
+                  else if(index === 3){
+                        option_answer = params?.qbank_id ? chapter?.option_d : formData?.option_d
+                  }      
                   return(
                         <div className="form-group col-md-6">
                         <label>{option?.value}: </label>
@@ -241,6 +234,7 @@ export default function CreateQuestionBank() {
                                     items: [
                                           'MathType', 'ChemType','heading', 
                                           '|',
+                                          'fontSize',
                                           'bold',
                                           'italic',
                                           'link',
@@ -252,9 +246,11 @@ export default function CreateQuestionBank() {
                                           'blockQuote',
                                           'undo',
                                           'redo'
+                                          
                                     ]
                               },
                               }}
+                              data={option_answer}
                               onChange={ ( event, editor ) => {
                               const data = editor.getData();
                               setFormData( { ...formData, [option?.key] : data } );
@@ -265,6 +261,7 @@ export default function CreateQuestionBank() {
                   </div>
                   <div className="form-group">
                               <select className="form-control"
+                              value={params?.qbank_id ? chapter?.answer: formData?.answer}
                               onChange={e => {
                               setFormData( { ...formData, answer : e.target.value } );
                               }}
@@ -299,7 +296,7 @@ export default function CreateQuestionBank() {
                                     ]
                               },
                               }}
-
+                              data={params?.qbank_id ? chapter?.solution : formData?.solution}
                               onChange={ ( event, editor ) => {
                               const data = editor.getData();
                               setFormData( { ...formData, solution: data } );
@@ -312,17 +309,21 @@ export default function CreateQuestionBank() {
                                           
                   <div className="form-group mt-2">
                         <button className="btn btn-sm dark"
-                        disabled={createMutation?.isLoading}
+                        disabled={(createMutation?.isLoading || updateMutation?.isLoading)}
                         onClick={handleSubmit}>
-                        {(createMutation?.isLoading) 
+                        {(createMutation?.isLoading || updateMutation?.isLoading) 
                         ?
                         <><span className="bi bi-spinner mr-2"></span>
                         Processing...</>
                         :
-                        <><span className="bi bi-save mr-2"></span>
-                        Save Question</>      
+                        <>
+                        <span className="bi bi-save mr-2"></span>
+                        {params?.qbank_id ? 'Update Question': 'Save Question'}
+                        </>      
                         }
-                              
+                        </button>
+                        <button>
+                              <span></span> Cancel  
                         </button>
                   </div>
 

@@ -11,6 +11,7 @@ const CreateQuestion = async (req, res) => {
     try {
         // res.send(body); return;
         const newQuestion = new Question(body);
+
         await newQuestion.save();
         return res.status(200).json({ 
             message: "Question created sucessfully"
@@ -23,7 +24,7 @@ const CreateQuestion = async (req, res) => {
 }
 const UpdateQuestion = async (req, res) =>{
     try {
-        await Question.findOneAndUpdate({_id: req.params.id},req.body)
+        await Question.findOneAndUpdate({_id: req.params.id},{$set: req.body})
                 .then(response => {
                     return res.status(202).json({
                         message: "Question, Updated successfully"
@@ -85,6 +86,7 @@ const ViewAllQuestion = async (req, res) => {
             unit_id: req.params?.unit_id,
             chapter_id: req.params?.chapter_id,
         }
+
         const AllQuestions = await Question.find(filter,{__v: 0});
         return res.status(200).json({ 
             data: AllQuestions 

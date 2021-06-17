@@ -10,9 +10,13 @@ import {romanize} from '../../../../utils/helper'
 
 export default function AllUnits({update, Delete}) {
 
-      const history = useHistory();
-      const {state} = useContext(AuthContext);
-      const params = useParams();
+    const history = useHistory();
+    const {state} = useContext(AuthContext);
+    const params = useParams();
+    let unit_id = params?.unit_id
+    let chapter_id = params?.chapter_id
+      
+
       const {data:units, isLoading} = useUnitList();
       const [formData, setFormData] = useState({});
       const deleteMutation = useDeleteUnit(formData);
