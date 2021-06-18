@@ -36,6 +36,10 @@ const AssignTestSchema = new mongoose.Schema({
             type: Boolean,
             default: false
       },
+      attempted:{
+            type: Boolean,
+            default: false
+      },
       create_at: {
         type: Date,
         default: Date.now
