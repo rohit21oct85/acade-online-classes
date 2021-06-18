@@ -10,6 +10,7 @@ import useClassList from '../../class/hooks/useClassList';
 import useClassSubjectList from '../../../../hooks/classSubjectMapping/useClassSubjectList';
 import useTeacherSubject from '../../../../hooks/teacherSubjectMapping/useTeacherSubject';
 import useTestByClassSubject from '../../unitTest/hooks/useTestByClassSubject';
+import useAssignedTestList from '../hooks/useAssignedTestList';
 
 export default function CreateAssignTest() {
       const params = useParams();
@@ -25,7 +26,7 @@ export default function CreateAssignTest() {
       const {data: SClass}     = useClassList();
       const {data: SSubjects}  = useClassSubjectList();
       const {data: unitTests}      = useTestByClassSubject();
-
+      const {data: testLists, isLoading} = useAssignedTestList();
       const [formData, setFormData] = useState({});
       
       const createMutation = useCreateAssignTest(formData);
@@ -51,6 +52,28 @@ export default function CreateAssignTest() {
                   }
             })
       }
+      function handleChangeSchool(e){
+            let class_id = params?.class_id
+            let subject_id = params?.subject_id
+            let school_id = e.target.value
+            
+            if(class_id && subject_id){
+                  Array.from(document.getElementsByName('school')).map(elem => {
+                        if(elem.value == e.target.value){
+                              elem.checked = true
+                        }else{
+                              elem.checked = false
+                        }
+                  }) 
+
+                  if(e.target.checked){
+                        history.push(`/admin/assign-test/${params?.page_type}/${class_id}/${subject_id}/${school_id}`)
+                  }else{
+                        history.push(`/admin/assign-test/${params?.page_type}/${class_id}/${subject_id}`)
+                  }
+            }
+      }
+      
       async function handleSubmit(e){
             e.preventDefault();
             let class_id = params?.class_id
@@ -62,21 +85,19 @@ export default function CreateAssignTest() {
 
             Array.from(document.getElementsByName('test')).map(elem => {
                  if(elem.checked = true){
-                  let finalData = [];
-                  Array.from(document.getElementsByName('school')).map((elems) => {
-                        if(elems.checked = true){
-                              mainData.push({
-                                    'school_id': elems.value,
-                                    'class_id':  class_id,
-                                    'class_name':  class_name,
-                                    'subject_id':  subject_id,
-                                    'subject_name':  subject_name,
-                                    'test_id': elem.value
-                               })
-                        }
-                  })
-                   
-                 }
+                        Array.from(document.getElementsByName('school')).map((elems) => {
+                              if(elems.checked = true){
+                                    mainData.push({
+                                          'school_id': elems.value,
+                                          'class_id':  class_id,
+                                          'class_name':  class_name,
+                                          'subject_id':  subject_id,
+                                          'subject_name':  subject_name,
+                                          'test_id': elem.value
+                                    })
+                              }
+                        })
+                  }
             })
             
             console.log(mainData);
@@ -130,7 +151,7 @@ export default function CreateAssignTest() {
                   <hr className="mb-1 mt-1"/>  
                         <div className="row">
 
-                        <div className="col-md-3">
+                        <div className="col-md-3 pr-0">
                         <p className="mb-0 mt-0">
                         <label>
                               <input className="mr-2" id="checkAllSchool" type="checkbox" name="checkallSchool" 
@@ -143,7 +164,9 @@ export default function CreateAssignTest() {
                         {schools?.map(school => 
                         <div className="row col-md-12 pr-0">
                              <label>
-                              <input type="checkbox" name="school" className="mr-2" value={school?._id}/>
+                              <input type="checkbox" name="school" className="mr-2" value={school?._id}
+                              onChange={handleChangeSchool}
+                              />
                               {school?.school_name}</label> 
                         </div>
                         )}
@@ -172,12 +195,14 @@ export default function CreateAssignTest() {
                   
                         <tbody className="pt-2 pr-0 no-gutter" style={{ minHeight: '100px !important', height: 'auto',maxHeight: '250px', overflowY: 'scroll', overflowX: 'hidden'}}>
                               {unitTests?.map((tests, index) => {
+                              let chkMethodDisabled = helper.checkExists(testLists, 'test_id', `${tests?._id}`);      
                               return(
                               <tr key={tests?._id}>
                                     <td style={{ width: '200px'}}>
                                     <b>
                                     <label>
                                           <input className="mr-2" type="checkbox" name={`test`} value={`${tests?._id}`}
+                                          disabled={chkMethodDisabled}
                                           />
                                           {tests?.test_name}</label>
                                     </b>

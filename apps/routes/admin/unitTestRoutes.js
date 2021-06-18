@@ -10,7 +10,7 @@ router
     .post('/update-subject/:subject_id?', checkAuth, UnitTest.UpdateSubjectUnitTest)
     .get('/view/:id', checkAuth, UnitTest.ViewUnitTest)
     .get('/view-all/:class_id?/:subject_id?/:unit_id?', checkAuth, UnitTest.ViewAllUnitTest)
-    .get('/view-class-subject/:class_id?/:subject_id?', checkAuth, UnitTest.ViewUnitTestByClassSubjects)
+    .get('/view-class-subject/:class_id?/:subject_id?/:school_id?', checkAuth, UnitTest.ViewUnitTestByClassSubjects)
     .post('/delete', checkAuth, UnitTest.DeleteUnitTest)
 ;
 

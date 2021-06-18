@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 
 const UnitSchema = new mongoose.Schema({
+      user_id_id: {
+            type: String
+      },
       class_id: {
             type: String
       },

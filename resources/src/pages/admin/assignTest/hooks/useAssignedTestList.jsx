@@ -13,15 +13,20 @@ export default function useAssignedTestList() {
     const subject_id = params?.subject_id
     const school_id = params?.school_id
     let key = '';
-    key = `assign-tests-${class_id}-${subject_id}`;
     let url = '';
+    
+    if(state.access_token && subject_id && class_id && school_id){
+        url = `${API_URL}v1/assign-test/view-all/${class_id}/${subject_id}/${school_id}`;
+        key = `assign-tests-${class_id}-${subject_id}-${school_id}`;
+    }
+    else if(state.access_token && subject_id && class_id ){
+        url = `${API_URL}v1/assign-test/view-all/${class_id}/${subject_id}`;
+        key = `assign-tests-${class_id}-${subject_id}`;
+    }
+
     return useQuery(`${key}`, async () => {
-        if(state.access_token && subject_id && class_id ){
-            url = `${API_URL}v1/assign-test/view-all/${class_id}/${subject_id}`;
-        }
-        if(state.access_token && subject_id && class_id && school_id){
-            url = `${API_URL}v1/assign-test/view-all/${class_id}/${subject_id}/${school_id}`;
-        }
+        
+        
 
         const result = await axios.get(url,{
             headers: {

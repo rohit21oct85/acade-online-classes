@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 
 const ChapterSchema = new mongoose.Schema({
+      user_id: {
+            type: String
+      },
       class_id: {
             type: String
       },

@@ -88,7 +88,7 @@ export const privateRoutes = [
         component: SubjectChapterList
     },
     {
-        path: '/admin/manage-units/:page_type?/:class_id?/:subject_id?/:unit_id?',
+        path: '/admin/manage-units/:page_type?/:class_id?/:subject_id?/:subject_name?/:unit_id?',
         component: UnitsList
     },
     {
@@ -97,7 +97,7 @@ export const privateRoutes = [
     },
     
     {
-        path: '/admin/assign-test/:page_type?/:class_id?/:subject_id?',
+        path: '/admin/assign-test/:page_type?/:class_id?/:subject_id?/:school_id?',
         component: AssignTests
     },
     

@@ -32,7 +32,6 @@ export default function AllAssignedTest({update, Delete}) {
         <Loading isLoading={isLoading} /> 
         <div className="col-md-12 pr-2 pl-2 row no-gutter" style={{ minHeight: '100px !important', height: 'auto',maxHeight: '350px', overflowY: 'scroll', overflowX: 'hidden'}}>
             {testLists?.map( test => {
-                console.log(typeof unitTests)
                 let school_name = '';
                 let test_name = '';
                 if(!isSchoolLoading){

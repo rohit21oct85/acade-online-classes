@@ -22,7 +22,7 @@ var upload = multer({ storage: storage })
 router
     .post('/create', checkAuth, Unit.CreateUnit)
     .post('/upload', upload.single('file'), checkAuth, Unit.UploadUnit)
-    .patch('/update/:id', checkAuth, Unit.UpdateUnit)
+    .post('/update', checkAuth, Unit.UpdateUnit)
     .get('/view/:id', checkAuth, Unit.ViewUnit)
     .get('/view-all/:class_id?/:subject_id?', checkAuth, Unit.ViewAllUnit)
     .post('/delete', checkAuth, Unit.DeleteUnit)

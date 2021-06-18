@@ -27,7 +27,6 @@ export default function AllSubjectChapterMapping({update, Delete}) {
         </div>
         <hr className="mt-1 mb-1"/>
         {params?.unit_id && params?.unit_slug && (
-
         <div className="row pl-0 pr-0">
             <div className="col-md-6">
             <b className="mr-0">Unit ID: </b>

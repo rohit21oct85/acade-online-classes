@@ -9,15 +9,17 @@ const Create = async (req, res) => {
         var options = { upsert: true, new: true, setDefaultsOnInsert: true };  
         await ChapterData.map( data => {
                 Chapter.findOneAndUpdate({
-                    class_id: data?.class_id,
+                    class_id: req?.body?.user_id,
                     subject_id: data?.subject_id,
                     chapter_no: data?.chapter_no,
                 },{$set: {
+                    user_id: data?.user_id,
                     class_id: data?.class_id,
                     class_name: data?.class_name,
                     subject_id: data?.subject_id,
                     subject_name: data?.subject_name,
                     unit_id: data?.unit_id,
+                    unit_no: data?.unit_no,
                     unit_name: data?.unit_name,
                     chapter_no: data?.chapter_no,
                     chapter_name: data?.chapter_name,
@@ -49,11 +51,13 @@ const Update = async (req, res) =>{
                 Chapter.findOneAndUpdate({
                     _id: data?.subject_chapter_id,
                 },{$set: {
+                    user_id: req?.body?.user_id,
                     class_id: data?.class_id,
                     class_name: data?.class_name,
                     subject_id: data?.subject_id,
                     subject_name: data?.subject_name,
                     unit_id: data?.unit_id,
+                    unit_no: data?.unit_no,
                     unit_name: data?.unit_name,
                     chapter_no: data?.chapter_no,
                     chapter_name: data?.chapter_name,
@@ -144,7 +148,8 @@ const Upload = async(req, res) => {
             .on('data', (data) => results.push(data))
             .on('end', () => {
                 results.forEach(unit => {
-                    FinalData.push({ 
+                    FinalData.push({
+                        user_id: req?.body?.user_id, 
                         class_id: req.body.class_id, 
                         class_name: req.body.class_name, 
                         subject_id: req.body.subject_id, 

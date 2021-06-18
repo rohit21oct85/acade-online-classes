@@ -50,8 +50,6 @@ export default function CreateSubject() {
         return axios.post(`${API_URL}v1/subject/create`, formData, options)
     },{
         onSuccess: () => {
-            let school_id =  params?.school_id;
-            // queryClient.invalidateQueries(`subjects-${school_id}`)
             queryClient.invalidateQueries(`subjects`)
             setLoading(false);
             setFormData(initialData);
@@ -60,13 +58,11 @@ export default function CreateSubject() {
         }
     });
     
-    const updateMutation = useMutation((formData) => {
+    const updateMutation = useMutation((SingleSubject) => {
         let subject_id =  params?.subject_id;
-        return axios.patch(`${API_URL}v1/subject/update/${subject_id}`, formData, options)
+        return axios.patch(`${API_URL}v1/subject/update/${subject_id}`, SingleSubject, options)
     },{
         onSuccess: () => {
-            let school_id =  params?.school_id;
-            // queryClient.invalidateQueries(`subjects-${school_id}`)
             queryClient.invalidateQueries(`subjects`)
             setLoading(false);
             setFormData(initialData);
@@ -79,6 +75,8 @@ export default function CreateSubject() {
         e.preventDefault();
         setLoading(true);
         if(params?.subject_id){
+                SingleSubject.subject_slug = utils.MakeSlug(SingleSubject.subject_name)
+                // console.log(SingleSubject); return;
                 await updateMutation.mutate(SingleSubject);
         }else{
             if(formData.subject_name == ''){

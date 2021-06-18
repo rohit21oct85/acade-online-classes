@@ -22,13 +22,24 @@ export default function useUpdateUnit(formData) {
             }
       }      
       const { addToast } = useToasts();
+
+      let url = '';
+      let key = '';
+      if(params?.class_id && params?.subject_id){
+            key = `units-${params.class_id}-${params?.subject_id}`;
+      }else if(params?.class_id){
+            key = `units-${params.class_id}`;
+      }else{
+            key = `units`;
+      }
+
+
       return useMutation((formData) => {
-            let unit_id =  params?.unit_id;
-            return axios.patch(`${API_URL}v1/unit/update/${unit_id}`, formData, options)
+            return axios.post(`${API_URL}v1/unit/update`, formData, options)
         },{
             onSuccess: () => {
-                queryClient.invalidateQueries(`units-${params.class_id}-${params?.subject_id}`)
-                history.push(`/admin/manage-units/create/${params.class_id}/${params?.subject_id}`);
+                queryClient.invalidateQueries(`${key}`)
+                history.push(`/admin/manage-units/${params?.page_type}/${params.class_id}/${params?.subject_id}`);
                 addToast('Unit Updated successfully', { appearance: 'success',autoDismiss: true });
             }
         });

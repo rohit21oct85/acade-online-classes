@@ -75,6 +75,9 @@ export default function CreateSubjectChapterMap() {
             setLoading(true);
             
             if(params?.subject_chapter_id){
+                  let unit_id = document.getElementById("unit").value
+                  let unit_no = helper.getFilteredData(units, '_id', unit_id, 'unit_no')
+                  // alert(unit_no);return;
                   arrayData.push({
                         subject_chapter_id:params?.subject_chapter_id,
                         class_id:params?.class_id,
@@ -82,6 +85,7 @@ export default function CreateSubjectChapterMap() {
                         subject_id:params?.subject_id,
                         subject_name: params?.subject_slug,
                         unit_id:params?.unit_id,
+                        unit_no: unit_no,
                         unit_name:params?.unit_slug,
                         chapter_no: SingleSubjectChapter.chapter_no,
                         chapter_name:SingleSubjectChapter.chapter_name,
@@ -208,10 +212,10 @@ export default function CreateSubjectChapterMap() {
                               }else{
                                     const unit_name = e.target.options[e.target.selectedIndex].dataset.unit_name
                                     // alert(typeof params?.subject_chapter_id )
-                                    if(params?.subject_chapter_id == "undefined"){
-                                          history.push(`/admin/mapping-subject-chapters/${params?.page_type}/${params?.class_id}/${params?.class_slug}/${params?.subject_id}/${params?.subject_slug}/${e.target.value}/${MakeSlug(unit_name)}`)                          
-                                    }else{
+                                    if(params?.subject_chapter_id){
                                           history.push(`/admin/mapping-subject-chapters/${params?.page_type}/${params?.class_id}/${params?.class_slug}/${params?.subject_id}/${params?.subject_slug}/${e.target.value}/${MakeSlug(unit_name)}/${params?.subject_chapter_id}`)                          
+                                    }else{
+                                          history.push(`/admin/mapping-subject-chapters/${params?.page_type}/${params?.class_id}/${params?.class_slug}/${params?.subject_id}/${params?.subject_slug}/${e.target.value}/${MakeSlug(unit_name)}`)                          
                                     }
                               }
                         }} 

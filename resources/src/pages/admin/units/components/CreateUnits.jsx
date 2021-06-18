@@ -8,6 +8,7 @@ import useSingleUnit from '../hooks/useSingleUnit';
 import { useToasts } from 'react-toast-notifications';
 import useUploadUnit from '../hooks/useUploadUnit';
 import * as helper from '../../../../utils/helper'
+import { MakeSlug } from '../../../../utils/utils';
 
 export default function CreateUnits() {
       const params = useParams();
@@ -72,13 +73,14 @@ export default function CreateUnits() {
             if(params?.unit_id){
                   for(let i = 0; i< counter; i ++){
                         arrayData.push({
+                              unit_id: params?.unit_id,
                               class_id:params?.class_id,
                               class_name: SingleUnit.class_name,
                               subject_id:params?.subject_id,
                               subject_name:SingleUnit?.subject_name,
                               unit_no: SingleUnit?.unit_no,
-                              unit_name: SingleUnit?.unit_name,
-                              marks:SingleUnit?.marks,
+                              unit_name: (SingleUnit?.unit_name !== formData?.unit_name) ? SingleUnit?.unit_name: formData?.unit_name,
+                              marks: SingleUnit?.marks,
                         })
                   }
                   await updateMutation.mutate(arrayData);
@@ -120,15 +122,10 @@ export default function CreateUnits() {
       async function uploadUnitFile(e){
             e.preventDefault();
             let class_id = params?.class_id
-            let subject_id = params?.subject_id
-            console.log(subjects);
             let class_name = helper.getFilteredData(data,'_id' ,class_id, 'class_name');
-            let subject_name = helper.getFilteredData(subjects,'subject_id' , subject_id, 'subject_name');
             formDataUpload.append('file',file);
             formDataUpload.append('class_id', class_id);
             formDataUpload.append('class_name', class_name);
-            formDataUpload.append('subject_id', subject_id);
-            formDataUpload.append('subject_name', subject_name);
             await uploadMutation.mutate(formDataUpload);
       }
       function clearFields(){
@@ -170,14 +167,15 @@ export default function CreateUnits() {
                               if(e.target.value === '_'){
                                     history.push(`/admin/manage-units/${params?.page_type}/${params?.class_id}`)                          
                               }else{
-                                    history.push(`/admin/manage-units/${params?.page_type}/${params?.class_id}/${e.target.value}`)                          
+                                    const subject_name = e.target.options[e.target.selectedIndex].dataset.subject_name
+                                    history.push(`/admin/manage-units/${params?.page_type}/${params?.class_id}/${e.target.value}/${subject_name}`)                          
                               }
                         }} 
                         >
                               <option value="_">{subjectLoading ? 'loading ...':'Select Subjects'}</option>
                               {subjects?.map( subject => {
                                     return(
-                                          <option value={subject?.subject_id} key={subject?.subject_id} data-subject_name={subject?.subject_name}>{subject?.subject_name}</option>
+                                          <option value={subject?.subject_id} key={subject?.subject_id} data-subject_name={MakeSlug(subject?.subject_name)}>{subject?.subject_name}</option>
                                     )
                               })}
                         </select>

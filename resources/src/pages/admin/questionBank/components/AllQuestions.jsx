@@ -1,10 +1,9 @@
 import useQuestionList from '../hooks/useQuestionList';
-import useSchoolLists from '../../school/hooks/useSchoolLists';
 import Loading from '../../../../components/Loading';
 import {useHistory, useParams} from 'react-router-dom'
 import {AuthContext} from '../../../../context/AuthContext';
 import './math.css'
-import React, {useState, useContext} from 'react'
+import React, {useState, useContext, useEffect} from 'react'
 import useDeleteQuestion from '../hooks/useDeleteQuestion';
 
 
@@ -19,6 +18,13 @@ export default function AllQuestions({update, Delete}) {
     const deleteQuestion = async (id) => {
         await deleteMutation.mutate(id)
     }
+    useEffect(() => {
+        const script = document.createElement("script");
+        script.id = 'editor';
+        script.src = "https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image";
+        script.async = true;
+        document.body.appendChild(script);
+    })
 
     return (
         <>
@@ -41,6 +47,7 @@ export default function AllQuestions({update, Delete}) {
                             {update && (
                                 <button className="dark bg-success"
                                 onClick={e => {
+                                        // window.location.href = `/admin/question-bank/update/${params?.class_id}/${params?.subject_id}/${params?.unit_id}/${params?.chapter_id}/${q?._id}`
                                     history.push(`/admin/question-bank/update/${params?.class_id}/${params?.subject_id}/${params?.unit_id}/${params?.chapter_id}/${q?._id}`)
                                 }}>
                                    <span className="bi bi-pencil"></span></button>

@@ -8,14 +8,12 @@ import { getFilteredData } from '../../../../utils/helper';
 import useCreateQuestion from '../hooks/useCreateQuestion';
 import useSingleQuestion from '../hooks/useSingleQuestion';
 import {romanize} from '../../../../utils/helper';
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from 'ckeditor5-classic-with-mathtype';
 import useSubjectChapterList from '../../mappingSubjectChapter/hooks/useSubjectChapterList';
 import useUpdateQuestion from '../hooks/useUpdateQuestion';
-
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from 'ckeditor5-build-classic-mathtype';
 
 export default function CreateQuestionBank() {
-      
       const params = useParams();
       const history = useHistory();
       const {data:classDatas} = useClassList();
@@ -23,6 +21,22 @@ export default function CreateQuestionBank() {
       const {data:units, isLoading: unitLoading} = useUnitList();
       const {data:chapters, isLoading: chapterLoading} = useSubjectChapterList();
       const {data:chapter} = useSingleQuestion();
+      const [formData, setFormData] = useState({});
+      const [singleChapter, setSingleChapter] = useState({});
+      
+      
+      useEffect(() => {
+            setSingleChapter(chapter);
+      },[params?.qbank_id]);
+
+      useEffect(() => {
+            const script = document.createElement("script");
+            script.id = 'editor';
+            script.src = "https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image";
+            script.async = true;
+            document.body.appendChild(script);
+            
+      },[params?.qbank_id, params?.chapter_id, params?.unit_id]);
       
       const options = [
             {key: 'option_a', value: 'Option A'},
@@ -31,8 +45,6 @@ export default function CreateQuestionBank() {
             {key: 'option_d', value: 'Option D'},
       ]
 
-      const [formData, setFormData] = useState({});
-      
       const createMutation = useCreateQuestion(formData);
       const updateMutation = useUpdateQuestion(formData);
 
@@ -69,16 +81,9 @@ export default function CreateQuestionBank() {
                   await createMutation.mutate(formData);
             }
       }
-      useEffect(() => {
-            const script = document.createElement("script");
-            script.src = "https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image";
-            script.async = true;
-            document.body.appendChild(script);
-      },[params?.unit_id, params?.chapter_id])
       return (
             <div>
-                  
-                  <p className="form-heading">
+                 <p className="form-heading">
                   <span className="fa fa-plus-circle mr-2"></span>Add New Question
                   </p>
                   <hr className="mt-1"/>
@@ -88,9 +93,15 @@ export default function CreateQuestionBank() {
                   value={params?.class_id}
                   onChange={e => {
                         if(e.target.value === '_'){
-                              history.push(`/admin/question-bank/${params?.page_type}/`)  
+                              history.push(`/admin/question-bank/create`)  
                         }else{
-                              history.push(`/admin/question-bank/${params?.page_type}/${e.target.value}`)  
+                              if(params?.qbank_id){
+                                    history.push(`/admin/question-bank/create/${e.target.value}`)  
+                              }
+                              else{
+
+                                    history.push(`/admin/question-bank/${params?.page_type}/${e.target.value}`)  
+                              }
                         }
                   }}>
                         <option value="_">Classes</option>
@@ -106,9 +117,14 @@ export default function CreateQuestionBank() {
                   value={params?.subject_id}
                   onChange={e => {
                         if(e.target.value === '_'){
-                              history.push(`/admin/question-bank/${params?.page_type}/${params?.class_id}`)                          
+                              history.push(`/admin/question-bank/create/${params?.class_id}`)                          
                         }else{
-                              history.push(`/admin/question-bank/${params?.page_type}/${params?.class_id}/${e.target.value}`)                          
+                              if(params?.qbank_id){
+                                    history.push(`/admin/question-bank/create/${params?.class_id}/${e.target.value}`)                          
+                              }else{
+
+                                    history.push(`/admin/question-bank/${params?.page_type}/${params?.class_id}/${e.target.value}`)                          
+                              }
                         }
                   }} 
                   >
@@ -125,9 +141,14 @@ export default function CreateQuestionBank() {
                   value={params?.unit_id}
                   onChange={e => {
                         if(e.target.value === '_'){
-                              history.push(`/admin/question-bank/${params?.page_type}/${params?.class_id}/${params?.subject_id}`)                          
+                              history.push(`/admin/question-bank/create/${params?.class_id}/${params?.subject_id}`)                          
                         }else{
-                              history.push(`/admin/question-bank/${params?.page_type}/${params?.class_id}/${params?.subject_id}/${e.target.value}`)                          
+                              if(params?.qbank_id){
+                                    history.push(`/admin/question-bank/create/${params?.class_id}/${params?.subject_id}/${e.target.value}`)                          
+                              }else{
+
+                                    history.push(`/admin/question-bank/${params?.page_type}/${params?.class_id}/${params?.subject_id}/${e.target.value}`)                          
+                              }
                         }
                   }} 
                   >
@@ -146,7 +167,11 @@ export default function CreateQuestionBank() {
                         if(e.target.value === '_'){
                               history.push(`/admin/question-bank/${params?.page_type}/${params?.class_id}/${params?.subject_id}/${params?.unit_id}`)                          
                         }else{
-                              history.push(`/admin/question-bank/${params?.page_type}/${params?.class_id}/${params?.subject_id}/${params?.unit_id}/${e.target.value}`)                          
+                              if(params?.qbank_id){
+                                    history.push(`/admin/question-bank/create/${params?.class_id}/${params?.subject_id}/${params?.unit_id}/${e.target.value}`)                          
+                              }else{
+                                    history.push(`/admin/question-bank/${params?.page_type}/${params?.class_id}/${params?.subject_id}/${params?.unit_id}/${e.target.value}`)                          
+                              }
                         }
                   }} 
                   >
@@ -168,22 +193,10 @@ export default function CreateQuestionBank() {
                   <div className="pr-2" style={{ height: '350px', overflowY: 'scroll', overflowX: 'hidden'}}>
                   <div className="form-group">
                         <label>Question: </label>
-                        
                         <CKEditor
                               id="question"
                               editor={ ClassicEditor }
                               config={{
-                                    fontSize: {
-                                          options: [
-                                              9,
-                                              11,
-                                              13,
-                                              'default',
-                                              17,
-                                              19,
-                                              21
-                                          ]
-                                      },          
                               toolbar: {
                                     items: [
                                           'MathType', 'ChemType','heading','fontSize', 
@@ -193,7 +206,9 @@ export default function CreateQuestionBank() {
                                           'link',
                                           'bulletedList',
                                           'numberedList',
+                                          'insertImage',
                                           'imageUpload',
+                                          'imageReSize',
                                           'mediaEmbed',
                                           'insertTable',
                                           'blockQuote',
@@ -202,51 +217,52 @@ export default function CreateQuestionBank() {
                                     ]
                               },
                               }}
-                              data={params?.qbank_id ? chapter?.question : formData?.question}
+                              data={chapter && chapter?.question}
                               onChange={ ( event, editor ) => {
                               const data = editor.getData();
                               setFormData( { ...formData, question: data } );
                               } }
                         />
+                        
+                        
                   </div>      
                   <div className="row">
                   {options?.map( (option,index) => {
                   let option_answer = '';      
                   if(index === 0){
-                        option_answer = params?.qbank_id ? chapter?.option_a : formData?.option_a
+                        option_answer = chapter && chapter?.option_a
                   }
                   else if(index === 1){
-                        option_answer = params?.qbank_id ? chapter?.option_b : formData?.option_b
+                        option_answer = chapter && chapter?.option_b
                   }      
                   else if(index === 2){
-                        option_answer = params?.qbank_id ? chapter?.option_c : formData?.option_c
+                        option_answer = chapter && chapter?.option_c
                   }      
                   else if(index === 3){
-                        option_answer = params?.qbank_id ? chapter?.option_d : formData?.option_d
+                        option_answer = chapter && chapter?.option_d
                   }      
                   return(
                         <div className="form-group col-md-6">
                         <label>{option?.value}: </label>
-                        <CKEditor
+                              <CKEditor
                               editor={ ClassicEditor }
                               config={{
                               toolbar: {
                                     items: [
-                                          'MathType', 'ChemType','heading', 
-                                          '|',
-                                          'fontSize',
-                                          'bold',
-                                          'italic',
-                                          'link',
-                                          'bulletedList',
-                                          'numberedList',
-                                          'imageUpload',
-                                          'mediaEmbed',
-                                          'insertTable',
-                                          'blockQuote',
-                                          'undo',
-                                          'redo'
-                                          
+                                    'MathType', 'ChemType','heading', 
+                                    '|',
+                                    'fontSize',
+                                    'bold',
+                                    'italic',
+                                    'link',
+                                    'bulletedList',
+                                    'numberedList',
+                                    'imageUpload',
+                                    'mediaEmbed',
+                                    'insertTable',
+                                    'blockQuote',
+                                    'undo',
+                                    'redo'
                                     ]
                               },
                               }}
@@ -256,12 +272,14 @@ export default function CreateQuestionBank() {
                               setFormData( { ...formData, [option?.key] : data } );
                               } }
                         />
+                        
+                        
                   </div>
                   )})}
                   </div>
                   <div className="form-group">
                               <select className="form-control"
-                              value={params?.qbank_id ? chapter?.answer: formData?.answer}
+                              value={chapter && chapter?.answer}
                               onChange={e => {
                               setFormData( { ...formData, answer : e.target.value } );
                               }}
@@ -296,7 +314,7 @@ export default function CreateQuestionBank() {
                                     ]
                               },
                               }}
-                              data={params?.qbank_id ? chapter?.solution : formData?.solution}
+                              data={chapter && chapter?.solution}
                               onChange={ ( event, editor ) => {
                               const data = editor.getData();
                               setFormData( { ...formData, solution: data } );

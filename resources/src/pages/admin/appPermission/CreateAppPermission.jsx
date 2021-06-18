@@ -231,7 +231,6 @@ export default function CreateAppPermission() {
                                                 className={`module-methods mr-1 mr-1`} 
                                                 value={`${module?._id}_${module?.module_name}_${module?.module_slug}_${module?.module_icon}_${method?.key}-${module?.module_slug}`}
                                                 disabled={chkMethodDisabled}
-                                                data-disable={chkMethodDisabled.toString()}
                                                 />
                                                 <span className="ml-0 mr-1" style={{ fontSize: '0.80rem'}} dangerouslySetInnerHTML={{ __html: method?.icon}}/>
                                                 {method?.value}

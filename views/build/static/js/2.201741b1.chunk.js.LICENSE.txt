@@ -10,11 +10,6 @@ object-assign
   http://jedwatson.github.io/classnames
 */
 
-/*!
- * @license Copyright (c) 2003-2020, CKSource - Frederico Knabben. All rights reserved.
- * For licensing, see LICENSE.md.
- */
-
 /*! http://mths.be/codepointat v0.1.0 by @mathias */
 
 /** @license React v0.20.2
