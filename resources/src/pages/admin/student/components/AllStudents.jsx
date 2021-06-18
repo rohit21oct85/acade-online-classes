@@ -59,7 +59,7 @@ export default function AllStudents({update, Delete}) {
                                         <button className="btn bg-primary text-white btn-sm mr-2" 
                                             onClick={
                                                 e => {
-                                                        history.push(`/admin/students-management/update/${item.school_id}/${item?._id}`)
+                                                        history.push(`/admin/students-management/update/${item.school_id}/${item.class_id}/${item?._id}`)
                                                 }
                                             }>
                                             <span className="fa fa-edit"></span>

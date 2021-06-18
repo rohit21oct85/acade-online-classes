@@ -8,6 +8,7 @@ import * as utils from '../../../../utils/utils'
 import { useToasts } from 'react-toast-notifications';
 import useSingleSubject from '../../subject/hooks/useSingleSubject';
 import useSchoolLists from '../../school/hooks/useSchoolLists';
+import { MakeSlug } from '../../../../utils/utils'
 
 export default function CreateSubject() {
     const history = useHistory();
@@ -92,7 +93,7 @@ export default function CreateSubject() {
         if(params?.subject_id){
                 setSingleSubject({...SingleSubject, [e.target.name]: e.target.value})
         }else{
-                setFormData({...formData, [e.target.name]: e.target.value})
+                setFormData({...formData, [e.target.name]: e.target.value, ['subject_slug']: MakeSlug(e.target.value)})
         }
     }
 
