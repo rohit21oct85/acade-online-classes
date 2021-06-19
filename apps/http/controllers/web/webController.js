@@ -450,7 +450,7 @@ const attemptTestByStudent = async (req, res) =>{
             test_id: req.body.id,
             student_name: req.body.name,
             questions: newData.test_question
-        });    assign_test_id:
+        });    
         await attempt.save();
         await AssignTest.findOneAndUpdate({_id:req.body.assign_test_id}, {$set: {"attempted": true}})
         return res.status(200).json({
@@ -476,7 +476,7 @@ const getQuestions = async (req,res) => {
     var filteredArray = data?.questions.filter(function(item){
         return !("answer" in item);
     });
-    const question = filteredArray[Math.floor(Math.random() * filteredArray.length)];
+    const question = filteredArray[Math?.floor(Math?.random() * filteredArray?.length)];
     const singleQuestion = await Questions.findOne({_id: question?.question_id},{answer:0})
     
     return res.send(singleQuestion);
@@ -489,18 +489,23 @@ const saveAnswer = async (req,res) => {
         student_id:req.body.student_id,
         test_id: req.params.test_id,
     }
+    const un = await Questions.findOne({_id:req.body.question_id})
     const data = await AttemptTest.findOne(filter)
     data.questions.map((item, key)=>{
         if(item.question_id == req.body.question_id)
         {
             item['answer'] = req.body.answer,
-            item['option'] = req.body.option
+            item['option'] = req.body.option,
+            item['correct_option'] = un.answer,
+            item['correct_answer'] = un[`${un.answer}`]
         }  
     })
+
     const assigntests = await AttemptTest.findOneAndUpdate(filter, {$set: {"questions": data.questions}})
     if(assigntests){
         return res.status(200).json({ 
-            msg: "answer submitted successfully" 
+            msg: "answer submitted successfully",
+            attemptId: data._id,
         }); 
     }
 }

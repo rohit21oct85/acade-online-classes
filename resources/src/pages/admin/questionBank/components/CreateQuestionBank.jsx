@@ -10,6 +10,8 @@ import useSingleQuestion from '../hooks/useSingleQuestion';
 import {romanize} from '../../../../utils/helper';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from 'ckeditor5-classic-with-mathtype';
+// import {CKEditor} from 'ckeditor4-react';
+// import ClassicEditor from '@wiris/mathtype-ckeditor4';
 import useSubjectChapterList from '../../mappingSubjectChapter/hooks/useSubjectChapterList';
 
 export default function CreateQuestionBank() {
