@@ -22,12 +22,20 @@ export default function useCreateList(formData) {
             }
       }      
       const { addToast } = useToasts();
-    
+      let url = '';
+      let key = '';
+        if(params?.class_id && params?.subject_id){
+            key = `units-${params.class_id}-${params?.subject_id}`;
+        }else if(params?.class_id){
+            key = `units-${params.class_id}`;
+        }else{
+            key = `units`;
+        }
       return useMutation(formData => {
             return axios.post(`${API_URL}v1/unit/create`, formData, options)
         },{
             onSuccess: () => {
-                queryClient.invalidateQueries(`units-${params.class_id}-${params?.subject_id}`)
+                queryClient.invalidateQueries(`${key}`)
                 history.push(`${path}`);
                 addToast('Unit added successfully', { appearance: 'success', autoDismiss: true });
             }

@@ -17,9 +17,6 @@ export default function useUnitList() {
     }else if(params?.class_id){
         key = `units-${params.class_id}`;
         url = `${API_URL}v1/unit/view-all/${params?.class_id}`;
-    }else{
-        key = `units`;
-        url = `${API_URL}v1/unit/view-all/`;
     }
     return useQuery(key, async () => {
         const result = await axios.get(`${url}`,{

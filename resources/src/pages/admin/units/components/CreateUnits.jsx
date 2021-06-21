@@ -78,7 +78,7 @@ export default function CreateUnits() {
                               class_name: SingleUnit.class_name,
                               subject_id:params?.subject_id,
                               subject_name:SingleUnit?.subject_name,
-                              unit_no: SingleUnit?.unit_no,
+                              unit_no: (SingleUnit?.unit_no !== formData?.unit_no) ? SingleUnit?.unit_no: formData?.unit_no,
                               unit_name: (SingleUnit?.unit_name !== formData?.unit_name) ? SingleUnit?.unit_name: formData?.unit_name,
                               marks: SingleUnit?.marks,
                         })

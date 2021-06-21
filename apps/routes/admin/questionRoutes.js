@@ -27,7 +27,8 @@ router
     .post('/update-subject/:subject_id?', checkAuth, Question.UpdateSubjectQuestion)
     .get('/view/:id', checkAuth, Question.ViewQuestion)
     .get('/view-all/:class_id?/:subject_id?/:unit_id?/:chapter_id?', checkAuth, Question.ViewAllQuestion)
-    .delete('/delete/:id', checkAuth, Question.DeleteQuestion)
+    .get('/all-questions/:class_id?/:subject_id?', checkAuth, Question.AllQuestions)
+    .post('/delete', checkAuth, Question.DeleteQuestion)
     .post('/upload', upload.single('file'), checkAuth, Question.uploadQuestion)
 ;
 

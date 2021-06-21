@@ -16,6 +16,7 @@ import TeacherSubjectList from '../pages/admin/mappingTeacherSubject/TeacherSubj
 import TeacherClassList from '../pages/admin/mappingTeacherClass/TeacherClassList'
 import ClassSubjectList from '../pages/admin/mappingClassSubject/ClassSubjectList'
 import QuestionBank from '../pages/admin/questionBank/QuestionBank'
+import ViewAllQuestions from '../pages/admin/questionBank/ViewAllQuestions'
 import UnitsList from '../pages/admin/units/UnitsList'
 import UnitTests from '../pages/admin/unitTest/UnitTest'
 import AssignTests from '../pages/admin/assignTest/AssignTests'
@@ -125,6 +126,10 @@ export const adminRoutes = [
     {
         path: '/admin/manage-sub-admin/:page_type?/:role?/:admin_id?',
         component: SubAdminList
+    },
+    {
+        path: '/admin/view-all-questions/:class_id?/:subject_id?/:unit_id?/:qbank_id?',
+        component: ViewAllQuestions
     },
 
 ]

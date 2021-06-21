@@ -211,7 +211,6 @@ export default function CreateSubjectChapterMap() {
                                     history.push(`/admin/mapping-subject-chapters/${params?.page_type}/${params?.class_id}/${params?.class_slug}/${params?.subject_id}/${params?.subject_slug}`)                          
                               }else{
                                     const unit_name = e.target.options[e.target.selectedIndex].dataset.unit_name
-                                    // alert(typeof params?.subject_chapter_id )
                                     if(params?.subject_chapter_id){
                                           history.push(`/admin/mapping-subject-chapters/${params?.page_type}/${params?.class_id}/${params?.class_slug}/${params?.subject_id}/${params?.subject_slug}/${e.target.value}/${MakeSlug(unit_name)}/${params?.subject_chapter_id}`)                          
                                     }else{

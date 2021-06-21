@@ -73,7 +73,7 @@ const ViewUnit = async (req, res) => {
 const ViewAllUnit = async (req, res) => {
   try {
     let filter = {};
-    if (req.params?.class_id && req.params?.subject_id) {
+    if(req.params?.class_id && req.params?.subject_id) {
       filter = {
         class_id: req.params?.class_id,
         subject_id: req.params?.subject_id,

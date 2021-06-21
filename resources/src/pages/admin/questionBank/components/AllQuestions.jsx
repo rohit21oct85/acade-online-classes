@@ -12,11 +12,12 @@ export default function AllQuestions({update, Delete}) {
     const history = useHistory();
     const {state} = useContext(AuthContext);
     const params = useParams();
-    
+    const [formData, setFormData]    = useState({});
     const {data, isLoading} = useQuestionList();
-    const deleteMutation = useDeleteQuestion();
-    const deleteQuestion = async (id) => {
-        await deleteMutation.mutate(id)
+    const deleteMutation = useDeleteQuestion(formData);
+    const handleDelteQuestion = async (id) => {
+        formData['qbank_id'] = id
+        await deleteMutation.mutate(formData)
     }
     useEffect(() => {
         const script = document.createElement("script");
@@ -24,13 +25,19 @@ export default function AllQuestions({update, Delete}) {
         script.src = "https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image";
         script.async = true;
         document.body.appendChild(script);
-    })
-
+    },[params?.qbank_id])
+    
     return (
         <>
         <p className="form-heading">
         <span className="fa fa-plus-circle mr-2"></span>All Questions
-        <span className="pull-right">
+        <span className="pull-right" style={{
+            fontSize: '14px',
+            marginRight: '20px',
+            marginTop: '5px',
+            fontweight: 'bold'
+
+        }}>
             <span>{data && data[0]?.unit_name} </span>- <span>{data && data[0]?.chapter_name}</span>
         </span>
         </p>
@@ -42,19 +49,23 @@ export default function AllQuestions({update, Delete}) {
                     <div className="card question col-md-12 pl-0 pr-0 mr-3 mb-2">
                         
                         <div className="pl-2 pr-2 dark bg-head flex">
-                            Question No:  {i+1}
+                            QNo:  {i+1}
                             <span className="ml-2">QId: {q?._id}</span>
                             {update && (
                                 <button className="dark bg-success"
                                 onClick={e => {
-                                        // window.location.href = `/admin/question-bank/update/${params?.class_id}/${params?.subject_id}/${params?.unit_id}/${params?.chapter_id}/${q?._id}`
+                                    // window.location.href = `/admin/question-bank/update/${params?.class_id}/${params?.subject_id}/${params?.unit_id}/${params?.chapter_id}/${q?._id}`
                                     history.push(`/admin/question-bank/update/${params?.class_id}/${params?.subject_id}/${params?.unit_id}/${params?.chapter_id}/${q?._id}`)
                                 }}>
                                    <span className="bi bi-pencil"></span></button>
                             )}
                             
-                        </div>
-                        <div className="col-md-12 pl-0 mt-2 mb-2">
+                            {Delete && (
+                                <button className="dark bg-danger"
+                                onClick={handleDelteQuestion.bind(this, q?._id)}>
+                                   <span className="bi bi-trash"></span></button>
+                            )}
+
                             
                         </div>
                         <div className="pl-3 pr-2 pt-3" dangerouslySetInnerHTML={{ __html: q?.question  }}></div>

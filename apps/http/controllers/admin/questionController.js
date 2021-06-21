@@ -98,9 +98,45 @@ const ViewAllQuestion = async (req, res) => {
         });
     }
 }
+const AllQuestions = async (req, res) => {
+    try{
+        let filter = {
+            class_id: req.params?.class_id,
+            subject_id: req.params?.subject_id
+        }
+
+        // const AllQuestions = await Question.find(filter,{__v: 0});
+        let AllQuestions = await Question.aggregate([
+            {"$match": filter},
+            {"$group": {
+                "_id": {
+                    "unit_id":"$unit_id",
+                    "chapter_name":"$chapter_name",
+                },
+                "count":{
+                    "$sum": {
+                        $cond: [{
+                            $eq: ["$unit_name", "$unit_name"]
+                        },1,0]
+                    }
+                },
+            }},
+            {$sort: { _id: 1}}
+        ]);
+
+        return res.status(200).json({ 
+            data: AllQuestions 
+        });    
+    } catch(error){
+        res.status(409).json({
+            message: "Error occured",
+            errors: error.message
+        });
+    }
+}
 
 const DeleteQuestion = async (req, res) =>{
-    const id = req.params.id;
+    const id = req.body.qbank_id;
     try {
         await Question.deleteOne({_id: id}).then( response => {
             return res.status(201).json({
@@ -175,6 +211,7 @@ module.exports = {
     UpdateSubjectQuestion,
     ViewQuestion,
     ViewAllQuestion,
+    AllQuestions,
     DeleteQuestion,
     uploadQuestion,
 }

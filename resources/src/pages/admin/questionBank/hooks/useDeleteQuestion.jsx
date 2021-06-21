@@ -6,7 +6,7 @@ import API_URL from '../../../../helper/APIHelper';
 import { useToasts } from 'react-toast-notifications';
 import {AuthContext} from '../../../../context/AuthContext';
 
-export default function useDeleteTeacher(formData) {
+export default function useDeleteQuestion(formData) {
       const params = useParams()
       
       const location = useLocation();
@@ -23,11 +23,13 @@ export default function useDeleteTeacher(formData) {
             }
       }      
       const { addToast } = useToasts();
-      const status =  useMutation((teacher_id) => {
-            return axios.delete(`${API_URL}v1/question-bank/delete/${teacher_id}`, options)
+      let key = '';
+      key = `questions-${params?.class_id}-${params?.subject_id}-${params?.unit_id}-${params?.chapter_id}`;
+    
+      const status =  useMutation((formData) => {
+            return axios.post(`${API_URL}v1/question-bank/delete`,formData, options)
         },{
             onSuccess: () => {
-                const key = params?.qbank_id ? `questions-${params.qbank_id}` : `questions`
                 queryClient.invalidateQueries(key)
                 addToast('Teacher Deleted successfully', { appearance: 'success',autoDismiss: true });
             }

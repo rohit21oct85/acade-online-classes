@@ -108,12 +108,6 @@ export default function CreateAppPermission() {
         clearFields();
     }
     
-    // function checkModules(module_slug){
-    //     return permissions && permissions.some(permission => permission?.module_slug === module_slug);
-    // }
-    // function checkMethods(slug){
-    //     return permissions && permissions.some(permission => permission?.method_name === slug);
-    // }
     function handleSelectMethods(slug){
         let module = "module-"+slug
         let method = "method-"+slug

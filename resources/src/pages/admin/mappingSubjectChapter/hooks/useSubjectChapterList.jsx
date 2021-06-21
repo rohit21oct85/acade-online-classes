@@ -15,15 +15,6 @@ export default function useSubjectChapterList() {
         key = `subject-chapter-mappings-${params?.class_id}-${params?.subject_id}-${params?.unit_id}`;
         url = `${API_URL}v1/chapter/view-all/${params.class_id}/${params.subject_id}/${params?.unit_id}`;
     }
-    else if(params?.class_id && params?.subject_id){
-        key = `subject-chapter-mappings-${params?.class_id}-${params?.subject_id}`;
-        url = `${API_URL}v1/chapter/view-all/${params.class_id}/${params.subject_id}`;
-
-    }else{
-        key = `subject-chapter-mappings`;
-        url = `${API_URL}v1/chapter/view-all`;
-        
-    }
     
     return useQuery(key, async () => {
         const result = await axios.get(`${url}`,{
