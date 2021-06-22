@@ -7,13 +7,15 @@ const router = express.Router();
 router
     //student
     .get('/get-subjects/:class_id?', checkAuth, Web.getSubjects)
-    .get('/get-assigned-tests/:school_id?/:class_id?/:subject_id?', checkAuth, Web.getAssignedTests)
+    .post('/get-assigned-tests/:school_id?/:class_id?/:subject_id?', checkAuth, Web.getAssignedTests)
     .get('/get-test-questions/:test_id?', checkAuth, Web.getTestQuestions)
     .get('/get-a-test-question/:test_id?', checkAuth, Web.getASingleQuestions)
     .post('/attempt-test/:school_id?/:class_id?/:subject_id?/:user_id?', checkAuth, Web.attemptTestByStudent)
     .post('/get-question/:subject_id?/:test_id?', checkAuth, Web.getQuestions)
     .patch('/save-answer/:subject_id?/:test_id?', checkAuth, Web.saveAnswer)
+    .get('/get-result/:attempt_id?', checkAuth, Web.getResult)
     .post('/get-all-questions/:subject_id?/:test_id?', checkAuth, Web.getAllQuestions)
+    .post('/get-last-score/:subject_id?', checkAuth, Web.getLastScore)
 
     .get('/view-student/:id?', checkAuth, Web.getStudent)
     .patch('/update-student/:id?', checkAuth, Web.updateStudent)
