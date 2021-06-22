@@ -31,48 +31,87 @@ const getSubjects = async (req, res) => {
 
 const getAssignedTests = async (req, res) => {
     try{
+        // return res.send(req.body)
+        let newArray = [];
+        let newArray1 = [];
+
         const AssignedTests = await AssignTest.find(
             {
                 subject_id:req.params.subject_id,
                 school_id:req.params.school_id,
                 class_id:req.params.class_id,
                 assigned: true,
-                attempted: false,
             },{__v: 0});
-        const newData = await UnitTest.find(
+
+        const attemptedTest = await AttemptTest.find(
             {
                 subject_id:req.params.subject_id,
+                school_id:req.params.school_id,
                 class_id:req.params.class_id,
+                student_id:req.body.student_id,
             },{__v: 0});
-        let newArray = [];
-        AssignedTests.forEach(item=>{
-            newData.forEach(it => {
-                if(item.test_id == it._id){
-                    newArray.push({
-                        // test_question: it.test_question,
-                        test_name:it.test_name,
-                        test_duration:it.test_duration,
-                        unit_id:it.unit_id,
-                        unit_name:it.unit_name,
-                        test_slug:it.test_slug,
-                        test_date:it.test_date,
-                        total_question:it.total_question,
-                        unit_table_id:it._id,
-                        class_id: item.class_id,
-                        class_name: item.class_name,
-                        school_id: item.school_id,
-                        subject_id: item.subject_id,
-                        subject_name: item.subject_name,
-                        test_id: item.test_id,
-                        assigned: item.assigned,
-                        assign_table_id: item._id,
+        
+        if(attemptedTest.length != AssignedTests.length){
+            if(attemptedTest.length > 0){
+                AssignedTests.forEach(item=>{
+                    attemptedTest.forEach(it => {
+                        if(item.test_id != it.test_id && it.student_id == req.body.student_id){
+                            newArray.push({
+                                subject_id:item.subject_id,
+                                class_id:item.class_id,
+                                school_id:item.school_id,
+                                test_id:item.test_id,
+                                assigned:item.assigned,
+                                class_name:item.class_name,
+                                status:item.status,
+                                subject_name:item.subject_name,
+                            })
+                        }
                     })
-                }
-            })
-        }) 
+                })
+            }
 
+            const units = await UnitTest.find(
+                {
+                    subject_id:req.params.subject_id,
+                    class_id:req.params.class_id,
+                },{__v: 0});
+            
+            let newData = [];
+            if(newArray && newArray.length > 0){
+                newData = newArray;
+            }else{
+                newData = AssignedTests;
+            }
+            
+            newData.forEach(item=>{
+                units.forEach(it => {
+                    if(item.test_id == it._id){
+                        newArray1.push({
+                            // test_question: it.test_question,
+                            test_name:it.test_name,
+                            test_duration:it.test_duration,
+                            unit_id:it.unit_id,
+                            unit_name:it.unit_name,
+                            test_slug:it.test_slug,
+                            test_date:it.test_date,
+                            total_question:it.total_question,
+                            unit_table_id:it._id,
+                            class_id: item.class_id,
+                            class_name: item.class_name,
+                            school_id: item.school_id,
+                            subject_id: item.subject_id,
+                            subject_name: item.subject_name,
+                            test_id: item.test_id,
+                            assigned: item.assigned,
+                            assign_table_id: item._id,
+                        })
+                    }
+                })
+            }) 
+        }
         return res.status(200).json({ 
-            data: newArray 
+            data: newArray1 
         });    
     } catch(error){
         res.status(203).json({
@@ -110,7 +149,6 @@ const getASingleQuestions = async (req, res) => {
             filter = {subject_id: req?.params?.test_id, }
         }
         // db.myCollection.find({"id":"1","data.id":"2"},{"id":1,"data.$":1})
-        // console.log(AllUnitQuestions)
         return res.status(200).json({ 
             data: AllUnitQuestions 
         });    
@@ -415,34 +453,12 @@ const assignTestToStudent = async (req, res) =>{
 
 const attemptTestByStudent = async (req, res) =>{
     try {
-        const body = {
-            school_id :req.body.school_id,
-            subject_id:req.body.subject_id,
-            student_id:req.body.user_id,
-            test_id: req.body.id,
-            student_name: req.body.name,
-        }
-
-        // const hasAttempted = await AttemptTest.findOne(
-        //     {
-        //         school_id :req.body.school_id,
-        //         subject_id:req.body.subject_id,
-        //         student_id:req.body.user_id,
-        //         test_id: req.body.id,
-        //     },{__v: 0});
-
-        // if(hasAttempted){
-        //     return res.status(200).json({
-        //         message: "already attempted",
-        //     });
-        // }
-
         const newData = await UnitTest.findOne(
             {
                 _id:req.body.id,
             },{__v: 0});
 
-            const attempt = new AttemptTest({
+        const attempt = new AttemptTest({
             school_id :req.body.school_id,
             class_id: req.body.class_id,
             subject_id:req.body.subject_id,
@@ -452,7 +468,7 @@ const attemptTestByStudent = async (req, res) =>{
             questions: newData.test_question
         });    
         await attempt.save();
-        await AssignTest.findOneAndUpdate({_id:req.body.assign_test_id}, {$set: {"attempted": true}})
+        // await AssignTest.findOneAndUpdate({_id:req.body.assign_test_id}, {$set: {"attempted": true}})
         return res.status(200).json({
             message: "AttemptTest created sucessfully",
         });
@@ -497,7 +513,17 @@ const saveAnswer = async (req,res) => {
             item['answer'] = req.body.answer,
             item['option'] = req.body.option,
             item['correct_option'] = un.answer,
-            item['correct_answer'] = un[`${un.answer}`]
+            item['correct_answer'] = un[`${un.answer}`],
+            item['unit_name'] = un.unit_name,
+            item['unit_no'] = un.unit_no,
+            item['chapter_name'] = un.chapter_name,
+            item['chapter_no'] = un.chapter_no,
+            item['question'] = un.question,
+            item['unit_id'] = un.unit_id,
+            item['option_a'] = un.option_a,
+            item['option_b'] = un.option_b,
+            item['option_c'] = un.option_c,
+            item['option_d'] = un.option_d
         }  
     })
 
@@ -518,9 +544,80 @@ const getAllQuestions = async (req,res) => {
         test_id: req.params.test_id,
     }
     const data = await AttemptTest.findOne(filter)
-    const questions =  data.questions;
+    const questions =  data?.questions;
     return res.status(200).json({ 
         data: questions, 
+    }); 
+}
+
+const getLastScore = async (req,res) => {
+    const filter = {
+        school_id :req.body.school_id,
+        subject_id:req.params.subject_id,
+        student_id:req.body.student_id,
+        class_id: req.body.class_id,
+    }
+    // const data = await AttemptTest.findOne(filter).sort({"created_at": -1}).limit(1)
+    const result = await AttemptTest.findOne(filter).limit(1).sort({$natural:-1})
+    let correctAnswers = 0;
+    let wrongAnswers = 0;
+    let totalQuestions = result?.questions?.length;
+    result?.questions?.map((item,key)=>{
+        if(item.answer != undefined ){
+            if(item.answer == item['correct_answer'] && item.option == item['correct_option']){
+                correctAnswers = correctAnswers + 1;
+            }else{
+                wrongAnswers = wrongAnswers + 1;
+            }
+        }
+    })
+    let data = {
+        totalQuestions : totalQuestions,
+        correctAnswers : correctAnswers,
+        wrongAnswers : wrongAnswers,
+        attemptedQuestions: correctAnswers + wrongAnswers,
+        create_at:result?.create_at,
+        _id:result?._id,
+        questions:result?.questions
+    }
+    if(!result){
+        data = null
+    }
+    return res.status(200).json({ 
+        data: data, 
+    }); 
+}
+
+const getResult = async (req,res) => {
+    const result = await AttemptTest.findOne({_id: req.params.attempt_id});
+    let correctAnswers = 0;
+    let wrongAnswers = 0;
+    let totalQuestions = result?.questions?.length;
+    result?.questions?.map((item,key)=>{
+        if(item.answer != undefined ){
+            if(item.answer == item['correct_answer'] && item.option == item['correct_option']){
+                correctAnswers = correctAnswers + 1;
+            }else{
+                wrongAnswers = wrongAnswers + 1;
+            }
+        }
+    })
+    let data = {
+        totalQuestions : totalQuestions,
+        correctAnswers : correctAnswers,
+        wrongAnswers : wrongAnswers,
+        attemptedQuestions: correctAnswers + wrongAnswers,
+    }
+    // const filter = {
+    //     school_id :req.body.school_id,
+    //     subject_id:req.params.subject_id,
+    //     student_id:req.body.student_id,
+    //     test_id: req.params.test_id,
+    // }
+    // const data = await AttemptTest.findOne(filter)
+    // const questions =  data.questions;
+    return res.status(200).json({ 
+        data: data, 
     }); 
 }
 
@@ -544,4 +641,6 @@ module.exports = {
     getQuestions,
     saveAnswer,
     getAllQuestions,
+    getResult,
+    getLastScore,
 }
