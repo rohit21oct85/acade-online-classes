@@ -22,7 +22,18 @@ export default function useCreateList(formData) {
             }
       }      
       const { addToast } = useToasts();
-      const key = `subject-chapter-mappings-${params?.class_id}-${params?.subject_id}`
+      let key= '';
+      
+      if(params?.class_id && params?.subject_id && params?.unit_id){
+            key = `subject-chapter-mappings-${params?.class_id}-${params?.subject_id}-${params?.unit_id}`;
+        }
+        else if(params?.class_id && params?.subject_id){
+            key = `subject-chapter-mappings-${params?.class_id}-${params?.subject_id}`;
+      
+        }else{
+            key = `subject-chapter-mappings`;
+            
+        }
     
       return useMutation(formData => {
             return axios.post(`${API_URL}v1/chapter/create`, formData, options)

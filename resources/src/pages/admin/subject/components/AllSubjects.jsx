@@ -59,6 +59,7 @@ export default function AllSubjects({update, Delete}) {
                         <tr>
                         <th scope="col">#</th>
                         <th scope="col">Subject Name</th>
+                        <th scope="col">Subject URL</th>
                         <th scope="col">Action</th>
                         </tr>
                     </thead>
@@ -68,6 +69,7 @@ export default function AllSubjects({update, Delete}) {
                                 <tr key={item?._id}>
                                 <th scope="row">{key}</th>
                                 <td>{item.subject_name}</td>
+                                <td>{item.subject_slug}</td>
                                 <td>
                                     {update === true && (<button className="btn bg-primary text-white btn-sm mr-2" 
                                         onClick={

@@ -1,10 +1,14 @@
 export function getFilteredData(arrayData, match_field,field_value,field_name){
-  const filtereData = arrayData.filter(element => element[match_field] == field_value);
-  return filtereData[0][field_name];
+  if(typeof arrayData !== "undefined"){
+   const filtereData = Array?.from(arrayData)?.filter(element => element[match_field] == field_value);
+   if(filtereData){
+     return filtereData && filtereData[0][field_name];
+   }
+  }
 }
 
 export function checkExists(arr = [], field, el){
-  if(typeof arr !== undefined){
+  if(typeof arr !== "undefined") {
     return Array.from(arr)?.some(elem => elem[field] === el);
   }
 }

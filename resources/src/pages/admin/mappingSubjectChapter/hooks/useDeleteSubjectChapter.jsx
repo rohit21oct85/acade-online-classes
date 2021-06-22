@@ -22,11 +22,24 @@ export default function useDeleteSubjectChapter(formData) {
             }
       }      
       const { addToast } = useToasts();
+      let key= '';
+      let url= '';
+      if(params?.class_id && params?.subject_id && params?.unit_id){
+            key = `subject-chapter-mappings-${params?.class_id}-${params?.subject_id}-${params?.unit_id}`;
+            
+        }
+        else if(params?.class_id && params?.subject_id){
+            key = `subject-chapter-mappings-${params?.class_id}-${params?.subject_id}`;
+            
+    
+        }else{
+            key = `subject-chapter-mappings`;
+            
+        }
       const status =  useMutation((chapter_subject_id) => {
             return axios.delete(`${API_URL}v1/chapter/delete/${chapter_subject_id}`, options)
         },{
             onSuccesss: () => {
-                  const key = `subject-chapter-mappings-${params?.class_id}-${params.subject_id}`;
                   queryClient.invalidateQueries(`${key}`)
                   addToast('Chapter Deleted successfully', { appearance: 'success',autoDismiss: true });
             }

@@ -868,3 +868,6 @@ input[disabled]{
 :disabled{
     cursor: no-drop;
 }
+figure > img {
+    width: 250px !important
+}

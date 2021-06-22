@@ -4,30 +4,46 @@ import {useHistory, useParams} from 'react-router-dom'
 import {useMutation, useQueryClient} from 'react-query'
 import {AuthContext} from '../../../../context/AuthContext';
 
-import React, {useState, useContext} from 'react'
+import React, {useState, useContext, useEffect} from 'react'
 import useDeleteUnit from '../hooks/useDeleteUnit';
-import {romanize} from '../../../../utils/helper'
+import {getFilteredData, romanize} from '../../../../utils/helper'
+
+import useSubjectList from '../../subject/hooks/useSubjectList';
 
 export default function AllUnits({update, Delete}) {
 
-      const history = useHistory();
-      const {state} = useContext(AuthContext);
-      const params = useParams();
-      const {data:units, isLoading} = useUnitList();
-      const [formData, setFormData] = useState({});
-      const deleteMutation = useDeleteUnit(formData);
-      const deleteUnit = async (id) => {
-            setFormData({...formData, id: id});
-            await deleteMutation.mutate(formData);
-            if(deleteMutation?.status === 'success'){
-                document.getElementById(id).style.display = 'none'
-            }
-      }
+    const history = useHistory();
+    const {state} = useContext(AuthContext);
+    const params = useParams();
+    const {data:units, isLoading} = useUnitList();
+    const subject_id = params?.subject_id
+    const [formData, setFormData] = useState({});
+    const deleteMutation = useDeleteUnit(formData);
 
+    const deleteUnit = async (id) => {
+        await deleteMutation.mutate({unit_id: id});
+        document.getElementById(id).style.display = 'none'    
+    }
+    
     return (
         <>
         <p className="form-heading">
             <span className="fa fa-plus-circle mr-2"></span>All Units</p>
+        <hr className="mt-1"/>
+        {subject_id && (
+        <div className="row pl-0 pr-0">
+            <div className="col-md-6">
+            <b className="mr-0">Subject ID: </b>
+            {subject_id}
+            </div>
+            
+            <div>
+            <b className="mr-2">Subject Name: </b>
+            {params?.subject_name}
+            </div>
+
+        </div>
+        )}
         <hr className="mt-1"/>
         <Loading isLoading={isLoading} /> 
         <div className="col-md-12 row no-gutter data-container-category">
@@ -54,7 +70,7 @@ export default function AllUnits({update, Delete}) {
                                         <button className="btn bg-primary text-white btn-sm mr-2" 
                                             onClick={
                                                 e => {
-                                                        history.push(`/admin/manage-units/update/${item.class_id}/${item?.subject_id}/${item?._id}`)
+                                                        history.push(`/admin/manage-units/update/${item.class_id}/${item?.subject_id}/${item?.subject_name}/${item?._id}`)
                                                 }
                                             }>
                                             <span className="fa fa-edit"></span>

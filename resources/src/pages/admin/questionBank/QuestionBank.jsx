@@ -24,7 +24,7 @@ export default function UnitsList() {
     
     useEffect(manageAccess,[create, update, upload]);
     function manageAccess(){
-        if(create === false || update === false || upload === false){
+        if(create === false && update === false){
             history.push(`/admin/question-bank`)
         }
     }
@@ -64,10 +64,10 @@ export default function UnitsList() {
                     <div className="clearfix"></div>
                     <div className="dash-cont-start">
                         <div className="row">
-                            <div className="col-md-6 pr-0">
+                            <div className="col-md-7 pr-0">
                                 { (create === true || update === true || upload === true)  &&  (params.page_type === 'create' ||params.page_type === 'update' || params.page_type === 'upload') && <CreateQuestionBank />  }
                             </div>
-                            <div className={`${(params?.page_type === 'create' || params?.page_type === 'update' || params?.page_type === 'upload') ? 'col-md-6 pr-0':'col-md-12'}`}>
+                            <div className={`${(params?.page_type === 'create' || params?.page_type === 'update' || params?.page_type === 'upload') ? 'col-md-5 pr-0':'col-md-12'}`}>
                                 <AllQuestions update={update} Delete={Delete}/>
                             </div>
 

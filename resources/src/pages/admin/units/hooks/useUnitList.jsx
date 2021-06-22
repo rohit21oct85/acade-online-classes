@@ -10,10 +10,15 @@ export default function useUnitList() {
     const {state } = useContext(AuthContext);
     const params = useParams();
     let url = '';
-    return useQuery(`units-${params.class_id}-${params?.subject_id}`, async () => {
-        if(params.class_id && params.subject_id){
-            url = `${API_URL}v1/unit/view-all/${params.class_id}/${params.subject_id}`;
-        }
+    let key = '';
+    if(params?.class_id && params?.subject_id){
+        key = `units-${params.class_id}-${params?.subject_id}`;
+        url = `${API_URL}v1/unit/view-all/${params?.class_id}/${params?.subject_id}`;
+    }else if(params?.class_id){
+        key = `units-${params.class_id}`;
+        url = `${API_URL}v1/unit/view-all/${params?.class_id}`;
+    }
+    return useQuery(key, async () => {
         const result = await axios.get(`${url}`,{
             headers: {
                 'Content-Type': 'Application/json',

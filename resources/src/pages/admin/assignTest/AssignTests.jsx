@@ -51,10 +51,10 @@ export default function AssignTests() {
                     <div className="clearfix"></div>
                     <div className="dash-cont-start">
                         <div className="row">
-                            <div className="col-md-8 pr-0">
-                                { (create === true || update === true || upload === true)  &&  (params.page_type === 'create' ||params.page_type === 'update' || params.page_type === 'upload') && <CreateAssignTest />  }
+                            <div className="col-md-9">
+                                { (create === true || update === true || upload === true)  &&  (params.page_type === 'create' ||params.page_type === 'update') && <CreateAssignTest />  }
                             </div>
-                            <div className={`${(params?.page_type === 'create' || params?.page_type === 'update' || params?.page_type === 'upload') ? 'col-md-4 pr-0':'col-md-12'}`}>
+                            <div className={`${(params?.page_type === 'create' || params?.page_type === 'update' || params?.page_type === 'upload') ? 'col-md-3':'col-md-12'}`}>
                                 <AllAssignedTest update={update} Delete={Delete}/>
                             </div>
 

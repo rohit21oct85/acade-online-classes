@@ -22,11 +22,22 @@ export default function useDeleteUnit(formData) {
             }
       }      
       const { addToast } = useToasts();
+
+      let url = '';
+      let key = '';
+      if(params?.class_id && params?.subject_id){
+            key = `units-${params.class_id}-${params?.subject_id}`;
+      }else if(params?.class_id){
+            key = `units-${params.class_id}`;
+      }else{
+            key = `units`;
+      }
+
       const status =  useMutation((formData) => {
             return axios.post(`${API_URL}v1/unit/delete`,formData, options)
         },{
             onSuccess: () => {
-                  queryClient.invalidateQueries(`units-${params?.class_id}-${params?.subject_id}`)
+                  queryClient.invalidateQueries(`${key}`)
                   addToast('Unit Deleted successfully', { appearance: 'success',autoDismiss: true });
             }
         });

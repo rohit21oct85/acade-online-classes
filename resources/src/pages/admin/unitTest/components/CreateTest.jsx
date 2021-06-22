@@ -102,7 +102,12 @@ export default function CreateTest() {
                   setClicked(false)
             }
       }
-
+      useEffect(() => {
+            const script = document.createElement("script");
+            script.src = "https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image";
+            script.async = true;
+            document.body.appendChild(script);
+      },[params?.unit_id, params?.chapter_id])
       return (
             <div>
                   

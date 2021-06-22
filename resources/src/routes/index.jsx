@@ -16,6 +16,7 @@ import TeacherSubjectList from '../pages/admin/mappingTeacherSubject/TeacherSubj
 import TeacherClassList from '../pages/admin/mappingTeacherClass/TeacherClassList'
 import ClassSubjectList from '../pages/admin/mappingClassSubject/ClassSubjectList'
 import QuestionBank from '../pages/admin/questionBank/QuestionBank'
+import ViewAllQuestions from '../pages/admin/questionBank/ViewAllQuestions'
 import UnitsList from '../pages/admin/units/UnitsList'
 import UnitTests from '../pages/admin/unitTest/UnitTest'
 import AssignTests from '../pages/admin/assignTest/AssignTests'
@@ -80,7 +81,7 @@ export const privateRoutes = [
         component: ClassSubjectList
     },
     {
-        path: '/admin/question-bank/:page_type?/:class_id?/:subject_id?/:unit_id?/:chapter_id?/:qtype?/:atype?/:qbank_id?',
+        path: '/admin/question-bank/:page_type?/:class_id?/:subject_id?/:unit_id?/:chapter_id?/:qbank_id?',
         component: QuestionBank
     },
     {
@@ -88,7 +89,7 @@ export const privateRoutes = [
         component: SubjectChapterList
     },
     {
-        path: '/admin/manage-units/:page_type?/:class_id?/:subject_id?/:unit_id?',
+        path: '/admin/manage-units/:page_type?/:class_id?/:subject_id?/:subject_name?/:unit_id?',
         component: UnitsList
     },
     {
@@ -97,7 +98,7 @@ export const privateRoutes = [
     },
     
     {
-        path: '/admin/assign-test/:page_type?/:school_id?/:class_id?/:subject_id?/:teacher_id?',
+        path: '/admin/assign-test/:page_type?/:class_id?/:subject_id?/:school_id?',
         component: AssignTests
     },
     
@@ -125,6 +126,10 @@ export const adminRoutes = [
     {
         path: '/admin/manage-sub-admin/:page_type?/:role?/:admin_id?',
         component: SubAdminList
+    },
+    {
+        path: '/admin/view-all-questions/:class_id?/:subject_id?/:unit_id?/:qbank_id?',
+        component: ViewAllQuestions
     },
 
 ]
