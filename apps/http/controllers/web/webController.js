@@ -527,7 +527,7 @@ const saveAnswer = async (req,res) => {
         }  
     })
 
-    const assigntests = await AttemptTest.findOneAndUpdate(filter, {$set: {"questions": data.questions}})
+    const assigntests = await AttemptTest.findOneAndUpdate(filter, {$set: {"questions": data.questions,"time_taken":req.body.time_taken}})
     if(assigntests){
         return res.status(200).json({ 
             msg: "answer submitted successfully",
@@ -578,7 +578,8 @@ const getLastScore = async (req,res) => {
         attemptedQuestions: correctAnswers + wrongAnswers,
         create_at:result?.create_at,
         _id:result?._id,
-        questions:result?.questions
+        questions:result?.questions,
+        time_taken:result?.time_taken
     }
     if(!result){
         data = null
