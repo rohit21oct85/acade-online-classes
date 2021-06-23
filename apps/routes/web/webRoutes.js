@@ -16,6 +16,8 @@ router
     .get('/get-result/:attempt_id?', checkAuth, Web.getResult)
     .post('/get-all-questions/:subject_id?/:test_id?', checkAuth, Web.getAllQuestions)
     .post('/get-last-score/:subject_id?', checkAuth, Web.getLastScore)
+    .post('/get-cumulative-score/:subject_id?', checkAuth, Web.getCumulativeScore)
+    .get('/get-student-wise-report/:school_id?/:class_id?/:subject_id?', checkAuth, Web.getStudentWiseReport)
 
     .get('/view-student/:id?', checkAuth, Web.getStudent)
     .patch('/update-student/:id?', checkAuth, Web.updateStudent)

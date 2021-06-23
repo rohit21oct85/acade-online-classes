@@ -492,9 +492,14 @@ const getQuestions = async (req,res) => {
     var filteredArray = data?.questions.filter(function(item){
         return !("answer" in item);
     });
+
     const question = filteredArray[Math?.floor(Math?.random() * filteredArray?.length)];
     const singleQuestion = await Questions.findOne({_id: question?.question_id},{answer:0})
     
+    // console.log(singleQuestion,question)
+    // return res.status(200).json({ 
+    //     singleQuestion: singleQuestion, 
+    // }); 
     return res.send(singleQuestion);
 }
 
@@ -579,7 +584,51 @@ const getLastScore = async (req,res) => {
         create_at:result?.create_at,
         _id:result?._id,
         questions:result?.questions,
-        time_taken:result?.time_taken
+        time_taken:result?.time_taken,
+        test_id:result?.test_id
+    }
+    if(!result){
+        data = null
+    }
+    return res.status(200).json({ 
+        data: data, 
+    }); 
+}
+
+const getCumulativeScore = async (req,res) => {
+    const filter = {
+        school_id :req.body.school_id,
+        subject_id:req.params.subject_id,
+        student_id:req.body.student_id,
+        class_id: req.body.class_id,
+    }
+    // const data = await AttemptTest.findOne(filter).sort({"created_at": -1}).limit(1)
+    const result = await AttemptTest.find(filter)
+    let totalTests = result?.length;
+    let correctAnswers = 0;
+    let wrongAnswers = 0;
+    let marksScored = 0;
+    let totalMarks = 0;
+    result?.map((item,key)=>{
+        item?.questions?.map((it,key)=>{
+            if(it.answer != undefined ){
+                if(it.answer == it['correct_answer'] && it.option == it['correct_option']){
+                    correctAnswers = correctAnswers + 1;
+                }else{
+                    wrongAnswers = wrongAnswers + 1;
+                }
+            }
+        })
+        marksScored = correctAnswers;
+        totalMarks = correctAnswers + wrongAnswers;
+    })
+    
+    let data = {
+        totalTests: totalTests,
+        marksScored: marksScored,
+        totalMarks: totalMarks,
+        cScore: (marksScored/totalMarks).toFixed(2),
+        cScorePercentage: (marksScored/totalMarks *100).toFixed(2),
     }
     if(!result){
         data = null
@@ -609,16 +658,22 @@ const getResult = async (req,res) => {
         wrongAnswers : wrongAnswers,
         attemptedQuestions: correctAnswers + wrongAnswers,
     }
-    // const filter = {
-    //     school_id :req.body.school_id,
-    //     subject_id:req.params.subject_id,
-    //     student_id:req.body.student_id,
-    //     test_id: req.params.test_id,
-    // }
-    // const data = await AttemptTest.findOne(filter)
-    // const questions =  data.questions;
+
     return res.status(200).json({ 
         data: data, 
+    }); 
+}
+
+const getStudentWiseReport = async (req,res) => {
+    const filter = {
+        school_id :req.params.school_id,
+        subject_id:req.params.subject_id,
+        class_id: req.params.class_id,
+    }
+    const results = await AttemptTest.find(filter)
+
+    return res.status(200).json({ 
+        data: results, 
     }); 
 }
 
@@ -644,4 +699,6 @@ module.exports = {
     getAllQuestions,
     getResult,
     getLastScore,
+    getCumulativeScore,
+    getStudentWiseReport,
 }
