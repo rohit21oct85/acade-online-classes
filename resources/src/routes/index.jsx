@@ -96,7 +96,6 @@ export const privateRoutes = [
         path: '/admin/manage-unit-test/:page_type?/:class_id?/:subject_id?/:unit_id?/:chapter_id?/:test_id?',
         component: UnitTests
     },
-    
     {
         path: '/admin/assign-test/:page_type?/:class_id?/:subject_id?/:school_id?',
         component: AssignTests

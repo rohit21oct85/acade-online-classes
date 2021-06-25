@@ -8,6 +8,7 @@ const Teacher = require('../../../models/admin/Teacher');
 const Principal = require('../../../models/admin/Principal');
 const AttemptTest = require('../../../models/admin/AttemptTest');
 const Questions = require('../../../models/admin/Question');
+const Subject = require('../../../models/admin/Subject');
 
 const getSubjects = async (req, res) => {
     try{
@@ -75,6 +76,13 @@ const getAssignedTests = async (req, res) => {
                 {
                     subject_id:req.params.subject_id,
                     class_id:req.params.class_id,
+                    // $and: [
+                    //     {
+                    //         "test_date": { 
+                    //             $gte: new Date().toISOString()
+                    //         }
+                    //     }
+                    // ]
                 },{__v: 0});
             
             let newData = [];
@@ -230,9 +238,16 @@ const getAllAssignedTestsClassBased = async (req, res) => {
             {
                 subject_id:req.params.subject_id,
                 class_id:req.params.class_id,
+                $and: [
+                    {
+                        "test_date": { 
+                            $gte: new Date().toISOString()
+                        }
+                    }
+                ]
             },{__v: 0});
 
-        let newArray = [];
+            let newArray = [];
         AssignedTests.forEach(item=>{
             newData.forEach(it => {
                 if(item.test_id == it._id){
@@ -280,6 +295,13 @@ const getAllAssignedTests = async (req, res) => {
         const newData = await UnitTest.find(
             {
                 subject_id:req.params.subject_id,
+                $and: [
+                    {
+                        "test_date": { 
+                            $gte: new Date().toISOString()
+                        }
+                    }
+                ]
             },{__v: 0});
         let newArray = [];
         AssignedTests.forEach(item=>{
@@ -455,17 +477,18 @@ const attemptTestByStudent = async (req, res) =>{
     try {
         const newData = await UnitTest.findOne(
             {
-                _id:req.body.id,
+                _id: req.body.id,
             },{__v: 0});
-
+        // const student = await Student.findOne({_id: req.body.user_id});
         const attempt = new AttemptTest({
-            school_id :req.body.school_id,
+            school_id: req.body.school_id,
             class_id: req.body.class_id,
-            subject_id:req.body.subject_id,
-            student_id:req.body.user_id,
+            subject_id: req.body.subject_id,
+            student_id: req.body.user_id,
             test_id: req.body.id,
             student_name: req.body.name,
-            questions: newData.test_question
+            questions: newData.test_question,
+            // student_roll_no: student.roll_no,
         });    
         await attempt.save();
         // await AssignTest.findOneAndUpdate({_id:req.body.assign_test_id}, {$set: {"attempted": true}})
@@ -609,32 +632,45 @@ const getCumulativeScore = async (req,res) => {
     let wrongAnswers = 0;
     let marksScored = 0;
     let totalMarks = 0;
-    result?.map((item,key)=>{
+    let newArray = [];
+    result?.map((item,key) => {
+        let obj = {correctAnswers : 0,wrongAnswers : 0,marksScored : 0,totalMarks : 0,created_at:null,};
+        obj.created_at = item.create_at;
+        obj.time_taken = item.time_taken;
+        obj.student_name = item.student_name;
         item?.questions?.map((it,key)=>{
             if(it.answer != undefined ){
                 if(it.answer == it['correct_answer'] && it.option == it['correct_option']){
+                    obj.correctAnswers = obj.correctAnswers + 1;
                     correctAnswers = correctAnswers + 1;
                 }else{
+                    obj.wrongAnswers = obj.wrongAnswers + 1;
                     wrongAnswers = wrongAnswers + 1;
                 }
             }
         })
+        obj.marksScored = obj.correctAnswers;
+        obj.totalMarks = obj.correctAnswers +obj.wrongAnswers;
         marksScored = correctAnswers;
         totalMarks = correctAnswers + wrongAnswers;
+        newArray.push(obj);
     })
-    
-    let data = {
-        totalTests: totalTests,
-        marksScored: marksScored,
-        totalMarks: totalMarks,
-        cScore: (marksScored/totalMarks).toFixed(2),
-        cScorePercentage: (marksScored/totalMarks *100).toFixed(2),
-    }
+    // cScore= (marksScored/totalMarks).toFixed(2);
+    // cScorePercentage= (marksScored/totalMarks *100).toFixed(2);
+    // newArray.push({cScore:cScore,cScorePercentage:cScorePercentage})
+     // let data = {
+    //     totalTests: totalTests,
+    //     marksScored: marksScored,
+    //     totalMarks: totalMarks,
+    //   
+    // }
+
+
     if(!result){
         data = null
     }
     return res.status(200).json({ 
-        data: data, 
+        data: newArray, 
     }); 
 }
 
@@ -669,14 +705,97 @@ const getStudentWiseReport = async (req,res) => {
         school_id :req.params.school_id,
         subject_id:req.params.subject_id,
         class_id: req.params.class_id,
+        test_id: req.params.test_id,
     }
-    const results = await AttemptTest.find(filter)
-
+    let correctAnswers = 0;
+    let wrongAnswers = 0;
+    let marksScored = 0;
+    let totalMarks = 0;
+    const TestsAttemptedByStudents = await AttemptTest.find(filter).lean();
+    TestsAttemptedByStudents.map((item,key)=>{
+        totalMarks = item.questions.length;
+        correctAnswers = 0;
+        wrongAnswers = 0;
+        item.questions.map((it,key)=>{
+            if(it.answer != undefined ){
+                if(it.answer == it['correct_answer'] && it.option == it['correct_option']){
+                    correctAnswers = correctAnswers + 1;
+                }else{
+                    wrongAnswers = wrongAnswers + 1;
+                }
+            }
+        })
+        item.totalMarks = totalMarks;
+        item.correctAnswers = correctAnswers;
+        item.wrongAnswers = wrongAnswers;
+        item.cScorePercentage = correctAnswers/totalMarks *100;
+    })
     return res.status(200).json({ 
-        data: results, 
+        data: TestsAttemptedByStudents, 
     }); 
 }
 
+const getAssignedTestsTeacher = async(req, res) => {
+    const filter = {
+        school_id:req.params.school_id,
+        subject_id:req.params.subject_id,
+        class_id:req.params.class_id,
+        assigned:true,
+    }
+    const assignedTest = await AssignTest.find(filter);
+    return res.status(200).json({ 
+        data: assignedTest, 
+    }); 
+}
+
+const getClassesWithStudents = async (req, res) => {
+    const filter = {
+        school_id:req.params.school_id,
+    }
+    const classes = await Class.find().lean();
+    const students = await Student.find(filter);
+    classes.forEach(item =>{
+        const class_id = item._id;
+        let countStudents = 0 ; 
+        students.forEach(element =>{
+            if(element.class_id == class_id){
+                countStudents = countStudents + 1
+            }
+        })
+        item.student_count = countStudents;
+    })
+    return res.status(200).json({ 
+        data: classes, 
+    }); 
+}
+
+const getAllTeachersOfSchool = async (req, res) => {
+    let filter = null;
+    if(req.body.subject_id){
+        filter = {
+            school_id:req.params.school_id,
+            subject_id:req?.body?.subject_id
+        }
+    }else{
+        filter = {
+            school_id:req.params.school_id,
+        }
+    }
+
+    const teachers = await Teacher.find(filter);
+    
+    return res.status(200).json({ 
+        data: teachers, 
+    }); 
+}
+
+const getAllSubjects = async (req, res) => {
+    const subjects = await Subject.find();
+    
+    return res.status(200).json({ 
+        data: subjects, 
+    }); 
+}
 module.exports = {
     getSubjects,
     getAssignedTests,
@@ -701,4 +820,8 @@ module.exports = {
     getLastScore,
     getCumulativeScore,
     getStudentWiseReport,
+    getAssignedTestsTeacher,
+    getClassesWithStudents,
+    getAllTeachersOfSchool,
+    getAllSubjects
 }
