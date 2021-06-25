@@ -46,10 +46,6 @@ const UpdateUnit = async (req, res) => {
                 message: "Chapter updated sucessfully"
             });
 
-
-
-
-
   } catch (error) {
     res.status(409).json({
       message: error.message,
@@ -145,15 +141,33 @@ const otherFunction = async(res, FinalData, callback) => {
       res.status(200).send('Unit Inserted')
       callback()
   }).catch(error => {
-      return res.status(409).json({
+      res.status(409).json({
           message: "Error occured while Inserting Data",
           errors: error.message
       });
   })
 }
-
+const UpdateUnitSubject = async (req, res) => {
+  try {
+    let class_id = req.body.class_id
+    let subject_name = req.body.subject_name
+    let new_subject_id = req.body.new_subject_id
+    let new_subject_name = req.body.new_subject_name
+    await Unit.updateMany({class_id: class_id, subject_name: subject_name}, {
+      subject_id: new_subject_id,
+      subject_name: new_subject_name,
+    })
+    res.status(200).send('Unit Updated')
+  } catch (error) {
+    res.status(409).json({
+        message: "Error while updating Data",
+        errors: error.message
+    });
+  }
+}
 
 module.exports = {
+  UpdateUnitSubject,
   CreateUnit,
   UploadUnit,
   UpdateUnit,

@@ -1,6 +1,7 @@
 const Subject = require('../../../models/admin/Subject');
 const csv = require('csv-parser')
-const fs = require('fs')
+const fs = require('fs');
+const ClassSubject = require('../../../models/admin/ClassSubject')
 
 const CreateSubject = async (req, res) => {
     const body = req.body;
@@ -136,8 +137,23 @@ const getSubjectBySchoolId = async (req, res) => {
         });
     }
 }
+const getClassBySubjectId = async (req, res) => {
+    try {
+        let subject_id = req.params?.subject_id;
+        const Data = await ClassSubject.find({subject_id: subject_id}).sort({class_name: -1});
+        res.status(200).json({ 
+            data: Data
+        });  
+    } catch (error) {
+        res.status(203).json({
+            message: "Error occured",
+            errors: error.message
+        });
+    }
+}
 
 module.exports = {
+    getClassBySubjectId,
     CreateSubject,
     UpdateSubject,
     ViewSubject,

@@ -59,20 +59,6 @@ export default function CreateTeacherStudentMap() {
         }
     });
     
-    // const updateMutation = useMutation((formData) => {
-    //     let teacher_id =  params?.teacher_id;
-    //     return axios.patch(`${API_URL}v1/teacher/update/${teacher_id}`, formData, options)
-    // },{
-    //     onSuccess: () => {
-    //         let school_id =  params?.school_id;
-    //         queryClient.invalidateQueries(`teachers-${school_id}`)
-    //         setLoading(false);
-    //         setFormData(initialData);
-    //         history.push(`${path}`);
-    //         addToast('Teacher Updated successfully', { appearance: 'success',autoDismiss: true });
-    //     }
-    // });
-
     const saveMapping = async (e) => {
         e.preventDefault();
         setLoading(true);
@@ -109,14 +95,6 @@ export default function CreateTeacherStudentMap() {
         } 
     }
 
-    // async function handleChange(e){
-    //     if(params?.teacher_sub_id){
-    //             setSingleTeacher({...SingleTeacher, [e.target.name]: e.target.value})
-    //     }else{
-    //             setFormData({...formData, [e.target.name]: e.target.value})
-    //     }
-    // }
-
     async function handleChangeTeacher(e){
         if(e.target.value != 999){
             if(params?.teacher_sub_id){
@@ -147,17 +125,9 @@ export default function CreateTeacherStudentMap() {
 
     async function handleChangeSchool(e){
         if(e.target.value != 999){
-            // if(params?.principal_id){
-            //     setSinglePrincipal({...SinglePrincipal, [e.target.name]: e.target.value})
-            //         history.push(`/admin/mapping-teacher-class/select-school/${e.target.value}/${params?.principal_id}`)
-            // }else{
-                const school_name = e.target.options[e.target.selectedIndex].dataset.school_name
-                setFormData({...formData, ['school_id']: e.target.value,['school_name']:school_name})
-                // params.class_id ?
-                //     history.push(`/admin/mapping-teacher-class/select-school/${e.target.value}/${params?.class_id}`)
-                //     :
-                history.push(`/admin/mapping-teacher-class/select-school/${e.target.value}/${MakeSlug(school_name)}`)
-                // }
+            const school_name = e.target.options[e.target.selectedIndex].dataset.school_name
+            setFormData({...formData, ['school_id']: e.target.value,['school_name']:school_name})
+            history.push(`/admin/mapping-teacher-class/select-school/${e.target.value}/${MakeSlug(school_name)}`)
         }
     }
 
@@ -182,7 +152,7 @@ export default function CreateTeacherStudentMap() {
                         <option value="999">Select Teacher</option>
                         {!teacherIsLoading && teachers?.map(teacher => {
                         return (
-                            <option value={teacher._id} key={teacher._id} data-teacher_name={teacher.name}>{teacher.name}</option>
+                            <option value={teacher._id} key={teacher._id} data-teacher_name={teacher.name}>{teacher.name} - {teacher.subject_name}</option>
                         )
                         })}
                     </select>

@@ -42,6 +42,7 @@ export default function AllUnitTests({update, Delete}) {
                                 <div className="flex">Name: <b>{tests?.test_name}</b></div>
                                 <div className="flex">Unit: <b>{tests?.unit_name}</b></div>
                                 <div className="flex">Test Date: <b>{helper.getDateValue(tests?.test_date)}</b></div>
+                                <div className="flex">Test Window: <b>{tests?.test_window} hr</b></div>
                                 <div className="flex">Duration: <b>{tests?.test_duration} Min</b></div>
                                 <div className="flex">Total Question: <b>{tests?.total_question} Ques</b></div>
                         </div>

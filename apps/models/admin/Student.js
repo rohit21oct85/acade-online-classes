@@ -35,7 +35,7 @@ const StudentSchema = new mongoose.Schema({
     address:{
         type: String,
     },
-    EMPID:{
+    EmpId:{
         type: String,
     },
     city:{

@@ -19,7 +19,13 @@ import "react-datepicker/dist/react-datepicker.css";
 export default function CreateTest() {
       const params = useParams();
       const history = useHistory();
-
+      const TestWindows = [
+            {key: '1', value: '1 Hour'},
+            {key: '2', value: '2 Hours'},
+            {key: '3', value: '3 Hours'},
+            {key: '6', value: '6 Hours'},
+            {key: '9', value: '9 Hours'},
+      ]
       const {data:sClassess} = useClassList();
       const {data:subjects, isLoading: subjectLoading} = useClassSubjectList();
       const {data:units, isLoading: unitLoading} = useUnitList();
@@ -70,6 +76,7 @@ export default function CreateTest() {
                         question_id: i?._id
                   }
             });
+
             formData['class_id'] = class_id
             formData['class_name'] = class_name
             formData['subject_id'] = subject_id
@@ -80,12 +87,11 @@ export default function CreateTest() {
             formData['test_date'] = startDate
             formData['total_question'] = selectedQuestions?.length
             formData['test_question'] = selectedQuestionsId
-            console.log(selectedQuestionsId);
-            // return;
+            
             if(class_id && subject_id && unit_id && chapter_id)
             await createMutation.mutate(formData);
             localStorage.removeItem('selectedQuestions')
-            setSelectedQuestions({});
+            setSelectedQuestions([]);
       }
       async function handleSelectQuestion(id){
             setClicked(true)
@@ -122,7 +128,7 @@ export default function CreateTest() {
                   
 
                   <div className="row">
-                        <div className="col-md-3">
+                        <div className="col-md-3 pr-0">
                               <select className="form-control"
                               value={params?.class_id}
                               onChange={e => {
@@ -158,7 +164,7 @@ export default function CreateTest() {
                                     })}
                               </select>
                         </div>
-                        <div className="form-group col-md-3 pl-0">
+                        <div className="form-group col-md-3 pl-0 pr-0">
                         <select className="form-control"
                         value={params?.unit_id}
                         onChange={e => {
@@ -196,9 +202,54 @@ export default function CreateTest() {
                         })}
                   </select>
                   </div>
+                  <div className="col-md-12">
+                  <div className="row">
+                        <div className="col-md-3 pr-0 form-group">
+                        <input type="text" name="test_name" 
+                        value={formData?.test_name} 
+                        onChange={ e => {
+                              setFormData({...formData, test_name: e.target.value})
+                        }}
+                        className="form-control" placeholder="test name"/>
+                        
+                  </div>
+                  <div className="col-md-3">
+                        <select className="form-control"
+                        value={formData?.test_window} 
+                        onChange={ e => {
+                              setFormData({...formData, test_window: e.target.value})
+                        }}
+                        >
+                              <option value="_">Test Window</option>
+                              {TestWindows?.map( wind => <option value={wind?.key}>{wind?.value}</option>)}
+                        </select>
+                  </div>
+                  <div className="col-md-3 pl-0 pr-0">
+                        <DatePicker 
+                              className="form-control"
+                              selected={startDate} onChange={(date) => setStartDate(date)}
+                              dateFormat="yyyy-MM-dd"
+                              filterDate={isWeekday}
+                              minDate={new Date()}
+                              /> 
+                        
+                        
+                  </div>
+                  <div className="col-md-3 ">
+                              <input type="text" className="form-control"
+                              value={formData?.test_duration} 
+                              onChange={ e => {
+
+                                    setFormData({...formData, test_duration: e.target.value})
+                              }}
+                              placeholder="Enter Test Duration in Seconds"/>
+                        </div>
+                               
+                  </div>      
+                  </div>
                   <div className="col-md-6">
                         <div className="text-success mb-1">Questions: {questions?.length}</div>
-                        <div  className="pr-2" style={{ height: '360px', overflowY: 'scroll'}}>
+                        <div  className="pr-2" style={{ height: '300px', overflowY: 'scroll'}}>
                         {questions?.map((q,i) => {
                               let sel = helper.checkExists(selectedQuestions,'_id',q?._id);
                               if(!sel)
@@ -211,7 +262,7 @@ export default function CreateTest() {
                               >
                                     <div className="flex">
                                           <div>{i+1}. </div>
-                                          <div dangerouslySetInnerHTML={{ __html: q?.question  }} />
+                                          <div className="question" dangerouslySetInnerHTML={{ __html: q?.question  }} />
                                     </div>
                               </div>
                               )
@@ -219,39 +270,7 @@ export default function CreateTest() {
                         </div>
                   </div>
                   <div className="col-md-6 pl-0 pr-0">
-                        <div className="row">
-                              <div className="col-md-6 form-group">
-                                    <input type="text" name="test_name" 
-                                          value={formData?.test_name} 
-                                          onChange={ e => {
-
-                                                setFormData({...formData, test_name: e.target.value})
-                                          }}
-                                          className="form-control" placeholder="test name"/>
-                              </div>
-                              <div className="col-md-6 pr-0">
-                                    <div className="row col-md-12">
-                                    <div className="col-md-8 pl-0 form-group">
-                                    <DatePicker 
-                                          className="form-control"
-                                          selected={startDate} onChange={(date) => setStartDate(date)}
-                                          dateFormat="yyyy-MM-dd"
-                                          filterDate={isWeekday}
-                                          minDate={new Date()}
-                                          /> 
-                                    </div>
-                                    <div className="col-md-4 pl-0 pr-0">
-                                          <input type="text" className="form-control"
-                                          value={formData?.test_duration} 
-                                          onChange={ e => {
-
-                                                setFormData({...formData, test_duration: e.target.value})
-                                          }}
-                                          placeholder="20"/>
-                                    </div>
-                                    </div>
-                              </div>       
-                        </div>
+                        
                         <p className="text-success mb-1">Selected Questions: {selectedQuestions?.length}
                         <span className="pull-right mr-3 pointer dark bg-danger fa fa-trash"
                         onClick={e => {
@@ -259,13 +278,13 @@ export default function CreateTest() {
                               setSelectedQuestions([])
                         }}></span>
                         </p>
-                        <div className="pr-2" style={{ height: '260px', overflowY: 'scroll'}}>
+                        <div className="pr-2" style={{ height: '300px', overflowY: 'scroll'}}>
                         {selectedQuestions?.length > 0 && selectedQuestions?.map((selQue, i) => {
                               return (
                               <div className="card question col-md-12 pl-2 pr-2 mb-2" key={selQue?._id}>
                                     <div className="flex">
                                           <div className="pr-2">{i+1}. </div>
-                                          <div className="pb-0 mb-0" dangerouslySetInnerHTML={{ __html: selQue?.question  }} />
+                                          <div className="question pb-0 mb-0" dangerouslySetInnerHTML={{ __html: selQue?.question  }} />
                                     </div>
                                     
                               </div>
@@ -276,7 +295,7 @@ export default function CreateTest() {
                   </div>
 
 
-                  <div className="form-group mt-2">
+                  <div className="form-group mt-3">
                         <button className="btn btn-sm dark"
                         disabled={createMutation?.isLoading}
                         onClick={handleSubmit}>

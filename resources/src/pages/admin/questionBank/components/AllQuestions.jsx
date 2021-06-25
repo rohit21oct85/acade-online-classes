@@ -25,8 +25,8 @@ export default function AllQuestions({update, Delete}) {
         script.src = "https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image";
         script.async = true;
         document.body.appendChild(script);
-    },[params?.qbank_id])
-    
+    },[params?.chapter_id])
+    let optionsDocx = [{key: 0,value: "A"},{key: 1,value: "B"},{key: 3,value: "C"},{key: 4,value: "D"}];
     return (
         <>
         <p className="form-heading">
@@ -68,10 +68,25 @@ export default function AllQuestions({update, Delete}) {
 
                             
                         </div>
-                        <div className="pl-3 pr-2 pt-3" dangerouslySetInnerHTML={{ __html: q?.question  }}></div>
+                        <div className="question pl-3 pr-2 pt-3" dangerouslySetInnerHTML={{ __html: q?.question  }}></div>
                         
                         <div className="pl-3">Answers</div>
                         <div className="row ml-3 pb-3 option">
+                            {q?.extension === 'docx' && optionsDocx?.map((option, index) => {
+                                return(
+                                    <div className="row col-md-6 pr-0">
+                                        <div className="pl-3 pr-3"> {option.value}: </div>
+                                        {(q?.answer === option.value) ? 
+                                            <span className="bi bi-check-circle-fill text-success"></span>: 
+                                            <span className="bi bi-x-circle-fill text-danger ml-1"></span>
+                                        }
+                                        <div className="pl-3 pr-3"  dangerouslySetInnerHTML={{ __html: q?.options[index] }}/>
+                                        
+                                    </div>
+                                )
+                            })}
+                            {q?.extension !== 'docx' && (
+                            <>    
                             <div className="row col-md-6 pr-0">
                                 <div className="pl-3 pr-3"> A: </div>
                                 {(q?.answer === 'option_a') ? 
@@ -107,6 +122,8 @@ export default function AllQuestions({update, Delete}) {
                                 }
                                 <div className="pl-3 pr-3"  dangerouslySetInnerHTML={{ __html: q?.option_d }}/>
                             </div>
+                            </>
+                            )}
                         </div>
                         
                     </div>

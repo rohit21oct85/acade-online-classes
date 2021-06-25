@@ -122,11 +122,10 @@ export default function CreateSchool() {
       async function onBlurHandle(e){
             e.preventDefault();
             let image = e.target.value
+            if(image.length > 0){
             let arrayImage = image.split('/d/');
             let arrayImage2 = arrayImage[1].split('/');
             let key = arrayImage2[0];
-            if(image.length > 0){
-                //   let image_url = `https://drive.google.com/uc?export=view&id=${key}`
                   if(params?.school_id){
                         setSingleSchool({...SingleSchool, school_logo: key})
                   }else{

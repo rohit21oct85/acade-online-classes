@@ -5,6 +5,7 @@ import {useMutation, useQueryClient} from 'react-query'
 import axios from 'axios'
 import API_URL from '../../../../helper/APIHelper';
 import * as utils from '../../../../utils/utils'
+import * as helper from '../../../../utils/helper'
 import { useToasts } from 'react-toast-notifications';
 import useSingleStudent from '../hooks/useSingleStudent';
 import useSchoolLists from '../../school/hooks/useSchoolLists';
@@ -46,22 +47,26 @@ export default function CreateStudent() {
         setSingleStudent(data)
     }
 
-    const queryClient = useQueryClient()
-    const options = {
-        headers: {
-            'Content-Type': 'Application/json',
-            'Authorization':'Bearer '+state.access_token
-        }
-    }
-
     const createMutation = useCreateStudent(SingleStudent);
     const updateMutation = useUpdateStudent(formData);
 
     const saveStudent = async (e) => {
         e.preventDefault();
         setLoading(true);
+        const domainName = helper.getFilteredData(schools, '_id',params.school_id,'sub_domain');
+        
         if(params?.student_id){
-                await updateMutation.mutate(SingleStudent);
+            let firstName = SingleStudent?.name
+            let className = SingleStudent?.class
+            let sectionName = SingleStudent?.section
+            let rollNo = SingleStudent?.roll_no
+            const first_name = firstName?.replaceAll(" ",".").toLowerCase();
+            SingleStudent.username = first_name + SingleStudent.mobile.substr(-4) + `@${domainName}.com`;
+            if(SingleStudent?.EmpId === undefined){
+                let UID = helper.generateEmpId(domainName, firstName, className, sectionName, rollNo);
+                SingleStudent.EmpId = UID
+            }
+            await updateMutation.mutate(SingleStudent);
         }else{
             formData.school_id = params.school_id ? params.school_id : ''
             if(formData.school_id == ''){
@@ -73,8 +78,18 @@ export default function CreateStudent() {
                     setLoading(false);
                     addToast('Please Enter a valid 10 digit phone no', { appearance: 'error',autoDismiss: true });
                 }else{
-                    const domainName = schools.filter(school =>  school._id == params.school_id)
-                    formData.username = formData.name + formData.mobile.substr(-4) + `@${domainName[0].domain}`;
+                    let firstName = formData?.name
+                    let className = formData?.class
+                    let sectionName = formData?.section
+                    let rollNo = formData?.roll_no
+                    
+                    let EmpId = helper.generateEmpId(domainName, firstName, className, sectionName, rollNo);
+                    let UID = EmpId.toUpperCase();
+                    
+                    const first_name = formData?.name?.replaceAll(" ",".").toLowerCase();
+                    formData.username = first_name + formData.mobile.substr(-4) + `@${domainName}.com`;
+                    formData.EmpId = UID
+                    
                     await createMutation.mutate(formData);
                 }
             }
@@ -108,7 +123,7 @@ export default function CreateStudent() {
         const class_name = e.target.options[e.target.selectedIndex].dataset.class_name
         if(e.target.value != 999){
             if(params?.student_id){
-                setSingleStudent({...SingleStudent, [e.target.name]: e.target.value, ['class']:class_name })
+                    setSingleStudent({...SingleStudent, [e.target.name]: e.target.value, ['class']:class_name })
                     history.push(`/admin/students-management/update/${params?.school_id}/${e.target.value}/${params?.student_id}`)
             }else{
                 setFormData({...formData, ['class_id']: e.target.value,['class']:class_name})
@@ -150,18 +165,8 @@ export default function CreateStudent() {
                 </div>
                 <div className="row">
                     <div className="col-md-6">
-                        {/* <div className="form-group">
-                            <input 
-                                type="text" 
-                                className="form-control" 
-                                name="class"
-                                value={params?.student_id ? SingleStudent?.class : formData?.class}
-                                onChange={handleChange}
-                                placeholder="Class"/>
-                        </div> */}
-
                         <div className="form-group">
-                            <select className="form-control" aria-label="Default select example" name="class_id" onChange={handleChangeClass} value={params.class_id ? params.class_id : 999}>
+                            <select className="form-control" aria-label="Default select example" name="class_id" onChange={handleChangeClass} value={data?.class_id}>
                                 <option value="999">Select Class</option>
                                 {!classesIsLoading && classes?.map(classs => {
                                 return (

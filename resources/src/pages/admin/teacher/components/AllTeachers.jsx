@@ -47,8 +47,9 @@ export default function AllTeachers({update, Delete}) {
         <table className="table table-hover">
                     <thead>
                         <tr>
-                        <th scope="col">#</th>
+                        <th scope="col">#EmpID</th>
                         <th scope="col">Name</th>
+                        <th scope="col">Subject</th>
                         <th scope="col">Mobile</th>
                         <th scope="col">Email</th>
                         <th scope="col">Action</th>
@@ -58,8 +59,9 @@ export default function AllTeachers({update, Delete}) {
                         {data?.map( (item,key) => { 
                             return (
                                 <tr key={item?._id}>
-                                <th scope="row">{key}</th>
+                                <th scope="row">{item.EmpID}</th>
                                 <td>{item.name}</td>
+                                <td>{item.subject_name}</td>
                                 <td>{item.mobile}</td>
                                 <td>{item.email}</td>
                                 <td>
@@ -68,9 +70,9 @@ export default function AllTeachers({update, Delete}) {
                                             onClick={
                                                 e => {
                                                     if(params.school_id){
-                                                        history.push(`/admin/teachers-management/update/${params?.school_id}/${item?._id}`)
+                                                        history.push(`/admin/teachers-management/update/${params?.school_id}/${params?.subject_id}/${params?.subject_name}/${item?._id}`)
                                                     }else{
-                                                        history.push(`/admin/teachers-management/update/${item.school_id}/${item?._id}`)
+                                                        history.push(`/admin/teachers-management/update/${item.school_id}/${item?.subject_id}/${item?.subject_name}/${item?._id}`)
                                                     }
                                                 }
                                             }>

@@ -32,7 +32,7 @@ export default function AllStudents({update, Delete}) {
         <table className="table table-hover">
                     <thead>
                         <tr>
-                        <th scope="col">#</th>
+                        <th scope="col">#EmpId</th>
                         <th scope="col">Name</th>
                         <th scope="col">Class</th>
                         <th scope="col">Section</th>
@@ -47,7 +47,7 @@ export default function AllStudents({update, Delete}) {
                         {data?.map( (item,key) => { 
                             return (
                                 <tr key={item?._id}>
-                                <th scope="row">{key}</th>
+                                <th scope="row">{item?.EmpId}</th>
                                 <td>{item.name}</td>
                                 <td>{item.class}</td>
                                 <td>{item.section}</td>

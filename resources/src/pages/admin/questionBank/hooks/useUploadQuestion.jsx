@@ -27,7 +27,6 @@ export default function useUploadQuestion(formDataUpload) {
         },{
             onSuccess: () => {
                 queryClient.invalidateQueries('questions')
-                setLoading(false);
                 addToast('Questions added successfully', { appearance: 'success', autoDismiss: true });
             }
         });

@@ -26,6 +26,9 @@ const QuestionSchema = new mongoose.Schema({
       unit_name: {
             type: String,
       },
+      extension: {
+            type: String,
+      },
       
       chapter_id: {
             type: String,
@@ -40,6 +43,10 @@ const QuestionSchema = new mongoose.Schema({
       question:{
         type: String
       },
+      options:{
+        type: Array
+      },
+
       option_a: {
             type: String
       },

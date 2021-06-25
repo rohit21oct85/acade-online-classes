@@ -32,6 +32,9 @@ const UnitTestSchema = new mongoose.Schema({
       test_duration: {
             type: String,
       },
+      test_window: {
+            type: String,
+      },
       total_question: {
             type: Number,
       },

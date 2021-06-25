@@ -19,6 +19,8 @@ import QuestionBank from '../pages/admin/questionBank/QuestionBank'
 import ViewAllQuestions from '../pages/admin/questionBank/ViewAllQuestions'
 import UnitsList from '../pages/admin/units/UnitsList'
 import UnitTests from '../pages/admin/unitTest/UnitTest'
+import ViewAllTest from '../pages/admin/unitTest/ViewAllTest'
+import SchoolReport from '../pages/admin/school/SchoolReport'
 import AssignTests from '../pages/admin/assignTest/AssignTests'
 import SubjectChapterList from '../pages/admin/mappingSubjectChapter/SubjectChapterList'
 
@@ -61,7 +63,7 @@ export const privateRoutes = [
         component: SubjectList
     },
     {
-        path: '/admin/teachers-management/:page_type?/:school_id?/:teacher_id?',
+        path: '/admin/teachers-management/:page_type?/:school_id?/:subject_id?/:subject_name?/:teacher_id?',
         component: TeacherList
     },
     {
@@ -128,8 +130,16 @@ export const adminRoutes = [
         component: SubAdminList
     },
     {
-        path: '/admin/view-all-questions/:class_id?/:subject_id?/:unit_id?/:qbank_id?',
+        path: '/admin/view-all-questions/:class_id?/:subject_id?',
         component: ViewAllQuestions
+    },
+    {
+        path: '/admin/view-all-test/:class_id?/:subject_id?',
+        component: ViewAllTest
+    },
+    {
+        path: '/admin/school-report/:school_id?/:subject_id?/:class_id?',
+        component: SchoolReport
     },
 
 ]

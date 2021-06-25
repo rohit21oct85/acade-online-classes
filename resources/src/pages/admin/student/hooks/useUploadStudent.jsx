@@ -27,9 +27,7 @@ export default function useUploadStudent(formDataUpload) {
         },{
             onSuccess: () => {
                 let school_id =  params?.school_id;
-                let class_id =  params?.class_id;
                 queryClient.invalidateQueries(`students`)
-                setLoading(false);
                 addToast('Student added successfully', { appearance: 'success', autoDismiss: true });
             }
         });

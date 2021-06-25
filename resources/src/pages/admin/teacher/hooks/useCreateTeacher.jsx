@@ -28,9 +28,7 @@ export default function useCreateTeacher(formData) {
             onSuccess: () => {
                 let school_id =  params?.school_id;
                 queryClient.invalidateQueries(`teachers-${school_id}`)
-                setLoading(false);
-                setFormData(initialData);
-                history.push(`${path}`);
+                history.push(`/admin/teachers-management`);
                 addToast('Teacher added successfully', { appearance: 'success', autoDismiss: true });
             }
         });

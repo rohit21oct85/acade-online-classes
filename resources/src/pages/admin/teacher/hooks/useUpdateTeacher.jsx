@@ -29,9 +29,7 @@ export default function useUpdateTeacher(formData) {
             onSuccess: () => {
                 let school_id =  params?.school_id;
                 queryClient.invalidateQueries(`teachers-${school_id}`)
-                setLoading(false);
-                setFormData(initialData);
-                history.push(`${path}`);
+                history.push(`/admin/teachers-management`);
                 addToast('Teacher Updated successfully', { appearance: 'success',autoDismiss: true });
             }
         });

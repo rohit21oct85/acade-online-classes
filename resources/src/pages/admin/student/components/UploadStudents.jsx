@@ -61,11 +61,8 @@ export default function UploadStudents() {
         e.preventDefault();
         formDataUpload.append('file',file);
         formDataUpload.append('school_id',school);
-        formDataUpload.append('class_id',clas);
         if(!school){
             addToast('Please Select a School', { appearance: 'error', autoDismiss: true });
-        }else if(!clas){
-            addToast('Please Select a Class', { appearance: 'error', autoDismiss: true });
         }else{
             console.log(formDataUpload.get('file'))
             console.log(formDataUpload.get('school_id'))

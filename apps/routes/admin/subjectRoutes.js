@@ -30,6 +30,7 @@ router
     .post('/upload', upload.single('file'), checkAuth, Subject.uploadSubject)
 
     .get('/subject-by-school-id/:id', checkAuth, Subject.getSubjectBySchoolId)
+    .get('/view-all-class/:subject_id?', checkAuth, Subject.getClassBySubjectId)
 ;
 
 module.exports = router;

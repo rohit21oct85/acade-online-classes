@@ -8,13 +8,10 @@ const TeacherSchema = new mongoose.Schema({
     EmpID: {
         type: String,
     },
-    subject: {
+    subject_id: {
         type: String,
     },
-    class: {
-        type: String,
-    },
-    section: {
+    subject_name: {
         type: String,
     },
     mobile: {

@@ -10,10 +10,12 @@ import useSingleQuestion from '../hooks/useSingleQuestion';
 import {romanize} from '../../../../utils/helper';
 import useSubjectChapterList from '../../mappingSubjectChapter/hooks/useSubjectChapterList';
 import useUpdateQuestion from '../hooks/useUpdateQuestion';
+import useUploadQuestion from '../hooks/useUploadQuestion';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from 'ckeditor5-build-classic-mathtype';
+import ClassicEditor from 'ckeditor5-classic-with-mathtype';
 
 export default function CreateQuestionBank() {
+      
       const params = useParams();
       const history = useHistory();
       const {data:classDatas} = useClassList();
@@ -23,7 +25,7 @@ export default function CreateQuestionBank() {
       const {data:chapter} = useSingleQuestion();
       const [formData, setFormData] = useState({});
       const [singleChapter, setSingleChapter] = useState({});
-      
+      const [btnDisabled, setBtnDisbaled] = useState(true)
       
       useEffect(() => {
             setSingleChapter(chapter);
@@ -44,9 +46,13 @@ export default function CreateQuestionBank() {
             {key: 'option_c', value: 'Option C'},
             {key: 'option_d', value: 'Option D'},
       ]
-
+      const formDataUpload = new FormData();
+      const [extension, setExtension] = useState('');
+      const [file, setFile] = useState('');
+      
       const createMutation = useCreateQuestion(formData);
       const updateMutation = useUpdateQuestion(formData);
+      const uploadMutation = useUploadQuestion(formDataUpload);
 
       async function handleSubmit(e){
             e.preventDefault();
@@ -81,6 +87,54 @@ export default function CreateQuestionBank() {
                   await createMutation.mutate(formData);
             }
       }
+
+      let docs = '';
+      async function handelChangeUpload(e){
+            const filename = e.target.files[0].name;
+            console.log('file onchange ' ,  filename);
+            const ext = filename.split('.')[1];
+            
+            setExtension(ext);
+            if(ext === "csv" || ext === "docx" || ext === "doc"){
+                setBtnDisbaled(false);
+                setFile(e.target.files[0]);
+                formDataUpload.append('file', e.target.files[0]);
+            }else{
+                setBtnDisbaled(true);
+                addToast('Only .csv, .docx, .doc files are allowed', { appearance: 'error', autoDismiss: true });
+            }
+      }
+      
+      async function handleFileUpload(e){
+            e.preventDefault();
+            let class_id = params?.class_id
+            let subject_id = params?.subject_id
+            let unit_id = params?.unit_id
+            let chapter_id = params?.chapter_id
+
+            let class_name = getFilteredData(classDatas,'_id' ,class_id, 'class_name');
+            let subject_name = getFilteredData(subjects,'subject_id' , subject_id, 'subject_name');
+            let unit_no = getFilteredData(units,'_id' , unit_id, 'unit_no');
+            let unit_name = getFilteredData(units,'_id' , unit_id, 'unit_name');
+            let chapter_no = getFilteredData(chapters,'_id' , chapter_id, 'chapter_no');
+            let chapter_name = getFilteredData(chapters,'_id' , chapter_id, 'chapter_name');
+
+            formDataUpload.append('file',file);
+            formDataUpload.append('class_id',class_id);
+            formDataUpload.append('class_name',class_name);
+            formDataUpload.append('subject_id',subject_id);
+            formDataUpload.append('subject_name',subject_name);
+            formDataUpload.append('unit_id',unit_id);
+            formDataUpload.append('unit_no',unit_no);
+            formDataUpload.append('unit_name',unit_name);
+            formDataUpload.append('chapter_id',chapter_id);
+            formDataUpload.append('chapter_no',chapter_no);
+            formDataUpload.append('chapter_name',chapter_name);
+            formDataUpload.append('extension',extension);
+            await uploadMutation.mutate(formDataUpload);
+            
+      }
+      
       return (
             <div>
                  <p className="form-heading">
@@ -193,37 +247,36 @@ export default function CreateQuestionBank() {
                   <div className="pr-2" style={{ height: '350px', overflowY: 'scroll', overflowX: 'hidden'}}>
                   <div className="form-group">
                         <label>Question: </label>
+                        
                         <CKEditor
-                              id="question"
+                              id="editor"
                               editor={ ClassicEditor }
                               config={{
                               toolbar: {
                                     items: [
-                                          'MathType', 'ChemType','heading','fontSize', 
-                                          '|',
-                                          'bold',
-                                          'italic',
-                                          'link',
-                                          'bulletedList',
-                                          'numberedList',
-                                          'insertImage',
-                                          'imageUpload',
-                                          'imageReSize',
-                                          'mediaEmbed',
-                                          'insertTable',
-                                          'blockQuote',
-                                          'undo',
-                                          'redo'
+                                    'MathType', 'ChemType','heading', 
+                                    '|',
+                                    'fontSize',
+                                    'bold',
+                                    'italic',
+                                    'link',
+                                    'bulletedList',
+                                    'numberedList',
+                                    'imageUpload',
+                                    'mediaEmbed',
+                                    'insertTable',
+                                    'blockQuote',
+                                    'undo',
+                                    'redo'
                                     ]
                               },
                               }}
-                              data={chapter && chapter?.question}
                               onChange={ ( event, editor ) => {
                               const data = editor.getData();
-                              setFormData( { ...formData, question: data } );
+                              setFormData( { ...formData, question : data } );
                               } }
                         />
-                        
+                  
                         
                   </div>      
                   <div className="row">
@@ -242,7 +295,7 @@ export default function CreateQuestionBank() {
                         option_answer = chapter && chapter?.option_d
                   }      
                   return(
-                        <div className="form-group col-md-6">
+                        <div className="form-group col-md-6" key={index}>
                         <label>{option?.value}: </label>
                               <CKEditor
                               editor={ ClassicEditor }
@@ -348,21 +401,39 @@ export default function CreateQuestionBank() {
             </form>  
             )}    
             {params?.page_type === 'upload' && (
-                <form>
+                 <> 
+                <form encType="multipart/formData">
                   <label>Upload Questions and Options </label>
                   <hr className="mt-1 mb-2"/>
                   <div className="form-group">
-                        <label>Choose Question CSV File</label>
-                        <input type="file" className="form-control"/>
+                        <label>Choose Question File</label>
+                        <input type="file" name="file" onChange={handelChangeUpload} className="form-control"/>
                   </div>
+                  
+                  
+
                   <div className="form-group mt-2">
                         <button className="btn btn-sm dark"
-                        onClick={handleSubmit}>
-                              <span className="bi bi-upload mr-2"></span>
-                              Upload Question
+                        disabled={btnDisabled}
+                        onClick={handleFileUpload}>
+                              {createMutation?.isLoading ? (
+                                    <>
+                                    <span className="bi bi-spinner mr-2"></span>
+                                    processing...
+                                    </>
+                              ) : (
+                                    <>
+                                    <span className="bi bi-upload mr-2"></span>
+                                    Upload Question
+                                    </>
+                              )}
+                              
                         </button>
                   </div>
                 </form>  
+
+                <hr />
+                </>
             )}
 
             </div>

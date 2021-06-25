@@ -32,3 +32,52 @@ export function getMethodName(method){
 export function getDateValue(el){
   return el.split('T')[0];
 }
+export function getFirstLetter(el){
+    const space = el.match('-');
+    let arr = '';
+    let name = '';
+    if(space){
+      arr = el.split('-');
+      let data = arr?.map(e => {
+        return name += e.charAt(0);
+      })
+      return data[data.length - 1];
+    }else{
+      return el.charAt(0)
+    }
+    
+    
+}
+
+export function generateEmpId(domainName, firstName, className, section, rollNo){
+  const SFL = getFirstLetter(domainName);
+  const FName = firstName?.split(" ")[0];
+  const class_name = className
+  const section_name = section
+  let roll = rollNo
+  const roll_no = (roll.length < 2 ? '0'+roll: roll)
+  const EmpId = `${SFL}${FName}${class_name}${section_name}${roll_no}`;
+  return EmpId.toUpperCase()
+}
+export function generateTeacherId(domainName, firstName, subject){
+    const SFL = getFirstLetter(domainName);
+    let FName = '';
+    const space = firstName.match(' ');
+    if(space){
+      FName = firstName?.split(" ")[0];
+    }else{
+      FName = firstName
+    }
+    
+    let subjctSpace = subject.match('-');
+    let sub = '';
+    if(subjctSpace){
+      sub = getFirstLetter(subject)
+    }else{
+      sub = subject.charAt(0);
+    }
+    const EmpId = `${SFL}${FName}${sub}T`;
+    return EmpId.toUpperCase()
+}
+
+

@@ -5,11 +5,13 @@ import {useMutation, useQueryClient} from 'react-query'
 import axios from 'axios'
 import API_URL from '../../../../helper/APIHelper';
 import * as utils from '../../../../utils/utils'
+import * as helper from '../../../../utils/helper'
 import { useToasts } from 'react-toast-notifications';
 import useSingleTeacher from '../hooks/useSingleTeacher';
 import useSchoolLists from '../../school/hooks/useSchoolLists';
 import useCreateTeacher from '../hooks/useCreateTeacher';
 import useUpdateTeacher from '../hooks/useUpdateTeacher';
+import useSubjectList from '../../subject/hooks/useSubjectList';
 
 export default function CreateTeacher() {
     const history = useHistory();
@@ -24,6 +26,7 @@ export default function CreateTeacher() {
     const [loading, setLoading] = useState(false);
 
     const {data} = useSingleTeacher();
+    const {data:subjects} = useSubjectList();
 
     const [SingleTeacher, setSingleTeacher] = useState({});
 
@@ -46,14 +49,6 @@ export default function CreateTeacher() {
         setSingleTeacher(data)
     }
 
-    const queryClient = useQueryClient()
-    const options = {
-        headers: {
-            'Content-Type': 'Application/json',
-            'Authorization':'Bearer '+state.access_token
-        }
-    }
-
     const createMutation = useCreateTeacher();
     const updateMutation = useUpdateTeacher();
 
@@ -62,10 +57,20 @@ export default function CreateTeacher() {
     const saveTeacher = async (e) => {
         e.preventDefault();
         setLoading(true);
+        
+        const domainName = helper.getFilteredData(schools, '_id',params.school_id,'sub_domain');
+        const subject_name = params?.subject_name
+        
         if(params?.teacher_id){
+                let firstName = SingleTeacher?.name
+                let UID = helper.generateTeacherId(domainName, firstName, subject_name);
+                SingleTeacher.EmpID = UID
+                SingleTeacher.subject_id = params?.subject_id
+                SingleTeacher.subject_name = subject_name
                 await updateMutation.mutate(SingleTeacher);
         }else{
             formData.school_id = params.school_id ? params.school_id : ''
+
             if(formData.school_id == ''){
                 setLoading(false);
                 addToast('Please Select a School', { appearance: 'error',autoDismiss: true });
@@ -73,6 +78,11 @@ export default function CreateTeacher() {
                 setLoading(false);
                 addToast('Please Enter a valid 10 digit phone no', { appearance: 'error',autoDismiss: true });
             }else{
+                let firstName = formData?.name
+                let UID = helper.generateTeacherId(domainName, firstName, subject_name);
+                formData.EmpID = UID
+                formData.subject_id = params?.subject_id
+                formData.subject_name = subject_name
                 await createMutation.mutate(formData); 
             }
         } 
@@ -90,10 +100,22 @@ export default function CreateTeacher() {
         if(e.target.value != 999){
             if(params?.teacher_id){
                 setSingleTeacher({...SingleTeacher, [e.target.name]: e.target.value})
-                history.push(`/admin/teachers-management/update/${e.target.value}/${params.teacher_id}`)
+                history.push(`/admin/teachers-management/update/${e.target.value}/${params?.subject_id}/${params?.subject_name}/${params.teacher_id}`)
             }else{
                 setFormData({...formData, ['school_id']: e.target.value})
-                history.push(`/admin/teachers-management/create/${e.target.value}`)
+                history.push(`/admin/teachers-management/create/${e.target.value}/${params?.subject_id}/${params?.subject_name}`)
+            }
+        }
+    }
+    async function handleChangeTeacher(e){
+        const subject_name = e.target.options[e.target.selectedIndex].dataset.subject_name
+        if(e.target.value != 999){
+            if(params?.teacher_id){
+                setSingleTeacher({...SingleTeacher, [e.target.name]: e.target.value,['subject_name']:subject_name})
+                history.push(`/admin/teachers-management/update/${params?.school_id}/${e.target.value}/${subject_name}/${params.teacher_id}`)
+            }else{
+                setFormData({...formData, ['school_id']: e.target.value,['subject_name']:subject_name})
+                history.push(`/admin/teachers-management/create/${params?.school_id}/${e.target.value}/${subject_name}`)
             }
         }
     }
@@ -114,6 +136,9 @@ export default function CreateTeacher() {
                         })}
                     </select>
                 </div>
+                
+                
+
                 <div className="form-group">
                     <input 
                         type="text" 
@@ -123,7 +148,23 @@ export default function CreateTeacher() {
                         onChange={handleChange}
                         placeholder="Name"/>
                 </div>
-                
+                <div className="form-group">
+                    <select className="form-control" aria-label="Default select example" 
+                        name="teacher_subject" 
+                        onChange={handleChangeTeacher} 
+                        value={params?.subject_id}>
+                        <option value="999">Select Subject</option>
+                        {!isLoading && subjects?.map(subj => {
+                        return (
+                            <option 
+                                value={subj._id} 
+                                data-subject_name={utils.MakeSlug(subj?.subject_name)}
+                                key={subj._id}
+                            >{subj.subject_name}</option>
+                        )
+                        })}
+                    </select>
+                </div>
                 <div className="form-group">
                     <input 
                         type="text" 
@@ -201,8 +242,9 @@ export default function CreateTeacher() {
                 </div>
             
                 <div className="form-group flex">
-                    <button className={`btn btn-sm dark`}>
-                        {loading ? (
+                    <button className={`btn btn-sm dark`}
+                    disabled={(createMutation?.isLoading || updateMutation?.isLoading)}>
+                        {(createMutation?.isLoading || updateMutation?.isLoading) ? (
                             <>
                             <span className="fa fa-spinner mr-2"></span>
                             processing ....
