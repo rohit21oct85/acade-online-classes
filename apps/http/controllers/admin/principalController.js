@@ -193,14 +193,14 @@ const Login = async (req, res) => {
     }
 }
 const generateAccessToken = (user) => {
-    const accessTokenSecret = 'SHIVAMPARTS2021';
+    const accessTokenSecret = 'ACADEONLINE2021';
     return jwt.sign({ 
         id: user._id,  
         role: user.role 
     }, accessTokenSecret, {expiresIn: '30d'})
 }
 const generateRefreshToken = (user) => {
-    const refreshTokenSecret = 'SHIVAMPARTS2021';
+    const refreshTokenSecret = 'ACADEONLINE2021';
     return jwt.sign({
         id: user._id,   
         role: user.role
@@ -208,7 +208,7 @@ const generateRefreshToken = (user) => {
 }
 
 const RefreshToken = async (req,res) => {
-    const refreshTokenSecret = 'SHIVAMPARTS2021';
+    const refreshTokenSecret = 'ACADEONLINE2021';
     const refreshToken = req.body.token;
     if(refreshToken === null) return res.status(401).json({message: 'Invalid refresh token'});
     if(!refreshTokens.includes(refreshToken)) return res.status(401).json({message: 'Invalid refresh token'});

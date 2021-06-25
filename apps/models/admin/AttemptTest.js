@@ -22,6 +22,12 @@ const AttemptTestSchema = new mongoose.Schema({
     subject_name: {
             type: String,
     },
+    student_roll_no: {
+            type: String,
+    },
+    student_emp_id: {
+            type: String,
+    },
     questions:{
         type: Array,
     },
