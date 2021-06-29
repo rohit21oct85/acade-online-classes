@@ -19,7 +19,6 @@ const UnitTestSchema = new mongoose.Schema({
       subject_name: {
             type: String,
       },
-      
       test_duration: {
             type: String,
       },

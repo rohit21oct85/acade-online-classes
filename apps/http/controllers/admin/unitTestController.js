@@ -95,7 +95,7 @@ const ViewAllUnitTest = async (req, res) => {
 
     res.status(200).json({
       data: AllUnitTests,
-    }).sort({create_at: 1});
+    });
     
   } catch (error) {
     res.status(409).json({

@@ -40,17 +40,21 @@ const AssignTestSchema = new mongoose.Schema({
       subject_name: {
             type: String,
       },
-      
+      start_date:{
+            type: Date,
+      },
+      test_window:{
+            type: Number,
+      },
+      test_duration:{
+            type: Number,
+      },
       test_subjects: {
             type: Array,
       },
       test_type: {
             type: String,
       },
-      start_date: {
-            type: Date,
-      },
-
       status:{
         type: Boolean,
         default: false

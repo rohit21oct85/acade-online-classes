@@ -30,23 +30,31 @@ const getSubjects = async (req, res) => {
 };
 
 
-const getAssignedTests = async (req, res) => {
+const getAssignedTestsStudent = async (req, res) => {
     try{
+        
         // return res.send(req.body)
         let newArray = [];
         let newArray1 = [];
 
         const AssignedTests = await AssignTest.find(
             {
-                subject_id:req.params.subject_id,
+                // subject_id:req.params.subject_id,
                 school_id:req.params.school_id,
                 class_id:req.params.class_id,
                 assigned: true,
+                // $and: [
+                //         {
+                //             "start_date": { 
+                //                 $gte: new Date().toISOString()
+                //             }
+                //         }
+                //     ]
             },{__v: 0});
-
+        // console.log(AssignedTests)
         const attemptedTest = await AttemptTest.find(
             {
-                subject_id:req.params.subject_id,
+                // subject_id:req.params.subject_id,
                 school_id:req.params.school_id,
                 class_id:req.params.class_id,
                 student_id:req.body.student_id,
@@ -66,6 +74,8 @@ const getAssignedTests = async (req, res) => {
                                 class_name:item.class_name,
                                 status:item.status,
                                 subject_name:item.subject_name,
+                                start_date:item.start_date,
+                                test_window:item.test_window,
                             })
                         }
                     })
@@ -74,11 +84,11 @@ const getAssignedTests = async (req, res) => {
 
             const units = await UnitTest.find(
                 {
-                    subject_id:req.params.subject_id,
+                    // subject_id:req.params.subject_id,
                     class_id:req.params.class_id,
                     // $and: [
                     //     {
-                    //         "test_date": { 
+                    //         "start_date": { 
                     //             $gte: new Date().toISOString()
                     //         }
                     //     }
@@ -102,7 +112,6 @@ const getAssignedTests = async (req, res) => {
                             unit_id:it.unit_id,
                             unit_name:it.unit_name,
                             test_slug:it.test_slug,
-                            test_date:it.test_date,
                             total_question:it.total_question,
                             unit_table_id:it._id,
                             class_id: item.class_id,
@@ -113,6 +122,8 @@ const getAssignedTests = async (req, res) => {
                             test_id: item.test_id,
                             assigned: item.assigned,
                             assign_table_id: item._id,
+                            start_date:item.start_date,
+                            test_window:item.test_window,
                         })
                     }
                 })
@@ -199,52 +210,31 @@ const getTeacherSubject = async (req, res) => {
 
 const getAllAssignedTestsClassBased = async (req, res) => {
     try{
-        // const AssignTests = await AssignTest.aggregate([
-        //     {
-        //         "$project": {
-        //             "_id": {
-        //                 "$toString": "$_id"
-        //             },
-        //           "class_id": 1,
-        //           "class_name": 1,
-        //           "subject_id": 1,
-        //           "subject_name": 1,
-        //           "school_id": 1,
-        //           "test_id": 1,
-        //         }
-        //     },
-        //     {   $lookup:{
-        //                 from: 'UnitTest',
-        //                 localField: '_id',
-        //                 foreignField: 'test_id',
-        //                 as: 'unit_test'
-        //         }   },
-        //     {   $match:{
-        //             class_id: req.params.class_id,
-        //             subject_id:req.params.subject_id,
-        //             school_id:req.params.school_id,
-        //         }   },
-        // ])
-        // const AssignTests = await AssignTest.find({subject_id:req.params.subject_id,class_id:req.params.class_id,school_id:req.params.school_id},{__v: 0});
         const AssignedTests = await AssignTest.find(
             {
-                subject_id:req.params.subject_id,
+                // subject_id:req.params.subject_id,
                 school_id:req.params.school_id,
                 class_id:req.params.class_id,
                 assigned:false,
-            },{__v: 0});
-            
-        const newData = await UnitTest.find(
-            {
-                subject_id:req.params.subject_id,
-                class_id:req.params.class_id,
+                "test_subjects.subject_id": {
+                    $eq : req.params.subject_id
+                },
                 $and: [
                     {
-                        "test_date": { 
+                        "start_date": { 
                             $gte: new Date().toISOString()
                         }
                     }
                 ]
+            },{__v: 0});
+            
+        const newData = await UnitTest.find(
+            {
+                // subject_id:req.params.subject_id,
+                class_id:req.params.class_id,
+                "test_subjects.subject_id": {
+                    $eq : req.params.subject_id
+                },
             },{__v: 0});
 
             let newArray = [];
@@ -258,17 +248,17 @@ const getAllAssignedTestsClassBased = async (req, res) => {
                         unit_id:it.unit_id,
                         unit_name:it.unit_name,
                         test_slug:it.test_slug,
-                        test_date:it.test_date,
                         total_question:it.total_question,
                         unit_table_id:it._id,
                         class_id: item.class_id,
                         class_name: item.class_name,
                         school_id: item.school_id,
-                        subject_id: item.subject_id,
-                        subject_name: item.subject_name,
                         test_id: item.test_id,
                         assigned: item.assigned,
                         assign_table_id: item._id,
+                        test_window: item.test_window,
+                        start_date: item.start_date,
+                        test_subjects: item.test_subjects
                     })
                 }
             })
@@ -288,20 +278,25 @@ const getAllAssignedTests = async (req, res) => {
     try{ 
         const AssignedTests = await AssignTest.find(
             {
-                subject_id:req.params.subject_id,
+                "test_subjects.subject_id": {
+                    $eq : req.params.subject_id
+                },
                 school_id:req.params.school_id,
                 assigned:false,
-            },{__v: 0});
-        const newData = await UnitTest.find(
-            {
-                subject_id:req.params.subject_id,
                 $and: [
                     {
-                        "test_date": { 
+                        "start_date": { 
                             $gte: new Date().toISOString()
                         }
                     }
                 ]
+            },{__v: 0});
+        
+        const newData = await UnitTest.find(
+            {
+                "test_subjects.subject_id": {
+                    $eq : req.params.subject_id
+                },
             },{__v: 0});
         let newArray = [];
         AssignedTests.forEach(item=>{
@@ -314,17 +309,17 @@ const getAllAssignedTests = async (req, res) => {
                         unit_id:it.unit_id,
                         unit_name:it.unit_name,
                         test_slug:it.test_slug,
-                        test_date:it.test_date,
                         total_question:it.total_question,
                         unit_table_id:it._id,
                         class_id: item.class_id,
                         class_name: item.class_name,
                         school_id: item.school_id,
-                        subject_id: item.subject_id,
-                        subject_name: item.subject_name,
                         test_id: item.test_id,
                         assigned: item.assigned,
                         assign_table_id: item._id,
+                        test_window: item.test_window,
+                        start_date: item.start_date,
+                        test_subjects:item.test_subjects,
                     })
                 }
             })
@@ -453,7 +448,8 @@ const updatePrincipal = async (req, res) =>{
 
 const assignTestToStudent = async (req, res) =>{
     try {
-        await AssignTest.findOneAndUpdate({_id: req.params.id}, {$set: {"assigned":true}})
+        const d = new Date((typeof req.body.startDate === "string" ? new Date(req.body.startDate) : req.body.startDate).toLocaleString(undefined, {timeZone: 'Asia/Kolkata'}));
+        await AssignTest.findOneAndUpdate({_id: req.params.id}, {$set: {"assigned":true, "start_date": d, "test_window": req.body.testWindow,test_duration:req.body.testduration}})
                 .then(resp => {
                     return res.status(202).json({
                         message: "Test Assigned to Student Successfully"
@@ -483,11 +479,13 @@ const attemptTestByStudent = async (req, res) =>{
         const attempt = new AttemptTest({
             school_id: req.body.school_id,
             class_id: req.body.class_id,
-            subject_id: req.body.subject_id,
+            // subject_id: req.body.subject_id,
             student_id: req.body.user_id,
             test_id: req.body.id,
             student_name: req.body.name,
             questions: newData.test_question,
+            test_subjects:newData.test_subjects,
+            test_name:newData.test_name,
             // student_roll_no: student.roll_no,
         });    
         await attempt.save();
@@ -506,7 +504,7 @@ const attemptTestByStudent = async (req, res) =>{
 const getQuestions = async (req,res) => {
     const filter = {
         school_id :req.body.school_id,
-        subject_id:req.params.subject_id,
+        // subject_id:req.params.subject_id,
         student_id:req.body.student_id,
         test_id: req.params.test_id,
     }
@@ -515,7 +513,6 @@ const getQuestions = async (req,res) => {
     var filteredArray = data?.questions.filter(function(item){
         return !("answer" in item);
     });
-
     const question = filteredArray[Math?.floor(Math?.random() * filteredArray?.length)];
     const singleQuestion = await Questions.findOne({_id: question?.question_id},{answer:0})
     
@@ -529,7 +526,7 @@ const getQuestions = async (req,res) => {
 const saveAnswer = async (req,res) => {
     const filter = {
         school_id :req.body.school_id,
-        subject_id:req.params.subject_id,
+        // subject_id:req.params.subject_id,
         student_id:req.body.student_id,
         test_id: req.params.test_id,
     }
@@ -555,7 +552,7 @@ const saveAnswer = async (req,res) => {
         }  
     })
 
-    const assigntests = await AttemptTest.findOneAndUpdate(filter, {$set: {"questions": data.questions,"time_taken":req.body.time_taken}})
+    const assigntests = await AttemptTest.findOneAndUpdate(filter, {$set: {"questions": data.questions,"time_taken":req.body.time_taken,"completion_status":req.body.completion_status}})
     if(assigntests){
         return res.status(200).json({ 
             msg: "answer submitted successfully",
@@ -567,7 +564,7 @@ const saveAnswer = async (req,res) => {
 const getAllQuestions = async (req,res) => {
     const filter = {
         school_id :req.body.school_id,
-        subject_id:req.params.subject_id,
+        // subject_id:req.params.subject_id,
         student_id:req.body.student_id,
         test_id: req.params.test_id,
     }
@@ -581,12 +578,13 @@ const getAllQuestions = async (req,res) => {
 const getLastScore = async (req,res) => {
     const filter = {
         school_id :req.body.school_id,
-        subject_id:req.params.subject_id,
+        // subject_id:req.params.subject_id,
         student_id:req.body.student_id,
         class_id: req.body.class_id,
     }
     // const data = await AttemptTest.findOne(filter).sort({"created_at": -1}).limit(1)
     const result = await AttemptTest.findOne(filter).limit(1).sort({$natural:-1})
+    // console.log(result)
     let correctAnswers = 0;
     let wrongAnswers = 0;
     let totalQuestions = result?.questions?.length;
@@ -619,13 +617,24 @@ const getLastScore = async (req,res) => {
 }
 
 const getCumulativeScore = async (req,res) => {
-    const filter = {
-        school_id :req.body.school_id,
-        subject_id:req.params.subject_id,
-        student_id:req.body.student_id,
-        class_id: req.body.class_id,
+    let filter = {};
+    if(req.params.subject_id != "undefined"){
+        filter = {
+            school_id :req.body.school_id,
+            // subject_id:req.params.subject_id,
+            student_id:req.body.student_id,
+            class_id: req.body.class_id,
+            "test_subjects.subject_id": {
+                $eq : req.params.subject_id
+            }
+        }
+    }else{
+        filter = {
+            school_id :req.body.school_id,
+            student_id:req.body.student_id,
+            class_id: req.body.class_id,
+        }
     }
-    // const data = await AttemptTest.findOne(filter).sort({"created_at": -1}).limit(1)
     const result = await AttemptTest.find(filter)
     let totalTests = result?.length;
     let correctAnswers = 0;
@@ -638,6 +647,7 @@ const getCumulativeScore = async (req,res) => {
         obj.created_at = item.create_at;
         obj.time_taken = item.time_taken;
         obj.student_name = item.student_name;
+        obj.test_name = item.test_name
         item?.questions?.map((it,key)=>{
             if(it.answer != undefined ){
                 if(it.answer == it['correct_answer'] && it.option == it['correct_option']){
@@ -655,17 +665,6 @@ const getCumulativeScore = async (req,res) => {
         totalMarks = correctAnswers + wrongAnswers;
         newArray.push(obj);
     })
-    // cScore= (marksScored/totalMarks).toFixed(2);
-    // cScorePercentage= (marksScored/totalMarks *100).toFixed(2);
-    // newArray.push({cScore:cScore,cScorePercentage:cScorePercentage})
-     // let data = {
-    //     totalTests: totalTests,
-    //     marksScored: marksScored,
-    //     totalMarks: totalMarks,
-    //   
-    // }
-
-
     if(!result){
         data = null
     }
@@ -675,7 +674,7 @@ const getCumulativeScore = async (req,res) => {
 }
 
 const getResult = async (req,res) => {
-    const result = await AttemptTest.findOne({_id: req.params.attempt_id});
+    const result = await AttemptTest.findOne({_id: req?.params?.attempt_id});
     let correctAnswers = 0;
     let wrongAnswers = 0;
     let totalQuestions = result?.questions?.length;
@@ -703,9 +702,12 @@ const getResult = async (req,res) => {
 const getStudentWiseReport = async (req,res) => {
     const filter = {
         school_id :req.params.school_id,
-        subject_id:req.params.subject_id,
+        // subject_id:req.params.subject_id,
         class_id: req.params.class_id,
         test_id: req.params.test_id,
+        "test_subjects.subject_id": {
+            $eq : req.params.subject_id
+        },
     }
     let correctAnswers = 0;
     let wrongAnswers = 0;
@@ -738,11 +740,17 @@ const getStudentWiseReport = async (req,res) => {
 const getAssignedTestsTeacher = async(req, res) => {
     const filter = {
         school_id:req.params.school_id,
-        subject_id:req.params.subject_id,
+        "test_subjects.subject_id": {
+            $eq : req.params.subject_id
+        },
         class_id:req.params.class_id,
         assigned:true,
     }
-    const assignedTest = await AssignTest.find(filter);
+    const assignedTest = await AssignTest.find(filter).lean();
+    await Promise.all(assignedTest.map(async (item) => {
+        const data = await UnitTest.findOne({_id:item.test_id},{test_name:1})
+        item.test_name = data.test_name;
+    }))
     return res.status(200).json({ 
         data: assignedTest, 
     }); 
@@ -798,7 +806,7 @@ const getAllSubjects = async (req, res) => {
 }
 module.exports = {
     getSubjects,
-    getAssignedTests,
+    getAssignedTestsStudent,
     getTestQuestions,
     getASingleQuestions,
     getAllClasses,
