@@ -7,6 +7,7 @@ const TeacherSchema = new mongoose.Schema({
     },
     EmpID: {
         type: String,
+        uppercase: true
     },
     subject_id: {
         type: String,

@@ -22,12 +22,14 @@ export default function useUploadTeacher(formDataUpload) {
             }
       }      
       const { addToast } = useToasts();
+      const key = params.school_id ? `teachers-${params.school_id}` : `teachers`
+
       return useMutation(formDataUpload => {
             return axios.post(`${API_URL}v1/teacher/upload`, formDataUpload, options)
         },{
             onSuccess: () => {
-                queryClient.invalidateQueries('teachers')
-                setLoading(false);
+                queryClient.invalidateQueries(`${key}`)
+                history.push(`/admin/teachers-management`)
                 addToast('Teacher added successfully', { appearance: 'success', autoDismiss: true });
             }
         });

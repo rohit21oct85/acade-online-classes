@@ -1,5 +1,2 @@
-first_name,last_name,phone_no
-dawood,khan,9898989876
-asir,khan,9797979797
-sameer ,koul,9979797977
-rouf ,salafi,9546463334
+title,name,mobile,email,address,city,state,pincode,status
+Ms,Shivani Kapoor,857454623,shivani.kapoor@yopmail.com,#12 block road,"Sctor 2, noida",Uttar Pradesh,201301,active

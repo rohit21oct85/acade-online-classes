@@ -57,6 +57,7 @@ export default function UploadPrincipals() {
         onSuccess: () => {
             queryClient.invalidateQueries(`principals`)
             setLoading(false);
+            history.push(`/admin/principal-management/`)
             addToast('Principal added successfully', { appearance: 'success', autoDismiss: true });
         }
     });
@@ -74,7 +75,7 @@ export default function UploadPrincipals() {
                 history.push(`/admin/principal-management/update/${e.target.value}/${params?.principal_id}`)
             }else{
                 setFormData({...formData, ['school_id']: e.target.value})
-                history.push(`/admin/principal-management/create/${e.target.value}`)
+                history.push(`/admin/principal-management/${params?.page_type}/${e.target.value}`)
             }
         }
     }
@@ -83,7 +84,7 @@ export default function UploadPrincipals() {
         <>
             <p className="form-heading">
             <span className="fa fa-plus-circle mr-2"></span>Upload Principals
-            <a href="/sampledata/principals.csv" title="download sample file" className="btn-sm pull-right dark bg-success br-15" download>
+            <a href="/sampledata/principal.csv" title="download sample file" className="btn-sm pull-right dark bg-success br-15" download>
                <span className="fa fa-download"></span>
             </a>
             </p>

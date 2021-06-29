@@ -38,6 +38,20 @@ export default function AllSchools({update}) {
                                                 {school?.school_name}
                                           </div>
                                     </div>
+                                    <div className="flex">
+                                          <div className="name-label">
+                                                      Domain: 
+                                                </div>
+                                          <div className="name-main">
+                                                <a 
+                                                data-url={'acade-school.acadelearn.com'}
+                                                href={`https://${school?.sub_domain}.acadelearn.com`}
+                                                target="_blank"
+                                                >
+                                                 Visit: {school?.school_name}
+                                                </a>
+                                          </div>
+                                    </div>
                                     <div className="admin-name"> 
                                           <div className="name-label">
                                                 Pincode: 
@@ -68,10 +82,14 @@ export default function AllSchools({update}) {
                               <div className="col-md-12 pl-0 pr-0 pb-2">
                                     <hr className="mb-1"/>
                                     {update === true && (<div className="pl-2 pr-2">
-                                          <span className="fa fa-pencil text-warning mr-2 pointer" 
+                                          <button className="btnb tn-sm dark bg-success"
                                           onClick={e => {
                                                 history.push(`/admin/school-management/update/${school?._id}`)
-                                          }}></span>
+                                          }}>
+                                          <span className="fa fa-pencil text-warning mr-2" 
+                                          ></span>
+                                          Edit
+                                          </button>
                                           
                                     </div>)}
                               </div>

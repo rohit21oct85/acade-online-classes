@@ -189,6 +189,10 @@ const getFromBetween = {
     }
 };
 
+function slitDataContent(string, delimeter){
+    return string.split(delimeter)[0];
+}
+
 const uploadQuestion = async (req, res) => {
 const data = req.body;
 let FinalData = [];
@@ -210,6 +214,7 @@ try {
 docxParser.parseDocx(req.file.path, function(data){
     let finalArray = []
     let questionArray = data.split("Question:");
+    let desSubConcept;
     questionArray.forEach( question => {
 
         let QuestionType = decode(question).split('Question Type:').pop().split('Question Variety:')[0];
@@ -221,19 +226,22 @@ docxParser.parseDocx(req.file.path, function(data){
         let Difficulty = decode(question).split('Difficulty:').pop().split('Expected Time to Solve:')[0];
         let desDifficulty = decode(Difficulty).trim().replace(/\r?\n|\r/g, "");
         
-        let ExpectedTime = decode(question).split('Expected Time to Solve:').pop().split('Topic/Chapter Name:')[0];
+        let ExpectedTime = decode(question).split('Expected Time to Solve:').pop().split('Topic:')[0];
         let desExpectedTime = decode(ExpectedTime).trim().replace(/\r?\n|\r/g, "");
         
-        let ChapterName = decode(question).split('Topic/Chapter Name:').pop().split('Concept Name:')[0];
+        let ChapterName = decode(question).split('Topic:').pop().split('Concept Name:')[0];
         let desChapterName = decode(ChapterName).trim().replace(/\r?\n|\r/g, "");
-
-        let Concepts = decode(question).split('Concept Name:').pop().split('Sub-Concept:')[0];
+        
+        let Concepts = decode(question).split('Concept Name:').pop().split('Sub Concept:')[0];
         let desConcepts = decode(Concepts).trim().replace(/\r?\n|\r/g, "");
         
-        let SubConcept = decode(question).split('Sub-Concept:').pop().split('Concept-Field:')[0];
-        let desSubConcept = decode(SubConcept).trim().replace(/\r?\n|\r/g, "");
+        let SubConcept = decode(question).split('Sub Concept:').pop().split('Concept Field:')[0];
+        console.log("SC ",SubConcept);
+
+        desSubConcept = decode(SubConcept).replace(/\r?\n|\r/g, "");
+        desSubConcept = slitDataContent(desSubConcept, "Concept Field:");
         
-        let ConceptField = decode(question).split('Concept-Field:').pop().split('Question Stem:')[0];
+        let ConceptField = decode(question).split('Concept Field:').pop().split('Question Stem:')[0];
         let desConceptField = decode(ConceptField).trim().replace(/\r?\n|\r/g, "");
         
         let QuestionStem = decode(question).split('Question Stem:').pop().split('Options:')[0];
@@ -266,7 +274,6 @@ docxParser.parseDocx(req.file.path, function(data){
         let ExamName = decode(question).split('Exam Name:').pop().split('Unit/Section Name:')[0];
         let desExamName = decode(ExamName).replace(/\r?\n|\r/g, "");
 
-        
         let Unit_Section_Name = decode(question).split('Unit/Section Name:').pop().split('Subject Name:')[0];
         let desUnit_Section_Name = decode(Unit_Section_Name).replace(/\r?\n|\r/g, "");
         

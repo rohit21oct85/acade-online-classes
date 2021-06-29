@@ -123,6 +123,7 @@ const addFields = async (req, res) => {
 }
 const uploadSchool = async(req, res) => {
     const data = req.body;
+    let school_logo = "1EhbHmUQv7AD1O6EWWlWS6ujOMuuReXfJ"
     let FinalData = [];
     try {
         let results = [];
@@ -133,9 +134,9 @@ const uploadSchool = async(req, res) => {
             .on('end', () => {
                 results.forEach(school => {
                     FinalData.push({ 
-                        school_name: school.school_name, 
-                        sub_domain: school.sub_domain, 
-                        school_logo: school.school_logo, 
+                        school_name: school.School_name, 
+                        sub_domain: school.domain, 
+                        school_logo: school_logo, 
                         address: school.address, 
                         city: school.city, 
                         state: school.state, 

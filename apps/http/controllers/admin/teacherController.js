@@ -1,5 +1,6 @@
 const Teacher = require('../../../models/admin/Teacher');
 const School = require('../../../models/admin/School');
+const Subject = require('../../../models/admin/Subject')
 const csv = require('csv-parser')
 const fs = require('fs')
 const jwt = require('jsonwebtoken');
@@ -85,11 +86,25 @@ const DeleteTeacher = async (req, res) =>{
     }
 };
 
-
+function getSubjectID(arr, name){
+    const data = arr.filter(el => el.subject_name === name);
+    return data && data[0]._id;
+}
+function getSubjectFirstLetetr(subject_name){
+    let subj ;
+    if(subject_name.match(" ")){
+        let fSubj = subject_name.split(" ")[0].charAt(0);
+        let lSubj = subject_name.split(" ")[1].charAt(0);
+        subj = fSubj+lSubj;
+    }else{
+        subj = subject_name.charAt(0);
+    }
+    return subj;
+}
 const uploadTeacher = async(req, res) => {
     const data = req.body;
-    const hashedPassword = await bcrypt.hash(req.body.password, 10)
-    // console.log(req.body.subject_id)
+    const hashedPassword = await bcrypt.hash('password', 10)
+    let Subjects = await Subject.find({});
     let FinalData = [];
     try {
         let results = [];
@@ -98,13 +113,19 @@ const uploadTeacher = async(req, res) => {
             .pipe(csv())
             .on('data', (data) => results.push(data))
             .on('end', () => {
-                results.forEach(teacher => {
+                results.forEach(async teacher => {
+                    let firstName;
+                    if(teacher.name.match(" ")){
+                        firstName = teacher.name.split(" ")[0];
+                    }else{
+                        firstName = teacher.name;
+                    }
+
                     FinalData.push({ 
                         name: teacher.name, 
-                        EmpID: teacher.EmpID, 
-                        subject: teacher.subject, 
-                        class: teacher.class, 
-                        section: teacher.section, 
+                        EmpID: `${req.body.short}${firstName}${getSubjectFirstLetetr(teacher.subject)}T`, 
+                        subject_name: teacher.subject, 
+                        subject_id: getSubjectID(Subjects, teacher?.subject), 
                         mobile: teacher.mobile, 
                         email: teacher.email, 
                         password: hashedPassword, 
@@ -112,12 +133,10 @@ const uploadTeacher = async(req, res) => {
                         city: teacher.city, 
                         state: teacher.state, 
                         pincode: teacher.pincode, 
-                        first_name: teacher.first_name, 
-                        last_name: teacher.last_name, 
-                        phone_no: teacher.phone_no, 
                         school_id:req.body.school_id
                     })
                 })
+                // console.log(FinalData);
                 otherFunction(res, FinalData, function() {
                     fs.unlinkSync(req.file.path)
                 })

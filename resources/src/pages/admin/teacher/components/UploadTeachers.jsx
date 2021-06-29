@@ -1,9 +1,10 @@
 import React, {useState, useContext, useEffect} from 'react'
-import {useHistory} from 'react-router-dom'
+import {useHistory, useParams} from 'react-router-dom'
 import {AuthContext} from '../../../../context/AuthContext';
 import {useMutation, useQueryClient} from 'react-query'
 import axios from 'axios'
 import API_URL from '../../../../helper/APIHelper';
+import * as helper from '../../../../utils/helper'
 import * as utils from '../../../../utils/utils'
 import { useToasts } from 'react-toast-notifications';
 import useSchoolLists from '../../school/hooks/useSchoolLists';
@@ -11,7 +12,7 @@ import useUploadTeacher from '../hooks/useUploadTeacher';
 
 export default function UploadTeachers() {
     const [loading, setLoading] = useState(false);
-
+    const params = useParams();
     const [btnDisabled, setBtnDisbaled] = useState(true)
 
     const {state} = useContext(AuthContext);
@@ -55,17 +56,20 @@ export default function UploadTeachers() {
 
     const uploadMutation = useUploadTeacher(formDataUpload);
     const handleChange = (e) => {
+        history.push(`/admin/teachers-management/${params?.page_type}/${e.target.value}`)
         setSchool(e.target.value)
         setSelectedSchool(true);
     }
     const uploadFile = async(e) => {
         e.preventDefault();
-        if(!selectedSchool){
+        if(!params?.school_id){
             addToast('Please Select a School', { appearance: 'error', autoDismiss: true });
             return;
         }
+        let short = helper.getFilteredData(schools, '_id', params?.school_id, 'short');
         formDataUpload.append('file',file);
-        formDataUpload.append('school_id',school);
+        formDataUpload.append('school_id',params?.school_id);
+        formDataUpload.append('short',short);
         await uploadMutation.mutate(formDataUpload);
     }
 
@@ -80,11 +84,13 @@ export default function UploadTeachers() {
             <hr className="mt-1"/>
             <form onSubmit={uploadFile} method="POST" encType="multipart/form-data">
                 <div className="form-group">
-                    <select className="form-control" aria-label="Default select example" name="school_id" onChange={handleChange}>
+                    <select className="form-control" aria-label="Default select example" name="school_id" 
+                    value={params?.school_id}
+                    onChange={handleChange}>
                         <option>Select School</option>
                         {!isLoading && schools?.map(school => {
                         return (
-                            <option value={school._id} key={school._id}>{school.name}</option>
+                            <option value={school._id} key={school._id}>{school.school_name}</option>
                         )
                         })}
                     </select>

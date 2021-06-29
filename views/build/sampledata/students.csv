@@ -1,3 +1,6 @@
-first_name,last_name,guardian_name,guardian_phone
-sam,ullah,mufti,9796563123
-waseem,abdullah,abdullah,9898898888
+name,class,section,roll_no,mobile,email,address,city,state,pincode,status
+Rohi Singh,8,A,1,9954900899,rohit.singh8@gmail.com,#12 block road,"Sctor 2, noida",Uttar Pradesh,201301,active
+Shivani Sharma,8,A,2,9954900900,shivani.sharma8@gmail.com,#12 block road,"Sctor 2, noida",Uttar Pradesh,201301,active
+Amit Kumar,8,A,3,9954900901,amit.kumar8@gmail.com,#12 block road,"Sctor 2, noida",Uttar Pradesh,201301,active
+Sumit Kumar,8,A,4,9954900902,sumit.kumar8@gmail.com,#12 block road,"Sctor 2, noida",Uttar Pradesh,201301,active
+Sanjay,8,A,5,9954900903,sanjay8@gmail.com,#12 block road,"Sctor 2, noida",Uttar Pradesh,201301,active

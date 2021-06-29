@@ -7,8 +7,6 @@ import {AuthContext} from '../../../../context/AuthContext';
 import { useToasts } from 'react-toast-notifications';
 import React, {useState, useContext} from 'react'
 import useDeleteTeacher from '../hooks/useDeleteTeacher';
-import * as helper from '../../../../utils/helper'
-
 
 export default function AllTeachers({update, Delete}) {
 
@@ -39,6 +37,11 @@ export default function AllTeachers({update, Delete}) {
         await deleteMutation.mutate(id)
     }
 
+    function getSchoolName(arr, id){
+        let data = Array.from(arr)?.filter(el => el?._id === id);
+        return data && data[0].school_name;
+    }
+
     return (
         <>
         <p className="form-heading">
@@ -59,8 +62,8 @@ export default function AllTeachers({update, Delete}) {
                         </tr>
                     </thead>
                     <tbody>
-                        {data?.map( (item,key) => { 
-                            let school_name = helper.getFilteredData(schools,'_id', item?.school_id, 'school_name')
+                        {data?.map( (item,key) => {
+                            let school_name = getSchoolName(schools, item?.school_id);
                             return (
                                 <tr key={item?._id}>
                                 <th scope="row">{item.EmpID}</th>

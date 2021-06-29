@@ -72,7 +72,7 @@ export default function UploadSchools() {
             <p className="form-heading">
             <span className="fa fa-plus-circle mr-2"></span>Upload Schools</p>
             <hr className="mt-1"/>
-            <a href="/sampledata/schools.csv" download>
+            <a href="/sampledata/school.csv" download>
             Download Sample File
             </a>
             <hr className="mt-1"/>
