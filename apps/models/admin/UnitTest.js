@@ -26,9 +26,6 @@ const UnitTestSchema = new mongoose.Schema({
       unit_name: {
             type: String,
       },
-      test_date: {
-            type: String,
-      },
       test_duration: {
             type: String,
       },
