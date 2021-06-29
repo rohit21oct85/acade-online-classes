@@ -484,6 +484,7 @@ const attemptTestByStudent = async (req, res) =>{
             test_id: req.body.id,
             student_name: req.body.name,
             questions: newData.test_question,
+            test_subjects:newData.test_subjects,
             // student_roll_no: student.roll_no,
         });    
         await attempt.save();
@@ -619,9 +620,12 @@ const getCumulativeScore = async (req,res) => {
     if(req.params.subject_id != "undefined"){
         filter = {
             school_id :req.body.school_id,
-            subject_id:req.params.subject_id,
+            // subject_id:req.params.subject_id,
             student_id:req.body.student_id,
             class_id: req.body.class_id,
+            "test_subjects.subject_id": {
+                $eq : req.params.subject_id
+            }
         }
     }else{
         filter = {
@@ -630,7 +634,6 @@ const getCumulativeScore = async (req,res) => {
             class_id: req.body.class_id,
         }
     }
-    // const data = await AttemptTest.findOne(filter).sort({"created_at": -1}).limit(1)
     const result = await AttemptTest.find(filter)
     let totalTests = result?.length;
     let correctAnswers = 0;
@@ -661,17 +664,6 @@ const getCumulativeScore = async (req,res) => {
         totalMarks = correctAnswers + wrongAnswers;
         newArray.push(obj);
     })
-    // cScore= (marksScored/totalMarks).toFixed(2);
-    // cScorePercentage= (marksScored/totalMarks *100).toFixed(2);
-    // newArray.push({cScore:cScore,cScorePercentage:cScorePercentage})
-     // let data = {
-    //     totalTests: totalTests,
-    //     marksScored: marksScored,
-    //     totalMarks: totalMarks,
-    //   
-    // }
-
-
     if(!result){
         data = null
     }
@@ -709,9 +701,12 @@ const getResult = async (req,res) => {
 const getStudentWiseReport = async (req,res) => {
     const filter = {
         school_id :req.params.school_id,
-        subject_id:req.params.subject_id,
+        // subject_id:req.params.subject_id,
         class_id: req.params.class_id,
         test_id: req.params.test_id,
+        "test_subjects.subject_id": {
+            $eq : req.params.subject_id
+        },
     }
     let correctAnswers = 0;
     let wrongAnswers = 0;
@@ -744,7 +739,9 @@ const getStudentWiseReport = async (req,res) => {
 const getAssignedTestsTeacher = async(req, res) => {
     const filter = {
         school_id:req.params.school_id,
-        subject_id:req.params.subject_id,
+        "test_subjects.subject_id": {
+            $eq : req.params.subject_id
+        },
         class_id:req.params.class_id,
         assigned:true,
     }
