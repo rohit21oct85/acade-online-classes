@@ -34,6 +34,15 @@ const AttemptTestSchema = new mongoose.Schema({
     time_taken:{
         type: Number,
     },
+    completion_status:{
+        type: String,
+    },
+    test_subjects :{
+            type: Array,
+    },
+    test_name:{
+            type:String,
+    },
     status:{
         type: Boolean,
         default: false
