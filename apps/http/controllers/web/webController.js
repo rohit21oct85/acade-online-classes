@@ -448,8 +448,10 @@ const updatePrincipal = async (req, res) =>{
 
 const assignTestToStudent = async (req, res) =>{
     try {
-        const d = new Date((typeof req.body.startDate === "string" ? new Date(req.body.startDate) : req.body.startDate).toLocaleString(undefined, {timeZone: 'Asia/Kolkata'}));
-        await AssignTest.findOneAndUpdate({_id: req.params.id}, {$set: {"assigned":true, "start_date": d, "test_window": req.body.testWindow,test_duration:req.body.testduration}})
+        // const d = new Date((typeof req.body.startDate === "string" ? new Date(req.body.startDate) : req.body.startDate).toLocaleString(undefined, {timeZone: 'Asia/Kolkata'}));
+        const as = await AssignTest.findOne({_id: req.params.id})
+        const testWindow = req.body.testWindow != null ? req.body?.testWindow : as.test_window
+        await AssignTest.findOneAndUpdate({_id: req.params.id}, {$set: {"assigned":true, "start_date": req.body.startDate,test_window :testWindow ,test_duration:req.body.testduration}})
                 .then(resp => {
                     return res.status(202).json({
                         message: "Test Assigned to Student Successfully"
