@@ -6,11 +6,16 @@ import AllAssignedTest from './components/AllAssignedTest'
 
 import useModule from '../../../hooks/useModule';
 import useAccess from '../../../hooks/useAccess';
+import useClassList from '../class/hooks/useClassList';
+import useSchoolLists from '../school/hooks/useSchoolLists';
 
 export default function AssignTests() {
     const params = useParams();
     const history = useHistory();
     const accessUrl = useModule();
+    const {data: SClass}     = useClassList()
+    const {data: schools}    = useSchoolLists();
+
     useEffect(checkPageAccessControl,[accessUrl]);
     function checkPageAccessControl(){
         if(accessUrl === false){
@@ -41,22 +46,61 @@ export default function AssignTests() {
                                 <span className="fa fa-dashboard"></span>
                             </button>
                             
-                            <button className="btn btn-sm dark ml-2" onClick={e => { history.push(`/admin/assign-test/create/`)}}>
+                            <button className="btn btn-sm dark ml-2" onClick={e => { history.push(`/admin/assign-test/create/${params?.school_id}/${params?.class_id}`)}}>
                                 <span className="bi bi-assign"></span>
                                 Assign New Test
+                            </button>
+                            <button className="btn btn-sm dark ml-2" onClick={e => { history.push(`/admin/assign-test/view/${params?.school_id}/${params?.class_id}`)}}>
+                                <span className="bi bi-assign"></span>
+                                View Assign Test
                             </button>
 
                         </div>
                     </div>
+                    
+                    <div className="dash-con-heading">
+                        <div className="col-md-12 row pl-0">
+                        <div className="col-md-2">
+                        <select className="form-control"
+                        value={params?.school_id}
+                        onChange={e => {
+                            history.push(`/admin/assign-test/${params?.page_type}/${e.target.value}`)
+                        }}>
+                        <option value="">Selct School</option>      
+                        {schools?.map(school => 
+                            <option value={school?._id}>{school?.school_name}</option>
+                        )}
+                        </select>
+                        </div>
+                            <div className="col-md-2">
+                            <select className="form-control"
+                                value={params?.class_id}
+                                onChange={e => {
+                                        history.push(`/admin/assign-test/${params?.page_type}/${params?.school_id}/${e.target.value}`)
+                                }}
+                                >
+                                        <option className="_">Classess</option>
+                                        {SClass?.map(scl => 
+                                            <option value={scl?._id} key={scl?._id}>{scl?.class_name}</option>
+                                        )}
+                                </select>
+                            </div>
+                            
+
+                        </div>
+                    </div>
+
                     <div className="clearfix"></div>
                     <div className="dash-cont-start">
                         <div className="row">
-                            <div className="col-md-9">
+                            <div className="col-md-12">
                                 { (create === true || update === true || upload === true)  &&  (params.page_type === 'create' ||params.page_type === 'update') && <CreateAssignTest />  }
                             </div>
-                            <div className={`${(params?.page_type === 'create' || params?.page_type === 'update' || params?.page_type === 'upload') ? 'col-md-3':'col-md-12'}`}>
+                            {params?.page_type === 'view' && (
+                            <div className={`${(params?.page_type === 'view') ? 'col-md-12':'col-md-12'}`}>
                                 <AllAssignedTest update={update} Delete={Delete}/>
                             </div>
+                            )}
 
                         </div>
                     </div>    

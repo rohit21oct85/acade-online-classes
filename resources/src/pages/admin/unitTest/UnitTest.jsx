@@ -33,7 +33,7 @@ export default function ModuleList() {
             <div className="main-area-all">
                 <div className="dashboard_main-container">
                     <div className="dash-main-head">
-                        <h2>Module List</h2>
+                        <h2>Unit Test</h2>
                     </div>
                     <div className="dash-con-heading">
                         <div className="col-md-12 row">
@@ -45,20 +45,16 @@ export default function ModuleList() {
                                 onClick={ e => {
                                     history.push(`/admin/manage-unit-test/create`)
                                 }}>
-                                    <span className="fa fa-plus mr-2"></span>Create Unit Test                                </button>
+                                <span className="fa fa-plus mr-2"></span>Create Unit Test 
+                                </button>
                             )}
                         </div>
                     </div>
-                    <div className="clearfix"></div>
                     <div className="dash-cont-start">
                         <div className="row">
-                            <div className="col-md-8 pr-0">
-                                { (create === true || update === true || upload === true)  &&  (params.page_type === 'create' ||params.page_type === 'update' || params.page_type === 'upload') && <CreateTest />  }
+                            <div className="col-md-12 pr-0">
+                                {(create === true || update === true || upload === true)  &&  (params.page_type === 'create' || params.page_type === 'update' || params.page_type === 'upload') && <CreateTest />  }
                             </div>
-                            <div className={`${(params?.page_type === 'create' || params?.page_type === 'update' || params?.page_type === 'upload') ? 'col-md-4 pr-0':'col-md-12'}`}>
-                                <AllUnitTests update={update} Delete={Delete}/>
-                            </div>
-
                         </div>
                     </div>    
                 </div>

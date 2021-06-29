@@ -1,14 +1,14 @@
 import React,{useEffect, useState} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
-import { romanize } from '../../../utils/helper';
+import { romanize, getDateValue } from '../../../utils/helper';
 
 import useModule from '../../../hooks/useModule';
 import useAccess from '../../../hooks/useAccess';
 import useClassList from '../class/hooks/useClassList';
 import useClassSubjectList from '../../../hooks/classSubjectMapping/useClassSubjectList';
-import useViewAllUnitTests from './hooks/useViewAllUnitTests';
 import useDeleteUnitTest from './hooks/useDeleteUnitTest';
 import useUnitList from '../units/hooks/useUnitList';
+import useUnitTestList from './hooks/useUnitTestList';
 
 
 export default function ViewAllTest() {
@@ -36,10 +36,8 @@ export default function ViewAllTest() {
     }
 
     const {data:sClasses} = useClassList();
-    const {data:subjects} = useClassSubjectList();
-    const {data:units }   = useUnitList()
-    
-    const {data:unitTests} = useViewAllUnitTests();
+    const {data:unitTests} = useUnitTestList();
+
     const [formData, setFormData]    = useState({});
 
     const deleteMutation = useDeleteUnitTest(formData);
@@ -84,22 +82,6 @@ export default function ViewAllTest() {
                                       )
                                 })}
                               </select>
-                              <select className="form-control col-md-2 ml-2"
-                              value={params?.subject_id}
-                              onChange={e => {
-                                    if(e.target.value === '_'){
-                                          history.push(`/admin/view-all-test/${params?.class_id}`)                          
-                                    }else{
-                                        history.push(`/admin/view-all-test/${params?.class_id}/${e.target.value}`)                          
-                                    }
-                              }} >
-                                <option value="_">Subject</option>    
-                                {subjects?.map(subject => {
-                                      return(
-                                          <option value={subject?.subject_id}>{subject?.subject_name}</option>
-                                      )
-                                })}
-                              </select>
                               
                         </div>
                     </div>
@@ -110,14 +92,26 @@ export default function ViewAllTest() {
                                 height: '500px', overflow: 'hidden scroll'
                             }}>
                               <div className="col-md-12 row table-bordered ml-2 mr-2">
-                                    <div className="col-md-6 mt-2 mb-2 pl-0"><b>Unit Name</b></div>
-                                    <div className="col-md-6 mt-2 mb-2 pl-0"><b>Total Test</b></div>
+                                    <div className="col-md-3 mt-2 mb-2 pl-0"><b>Test Name</b></div>
+                                    <div className="col-md-2 mt-2 mb-2 pl-0"><b>Total Question</b></div>
+                                    <div className="col-md-1 mt-2 mb-2 pl-0"><b>Duration</b></div>
+                                    <div className="col-md-2 mt-2 mb-2 pl-0"><b>Test Type</b></div>
+                                    <div className="col-md-2 mt-2 mb-2 pl-0"><b>Test Subject</b></div>
                               </div>    
                                 {unitTests?.map(unit => {
+                                    let subjects = '';
+                                    if(unit?.test_type === 'combine-test'){
+                                        subjects = Array.prototype.map.call(unit?.test_subjects, function(item) { return item.subject_name; }).join(",");
+                                    }else{
+                                        subjects = unit?.subject_name
+                                    }
                                     return (
                                         <div className="col-md-12 row table-bordered ml-2 mr-2 pt-0 pb-0">
-                                          <div className="col-md-6 mt-1 mb-1 pl-0"><b>{unit?._id?.unit_name}</b></div>
-                                          <div className="col-md-6 mt-1 mb-1 pl-0"><b>{unit?.count}</b></div>
+                                          <div className="col-md-3 mt-1 mb-1 pl-0"><b>{unit?.test_name}</b></div>
+                                          <div className="col-md-2 mt-1 mb-1 pl-0"><b>{unit?.total_question}</b></div>
+                                          <div className="col-md-1 mt-1 mb-1 pl-0"><b>{unit?.test_duration} Sec</b></div>
+                                          <div className="col-md-2 mt-1 mb-1 pl-0"><b>{unit?.test_type === 'combine-test' ? 'combine-test': 'single-test'}</b></div>
+                                          <div className="col-md-2 mt-1 mb-1 pl-0"><b>{subjects}</b></div>
                                         </div>
                                     )
                                 })}

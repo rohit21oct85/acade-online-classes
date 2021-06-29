@@ -1,3 +1,4 @@
+const { now } = require("mongoose");
 const UnitTest = require("../../../models/admin/UnitTest");
 
 const CreateUnitTest = async (req, res) => {
@@ -72,16 +73,16 @@ const ViewUnitTest = async (req, res) => {
 const ViewAllUnitTest = async (req, res) => {
   try {
     let filter = {};
-    if (req.params?.subject_id && req.params?.class_id && req.params?.unit_id) {
+    if (req.params?.class_id) {
       filter = {
-        class_id: req.params?.class_id,
-        subject_id: req.params?.subject_id,
-        unit_id: req.params?.unit_id,
+        class_id: req.params?.class_id
       };
     }
     const AllUnitTests = await UnitTest.find(filter,{
+          _id:1,
           test_name: 1, 
           class_name: 1, 
+          test_subjects: 1,
           subject_name: 1, 
           unit_name: 1, 
           test_slug: 1,
@@ -89,58 +90,13 @@ const ViewAllUnitTest = async (req, res) => {
           test_window: 1,
           test_duration: 1,
           total_question: 1,
+          test_type: 1,
       },{__v:0,test_question: 0 });
-    res.status(200).json({
-      data: AllUnitTests,
-    });
-  } catch (error) {
-    res.status(409).json({
-      message: "Error occured",
-      errors: error.message,
-    });
-  }
-};
-const ViewAllCreatedTest = async (req, res) => {
-  try {
-    let filter = {};
-    if (req.params?.subject_id && req.params?.class_id) {
-      filter = {
-        class_id: req.params?.class_id,
-        subject_id: req.params?.subject_id
-      };
-    }
-    // const AllUnitTests = await UnitTest.find(filter,{
-    //       test_name: 1, 
-    //       class_name: 1, 
-    //       subject_name: 1, 
-    //       unit_name: 1, 
-    //       test_slug: 1,
-    //       test_date: 1,
-    //       test_duration: 1,
-    //       total_question: 1,
-    //   },{__v:0,test_question: 0 });
-    
-  let AllUnitTests = await UnitTest.aggregate([
-        {"$match": filter},
-        {"$group": {
-            "_id": {
-                "unit_id":"$unit_id",
-                "unit_name":"$unit_name"
-            },
-            "count":{
-                "$sum": {
-                    $cond: [{
-                        $eq: ["$unit_name", "$unit_name"]
-                    },1,0]
-                }
-            },
-        }},
-        {$sort: { _id: 1}}
-    ]);  
 
     res.status(200).json({
       data: AllUnitTests,
-    });
+    }).sort({create_at: 1});
+    
   } catch (error) {
     res.status(409).json({
       message: "Error occured",
@@ -148,6 +104,7 @@ const ViewAllCreatedTest = async (req, res) => {
     });
   }
 };
+
 const ViewUnitTestByClassSubjects = async (req, res) => {
   try {
     let filter = {};
@@ -190,7 +147,6 @@ const DeleteUnitTest = async (req, res) => {
 
 module.exports = {
   ViewUnitTestByClassSubjects,
-  ViewAllCreatedTest,
   CreateUnitTest,
   UpdateUnitTest,
   UpdateSubjectUnitTest,

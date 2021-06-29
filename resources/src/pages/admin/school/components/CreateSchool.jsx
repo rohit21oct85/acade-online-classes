@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
 
 import * as utils from '../../../../utils/utils'
+import * as helper from '../../../../utils/helper'
 import { useToasts } from 'react-toast-notifications';
 
 import useSingleSchool from '../hooks/useSingleSchool';
@@ -41,9 +42,13 @@ export default function CreateSchool() {
     const saveSchool = async (e) => {
         e.preventDefault();
         formData['school_name'] = params?.school_id ? SingleSchool?.school_name : formData?.school_name;
-        formData['slug'] = utils.MakeSlug(params?.school_id ? SingleSchool?.school_name : formData?.school_name);
+        let slug = utils.MakeSlug(params?.school_id ? SingleSchool?.school_name : formData?.school_name);
+        formData['school_slug'] = slug;
+        formData['short'] = helper.getFirstLetter(slug);
         console.log(formData)
         if(params?.school_id){
+            SingleSchool['school_slug'] = slug
+            SingleSchool['short'] = helper.getFirstLetter(slug)
             await updateMutation.mutate(SingleSchool);
         }else{
             if(formData?.school_name == ''){
@@ -122,10 +127,10 @@ export default function CreateSchool() {
       async function onBlurHandle(e){
             e.preventDefault();
             let image = e.target.value
-            if(image.length > 0){
-            let arrayImage = image.split('/d/');
-            let arrayImage2 = arrayImage[1].split('/');
-            let key = arrayImage2[0];
+            if(image.length > 0 && image.match('/')){
+                let arrayImage = image.split('/d/');
+                let arrayImage2 = arrayImage[1].split('/');
+                let key = arrayImage2[0];
                   if(params?.school_id){
                         setSingleSchool({...SingleSchool, school_logo: key})
                   }else{

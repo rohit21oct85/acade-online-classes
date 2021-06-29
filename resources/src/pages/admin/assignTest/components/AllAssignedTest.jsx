@@ -5,10 +5,8 @@ import {AuthContext} from '../../../../context/AuthContext';
 import React, {useState, useContext} from 'react'
 import useDeleteAssignedTest from '../hooks/useDeleteAssignedTest';
 import useAssignedTestList from '../hooks/useAssignedTestList';
-import useSchoolLists from '../../school/hooks/useSchoolLists';
-import * as helper from '../../../../utils/helper'
 
-import useTestByClassSubject from '../../unitTest/hooks/useTestByClassSubject';
+import useAssignToClass from '../hooks/useAssignToClass';
 
 export default function AllAssignedTest({update, Delete}) {
 
@@ -16,12 +14,19 @@ export default function AllAssignedTest({update, Delete}) {
       const {state} = useContext(AuthContext);
       const params = useParams();
       const {data: testLists, isLoading} = useAssignedTestList();
-      const {data:schools, isLoading: isSchoolLoading} = useSchoolLists();
-      const {data: unitTests, isLoading: isUnitTestLoading}      = useTestByClassSubject();
+      
+      const [formData, setFormData] = useState({});
       
       const deleteMutation = useDeleteAssignedTest();
-      const deleteQuestion = async (id) => {
-            await deleteMutation.mutate(id)
+      const AssignMutation = useAssignToClass(formData);
+
+      const deleteAssignedTest = async (test_id) => {
+            await deleteMutation.mutate(test_id)
+      }
+
+      async function handleAssignTest(test_id){
+            formData['_id'] = test_id
+            await AssignMutation.mutate(formData)
       }
 
     return (
@@ -30,28 +35,45 @@ export default function AllAssignedTest({update, Delete}) {
         <span className="fa fa-plus-circle mr-2"></span>All Assigned Test</p>
         <hr className="mt-1"/>
         <Loading isLoading={isLoading} /> 
-        <div className="col-md-12 pr-2 pl-2 row no-gutter" style={{ minHeight: '100px !important', height: 'auto',maxHeight: '350px', overflowY: 'scroll', overflowX: 'hidden'}}>
+        <table className="table table-bordered">
+            <thead>
+                <tr>
+                    <td>School Name</td>
+                    <td>Test Name</td>
+                    <td>Test Duration/Window</td>
+                    <td>Subject Name</td>
+                    <td>Date and Time</td>
+                    <td>Assign to Class</td>
+                </tr>
+            </thead>
+            <tbody style={{ minHeight: '100px !important', height: 'auto',maxHeight: '350px', overflowY: 'scroll', overflowX: 'hidden'}}>
             {testLists?.map( test => {
-                let school_name = '';
-                let test_name = '';
-                if(!isSchoolLoading){
-                    school_name = helper.getFilteredData(schools, '_id', test?.school_id, 'school_name');
+                let subjects = '';
+                if(test?.test_type === 'combine-test'){
+                    subjects = Array.prototype.map.call(test?.test_subjects, function(item) { return item.subject_name; }).join(",");
+                }else{
+                    subjects = test?.subject_name
                 }
-                
-                if(!isUnitTestLoading){
-                    test_name = helper.getFilteredData(unitTests, '_id', test?.test_id, 'test_name');
-                }
-
                 return(
-                    <div className="card col-md-12 mb-2 pt-2 pb-2">
-                        <div className="flex">TetsName: {test_name}</div>
-                        <div className="flex">School: {school_name}</div>
-                        <div className="flex">Class: {test?.class_name}</div>
-                        <div className="flex">Subject: {test?.subject_name}</div>
-                    </div>
+                    <tr>
+                        <td>{test?.school_name}</td>
+                        <td>{test?.test_name} ({(test?.total_question)} Qes)</td>
+                        <td>{test?.test_duration}Sec / {test?.test_window} Sec</td>
+                        <td>{subjects}</td>
+                        <td>{test?.start_date}</td>
+                        <td>
+
+                            <button className={`btn btn-sm dark ${test?.assigned ? 'bg-danger':'bg-success'}`} disabled={test?.assigned}
+                            onClick={() => handleAssignTest(test?._id)}>
+                                {test?.assigned ? 'Already Assigned ':'Assign to Class'}
+                            </button>
+                        </td>
+                    </tr>
                 )
             })}
-        </div>
+            </tbody>
+        
+        </table>
     </>
     )
 }

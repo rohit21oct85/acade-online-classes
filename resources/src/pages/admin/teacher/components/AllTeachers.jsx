@@ -7,6 +7,8 @@ import {AuthContext} from '../../../../context/AuthContext';
 import { useToasts } from 'react-toast-notifications';
 import React, {useState, useContext} from 'react'
 import useDeleteTeacher from '../hooks/useDeleteTeacher';
+import * as helper from '../../../../utils/helper'
+
 
 export default function AllTeachers({update, Delete}) {
 
@@ -48,6 +50,7 @@ export default function AllTeachers({update, Delete}) {
                     <thead>
                         <tr>
                         <th scope="col">#EmpID</th>
+                        <th scope="col">School Name</th>
                         <th scope="col">Name</th>
                         <th scope="col">Subject</th>
                         <th scope="col">Mobile</th>
@@ -57,9 +60,11 @@ export default function AllTeachers({update, Delete}) {
                     </thead>
                     <tbody>
                         {data?.map( (item,key) => { 
+                            let school_name = helper.getFilteredData(schools,'_id', item?.school_id, 'school_name')
                             return (
                                 <tr key={item?._id}>
                                 <th scope="row">{item.EmpID}</th>
+                                <td>{school_name}</td>
                                 <td>{item.name}</td>
                                 <td>{item.subject_name}</td>
                                 <td>{item.mobile}</td>

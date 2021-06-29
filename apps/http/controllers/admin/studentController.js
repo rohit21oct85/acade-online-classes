@@ -1,5 +1,6 @@
 const Student = require('../../../models/admin/Student');
 const School = require('../../../models/admin/School');
+const Class  = require('../../../models/admin/Class')
 const csv = require('csv-parser')
 const fs = require('fs')
 const jwt = require('jsonwebtoken');
@@ -102,11 +103,9 @@ const getStudentBySchoolIdAndClassId = async (req, res) => {
 
 const uploadStudent = async(req, res) => {
     const data = req.body;
-    const filter = {_id: req.body.school_id}
-    const sch = await School.findOne(filter,{__v: 0});
-    const domainName = sch.domain;
     const hashedPassword = await bcrypt.hash("password", 10)
     let FinalData = [];
+    
     try {
         let results = [];
         // console.log(req.file.path)
@@ -114,7 +113,13 @@ const uploadStudent = async(req, res) => {
             .pipe(csv())
             .on('data', (data) => results.push(data))
             .on('end', () => {
-                results.forEach(student => {
+                results.forEach( student => {
+                    let firstName;
+                    if(student.name.match(" ")){
+                        firstName = student.name.split(" ")[0];
+                    }else{
+                        firstName = student.name;
+                    }
                     FinalData.push({ 
                         name: student.name, 
                         class: student.class, 
@@ -127,15 +132,14 @@ const uploadStudent = async(req, res) => {
                         pincode: student.pincode, 
                         email: student.email, 
                         status: student.status, 
-                        guardian_name: student.guardian_name,
-                        EMPID: student.EmpID,
-                        guardian_phone_no: student.guardian_phone,
+                        EmpId: `${req.body.short}${firstName}${student.class}${student.section}${student.roll_no}`,
                         school_id: req.body.school_id,
                         class_id: req.body.class_id,
-                        username: student.first_name + student?.guardian_phone?.substr(-4) + "@" + domainName,
+                        username: student.name?.replace(' ','').toLowerCase()+student?.class+student?.section,
                         password: hashedPassword,
                     })
                 })
+                // console.log(FinalData);
                 otherFunction(res, FinalData, function() {
                     fs.unlinkSync(req.file.path)
                 })

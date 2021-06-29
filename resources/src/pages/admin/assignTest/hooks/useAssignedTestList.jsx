@@ -14,14 +14,9 @@ export default function useAssignedTestList() {
     const school_id = params?.school_id
     let key = '';
     let url = '';
-    
-    if(state.access_token && subject_id && class_id && school_id){
-        url = `${API_URL}v1/assign-test/view-all/${class_id}/${subject_id}/${school_id}`;
-        key = `assign-tests-${class_id}-${subject_id}-${school_id}`;
-    }
-    else if(state.access_token && subject_id && class_id ){
-        url = `${API_URL}v1/assign-test/view-all/${class_id}/${subject_id}`;
-        key = `assign-tests-${class_id}-${subject_id}`;
+    if(state.access_token && school_id && class_id ){
+        url = `${API_URL}v1/assign-test/view-all/${school_id}/${class_id}`;
+        key = `assign-tests-${school_id}-${class_id}`;
     }
 
     return useQuery(`${key}`, async () => {

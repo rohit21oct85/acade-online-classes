@@ -86,8 +86,8 @@ export default function CreateStudent() {
                     let EmpId = helper.generateEmpId(domainName, firstName, className, sectionName, rollNo);
                     let UID = EmpId.toUpperCase();
                     
-                    const first_name = formData?.name?.replaceAll(" ",".").toLowerCase();
-                    formData.username = first_name + formData.mobile.substr(-4) + `@${domainName}.com`;
+                    const first_name = formData?.name?.replaceAll(" ","").toLowerCase();
+                    formData.username = first_name+sectionName;
                     formData.EmpId = UID
                     
                     await createMutation.mutate(formData);

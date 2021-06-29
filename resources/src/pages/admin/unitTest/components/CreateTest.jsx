@@ -13,25 +13,30 @@ import * as helper from '../../../../utils/helper'
 import * as utils from '../../../../utils/utils'
 
 import useSubjectChapterList from '../../mappingSubjectChapter/hooks/useSubjectChapterList';
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 
 export default function CreateTest() {
       const params = useParams();
       const history = useHistory();
-      const TestWindows = [
-            {key: '1', value: '1 Hour'},
-            {key: '2', value: '2 Hours'},
-            {key: '3', value: '3 Hours'},
-            {key: '6', value: '6 Hours'},
-            {key: '9', value: '9 Hours'},
-      ]
+      
       const {data:sClassess} = useClassList();
       const {data:subjects, isLoading: subjectLoading} = useClassSubjectList();
       const {data:units, isLoading: unitLoading} = useUnitList();
       const {data:chapters, isLoading: chapterLoading} = useSubjectChapterList();
-      const {data:questions, isLoading: qLoading} = useQuestionList();
+      const [questions, setQuestions] = useState([])
+      const {data:questionDB, isLoading: qLoading} = useQuestionList();
       
+      useEffect(setDBQuestions,[params?.class_id, params?.subject_id, params?.unit_id, params?.chapter_id]);
+      function setDBQuestions(){
+            if(params?.class_id && params?.subject_id && params?.unit_id && params?.chapter_id){
+                  setQuestions(questionDB?.filter(ques => (ques?.chapter_id === params?.chapter_id)))
+            }else if(params?.class_id && params?.subject_id && params?.unit_id){
+                  setQuestions(questionDB?.filter(ques => ques?.unit_id === params?.unit_id))
+            }else if(params?.class_id && params?.subject_id){
+                  setQuestions(questionDB?.filter(ques => (ques?.subject_id === params?.subject_id)))
+            }else{
+                  setQuestions(questionDB)
+            }
+      }
       const {data:unitTest} = useSingleUnitTest();
       
       const [formData, setFormData] = useState({});
@@ -44,6 +49,9 @@ export default function CreateTest() {
 
       const [selectedQuestions, setSelectedQuestions] = useState([]);
       const [clicked, setClicked] = useState(false);
+      const [subject, setSubject] = useState([]);
+
+
       useEffect(setSelected,[clicked]);
       async function setSelected(){
             let parseData = await JSON.parse(localStorage.getItem('selectedQuestions'))
@@ -71,12 +79,18 @@ export default function CreateTest() {
             let class_name = getFilteredData(sClassess,'_id' ,class_id, 'class_name');
             let subject_name = getFilteredData(subjects,'subject_id' , subject_id, 'subject_name');
             let unit_name = getFilteredData(units,'_id' , unit_id, 'unit_name');
+
             let selectedQuestionsId = selectedQuestions?.map((i) => {
                   return {
-                        question_id: i?._id
+                        question_id: i.question_id,
+                        unit_id: i.unit_id,
+                        unit_name: i.unit_name,
+                        chapter_id: i.chapter_id,
+                        chapter_name: i.chapter_name,
                   }
             });
-
+            formData['test_type'] = params?.test_type
+            formData['test_subjects'] = subject
             formData['class_id'] = class_id
             formData['class_name'] = class_name
             formData['subject_id'] = subject_id
@@ -88,7 +102,8 @@ export default function CreateTest() {
             formData['total_question'] = selectedQuestions?.length
             formData['test_question'] = selectedQuestionsId
             
-            if(class_id && subject_id && unit_id && chapter_id)
+            // console.log(formData); return;
+            if(class_id && subject_id)
             await createMutation.mutate(formData);
             localStorage.removeItem('selectedQuestions')
             setSelectedQuestions([]);
@@ -97,13 +112,17 @@ export default function CreateTest() {
             setClicked(true)
             document.getElementById(id).style.display = 'none';
             const filtered = await questions?.filter(q => q._id === id);
-            // console.log(selectedQuestions?.length); return;
+            setSelectedQuestions((selectedQuestions) => [...selectedQuestions, {
+                  question_id: filtered[0]._id,
+                  unit_id: filtered[0].unit_id,
+                  unit_name: filtered[0].unit_name,
+                  chapter_id: filtered[0].chapter_id,
+                  chapter_name: filtered[0].chapter_name,
+            }]);
             if(selectedQuestions?.length > 0){
-                  setSelectedQuestions((selectedQuestions) => [...selectedQuestions, filtered[0]]);
                   localStorage.setItem('selectedQuestions', JSON.stringify(selectedQuestions))
                   setClicked(false)
             }else{
-                  setSelectedQuestions((selectedQuestions) => [...selectedQuestions, filtered[0]]);
                   localStorage.setItem('selectedQuestions', JSON.stringify(selectedQuestions))
                   setClicked(false)
             }
@@ -113,7 +132,7 @@ export default function CreateTest() {
             script.src = "https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image";
             script.async = true;
             document.body.appendChild(script);
-      },[params?.unit_id, params?.chapter_id])
+      },[])
       return (
             <div>
                   
@@ -126,16 +145,48 @@ export default function CreateTest() {
                           
             <form>
                   
-
                   <div className="row">
-                        <div className="col-md-3 pr-0">
+                  <div className="col-md-3">
+                        <select className="form-control"
+                        value={params?.test_type}
+                        onChange={e => {
+                              history.push(`/admin/manage-unit-test/${params?.page_type}/${e.target.value}`)
+                        }}>
+                              <option value="">Test Type</option>
+                              <option value="combine-test">Combined Test</option>
+                              <option value="single-test">Single Test</option>
+                        </select>
+                  </div>
+                  <div className="col-md-3 form-group">
+                        <input type="text" name="test_name" 
+                        value={formData?.test_name} 
+                        onChange={ e => {
+                              setFormData({...formData, test_name: e.target.value})
+                        }}
+                        className="form-control" placeholder="test name"/>
+                        
+                  </div>
+                  <div className="col-md-3 pl-0 pr-0">
+                              <input type="text" className="form-control"
+                              value={formData?.test_duration} 
+                              onChange={ e => {
+
+                                    setFormData({...formData, test_duration: e.target.value})
+                              }}
+                              placeholder="Enter Test Duration in Seconds"/>
+                  </div>
+                               
+                  </div> 
+                  
+                  <div className="flex">
+                        <div className="col-md-3 pl-0">
                               <select className="form-control"
                               value={params?.class_id}
                               onChange={e => {
                                     if(e.target.value === '_'){
-                                          history.push(`/admin/manage-unit-test/${params?.page_type}/`)  
+                                          history.push(`/admin/manage-unit-test/${params?.page_type}/${params?.test_type}/`)  
                                     }else{
-                                          history.push(`/admin/manage-unit-test/${params?.page_type}/${e.target.value}`)  
+                                          history.push(`/admin/manage-unit-test/${params?.page_type}/${params?.test_type}/${e.target.value}`)  
                                     }
                               }}>
                                     <option value="_">Select Class</option>
@@ -146,20 +197,29 @@ export default function CreateTest() {
                                     })}
                               </select>
                         </div>
-                        <div className="col-md-3">
+                        <div className="col-md-3 pl-0">
                               <select className="form-control"
                               value={params?.subject_id}
                               onChange={e => {
+
                                     if(e.target.value === '_'){
-                                          history.push(`/admin/manage-unit-test/${params?.page_type}/${params?.class_id}`)                          
+                                          history.push(`/admin/manage-unit-test/${params?.page_type}/${params?.test_type}/${params?.class_id}`)                          
                                     }else{
-                                          history.push(`/admin/manage-unit-test/${params?.page_type}/${params?.class_id}/${e.target.value}`)                          
+                                          const subject_name = e.target.options[e.target.selectedIndex].dataset.subject_name
+                                          let chk = subject.some(sub => sub?.subject_id === e.target.value);
+                                          if(!chk){
+                                                setSubject((subject) => [...subject, {
+                                                      subject_id: e.target.value,
+                                                      subject_name: subject_name
+                                                }])
+                                          }
+                                          history.push(`/admin/manage-unit-test/${params?.page_type}/${params?.test_type}/${params?.class_id}/${e.target.value}`)                          
                                     }
                               }}>
                                     <option value="_">{subjectLoading ? 'Loading...':'Select Subjects'}</option>
                                     {subjects?.map(subject => {
                                           return(
-                                                <option value={subject?.subject_id} key={subject?.subject_id}>{subject?.subject_name}</option>
+                                                <option value={subject?.subject_id} data-subject_name={subject.subject_name} key={subject?.subject_id}>{subject?.subject_name}</option>
                                           );
                                     })}
                               </select>
@@ -169,9 +229,9 @@ export default function CreateTest() {
                         value={params?.unit_id}
                         onChange={e => {
                               if(e.target.value === '_'){
-                                    history.push(`/admin/manage-unit-test/${params?.page_type}/${params?.class_id}/${params?.subject_id}`)                          
+                                    history.push(`/admin/manage-unit-test/${params?.page_type}/${params?.test_type}/${params?.class_id}/${params?.subject_id}`)                          
                               }else{
-                                    history.push(`/admin/manage-unit-test/${params?.page_type}/${params?.class_id}/${params?.subject_id}/${e.target.value}`)                          
+                                    history.push(`/admin/manage-unit-test/${params?.page_type}/${params?.test_type}/${params?.class_id}/${params?.subject_id}/${e.target.value}`)                          
                               }
                         }} 
                         >
@@ -188,9 +248,9 @@ export default function CreateTest() {
                   value={params?.chapter_id}
                   onChange={e => {
                         if(e.target.value === '_'){
-                              history.push(`/admin/manage-unit-test/${params?.page_type}/${params?.class_id}/${params?.subject_id}/${params?.unit_id}`)                          
+                              history.push(`/admin/manage-unit-test/${params?.page_type}/${params?.test_type}/${params?.class_id}/${params?.subject_id}/${params?.unit_id}`)                          
                         }else{
-                              history.push(`/admin/manage-unit-test/${params?.page_type}/${params?.class_id}/${params?.subject_id}/${params?.unit_id}/${e.target.value}`)                          
+                              history.push(`/admin/manage-unit-test/${params?.page_type}/${params?.test_type}/${params?.class_id}/${params?.subject_id}/${params?.unit_id}/${e.target.value}`)                          
                         }
                   }} 
                   >
@@ -202,55 +262,29 @@ export default function CreateTest() {
                         })}
                   </select>
                   </div>
-                  <div className="col-md-12">
-                  <div className="row">
-                        <div className="col-md-3 pr-0 form-group">
-                        <input type="text" name="test_name" 
-                        value={formData?.test_name} 
-                        onChange={ e => {
-                              setFormData({...formData, test_name: e.target.value})
-                        }}
-                        className="form-control" placeholder="test name"/>
-                        
-                  </div>
-                  <div className="col-md-3">
-                        <select className="form-control"
-                        value={formData?.test_window} 
-                        onChange={ e => {
-                              setFormData({...formData, test_window: e.target.value})
-                        }}
-                        >
-                              <option value="_">Test Window</option>
-                              {TestWindows?.map( wind => <option value={wind?.key}>{wind?.value}</option>)}
-                        </select>
-                  </div>
-                  <div className="col-md-3 pl-0 pr-0">
-                        <DatePicker 
-                              className="form-control"
-                              selected={startDate} onChange={(date) => setStartDate(date)}
-                              dateFormat="yyyy-MM-dd"
-                              filterDate={isWeekday}
-                              minDate={new Date()}
-                              /> 
-                        
-                        
-                  </div>
-                  <div className="col-md-3 ">
-                              <input type="text" className="form-control"
-                              value={formData?.test_duration} 
-                              onChange={ e => {
 
-                                    setFormData({...formData, test_duration: e.target.value})
-                              }}
-                              placeholder="Enter Test Duration in Seconds"/>
-                        </div>
-                               
-                  </div>      
                   </div>
-                  <div className="col-md-6">
-                        <div className="text-success mb-1">Questions: {questions?.length}</div>
-                        <div  className="pr-2" style={{ height: '300px', overflowY: 'scroll'}}>
+                  
+
+                  
+                  <div className="col-md-12 pl-0">
+                  <div className="text-success mb-1">
+                        <span className="badge-danger pl-2 pr-2">All Questions: {questions?.length??0}</span>
+                        <span className="badge-success ml-3 pl-2 pr-2">Selected Questions: {selectedQuestions?.length}</span>
+                  </div>
+                  <div className="table table-bordered">
+                        <div className="flex"> 
+                              <div className="col-md-2 pl-0">Subject Name</div>
+                              <div className="col-md-2 pl-0">Unit Name</div>
+                              <div className="col-md-2 pl-0">Chapter Name</div>
+                              <div className="col-md-6 pl-0">Question</div>
+                        </div>
+                        
+                  </div>
+                  <div  className="pr-2" style={{ height: '300px', overflowY: 'scroll'}}>
+                        {qLoading && (<><span className="fa fa-spinner"></span>Loading...</>)}      
                         {questions?.map((q,i) => {
+                              let subject_name = getFilteredData(subjects,'subject_id' , q?.subject_id, 'subject_name');
                               let sel = helper.checkExists(selectedQuestions,'_id',q?._id);
                               if(!sel)
                               return(
@@ -261,37 +295,16 @@ export default function CreateTest() {
                               onClick={handleSelectQuestion.bind(this, q?._id)}
                               >
                                     <div className="flex">
-                                          <div>{i+1}. </div>
-                                          <div className="question" dangerouslySetInnerHTML={{ __html: q?.question  }} />
+                                          <div className="col-md-2 pl-0">{subject_name}</div>
+                                          <div className="col-md-2 pl-0">{q?.unit_no} - {q?.unit_name}</div>
+                                          <div className="col-md-2 pl-0">{q?.chapter_no} - {q?.chapter_name}</div>
+                                          <div className="question col-md-6 pl-0" dangerouslySetInnerHTML={{ __html: q?.question  }} />
                                     </div>
                               </div>
                               )
                         })}
-                        </div>
                   </div>
-                  <div className="col-md-6 pl-0 pr-0">
-                        
-                        <p className="text-success mb-1">Selected Questions: {selectedQuestions?.length}
-                        <span className="pull-right mr-3 pointer dark bg-danger fa fa-trash"
-                        onClick={e => {
-                              localStorage.removeItem('selectedQuestions');
-                              setSelectedQuestions([])
-                        }}></span>
-                        </p>
-                        <div className="pr-2" style={{ height: '300px', overflowY: 'scroll'}}>
-                        {selectedQuestions?.length > 0 && selectedQuestions?.map((selQue, i) => {
-                              return (
-                              <div className="card question col-md-12 pl-2 pr-2 mb-2" key={selQue?._id}>
-                                    <div className="flex">
-                                          <div className="pr-2">{i+1}. </div>
-                                          <div className="question pb-0 mb-0" dangerouslySetInnerHTML={{ __html: selQue?.question  }} />
-                                    </div>
-                                    
-                              </div>
-                              )
-                        })}
-                        </div>
-                  </div>
+                  
                   </div>
 
 
@@ -319,13 +332,7 @@ export default function CreateTest() {
                         <span className="fa fa-times"></span>
                   </button>
                   </div>
-
-                  
-                  
-                  
-                       
-
-            </form>  
+                  </form>  
             )}    
             
             </div>

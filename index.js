@@ -48,6 +48,7 @@ app.use(bodyParser.urlencoded({ extended: true, limit: '500mb' }));
 const PORT = process.env.PORT || 8080;
 
 const flash = require('connect-flash')
+
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader(

@@ -3,14 +3,16 @@ import { useHistory, useParams } from 'react-router-dom';
 import { useState } from 'react';
 import { getFilteredData } from '../../../../utils/helper';
 import useCreateAssignTest from '../hooks/useCreateAssignTest';
-import useSchoolLists from '../../school/hooks/useSchoolLists';
 import * as helper from '../../../../utils/helper'
 
-import useClassList from '../../class/hooks/useClassList';
 import useClassSubjectList from '../../../../hooks/classSubjectMapping/useClassSubjectList';
-import useTeacherSubject from '../../../../hooks/teacherSubjectMapping/useTeacherSubject';
-import useTestByClassSubject from '../../unitTest/hooks/useTestByClassSubject';
 import useAssignedTestList from '../hooks/useAssignedTestList';
+import useUnitTestList from '../../unitTest/hooks/useUnitTestList';
+import useClassList from '../../class/hooks/useClassList';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import useSchoolLists from '../../school/hooks/useSchoolLists';
+import useSubjectList from '../../subject/hooks/useSubjectList';
 
 export default function CreateAssignTest() {
       const params = useParams();
@@ -19,203 +21,130 @@ export default function CreateAssignTest() {
       const page_type = params?.page_type;
       const school_id = params?.school_id;
       const class_id = params?.class_id;
-      const subject_id = params?.subject_id;
-      const teacher_id = params?.teacher_id;
-
-      const {data: schools}    = useSchoolLists();
-      const {data: SClass}     = useClassList();
-      const {data: SSubjects}  = useClassSubjectList();
-      const {data: unitTests}      = useTestByClassSubject();
+      const startTimes = ["09:00 AM","10:00 AM","11:00 AM","12:00 PM","13:00 PM","14:00 PM","15:00 PM","16:00 PM","17:00 PM","18:00 PM"]
+      
+      const {data:SClass} = useClassList();
+      const {data:schools} = useSchoolLists()
+      const {data:subjects} = useSubjectList();
+      const {data: unitTests}      = useUnitTestList();
       const {data: testLists, isLoading} = useAssignedTestList();
+      const timeWindows = [
+            {key:'2', value:'2 Hrs'},
+            {key:'3', value:'3 Hrs'},
+            {key:'4', value:'4 Hrs'},
+            {key:'5', value:'5 Hrs'},
+            {key:'6', value:'6 Hrs'}
+      ]
       const [formData, setFormData] = useState({});
-      
       const createMutation = useCreateAssignTest(formData);
-      function handleCheckAll(){
-            let moduleCheked = document.getElementById("checkAll").checked;
-            Array.from(document.getElementsByName('test')).map(elem => {
-                  if(moduleCheked){
-                        elem.checked = true;
-                  }else{
-                        elem.checked = false;
-
-                  }
-            })
-      }
-      function handleCheckAllSchool(){
-            let moduleCheked = document.getElementById("checkAllSchool").checked;
-            Array.from(document.getElementsByName('school')).map(elem => {
-                  if(moduleCheked){
-                        elem.checked = true;
-                  }else{
-                        elem.checked = false;
-
-                  }
-            })
-      }
-      function handleChangeSchool(e){
-            let class_id = params?.class_id
-            let subject_id = params?.subject_id
-            let school_id = e.target.value
-            
-            if(class_id && subject_id){
-                  Array.from(document.getElementsByName('school')).map(elem => {
-                        if(elem.value == e.target.value){
-                              elem.checked = true
-                        }else{
-                              elem.checked = false
-                        }
-                  }) 
-
-                  if(e.target.checked){
-                        history.push(`/admin/assign-test/${params?.page_type}/${class_id}/${subject_id}/${school_id}`)
-                  }else{
-                        history.push(`/admin/assign-test/${params?.page_type}/${class_id}/${subject_id}`)
-                  }
-            }
-      }
+      const [startDate, setStartDate] = useState(new Date());
+      const [testWindow, setTestWindow] = useState(null);
       
+
       async function handleSubmit(e){
             e.preventDefault();
             let class_id = params?.class_id
-            let subject_id = params?.subject_id
-            
+            let school_id = params?.school_id
+            let school_name = getFilteredData(schools,'_id' ,school_id, 'school_name');
             let class_name = getFilteredData(SClass,'_id' ,class_id, 'class_name');
-            let subject_name = getFilteredData(SSubjects,'subject_id' , subject_id, 'subject_name');
-            let mainData = []
-
-            Array.from(document.getElementsByName('test')).map(elem => {
-                 if(elem.checked = true){
-                        Array.from(document.getElementsByName('school')).map((elems) => {
-                              if(elems.checked = true){
-                                    mainData.push({
-                                          'school_id': elems.value,
-                                          'class_id':  class_id,
-                                          'class_name':  class_name,
-                                          'subject_id':  subject_id,
-                                          'subject_name':  subject_name,
-                                          'test_id': elem.value
-                                    })
-                              }
-                        })
-                  }
-            })
-            
-            console.log(mainData);
-            // return;
-            await createMutation.mutate(mainData);
+            let test_name = getFilteredData(unitTests,'_id' ,formData['test_id'], 'test_name');
+            let testData = helper.getCollectionData(unitTests, '_id', formData['test_id']);
+            let subject = helper.getCollectionData(subjects,'subject_name',testData?.subject_name,'_id')
+            formData['school_name'] = school_name
+            formData['school_id'] = school_id
+            formData['class_id'] = class_id
+            formData['class_name'] = class_name
+            formData['test_name'] = test_name
+            formData['test_window'] = +testWindow*60
+            formData['test_type'] = testData?.test_type
+            formData['test_subjects'] = testData?.test_subjects
+            formData['subject_id'] = subject?._id
+            formData['subject_name'] = testData?.subject_name
+            formData['test_duration'] = testData?.test_duration
+            formData['total_question'] = testData?.total_question
+            formData['start_date'] = startDate
+            console.log(formData);
+            await createMutation.mutate(formData);
             
       }
       return (
             <div>
                   
-                  <p className="form-heading">
-                  <span className="fa fa-plus-circle mr-2"></span>Assign New Test
-                  </p>
-                  <hr className="mt-1"/>
-            
+            <p className="form-heading">
+            <span className="fa fa-plus-circle mr-2"></span>Assign New Test
+            </p>
+            <hr />
             {params?.page_type === 'create' && (
                           
             <form>
-                  <div className="row">
-                        
-                        
-                        <div className="col-md-3">
-                        <select className="form-control"
-                              value={class_id}
-                              onChange={e => {
-                                    history.push(`/admin/assign-test/${page_type}/${e.target.value}`)
-                              }}
-                              >
-                                    <option className="_">Classess</option>
-                                    {SClass?.map(scl => 
-                                          <option value={scl?._id} key={scl?._id}>{scl?.class_name}</option>
-                                    )}
-                              </select>
+                  <div className="row col-md-12 mb-2">
+                        <div className="col-md-2 pl-0">
+                        <DatePicker 
+                              selected={startDate}
+                              onChange={(date) => setStartDate(date)}
+                              isClearable showTimeSelect dateFormat="MM/d/yyyy h:mm aa"
+                              minDate={new Date()}
+                        />  
                         </div>
                         
-                        <div className="col-md-3">
-                        <select className="form-control"
-                              value={subject_id}
-                              onChange={e => {
-                                    history.push(`/admin/assign-test/${page_type}/${class_id}/${e.target.value}`)
-                              }}
+                            
+                        <div className="col-md-2 pl-0">
+                              <select 
+                              value={testWindow}
+                              onChange={e => setTestWindow(e.target.value)}
                               >
-                                    <option className="_">Subjects</option>
-                                    {SSubjects?.map(subject => 
-                                          <option value={subject?.subject_id} key={subject?.subject_id}>{subject?.subject_name}</option>
-                                    )}
+                                    <option>Select Time Window</option>
+                                    {timeWindows?.map(times => {
+                                          return(
+                                                <option value={times?.key}>{times?.value}</option>
+                                          )
+                                    })}
                               </select>
-                        </div>
-                        
-                  </div>  
-                  <hr className="mb-1 mt-1"/>  
-                        <div className="row">
+                        </div> 
 
-                        <div className="col-md-3 pr-0">
-                        <p className="mb-0 mt-0">
-                        <label>
-                              <input className="mr-2" id="checkAllSchool" type="checkbox" name="checkallSchool" 
-                              onChange={handleCheckAllSchool}/>
-                              <b>Check All School</b>
-                        </label>
-                        </p>     
-                        <hr className="mb-1 mt-1"/> 
-                        <div className="pt-2 pr-0 no-gutter" style={{ minHeight: '100px !important', height: 'auto',maxHeight: '250px', overflowY: 'scroll', overflowX: 'hidden'}}>
-                        {schools?.map(school => 
-                        <div className="row col-md-12 pr-0">
-                             <label>
-                              <input type="checkbox" name="school" className="mr-2" value={school?._id}
-                              onChange={handleChangeSchool}
-                              />
-                              {school?.school_name}</label> 
-                        </div>
-                        )}
-                        </div>             
-                        </div>             
+                  </div>  
+                  <div className="row col-md-12 mt-3">
+                        <div className="table table-responsive table-borded">
                         
-                        <div className="col-md-9 pl-0 pr-0">
-                        <p className="mb-0 mt-0">
-                        <label>
-                              <input className="mr-2 ml-2" id="checkAll" type="checkbox" name="checkall" 
-                              onChange={handleCheckAll}/>
-                              <b>Check All Tests</b>
-                        </label>
+                              <div className="flex">
+                                    <div style={{ width: '300px'}}>Test Name</div> 
+                                    <div style={{ width: '150px'}}>Duration</div> 
+                                    <div style={{ width: '150px'}}>Total Question</div> 
+                                    <div style={{ width: '150px'}}>Test Type</div> 
+                                    <div style={{ width: '150px'}}>Test Subjects</div> 
+                              </div>
                         
-                        </p>            
-                        <table className="table table-responsive table-borded">
-                        <thead>
-                              <tr>
-                                    <td style={{ width: '200px'}}>Test Name</td> 
-                                    <td style={{ width: '200px'}}>Unit Name</td> 
-                                    <td style={{ width: '150px'}}>Test Date</td> 
-                                    <td style={{ width: '150px'}}>Duration</td> 
-                                    <td style={{ width: '100px'}}>Total</td> 
-                              </tr>
-                        </thead>
                   
-                        <tbody className="pt-2 pr-0 no-gutter" style={{ minHeight: '100px !important', height: 'auto',maxHeight: '250px', overflowY: 'scroll', overflowX: 'hidden'}}>
+                        <div className="pt-2 pr-0 no-gutter" style={{ height: '200px',maxHeight: '200px', overflowY: 'scroll', overflowX: 'hidden'}}>
                               {unitTests?.map((tests, index) => {
-                              let chkMethodDisabled = helper.checkExists(testLists, 'test_id', `${tests?._id}`);      
+                              let subjects = '';
+                              if(tests?.test_type === 'combine-test'){
+                                    subjects = Array.prototype.map.call(tests?.test_subjects, function(item) { return item.subject_name; }).join(",");
+                              }else{
+                                    subjects = tests?.subject_name
+                              }
+                              
                               return(
-                              <tr key={tests?._id}>
-                                    <td style={{ width: '200px'}}>
+                              <div className="flex" key={tests?._id}>
+                                    <div style={{ width: '300px'}}>
                                     <b>
                                     <label>
-                                          <input className="mr-2" type="checkbox" name={`test`} value={`${tests?._id}`}
-                                          disabled={chkMethodDisabled}
+                                          <input className="mr-2" type="radio" name={`test`}
+                                          value={tests?._id}
+                                          data-testName={tests?.test_name}
+                                          onChange={e => setFormData({...formData, test_id: e.target.value})}
                                           />
                                           {tests?.test_name}</label>
                                     </b>
-                                    </td>
-                                    <td style={{ width: '200px'}}><b>{tests?.unit_name}</b></td>
-                                    <td style={{ width: '150px'}}><b>{helper.getDateValue(tests?.test_date)}</b></td>
-                                    <td style={{ width: '150px'}}><b>{tests?.test_duration} Min</b></td>
-                                    <td style={{ width: '100px'}}><b>{tests?.total_question} Ques</b></td>
-                              </tr>
+                                    </div>
+                                    <div style={{ width: '150px'}}><b>{tests?.test_duration} Min</b></div>
+                                    <div style={{ width: '150px'}}><b>{tests?.total_question} Ques</b></div>
+                                    <div style={{ width: '150px'}}><b>{tests?.test_type === 'combine-test' ? 'combine-test': 'single-test'}</b></div>
+                                    <div style={{ width: '150px'}}><b>{subjects}</b></div>
+                              </div>
                               )})}
-                              </tbody>
-                  </table>
-                        </div>  
+                              </div>
+                  </div>  
                         </div>                  
                   <div className="form-group mt-2">
                         <hr className="mb-2 mt-1"/>
