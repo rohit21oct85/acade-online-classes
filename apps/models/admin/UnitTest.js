@@ -19,25 +19,20 @@ const UnitTestSchema = new mongoose.Schema({
       subject_name: {
             type: String,
       },
-      
-      unit_id: {
-            type: String,
-      },
-      unit_name: {
-            type: String,
-      },
       test_duration: {
-            type: String,
-      },
-      test_window: {
             type: String,
       },
       total_question: {
             type: Number,
       },
-
       test_question: {
             type: Array,
+      },
+      test_subjects: {
+            type: Array,
+      },
+      test_type: {
+            type: String,
       },
       status:{
         type: Boolean,

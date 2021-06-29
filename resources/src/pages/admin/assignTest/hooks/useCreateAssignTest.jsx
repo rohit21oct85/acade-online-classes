@@ -22,7 +22,7 @@ export default function useCreateAssignTest(formData) {
             }
       }      
       const { addToast } = useToasts();
-      const key = `assign-tests-${params?.school_id}-${params?.subject_id}-${params?.teacher_id}`;
+      const key = `assign-tests-${params?.school_id}-${params?.class_id}`;
     
       return useMutation(formData => {
             return axios.post(`${API_URL}v1/assign-test/create`, formData, options)

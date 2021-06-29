@@ -21,6 +21,7 @@ export default function useCreateUnitTest(formData) {
             }
       }      
       const { addToast } = useToasts();
+      
       const key = `unit-tests-${params?.class_id}-${params?.subject_id}-${params?.unit_id}`;
     
       return useMutation(formData => {
@@ -28,7 +29,7 @@ export default function useCreateUnitTest(formData) {
         },{
             onSuccess: () => {
                 queryClient.invalidateQueries(`${key}`)
-                history.push(`/admin/manage-unit-test/create/${params?.class_id}/${params?.subject_id}/${params?.unit_id}/${params?.chapter_id}`);
+                history.push(`/admin/manage-unit-test/create/${params?.test_type}/${params?.class_id}/${params?.subject_id}/${params?.unit_id}/${params?.chapter_id}`);
                 addToast('Questions added successfully', { appearance: 'success', autoDismiss: true });
                 
             }

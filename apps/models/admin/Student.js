@@ -37,6 +37,7 @@ const StudentSchema = new mongoose.Schema({
     },
     EmpId:{
         type: String,
+        uppercase: true,
     },
     city:{
         type: String,

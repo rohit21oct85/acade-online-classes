@@ -6,7 +6,7 @@ import API_URL from '../../../../helper/APIHelper';
 import { useToasts } from 'react-toast-notifications';
 import {AuthContext} from '../../../../context/AuthContext';
 
-export default function useUpdateSample(formData) {
+export default function useAssignToClass(formData) {
       
       const queryClient = useQueryClient()
       const {state} = useContext(AuthContext);
@@ -22,17 +22,15 @@ export default function useUpdateSample(formData) {
             }
       }      
       const { addToast } = useToasts();
-      const key = params.sample_id ? `questions-${params.sample_id}` : `questions`
+      const key = `assign-tests-${params?.school_id}-${params?.class_id}`;
+    
       return useMutation((formData) => {
-            let sample_id =  params?.sample_id;
-            return axios.patch(`${API_URL}v1/sample/update/${sample_id}`, formData, options)
+            return axios.post(`${API_URL}v1/assign-test/to-class`, formData, options)
         },{
             onSuccess: () => {
                 queryClient.invalidateQueries(`${key}`)
-                setLoading(false);
-                setFormData(initialData);
                 history.push(`${path}`);
-                addToast('Question Updated successfully', { appearance: 'success',autoDismiss: true });
+                addToast('Assigned to Class successfully', { appearance: 'success',autoDismiss: true });
             }
         });
 }

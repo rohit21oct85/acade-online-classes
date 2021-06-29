@@ -6,6 +6,14 @@ export function getFilteredData(arrayData, match_field,field_value,field_name){
    }
   }
 }
+export function getCollectionData(arrayData, match_field,field_value){
+  if(typeof arrayData !== "undefined"){
+   const filtereData = Array?.from(arrayData)?.filter(element => element[match_field] == field_value);
+   if(filtereData){
+     return filtereData && filtereData[0];
+   }
+  }
+}
 
 export function checkExists(arr = [], field, el){
   if(typeof arr !== "undefined") {

@@ -22,12 +22,13 @@ export default function useUploadStudent(formDataUpload) {
             }
       }      
       const { addToast } = useToasts();
+      const key = (params.school_id) ? `students-${params.school_id}` : `students`
       return useMutation(formDataUpload => {
             return axios.post(`${API_URL}v1/student/upload`, formDataUpload, options)
         },{
             onSuccess: () => {
                 let school_id =  params?.school_id;
-                queryClient.invalidateQueries(`students`)
+                queryClient.invalidateQueries(`${key}`)
                 addToast('Student added successfully', { appearance: 'success', autoDismiss: true });
             }
         });

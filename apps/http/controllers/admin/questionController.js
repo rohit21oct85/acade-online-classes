@@ -78,12 +78,14 @@ const ViewQuestion = async (req, res) => {
 }
 const ViewAllQuestion = async (req, res) => {
     try{
-        let filter = {
-            class_id: req.params?.class_id,
-            subject_id: req.params?.subject_id,
-            unit_id: req.params?.unit_id,
-            chapter_id: req.params?.chapter_id,
-        }
+        let filter = {}
+        if(req?.params?.class_id && req?.params?.subject_id){
+                filter = {
+                    class_id: req.params?.class_id,
+                    subject_id: req.params?.subject_id
+                }
+        } 
+        
 
         const AllQuestions = await Question.find(filter,{__v: 0});
         return res.status(200).json({ 
@@ -186,9 +188,181 @@ const getFromBetween = {
         return this.results;
     }
 };
+
+const uploadQuestion = async (req, res) => {
+const data = req.body;
+let FinalData = [];
+
+    const class_id = req.body.class_id;
+    const class_name = req.body.class_name;
+    const chapter_id = req.body.chapter_id;
+    const chapter_name = req.body.chapter_name;
+    const chapter_no = req.body.chapter_no;
+    const extension = req.body.extension;
+    const subject_id = req.body.subject_id;
+    const subject_name = req.body.subject_name;
+    const unit_id = req.body.unit_id;
+    const unit_no = req.body.unit_no;
+    const unit_name = req.body.unit_name;
+    const user_id = req.body.user_id;
+
+try {
+docxParser.parseDocx(req.file.path, function(data){
+    let finalArray = []
+    let questionArray = data.split("Question:");
+    questionArray.forEach( question => {
+
+        let QuestionType = decode(question).split('Question Type:').pop().split('Question Variety:')[0];
+        let desQuestionType = decode(QuestionType).trim().replace(/\r?\n|\r/g, "");
+        
+        let QuestionVariety = decode(question).split('Question Variety:').pop().split('Difficulty:')[0];
+        let desQuestionVerity = decode(QuestionVariety).trim().replace(/\r?\n|\r/g, "");
+        
+        let Difficulty = decode(question).split('Difficulty:').pop().split('Expected Time to Solve:')[0];
+        let desDifficulty = decode(Difficulty).trim().replace(/\r?\n|\r/g, "");
+        
+        let ExpectedTime = decode(question).split('Expected Time to Solve:').pop().split('Topic/Chapter Name:')[0];
+        let desExpectedTime = decode(ExpectedTime).trim().replace(/\r?\n|\r/g, "");
+        
+        let ChapterName = decode(question).split('Topic/Chapter Name:').pop().split('Concept Name:')[0];
+        let desChapterName = decode(ChapterName).trim().replace(/\r?\n|\r/g, "");
+
+        let Concepts = decode(question).split('Concept Name:').pop().split('Sub-Concept:')[0];
+        let desConcepts = decode(Concepts).trim().replace(/\r?\n|\r/g, "");
+        
+        let SubConcept = decode(question).split('Sub-Concept:').pop().split('Concept-Field:')[0];
+        let desSubConcept = decode(SubConcept).trim().replace(/\r?\n|\r/g, "");
+        
+        let ConceptField = decode(question).split('Concept-Field:').pop().split('Question Stem:')[0];
+        let desConceptField = decode(ConceptField).trim().replace(/\r?\n|\r/g, "");
+        
+        let QuestionStem = decode(question).split('Question Stem:').pop().split('Options:')[0];
+        let desQuestionStem = decode(QuestionStem).trim().replace(/\r?\n|\r/g, "");
+
+        let Options = decode(question).split('Options:').pop().split('Solution:')[0];
+        let desOptions = decode(Options).replace(/\r?\n|\r/g, "").split("#").filter(el => el.length > 0);
+        
+        let Soluton = decode(question).split('Solution:').pop().split('Explanation:')[0];
+        let desSoluton = decode(Soluton).replace(/\r?\n|\r/g, "");
+        
+        let Explanation = decode(question).split('Explanation:').pop().split('Hint 1:')[0];
+        let desExplanation = decode(Explanation).replace(/\r?\n|\r/g, "");
+        
+        let Hint1 = decode(question).split('Hint 1:').pop().split('Hint 2:')[0];
+        let desHint1 = decode(Hint1).replace(/\r?\n|\r/g, "");
+        
+        let Hint2 = decode(question).split('Hint 2:').pop().split('Hint 3:')[0];
+        let desHint2 = decode(Hint2).replace(/\r?\n|\r/g, "");
+
+        let Hint3 = decode(question).split('Hint 3:').pop().split('Hint 4:')[0];
+        let desHint3 = decode(Hint3).replace(/\r?\n|\r/g, "");
+        
+        let Hint4 = decode(question).split('Hint 4:').pop().split('Hint 5:')[0];
+        let desHint4 = decode(Hint4).replace(/\r?\n|\r/g, "");
+        
+        let Hint5 = decode(question).split('Hint 5:').pop().split('Exam Name:')[0];
+        let desHint5 = decode(Hint5).replace(/\r?\n|\r/g, "");
+        
+        let ExamName = decode(question).split('Exam Name:').pop().split('Unit/Section Name:')[0];
+        let desExamName = decode(ExamName).replace(/\r?\n|\r/g, "");
+
+        
+        let Unit_Section_Name = decode(question).split('Unit/Section Name:').pop().split('Subject Name:')[0];
+        let desUnit_Section_Name = decode(Unit_Section_Name).replace(/\r?\n|\r/g, "");
+        
+        let SubjectName = decode(question).split('Subject Name:').pop().split('Governing Board:')[0];
+        let desSubjectName = decode(SubjectName).replace(/\r?\n|\r/g, "");
+        
+        let GoverningBoard = decode(question).split('Governing Board:').pop().split('Exam Year:')[0];
+        let desGoverningBoard = decode(GoverningBoard).replace(/\r?\n|\r/g, "");
+        
+        let ExamYear = decode(question).split('Exam Year:').pop().split('Question Number in Paper:')[0];
+        let desExamYear = decode(ExamYear).replace(/\r?\n|\r/g, "");
+        
+        let QuestionNumberInPaper = decode(question).split('Question Number in Paper:').pop().split('Shift:')[0];
+        let desQuestionNumberInPaper = decode(QuestionNumberInPaper).replace(/\r?\n|\r/g, "");
+        
+        let Shift = decode(question).split('Shift:').pop().split('Grade:')[0];
+        let desShift = decode(Shift).replace(/\r?\n|\r/g, "");
+        
+        let Grade = decode(question).split('Grade:').pop().split('Question Category:')[0];
+        let desGrade = decode(Grade).replace(/\r?\n|\r/g, "");
+        
+        let QuestionCategory = decode(question).split('Question Category:').pop().split('Blooms Taxonomy:')[0];
+        let desQuestionCategory = decode(QuestionCategory).replace(/\r?\n|\r/g, "");
+        
+        let BloomsTaxonomy = decode(question).split('Blooms Taxonomy:').pop().split('DOK Level:')[0];
+        let desBloomsTaxonomy = decode(BloomsTaxonomy).replace(/\r?\n|\r/g, "");
+        
+        let DOKLevel = decode(question).split('DOK Level:').pop().split('Keyword/Tags:')[0];
+        let desDOKLevel = decode(DOKLevel).replace(/\r?\n|\r/g, "");
+        
+        let Keywords = decode(question).split('Keyword/Tags:').pop().split('#')[0];
+        let desKeywordsTags = decode(Keywords).replace(/\r?\n|\r/g, "");
+
+        if(desQuestionType !== '')
+        finalArray.push({
+            "user_id": user_id,
+            "class_id": class_id,
+            "class_name": class_name,
+            "chapter_id": chapter_id,
+            "chapter_name": chapter_name,
+            "chapter_no": chapter_no,
+            "extension": extension,
+            "subject_id": subject_id,
+            "subject_name": subject_name,
+            "unit_id": unit_id,
+            "unit_no": unit_no,
+            "unit_name": unit_name,
+            "question_type": desQuestionType,
+            "question_varity": desQuestionVerity,
+            "difficulty": desDifficulty,
+            "expected_time_to_solve": desExpectedTime,
+            "topic_chapter_name": desChapterName,
+            "concept": desConcepts,
+            "sub_concept": desSubConcept,
+            "concept_field": desConceptField,
+            "question": desQuestionStem,
+            "options": desOptions,
+            "answer": desSoluton,
+            "exlpain": desExplanation,
+            "hint_1": desHint1,
+            "hint_2": desHint2,
+            "hint_3": desHint3,
+            "hint_4": desHint4,
+            "hint_5": desHint5,
+            "exam_name": desExamName,
+            "unit_section_name": desUnit_Section_Name,
+            "d_subject_name": desSubjectName,
+            "governing_board": desGoverningBoard,
+            "exam_year": desExamYear,
+            "question_number": desQuestionNumberInPaper,
+            "shift": desShift,
+            "grade": desGrade,
+            "question_category": desQuestionCategory,
+            "blooms_taxonomy": desBloomsTaxonomy,
+            "dok_level": desDOKLevel,
+            "concept_field": desConceptField,
+            "keywords_tags": desKeywordsTags
+        })
+    })
+    console.log(finalArray);
+    
+    // otherFunction(res, finalArray, function() {
+    //     fs.unlinkSync(req.file.path)
+    // })
+    
+})
+} catch (error) {
+res.status(500).json({
+    success: false,
+    code: 500,
+    errors: error.message
+});
+}
+}
 const uploadQuestionTable = async (req, res) => {
     const data = req.body;
-    res.send(data); return;
     let FinalData = [];
     try {
         docxTables({
@@ -233,7 +407,8 @@ const uploadQuestionTable = async (req, res) => {
         });
     }
 }
-const uploadQuestion = async(req, res) => {
+const uploadQuestionTAG = async(req, res) => {
+
     const data = req.body;
     const class_id = req.body.class_id;
     const class_name = req.body.class_name;
@@ -286,9 +461,9 @@ const uploadQuestion = async(req, res) => {
                     
                 })
                     // console.log(finalArray); return;
-                    otherFunction(res, finalArray, function() {
-                        fs.unlinkSync(req.file.path)
-                    })
+                otherFunction(res, finalArray, function() {
+                    fs.unlinkSync(req.file.path)
+                })
                 
             })
 

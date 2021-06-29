@@ -10,6 +10,18 @@ const AssignTestSchema = new mongoose.Schema({
       test_id: {
             type: String,
       },
+      test_name: {
+            type: String,
+      },
+      test_window: {
+            type: Number,
+      },
+      test_duration: {
+            type: Number,
+      },
+      total_question: {
+            type: Number,
+      },
       teacher_id: {
             type: String,
       },
@@ -36,6 +48,12 @@ const AssignTestSchema = new mongoose.Schema({
       },
       test_duration:{
             type: Number,
+      },
+      test_subjects: {
+            type: Array,
+      },
+      test_type: {
+            type: String,
       },
       status:{
         type: Boolean,

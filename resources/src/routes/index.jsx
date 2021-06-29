@@ -95,14 +95,18 @@ export const privateRoutes = [
         component: UnitsList
     },
     {
-        path: '/admin/manage-unit-test/:page_type?/:class_id?/:subject_id?/:unit_id?/:chapter_id?/:test_id?',
+        path: '/admin/manage-unit-test/:page_type?/:test_type?/:class_id?/:subject_id?/:unit_id?/:chapter_id?/:test_id?',
         component: UnitTests
     },
+
     {
-        path: '/admin/assign-test/:page_type?/:class_id?/:subject_id?/:school_id?',
+        path: '/admin/assign-test/:page_type?/:school_id?/:class_id?',
         component: AssignTests
     },
-    
+    {
+        path: '/admin/view-all-test/:class_id?',
+        component: ViewAllTest
+    },
 
 ];
 
@@ -132,10 +136,7 @@ export const adminRoutes = [
         path: '/admin/view-all-questions/:class_id?/:subject_id?',
         component: ViewAllQuestions
     },
-    {
-        path: '/admin/view-all-test/:class_id?/:subject_id?',
-        component: ViewAllTest
-    },
+    
     {
         path: '/admin/school-report/:school_id?/:subject_id?/:class_id?',
         component: SchoolReport

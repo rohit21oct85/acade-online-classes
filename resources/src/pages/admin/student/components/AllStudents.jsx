@@ -4,6 +4,8 @@ import Loading from '../../../../components/Loading';
 import {useHistory, useParams} from 'react-router-dom'
 import React from 'react'
 import useDeleteStudent from '../hooks/useDeleteStudent';
+import * as helper from '../../../../utils/helper'
+
 
 export default function AllStudents({update, Delete}) {
     const history = useHistory();
@@ -33,6 +35,7 @@ export default function AllStudents({update, Delete}) {
                     <thead>
                         <tr>
                         <th scope="col">#EmpId</th>
+                        <th scope="col">School Name</th>
                         <th scope="col">Name</th>
                         <th scope="col">Class</th>
                         <th scope="col">Section</th>
@@ -45,9 +48,11 @@ export default function AllStudents({update, Delete}) {
                     </thead>
                     <tbody>
                         {data?.map( (item,key) => { 
+                            let school_name = helper.getFilteredData(schools,'_id', item?.school_id, 'school_name')
                             return (
                                 <tr key={item?._id}>
-                                <th scope="row">{item?.EmpId}</th>
+                                <th scope="row">{(item?.EmpId)}</th>
+                                <td>{school_name}</td>
                                 <td>{item.name}</td>
                                 <td>{item.class}</td>
                                 <td>{item.section}</td>

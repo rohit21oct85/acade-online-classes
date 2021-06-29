@@ -10,26 +10,23 @@ export default function useQuestionList() {
     const {state } = useContext(AuthContext);
     const params = useParams();
     let key = '';
-    key = `questions-${params?.class_id}-${params?.subject_id}-${params?.unit_id}-${params?.chapter_id}`;
+    let url = '';
+    if(params?.class_id && params?.subject_id){
+        key = `questions-${params?.class_id}-${params?.subject_id}`;
+        url = `${API_URL}v1/question-bank/view-all/${params?.class_id}/${params?.subject_id}`
+    }
     
     return useQuery(`${key}`, async () => {
-        if(
-            state.access_token && 
-            params?.class_id && 
-            params?.subject_id && 
-            params?.unit_id && 
-            params?.chapter_id
-        ){
-            const result = await axios.get(`${API_URL}v1/question-bank/view-all/${params?.class_id}/${params?.subject_id}/${params?.unit_id}/${params?.chapter_id}`,{
+        if(params?.class_id){
+            const result = await axios.get(`${url}`,{
                 headers: {
                     'Content-Type': 'Application/json',
                     'Authorization':'Bearer '+ state.access_token
                 }
             });
             return result.data.data; 
-        
-            
         }
+        
     });
     
 }

@@ -16,7 +16,6 @@ const QuestionSchema = new mongoose.Schema({
       subject_slug: {
             type: String,
       },
-      
       unit_id: {
             type: String,
       },
@@ -29,7 +28,6 @@ const QuestionSchema = new mongoose.Schema({
       extension: {
             type: String,
       },
-      
       chapter_id: {
             type: String,
       },
@@ -40,13 +38,38 @@ const QuestionSchema = new mongoose.Schema({
             type: String,
       },
       
+      question_type:{
+        type: String
+      },
+      question_varity:{
+        type: String
+      },
+      difficulty:{
+        type: String
+      },
+      expected_time_to_solve:{
+        type: String
+      },
+      topic_chapter_name:{
+        type: String
+      },
+      concept:{
+        type: String
+      },
+      sub_concept:{
+        type: String
+      },
+      concept_field:{
+        type: String
+      },
+
       question:{
         type: String
       },
+
       options:{
         type: Array
       },
-
       option_a: {
             type: String
       },
@@ -59,12 +82,70 @@ const QuestionSchema = new mongoose.Schema({
       option_d: {
             type: String
       },
+      option_e: {
+            type: String
+      },
       answer:{
              type: String
       },
-      solution:{
+      explain:{
             type: String
       },
+      hint_1: {
+            type: String
+      },
+      hint_2: {
+            type: String
+      },
+      hint_3: {
+            type: String
+      },
+      hint_4: {
+            type: String
+      },
+      hint_5: {
+            type: String
+      },
+      exam_name:{
+            type: String
+      },
+      unit_section_name:{
+            type: String
+      },
+      d_subject_name:{
+            type: String
+      },
+      governing_board:{
+            type: String
+      },
+      exam_year:{
+            type: String
+      },
+      question_number:{
+            type: String
+      },
+      shift:{
+            type: String
+      },
+      grade:{
+            type: String
+      },
+      question_category:{
+            type: String
+      },
+      blooms_taxonomy:{
+            type: String
+      },
+      dok_level:{
+            type: String
+      },
+      concept_field:{
+            type: String
+      },
+      keywords_tags:{
+            type: String
+      },
+
       qtype:{
         type: String
       },

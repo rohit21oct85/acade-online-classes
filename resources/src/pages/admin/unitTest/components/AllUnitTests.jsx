@@ -8,12 +8,18 @@ import {AuthContext} from '../../../../context/AuthContext';
 import React, {useState, useContext} from 'react'
 import useDeleteSample from '../hooks/useDeleteUnitTest';
 import * as helper from '../../../../utils/helper';
+import useClassList from '../../class/hooks/useClassList';
+import useClassSubjectList from '../../../../hooks/classSubjectMapping/useClassSubjectList';
 export default function AllUnitTests({update, Delete}) {
 
       const history = useHistory();
       const {state} = useContext(AuthContext);
       const params = useParams();
+      const {data:sClassess} = useClassList();
+      const {data:subjects, isLoading: subjectLoading} = useClassSubjectList();
+
       const {data, isLoading} = useUnitTestList();
+
       const deleteMutation = useDeleteSample();
       const deleteQuestion = async (id) => {
             await deleteMutation.mutate(id)
@@ -24,6 +30,46 @@ export default function AllUnitTests({update, Delete}) {
         <p className="form-heading">
         <span className="fa fa-plus-circle mr-2"></span>All Unit Tests</p>
         <hr className="mt-1"/>
+        <div className="col-md-12 row">
+        <div className="col-md-3 pl-0">
+            <select className="form-control"
+                    value={params?.class_id}
+                    onChange={e => {
+                        if(e.target.value === '_'){
+                                history.push(`/admin/manage-unit-test/${params?.page_type}/`)  
+                        }else{
+                                history.push(`/admin/manage-unit-test/${params?.page_type}/${e.target.value}`)  
+                        }
+                    }}>
+                        <option value="_">Select Class</option>
+                        {sClassess?.map(sclass => {
+                                return(
+                                    <option value={sclass?._id} key={sclass?._id}>{sclass?.class_name} Th</option>
+                                );
+                        })}
+                    </select>
+            </div>
+            <div className="col-md-3 pl-0">
+                    <select className="form-control"
+                    value={params?.subject_id}
+                    onChange={e => {
+
+                        if(e.target.value === '_'){
+                            history.push(`/admin/manage-unit-test/${params?.page_type}/${params?.class_id}`)                          
+                        }else{
+                               
+                            history.push(`/admin/manage-unit-test/${params?.page_type}/${params?.class_id}/${e.target.value}`)                          
+                        }
+                    }}>
+                        <option value="_">{subjectLoading ? 'Loading...':'Select Subjects'}</option>
+                        {subjects?.map(subject => {
+                                return(
+                                    <option value={subject?.subject_id} data-subject_name={subject.subject_name} key={subject?.subject_id}>{subject?.subject_name}</option>
+                                );
+                        })}
+                    </select>
+            </div>
+        </div>
         <Loading isLoading={isLoading} /> 
         <div className="col-md-12 pr-0 row no-gutter" style={{ minHeight: '200px !important', height: 'auto',maxHeight: '380px', overflowY: 'scroll', overflowX: 'hidden'}}>
             {data?.map(tests => {

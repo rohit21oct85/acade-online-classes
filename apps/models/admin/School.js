@@ -8,6 +8,9 @@ const SchoolSchema = new mongoose.Schema({
     school_slug:{
         type: String
     },
+    short:{
+        type: String
+    },
     sub_domain:{
         type: String
     },
@@ -34,9 +37,6 @@ const SchoolSchema = new mongoose.Schema({
     },
     contact_mobile:{
         type: String,
-    },
-    slug:{
-        type: String
     },
     status:{
         type: String,
