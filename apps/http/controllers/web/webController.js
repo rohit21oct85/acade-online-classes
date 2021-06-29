@@ -485,6 +485,7 @@ const attemptTestByStudent = async (req, res) =>{
             student_name: req.body.name,
             questions: newData.test_question,
             test_subjects:newData.test_subjects,
+            test_name:newData.test_name,
             // student_roll_no: student.roll_no,
         });    
         await attempt.save();
@@ -646,7 +647,7 @@ const getCumulativeScore = async (req,res) => {
         obj.created_at = item.create_at;
         obj.time_taken = item.time_taken;
         obj.student_name = item.student_name;
-        obj.unit_name = item?.questions[0]?.unit_name;
+        obj.test_name = item.test_name
         item?.questions?.map((it,key)=>{
             if(it.answer != undefined ){
                 if(it.answer == it['correct_answer'] && it.option == it['correct_option']){
