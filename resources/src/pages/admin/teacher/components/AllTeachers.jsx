@@ -38,8 +38,12 @@ export default function AllTeachers({update, Delete}) {
     }
 
     function getSchoolName(arr, id){
-        let data = Array.from(arr)?.filter(el => el?._id === id);
-        return data && data[0].school_name;
+        if(data?.length > 0 && !isLoading){
+            let dataSchool = arr?.filter(el => el?._id === id);
+            return dataSchool && dataSchool[0]?.school_name;
+        }else{
+            return '';
+        }
     }
 
     return (
@@ -56,6 +60,7 @@ export default function AllTeachers({update, Delete}) {
                         <th scope="col">School Name</th>
                         <th scope="col">Name</th>
                         <th scope="col">Subject</th>
+                        <th scope="col">Class</th>
                         <th scope="col">Mobile</th>
                         <th scope="col">Email</th>
                         <th scope="col">Action</th>
@@ -64,12 +69,17 @@ export default function AllTeachers({update, Delete}) {
                     <tbody>
                         {data?.map( (item,key) => {
                             let school_name = getSchoolName(schools, item?.school_id);
+                            let tclass = '';
+                            
+                            tclass = Array.prototype.map.call(item?.classess, function(items) { if(items.checked === true){return items.class_name+', '} });
+                            
                             return (
                                 <tr key={item?._id}>
                                 <th scope="row">{item.EmpID}</th>
                                 <td>{school_name}</td>
                                 <td>{item.name}</td>
                                 <td>{item.subject_name}</td>
+                                <td>{tclass}</td>
                                 <td>{item.mobile}</td>
                                 <td>{item.email}</td>
                                 <td>

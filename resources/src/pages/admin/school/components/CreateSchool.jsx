@@ -45,10 +45,11 @@ export default function CreateSchool() {
         let slug = utils.MakeSlug(params?.school_id ? SingleSchool?.school_name : formData?.school_name);
         formData['school_slug'] = slug;
         formData['short'] = helper.getFirstLetter(slug);
+        
         console.log(formData)
         if(params?.school_id){
             SingleSchool['school_slug'] = slug
-            SingleSchool['short'] = helper.getFirstLetter(slug)
+            SingleSchool['short'] = helper.getFirstLetter(slug)    
             await updateMutation.mutate(SingleSchool);
         }else{
             if(formData?.school_name == ''){
@@ -299,7 +300,7 @@ export default function CreateSchool() {
                         
                     </button>
                     {params?.school_id && (
-                        <>
+                        <div className="flex">
                         <button 
                         type="button"
                         className="btn btn-sm bg-danger br-5 text-white ml-2"
@@ -322,7 +323,7 @@ export default function CreateSchool() {
                             <span className="fa fa-trash"></span>
                             }
                         </button>
-                        </>
+                        </div>
                     )}
                 </div>
 

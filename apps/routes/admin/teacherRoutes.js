@@ -27,9 +27,9 @@ router
     .patch('/update/:id', checkAuth, Teacher.UpdateTeacher)
     .get('/view/:id', checkAuth, Teacher.ViewTeacher)
     .get('/view-all', checkAuth, Teacher.ViewAllTeacher)
+    .get('/view-class/:school_id?/:teacher_id?', checkAuth, Teacher.ViewTeacherClass)
     .delete('/delete/:id', checkAuth, Teacher.DeleteTeacher)
     .post('/upload', upload.single('file'), checkAuth, Teacher.uploadTeacher)
-
     .get('/teacher-by-school-id/:id', checkAuth, Teacher.getTeacherBySchoolId)
 ;
 

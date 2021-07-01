@@ -58,7 +58,7 @@ export default function AllAssignedTest({update, Delete}) {
                     <tr>
                         <td>{test?.school_name}</td>
                         <td>{test?.test_name} ({(test?.total_question)} Qes)</td>
-                        <td>{test?.test_duration}Sec / {test?.test_window} Sec</td>
+                        <td>{test?.test_duration}Sec / {test?.test_window} Min</td>
                         <td>{subjects}</td>
                         <td>{test?.start_date}</td>
                         <td>

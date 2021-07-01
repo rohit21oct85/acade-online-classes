@@ -121,6 +121,27 @@ const addFields = async (req, res) => {
         message: "field cleared"
     });
 }
+function changeInSlug(string){
+    return string.split(" ").join("-").toLowerCase();
+}
+function changeInShort(string){
+    let short;
+    let arr;
+    if(string.match(" ")){
+        arr = string.split(' ');
+        let data = arr?.map(e => {
+            if(e !== undefined)
+            return short += e.charAt(0);
+        })
+        short = data[data.length - 1];
+        short = short.split('undefined')[1];
+    }else{
+        short = string.charAt(0)
+    }
+    return short;
+}
+
+
 const uploadSchool = async(req, res) => {
     const data = req.body;
     let school_logo = "1EhbHmUQv7AD1O6EWWlWS6ujOMuuReXfJ"
@@ -133,8 +154,12 @@ const uploadSchool = async(req, res) => {
             .on('data', (data) => results.push(data))
             .on('end', () => {
                 results.forEach(school => {
+                    let school_slug = changeInSlug(school?.School_name);
+                    let short = changeInShort(school?.School_name)
                     FinalData.push({ 
                         school_name: school.School_name, 
+                        school_slug: school_slug, 
+                        short: short, 
                         sub_domain: school.domain, 
                         school_logo: school_logo, 
                         address: school.address, 

@@ -24,14 +24,14 @@ export default function useDeleteQuestion(formData) {
       }      
       const { addToast } = useToasts();
       let key = '';
-      key = `questions-${params?.class_id}-${params?.subject_id}-${params?.unit_id}-${params?.chapter_id}`;
+      key = `questions-${params?.class_id}-${params?.subject_id}`;
     
       const status =  useMutation((formData) => {
             return axios.post(`${API_URL}v1/question-bank/delete`,formData, options)
         },{
             onSuccess: () => {
                 queryClient.invalidateQueries(key)
-                addToast('Teacher Deleted successfully', { appearance: 'success',autoDismiss: true });
+                addToast('Question Deleted successfully', { appearance: 'success',autoDismiss: true });
             }
         });
       return status;

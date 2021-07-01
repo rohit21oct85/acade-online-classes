@@ -66,7 +66,11 @@ export default function UploadPrincipals() {
         e.preventDefault();
         formDataUpload.append('file',file);
         formDataUpload.append('school_id', formData.school_id);
-        await uploadMutation.mutate(formDataUpload);
+        if(params?.school_id){
+            await uploadMutation.mutate(formDataUpload);
+        }else{
+            addToast('Principal select school', { appearance: 'error', autoDismiss: true });
+        }
     }
     async function handleChangeSchool(e){
         if(e.target.value != 999){

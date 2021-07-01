@@ -26,7 +26,7 @@ export default function AllQuestions({update, Delete}) {
         script.async = true;
         document.body.appendChild(script);
     },[params?.chapter_id])
-    let optionsDocx = [{key: 0,value: "A"},{key: 1,value: "B"},{key: 3,value: "C"},{key: 4,value: "D"}];
+    let optionsDocx = [{key: 0,value: " A"},{key: 1,value: " B"},{key: 3,value: " C"},{key: 4,value: " D"}];
     return (
         <>
         <p className="form-heading">

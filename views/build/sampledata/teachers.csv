@@ -1,2 +1,3 @@
-title,name,mobile,email,address,city,state,pincode,status
-Ms,Shivani Kapoor,857454623,shivani.kapoor@yopmail.com,#12 block road,"Sctor 2, noida",Uttar Pradesh,201301,active
+name,mobile,email,address,city,state,pincode,status,subject,six_class,seven_class,eight_class,nine_class,ten_class,eleven_class,twelve_class
+Sudhir Sinha,9954900899,sudhir.sinha@gmail.com,#12 block road,"Sctor 2, noida",Uttar Pradesh,201301,active,Chemistry,no,no,yes,yes,yes,yes,yes
+Rohit Sinha,9953933178,rohit.singh@gmail.com,#12 block road,"Sctor 2, noida",Uttar Pradesh,201301,active,Math,no,no,yes,yes,yes,yes,yes

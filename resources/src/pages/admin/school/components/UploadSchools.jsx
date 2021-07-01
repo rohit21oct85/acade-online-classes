@@ -49,13 +49,14 @@ export default function UploadSchools() {
         }
     }
 
-    const mutation = useMutation(formDataUpload => {
+    const UploadMutation = useMutation(formDataUpload => {
         console.log(formDataUpload.file)
         return axios.post(`${API_URL}v1/school/upload`, formDataUpload, options)
     },{
         onSuccess: () => {
             queryClient.invalidateQueries(`schools`)
             setLoading(false);
+            history.push(`/admin/school-management/`)
             addToast('School added successfully', { appearance: 'success', autoDismiss: true });
         }
     });
@@ -63,7 +64,7 @@ export default function UploadSchools() {
     const uploadFile = async(e) => {
         e.preventDefault();
         formDataUpload.append('file',file);
-        await mutation.mutate(formDataUpload);
+        await UploadMutation.mutate(formDataUpload);
     }
 
 
@@ -91,7 +92,7 @@ export default function UploadSchools() {
             
                 <div className="form-group flex">
                     <button className="btn btn-sm dark" disabled={btnDisabled}>
-                        {loading ? (
+                        {(UploadMutation?.isLoading) ? (
                             <>
                             <span className="fa fa-spinner mr-2"></span>
                             processing ....

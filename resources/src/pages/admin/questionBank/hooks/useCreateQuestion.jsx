@@ -22,7 +22,7 @@ export default function useCreateQuestion(formData) {
             }
       }      
       const { addToast } = useToasts();
-      const key = `questions-${params?.class_id}-${params?.subject_id}-${params?.unit_id}-${params?.chapter_id}`;
+      const key = `questions-${params?.class_id}-${params?.subject_id}`;
     
       return useMutation(formData => {
             return axios.post(`${API_URL}v1/question-bank/create`, formData, options)

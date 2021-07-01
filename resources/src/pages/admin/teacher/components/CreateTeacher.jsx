@@ -12,6 +12,7 @@ import useSchoolLists from '../../school/hooks/useSchoolLists';
 import useCreateTeacher from '../hooks/useCreateTeacher';
 import useUpdateTeacher from '../hooks/useUpdateTeacher';
 import useSubjectList from '../../subject/hooks/useSubjectList';
+import useClassList from '../../class/hooks/useClassList';
 
 export default function CreateTeacher() {
     const history = useHistory();
@@ -27,8 +28,9 @@ export default function CreateTeacher() {
 
     const {data} = useSingleTeacher();
     const {data:subjects} = useSubjectList();
-
+    const { data:SClassess} =useClassList();
     const [SingleTeacher, setSingleTeacher] = useState({});
+    const [teacherClass, setTeacehrClass] = useState([]);
 
     const {data : schools, isLoading } = useSchoolLists();
     const pattern = /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/;
@@ -60,13 +62,26 @@ export default function CreateTeacher() {
         
         const domainName = helper.getFilteredData(schools, '_id',params.school_id,'sub_domain');
         const subject_name = params?.subject_name
-        
+        const teacherClas = await Array.from(document.querySelectorAll('.teacherClass')).map( tclass => {
+            // console.log(tclass.value);
+            // console.log(tclass.dataset.class_name);
+            // console.log(tclass.checked);
+            return {
+                class_id: tclass?.value,
+                class_name: tclass.dataset.class_name,
+                checked: tclass?.checked === true ? true: false
+            }
+            // setTeacehrClass(teacherClass => [...teacherClass, ])
+        })
         if(params?.teacher_id){
                 let firstName = SingleTeacher?.name
                 let UID = helper.generateTeacherId(domainName, firstName, subject_name);
                 SingleTeacher.EmpID = UID
                 SingleTeacher.subject_id = params?.subject_id
                 SingleTeacher.subject_name = subject_name
+                SingleTeacher.classess = teacherClas;
+                console.log(SingleTeacher);
+
                 await updateMutation.mutate(SingleTeacher);
         }else{
             formData.school_id = params.school_id ? params.school_id : ''
@@ -164,6 +179,22 @@ export default function CreateTeacher() {
                         )
                         })}
                     </select>
+                </div>
+                <div className="form-group">
+                    <label>Choose Class: </label>
+                    <div className="row col-md-12">
+                        {SClassess?.map(clas => {
+                            return(
+                                <label className="col-md-4 pl-0">
+                                    <input type="checkbox" className="mr-1 teacherClass" 
+                                    defaultValue={clas?._id} 
+                                    data-class_name={clas?.class_name}
+                                    />
+                                    {clas?.class_name}Th
+                                </label>
+                            )
+                        })}
+                    </div>    
                 </div>
                 <div className="form-group">
                     <input 
