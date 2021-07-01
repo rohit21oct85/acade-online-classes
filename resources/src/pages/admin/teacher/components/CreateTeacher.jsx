@@ -54,18 +54,26 @@ export default function CreateTeacher() {
     const createMutation = useCreateTeacher();
     const updateMutation = useUpdateTeacher();
 
-    
+    function getFirstletter(string){
+        let fl;
+        if(string.match(" ")){
+            let data = string.split(" ").map( el => {
+                return fl += el.charAt(0);
+                
+            })
+            return data[1].split("undefined")[1];
+        }else{
+            return string.charAt(0);
+        }
+    }
 
     const saveTeacher = async (e) => {
         e.preventDefault();
         setLoading(true);
         
-        const domainName = helper.getFilteredData(schools, '_id',params.school_id,'sub_domain');
+        const domainName = helper.getFilteredData(schools, '_id',params.school_id,'short');
         const subject_name = params?.subject_name
         const teacherClas = await Array.from(document.querySelectorAll('.teacherClass')).map( tclass => {
-            // console.log(tclass.value);
-            // console.log(tclass.dataset.class_name);
-            // console.log(tclass.checked);
             return {
                 class_id: tclass?.value,
                 class_name: tclass.dataset.class_name,
@@ -73,15 +81,16 @@ export default function CreateTeacher() {
             }
             // setTeacehrClass(teacherClass => [...teacherClass, ])
         })
+
         if(params?.teacher_id){
                 let firstName = SingleTeacher?.name
-                let UID = helper.generateTeacherId(domainName, firstName, subject_name);
+                let UID = `${domainName}${firstName.split(' ')[0]}${getFirstletter(subject_name)}T`;
                 SingleTeacher.EmpID = UID
                 SingleTeacher.subject_id = params?.subject_id
                 SingleTeacher.subject_name = subject_name
                 SingleTeacher.classess = teacherClas;
-                console.log(SingleTeacher);
-
+                
+                // console.log(SingleTeacher);
                 await updateMutation.mutate(SingleTeacher);
         }else{
             formData.school_id = params.school_id ? params.school_id : ''
@@ -94,10 +103,11 @@ export default function CreateTeacher() {
                 addToast('Please Enter a valid 10 digit phone no', { appearance: 'error',autoDismiss: true });
             }else{
                 let firstName = formData?.name
-                let UID = helper.generateTeacherId(domainName, firstName, subject_name);
+                let UID = `${domainName}${firstName.split(' ')[0]}${getFirstletter(subject_name)}T`;
                 formData.EmpID = UID
                 formData.subject_id = params?.subject_id
                 formData.subject_name = subject_name
+                formData.classess = teacherClas;
                 await createMutation.mutate(formData); 
             }
         } 
@@ -184,11 +194,22 @@ export default function CreateTeacher() {
                     <label>Choose Class: </label>
                     <div className="row col-md-12">
                         {SClassess?.map(clas => {
+                            let checkClass = SingleTeacher?.classess?.some(cls => (cls?.class_id === clas?._id && cls?.checked === true))
                             return(
                                 <label className="col-md-4 pl-0">
                                     <input type="checkbox" className="mr-1 teacherClass" 
                                     defaultValue={clas?._id} 
                                     data-class_name={clas?.class_name}
+                                    checked={checkClass}
+                                    onChange={e => {
+                                        SingleTeacher?.classess.map( cls => {
+                                            if(cls?.class_id === clas?.class_id){
+                                                cls.checked = true
+                                            }else{
+                                                cls.checked = false
+                                            }
+                                        })
+                                    }}
                                     />
                                     {clas?.class_name}Th
                                 </label>

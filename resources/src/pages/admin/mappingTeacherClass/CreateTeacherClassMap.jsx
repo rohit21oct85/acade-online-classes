@@ -174,19 +174,17 @@ export default function CreateTeacherStudentMap() {
                     style={{
                         minHeight: '20px'
                     }}>
-                        {classes?.map((classs, index) => {
-                            let teacherClassChecked = checkTeacherClass(teacherClassess, classs?._id)
+                        {teacherClassess?.classess?.map((classs, index) => {
                             return(
-                                <div className="col-md-4 pl-2 pt-0 pb-0 mb-2" key={classs?._id}>
+                                <div className="col-md-4 pl-2 pt-0 pb-0 mb-2" key={classs?.class_id}>
                                     <label className="pb-0 mb-0">
                                     <input 
                                         className="mr-2 classes"
                                         type="checkbox" 
                                         id={`custom-checkbox-${index}`}
                                         name={classs?.class_name}
-                                        value={`${classs?._id}_${classs?.class_name}`}
-                                        data-checked={teacherClassChecked}
-                                        checked={teacherClassChecked}
+                                        value={`${classs?.class_id}_${classs?.class_name}`}
+                                        checked={classs?.checked}
                                         onChange={(e)=>{handleCheckBox(e,index)}}
                                     />    
                                     {classs?.class_name}Th
