@@ -55,9 +55,12 @@ const AssignTestSchema = new mongoose.Schema({
       test_type: {
             type: String,
       },
+      teacher_id:{
+            type: String,
+      },
       status:{
-        type: Boolean,
-        default: false
+            type: Boolean,
+            default: false
       },
       assigned:{
             type: Boolean,

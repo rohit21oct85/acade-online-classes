@@ -28,16 +28,22 @@ router
     .get('/get-all-assigned-tests/:school_id?/:subject_id?', checkAuth, Web.getAllAssignedTests)
     .get('/view-teacher/:id', checkAuth, Web.getTeacher)
     .patch('/update-teacher/:id', checkAuth, Web.updateTeacher)
-    .put('/update-assigned-test/:id?',checkAuth, Web.assignTestToStudent)
+    .put('/update-assigned-test/:class_id?/:id?',checkAuth, Web.assignTestToStudent)
     .get('/get-student-wise-report/:school_id?/:class_id?/:subject_id?/:test_id?', checkAuth, Web.getStudentWiseReport)
     .get('/get-assigned-tests-teacher/:school_id?/:class_id?/:subject_id?', checkAuth, Web.getAssignedTestsTeacher)
+    .get('/get-sections-student-count/:school_id?/:class_id?/:subject_id/:class_name', checkAuth, Web.getSectionStudent)
 
-
+    //principal
     .get('/view-principal/:id', checkAuth, Web.getPrincipal)
     .patch('/update-principal/:id', checkAuth, Web.updatePrincipal)
     .get('/classes-with-student-no/:school_id?', checkAuth, Web.getClassesWithStudents)
     .post('/get-all-teachers/:school_id?', checkAuth, Web.getAllTeachersOfSchool)
     .get('/get-all-subjects', checkAuth, Web.getAllSubjects)
+    .get('/get-all-teacher-assigned-tests/:school_id?/:teacher_id?', checkAuth, Web.getAllTeacherAssignedTests)
+    .get('/get-all-student-attempted-tests/:school_id?/:class_id?/:test_id?', checkAuth, Web.getAllStudentAttemptedTests)
+    
+    //general
+    .get('/get-school-logo/:sub_domain?', Web.getSchoolLogo)
     ;
 
 module.exports = router;
