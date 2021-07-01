@@ -15,6 +15,9 @@ const TeacherSchema = new mongoose.Schema({
     subject_name: {
         type: String,
     },
+    classess:{
+        type: Array
+    },
     mobile: {
         type: String,
     },

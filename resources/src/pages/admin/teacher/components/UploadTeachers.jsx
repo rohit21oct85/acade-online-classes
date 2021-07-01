@@ -87,7 +87,7 @@ export default function UploadTeachers() {
                     <select className="form-control" aria-label="Default select example" name="school_id" 
                     value={params?.school_id}
                     onChange={handleChange}>
-                        <option>Select School</option>
+                        <option value="">Select School</option>
                         {!isLoading && schools?.map(school => {
                         return (
                             <option value={school._id} key={school._id}>{school.school_name}</option>
@@ -109,7 +109,7 @@ export default function UploadTeachers() {
             
                 <div className="form-group flex">
                     <button className="btn btn-sm dark" disabled={btnDisabled}>
-                        {loading ? (
+                        {uploadMutation?.isLoading ? (
                             <>
                             <span className="fa fa-spinner mr-2"></span>
                             processing ....

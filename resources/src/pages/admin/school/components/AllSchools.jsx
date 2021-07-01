@@ -22,7 +22,21 @@ export default function AllSchools({update}) {
                         className="card mb-2 pl-3 pr-2 col-md-6 no-gutter" 
                         
                   >
+
                         <div className="row">
+                        <div className="col-md-12 btn btn-sm dark">
+                              <a 
+                              style={{
+                                    fontSize: '1.2rem',
+                                    textDecoration: 'none',
+                                    color: 'white',
+                              }}
+                              href={`https://${school?.sub_domain}.acadelearn.com`}
+                              target="_blank"
+                              >
+                              {`http://${school?.sub_domain?.toLowerCase()}.acadelearn.com`}
+                              </a>
+                              </div>
                               <div className="col-md-2 pl-2 pt-3">
                                     <img 
                                           src={`https://drive.google.com/uc?export=view&id=${school?.school_logo}`} style={{ height:'100px'}}
@@ -38,20 +52,7 @@ export default function AllSchools({update}) {
                                                 {school?.school_name}
                                           </div>
                                     </div>
-                                    <div className="flex">
-                                          <div className="name-label">
-                                                      Domain: 
-                                                </div>
-                                          <div className="name-main">
-                                                <a 
-                                                data-url={'acade-school.acadelearn.com'}
-                                                href={`https://${school?.sub_domain}.acadelearn.com`}
-                                                target="_blank"
-                                                >
-                                                 Visit: {school?.school_name}
-                                                </a>
-                                          </div>
-                                    </div>
+                                    
                                     <div className="admin-name"> 
                                           <div className="name-label">
                                                 Pincode: 
@@ -77,8 +78,9 @@ export default function AllSchools({update}) {
                                                 {school?.contact_mobile}
                                           </div>
                                     </div>
-
+                                    
                               </div>
+                              
                               <div className="col-md-12 pl-0 pr-0 pb-2">
                                     <hr className="mb-1"/>
                                     {update === true && (<div className="pl-2 pr-2">

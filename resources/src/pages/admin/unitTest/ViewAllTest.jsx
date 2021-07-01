@@ -109,7 +109,7 @@ export default function ViewAllTest() {
                                         <div className="col-md-12 row table-bordered ml-2 mr-2 pt-0 pb-0">
                                           <div className="col-md-3 mt-1 mb-1 pl-0"><b>{unit?.test_name}</b></div>
                                           <div className="col-md-2 mt-1 mb-1 pl-0"><b>{unit?.total_question}</b></div>
-                                          <div className="col-md-1 mt-1 mb-1 pl-0"><b>{unit?.test_duration} Sec</b></div>
+                                          <div className="col-md-1 mt-1 mb-1 pl-0"><b>{unit?.test_duration} Min</b></div>
                                           <div className="col-md-2 mt-1 mb-1 pl-0"><b>{unit?.test_type === 'combine-test' ? 'combine-test': 'single-test'}</b></div>
                                           <div className="col-md-2 mt-1 mb-1 pl-0"><b>{subjects}</b></div>
                                         </div>

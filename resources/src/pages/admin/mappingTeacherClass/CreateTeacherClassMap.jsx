@@ -10,6 +10,7 @@ import useSchoolLists from '../school/hooks/useSchoolLists';
 import useTeacherList from '../../../pages/admin/teacher/hooks/useTeacherList';
 import useClassList from '../class/hooks/useClassList';
 import {MakeSlug} from '../../../utils/utils'
+import useSingleTeacherClass from '../../../hooks/teacherClassMapping/useSingleTeacherClass';
 
 export default function CreateTeacherStudentMap() {
     const history = useHistory();
@@ -26,6 +27,8 @@ export default function CreateTeacherStudentMap() {
     const {data : schools, isLoading } = useSchoolLists();
     const {data : teachers, teacherIsLoading } = useTeacherList();
     const {data : classes, classesIsLoading } = useClassList();
+    const {data: teacherClassess, teacherClassessLoading} = useSingleTeacherClass();
+    
     const pattern = /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/;
     const initialData = {
         first_name: '',
@@ -55,7 +58,7 @@ export default function CreateTeacherStudentMap() {
             setLoading(false);
             setFormData(initialData);
             addToast('Mapping added successfully', { appearance: 'success', autoDismiss: true });
-            history.push('/admin/mapping-teacher-class');
+            history.push(`/admin/mapping-teacher-class/select-school/${params?.school_id}/${params?.school_slug}`);
         }
     });
     
@@ -84,11 +87,13 @@ export default function CreateTeacherStudentMap() {
                             teacher_id: params?.teacher_id,
                             class_id: splitData[0],
                             class_name: splitData[1],
-                            school_name: formData.school_name,
-                            teacher_name: formData.teacher_name,
+                            school_name: params.school_slug,
+                            teacher_name: params.teacher_slug,
                         })
                     }
                 })
+                // console.log(ArrayModule);
+
                 await mutation.mutate(ArrayModule); 
                 clearFields();
             }
@@ -130,7 +135,11 @@ export default function CreateTeacherStudentMap() {
             history.push(`/admin/mapping-teacher-class/select-school/${e.target.value}/${MakeSlug(school_name)}`)
         }
     }
-
+    function checkTeacherClass(arr, class_id){
+        if(teacherClassess?.length > 0 && !teacherClassessLoading){
+            return arr.some(el => (el.class_id === class_id && el.checked === true))
+        }
+    }
     return (
         <>
             <p className="form-heading">
@@ -159,15 +168,16 @@ export default function CreateTeacherStudentMap() {
                 </div>
                 
                 <div className="form-group">
-                    <div className="col-md-12 pl-0 pr-2"
+                    <p className="mb-1">Choose Class</p>
+                    <hr className="mb-1"/>    
+                    <div className="col-md-12 pl-2 pr-2 row"
                     style={{
-                        minHeight: '280px',
-                        maxHeight: '280px',
-                        overflow: 'scroll'
+                        minHeight: '20px'
                     }}>
                         {classes?.map((classs, index) => {
+                            let teacherClassChecked = checkTeacherClass(teacherClassess, classs?._id)
                             return(
-                                <div className="card pl-2 pt-0 pb-0 mb-2" key={classs?._id}>
+                                <div className="col-md-4 pl-2 pt-0 pb-0 mb-2" key={classs?._id}>
                                     <label className="pb-0 mb-0">
                                     <input 
                                         className="mr-2 classes"
@@ -175,10 +185,11 @@ export default function CreateTeacherStudentMap() {
                                         id={`custom-checkbox-${index}`}
                                         name={classs?.class_name}
                                         value={`${classs?._id}_${classs?.class_name}`}
-                                        checked={checkedState[index]}
+                                        data-checked={teacherClassChecked}
+                                        checked={teacherClassChecked}
                                         onChange={(e)=>{handleCheckBox(e,index)}}
                                     />    
-                                    {classs?.class_name} th &nbsp; Section: {classs?.section}
+                                    {classs?.class_name}Th
                                     </label>
                                 </div>
                             );

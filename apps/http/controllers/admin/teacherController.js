@@ -5,6 +5,7 @@ const csv = require('csv-parser')
 const fs = require('fs')
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const Class = require('../../../models/admin/Class');
 
 let refreshTokens = [];
 
@@ -57,6 +58,24 @@ const ViewTeacher = async (req, res) => {
         });
     }
 }
+const ViewTeacherClass = async (req, res) => {
+    try{
+        const TeacherData = await Teacher.findOne({
+            school_id: req.params.school_id,
+            _id: req.params.teacher_id,
+        },{__v: 0});
+
+        res.status(200).json({ 
+            data: TeacherData
+        });    
+    } catch(error){
+        res.status(409).json({
+            message: "Error occured",
+            errors: error.message
+        });
+    }
+}
+
 const ViewAllTeacher = async (req, res) => {
     try{
         const AllTeachers = await Teacher.find({},{__v: 0});
@@ -90,21 +109,27 @@ function getSubjectID(arr, name){
     const data = arr.filter(el => el.subject_name === name);
     return data && data[0]._id;
 }
+function getClassId(arr, class_name){
+    const data = arr.filter(el => el.class_name === class_name);
+    return data && data[0]._id;
+}
+
 function getSubjectFirstLetetr(subject_name){
     let subj ;
-    if(subject_name.match(" ")){
-        let fSubj = subject_name.split(" ")[0].charAt(0);
-        let lSubj = subject_name.split(" ")[1].charAt(0);
-        subj = fSubj+lSubj;
+    if(subject_name?.match(" ")){
+        let fSubj = subject_name?.split(" ")[0].charAt(0);
+        let lSubj = subject_name?.split(" ")[1].charAt(0);
+        return subj = fSubj+lSubj;
     }else{
-        subj = subject_name.charAt(0);
+        return subj = subject_name.charAt(0);
     }
-    return subj;
+    
 }
 const uploadTeacher = async(req, res) => {
     const data = req.body;
     const hashedPassword = await bcrypt.hash('password', 10)
     let Subjects = await Subject.find({});
+    let SClass = await Class.find({});
     let FinalData = [];
     try {
         let results = [];
@@ -120,7 +145,47 @@ const uploadTeacher = async(req, res) => {
                     }else{
                         firstName = teacher.name;
                     }
-
+                    let classArray = [];
+                    
+                    let six_class = teacher.six_class;
+                    let six_class_id = getClassId(SClass, '6')
+                    let six_class_data = {class_id: six_class_id, class_name: '6', checked: (six_class == 'no'?false: true)};
+                    
+                    let seven_class = teacher.seven_class;
+                    let seven_class_id = getClassId(SClass, '7');
+                    let seven_class_data = {class_id: seven_class_id, class_name: '7', checked: (seven_class == 'no'?false: true)};
+                    
+                    let eight_class = teacher.eight_class;
+                    let eight_class_id = getClassId(SClass, '8');
+                    let eight_class_data = {class_id: eight_class_id, class_name: '8', checked: (eight_class == 'no'?false: true)};
+                    
+                    let nine_class = teacher.nine_class;
+                    let nine_class_id = getClassId(SClass, '9');
+                    let nine_class_data = {class_id: nine_class_id, class_name: '9', checked: (nine_class == 'no'?false: true)};
+                    
+                    let ten_class = teacher.ten_class;
+                    let ten_class_id = getClassId(SClass, '10');
+                    let ten_class_data = {class_id: ten_class_id, class_name: '10', checked: (ten_class == 'no'?false: true)};
+                    
+                    let eleven_class = teacher.eleven_class;
+                    let eleven_class_id = getClassId(SClass, '11');
+                    let eleven_class_data = {class_id: eleven_class_id, class_name: '11', checked: (eleven_class == 'no'?false: true)};
+                    
+                    let twelve_class = teacher.twelve_class;
+                    let twelve_class_id = getClassId(SClass, '12');
+                    let twelve_class_data = {class_id: twelve_class_id, class_name: '12', checked: (twelve_class == 'no'?false: true)};
+                    
+                    
+                    classArray.push(
+                        six_class_data, 
+                        seven_class_data, 
+                        eight_class_data,
+                        nine_class_data,
+                        ten_class_data,
+                        eleven_class_data,
+                        twelve_class_data
+                    );
+                    
                     FinalData.push({ 
                         name: teacher.name, 
                         EmpID: `${req.body.short}${firstName}${getSubjectFirstLetetr(teacher.subject)}T`, 
@@ -133,7 +198,8 @@ const uploadTeacher = async(req, res) => {
                         city: teacher.city, 
                         state: teacher.state, 
                         pincode: teacher.pincode, 
-                        school_id:req.body.school_id
+                        school_id:req.body.school_id,
+                        classess: classArray
                     })
                 })
                 // console.log(FinalData);
@@ -263,6 +329,7 @@ const RefreshToken = async (req,res) => {
 
 
 module.exports = {
+    ViewTeacherClass,
     CreateTeacher,
     UpdateTeacher,
     ViewTeacher,

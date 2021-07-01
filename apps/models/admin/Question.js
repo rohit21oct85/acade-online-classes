@@ -88,7 +88,7 @@ const QuestionSchema = new mongoose.Schema({
       answer:{
              type: String
       },
-      explain:{
+      solution:{
             type: String
       },
       hint_1: {

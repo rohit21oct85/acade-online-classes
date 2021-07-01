@@ -41,10 +41,9 @@ export function getDateValue(el){
   return el.split('T')[0];
 }
 export function getFirstLetter(el){
-    const space = el.match('-');
     let arr = '';
     let name = '';
-    if(space){
+    if(el.match('-')){
       arr = el.split('-');
       let data = arr?.map(e => {
         return name += e.charAt(0);

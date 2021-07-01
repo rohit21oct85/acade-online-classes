@@ -57,8 +57,9 @@ export default function AssignTests() {
 
                         </div>
                     </div>
-                    
-                    <div className="dash-con-heading">
+                    {(params?.page_type == 'create' || params?.page_type == 'view') && (
+                        <>
+<div className="dash-con-heading">
                         <div className="col-md-12 row pl-0">
                         <div className="col-md-2">
                         <select className="form-control"
@@ -66,7 +67,7 @@ export default function AssignTests() {
                         onChange={e => {
                             history.push(`/admin/assign-test/${params?.page_type}/${e.target.value}`)
                         }}>
-                        <option value="">Selct School</option>      
+                        <option value="">Select School</option>      
                         {schools?.map(school => 
                             <option value={school?._id}>{school?.school_name}</option>
                         )}
@@ -89,6 +90,9 @@ export default function AssignTests() {
 
                         </div>
                     </div>
+                        </>
+                    )}
+                    
 
                     <div className="clearfix"></div>
                     <div className="dash-cont-start">
