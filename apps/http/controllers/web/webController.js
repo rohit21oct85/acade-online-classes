@@ -9,6 +9,7 @@ const Principal = require('../../../models/admin/Principal');
 const AttemptTest = require('../../../models/admin/AttemptTest');
 const Questions = require('../../../models/admin/Question');
 const Subject = require('../../../models/admin/Subject');
+const School = require('../../../models/admin/School');
 
 const getSubjects = async (req, res) => {
     try{
@@ -448,22 +449,48 @@ const updatePrincipal = async (req, res) =>{
 
 const assignTestToStudent = async (req, res) =>{
     try {
-        // const d = new Date((typeof req.body.startDate === "string" ? new Date(req.body.startDate) : req.body.startDate).toLocaleString(undefined, {timeZone: 'Asia/Kolkata'}));
         const as = await AssignTest.findOne({_id: req.params.id})
         const testWindow = req.body.testWindow != null ? req.body?.testWindow : as.test_window
-        await AssignTest.findOneAndUpdate({_id: req.params.id}, {$set: {"assigned":true, "start_date": req.body.startDate,test_window :testWindow ,test_duration:req.body.testduration}})
-                .then(resp => {
-                    return res.status(202).json({
-                        message: "Test Assigned to Student Successfully"
+        
+        const assignTest = await AssignTest.findOne({class_id: req.params.class_id, assigned: true},{start_date:1,test_window:1})
+        let timeAlTest = new Date(assignTest?.start_date)
+        timeAlTest.setMinutes( timeAlTest.getMinutes() + assignTest?.test_window );
+        
+        let timeNwTest = new Date(req.body.startDate)
+        timeNwTest.setMinutes( timeNwTest.getMinutes() + testWindow );
+        // console.log(timeNwTest,timeAlTest)
+        // console.log(timeAlTest instanceof Date && !isNaN(timeAlTest.valueOf()))
+        if(!(timeAlTest instanceof Date && !isNaN(timeAlTest.valueOf()))){ //check for valid date
+            await AssignTest.findOneAndUpdate({_id: req.params.id}, {$set: {"assigned":true, "start_date": req.body.startDate,test_window :testWindow ,test_duration:req.body.testduration,teacher_id:req.body.teacher_id}})
+                    .then(resp => {
+                        return res.status(202).json({
+                            message: "Test Assigned to Student Successfully"
+                        })
                     })
-                })
-                .catch(error => {
-                    return res.status(500).json({
-                        message: "Error Found",
-                        errors: error.message
+                    .catch(error => {
+                        return res.status(500).json({
+                            message: "Error Found",
+                            errors: error.message
+                        })
+                    });
+        }else if(timeNwTest > timeAlTest){
+            await AssignTest.findOneAndUpdate({_id: req.params.id}, {$set: {"assigned":true, "start_date": req.body.startDate,test_window :testWindow ,test_duration:req.body.testduration,teacher_id:req.body.teacher_id}})
+                    .then(resp => {
+                        return res.status(202).json({
+                            message: "Test Assigned to Student Successfully"
+                        })
                     })
-                });
-
+                    .catch(error => {
+                        return res.status(500).json({
+                            message: "Error Found",
+                            errors: error.message
+                        })
+                    });
+        }else{
+            return res.status(405).json({
+                message: "Test Cant be assigned, a test is already assigned for this time"
+            })
+        }
     } catch (error) {
         res.status(409).json({
             message: error.message
@@ -806,6 +833,65 @@ const getAllSubjects = async (req, res) => {
         data: subjects, 
     }); 
 }
+
+const getSchoolLogo = async (req, res) => {
+    const school = await School.findOne({sub_domain : req.params.sub_domain});
+    
+    return res.status(200).json({ 
+        data: school, 
+    }); 
+}
+
+const getAllTeacherAssignedTests = async (req, res) => {
+    const tests = await AssignTest.find({teacher_id : req.params.teacher_id,school_id:req.params.school_id});
+    return res.status(200).json({ 
+        data: tests, 
+    }); 
+}
+
+const getSectionStudent = async (req, res) => {
+    console.log(req.params, req.body)
+    const classes = await Class.find({class_name : req.params.class_name});
+    
+    return res.status(200).json({ 
+        data: classes, 
+    }); 
+}
+
+const getAllStudentAttemptedTests = async (req, res) => {
+    const filter = {
+        school_id :req.params.school_id,
+        class_id: req.params.class_id,
+        test_id: req.params.test_id,
+    }
+    let correctAnswers = 0;
+    let wrongAnswers = 0;
+    let marksScored = 0;
+    let totalMarks = 0;
+    const TestsAttemptedByStudents = await AttemptTest.find(filter).lean();
+    TestsAttemptedByStudents.map((item,key)=>{
+        totalMarks = item.questions.length;
+        correctAnswers = 0;
+        wrongAnswers = 0;
+        item.questions.map((it,key)=>{
+            if(it.answer != undefined ){
+                if(it.answer == it['correct_answer'] && it.option == it['correct_option']){
+                    correctAnswers = correctAnswers + 1;
+                }else{
+                    wrongAnswers = wrongAnswers + 1;
+                }
+            }
+        })
+        item.totalMarks = totalMarks;
+        item.correctAnswers = correctAnswers;
+        item.wrongAnswers = wrongAnswers;
+        item.cScorePercentage = correctAnswers/totalMarks *100;
+    })
+    return res.status(200).json({ 
+        data: TestsAttemptedByStudents, 
+    }); 
+}
+
 module.exports = {
     getSubjects,
     getAssignedTestsStudent,
@@ -833,5 +919,9 @@ module.exports = {
     getAssignedTestsTeacher,
     getClassesWithStudents,
     getAllTeachersOfSchool,
-    getAllSubjects
+    getAllSubjects,
+    getSchoolLogo,
+    getAllTeacherAssignedTests,
+    getSectionStudent,
+    getAllStudentAttemptedTests
 }
