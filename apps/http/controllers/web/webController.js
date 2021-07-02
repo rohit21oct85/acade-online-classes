@@ -22,8 +22,8 @@ const getSubjects = async (req, res) => {
             data: AllClassSubject 
         });    
     } catch(error){
-        res.status(203).json({
-            status: 203,
+        res.status(500).json({
+            status: 500,
             message: "Error occured",
             errors: error.message
         });
@@ -534,392 +534,537 @@ const attemptTestByStudent = async (req, res) =>{
 }
 
 const getQuestions = async (req,res) => {
-    const filter = {
-        school_id :req.body.school_id,
-        // subject_id:req.params.subject_id,
-        student_id:req.body.student_id,
-        test_id: req.params.test_id,
+    try{
+        const filter = {
+            school_id :req.body.school_id,
+            // subject_id:req.params.subject_id,
+            student_id:req.body.student_id,
+            test_id: req.params.test_id,
+        }
+        // return res.send(filter);
+        const data = await AttemptTest.findOne(filter)
+        var filteredArray = data?.questions.filter(function(item){
+            return !("answer" in item);
+        });
+        const question = filteredArray[Math?.floor(Math?.random() * filteredArray?.length)];
+        const singleQuestion = await Questions.findOne({_id: question?.question_id},{answer:0})
+        
+        // console.log(singleQuestion,question)
+        // return res.status(200).json({ 
+        //     singleQuestion: singleQuestion, 
+        // }); 
+        return res.send(singleQuestion);
+    } catch(error){
+        res.status(500).json({
+            status: 500,
+            message: "Error occured",
+            errors: error.message
+        });
     }
-    // return res.send(filter);
-    const data = await AttemptTest.findOne(filter)
-    var filteredArray = data?.questions.filter(function(item){
-        return !("answer" in item);
-    });
-    const question = filteredArray[Math?.floor(Math?.random() * filteredArray?.length)];
-    const singleQuestion = await Questions.findOne({_id: question?.question_id},{answer:0})
-    
-    // console.log(singleQuestion,question)
-    // return res.status(200).json({ 
-    //     singleQuestion: singleQuestion, 
-    // }); 
-    return res.send(singleQuestion);
 }
 
 const saveAnswer = async (req,res) => {
-    const filter = {
-        school_id :req.body.school_id,
-        // subject_id:req.params.subject_id,
-        student_id:req.body.student_id,
-        test_id: req.params.test_id,
-    }
-    const un = await Questions.findOne({_id:req.body.question_id})
-    const data = await AttemptTest.findOne(filter)
-    data.questions.map((item, key)=>{
-        if(item.question_id == req.body.question_id)
-        {
-            item['answer'] = req.body.answer,
-            item['option'] = req.body.option,
-            item['correct_option'] = un.answer,
-            item['correct_answer'] = un[`${un.answer}`],
-            item['unit_name'] = un.unit_name,
-            item['unit_no'] = un.unit_no,
-            item['chapter_name'] = un.chapter_name,
-            item['chapter_no'] = un.chapter_no,
-            item['question'] = un.question,
-            item['unit_id'] = un.unit_id,
-            item['option_a'] = un.option_a,
-            item['option_b'] = un.option_b,
-            item['option_c'] = un.option_c,
-            item['option_d'] = un.option_d
-        }  
-    })
+    try{
+        const filter = {
+            school_id :req.body.school_id,
+            // subject_id:req.params.subject_id,
+            student_id:req.body.student_id,
+            test_id: req.params.test_id,
+        }
+        const un = await Questions.findOne({_id:req.body.question_id})
+        const data = await AttemptTest.findOne(filter)
+        data.questions.map((item, key)=>{
+            if(item.question_id == req.body.question_id)
+            {
+                item['answer'] = req.body.answer,
+                item['option'] = req.body.option,
+                item['correct_option'] = un.answer,
+                item['correct_answer'] = un[`${un.answer}`],
+                item['unit_name'] = un.unit_name,
+                item['unit_no'] = un.unit_no,
+                item['chapter_name'] = un.chapter_name,
+                item['chapter_no'] = un.chapter_no,
+                item['question'] = un.question,
+                item['unit_id'] = un.unit_id,
+                item['option_a'] = un.option_a,
+                item['option_b'] = un.option_b,
+                item['option_c'] = un.option_c,
+                item['option_d'] = un.option_d
+            }  
+        })
 
-    const assigntests = await AttemptTest.findOneAndUpdate(filter, {$set: {"questions": data.questions,"time_taken":req.body.time_taken,"completion_status":req.body.completion_status}})
-    if(assigntests){
-        return res.status(200).json({ 
-            msg: "answer submitted successfully",
-            attemptId: data._id,
-        }); 
+        const assigntests = await AttemptTest.findOneAndUpdate(filter, {$set: {"questions": data.questions,"time_taken":req.body.time_taken,"completion_status":req.body.completion_status}})
+        if(assigntests){
+            return res.status(200).json({ 
+                msg: "answer submitted successfully",
+                attemptId: data._id,
+            }); 
+        }
+    } catch(error){
+        res.status(500).json({
+            status: 500,
+            message: "Error occured",
+            errors: error.message
+        });
     }
 }
 
 const getAllQuestions = async (req,res) => {
-    const filter = {
-        school_id :req.body.school_id,
-        // subject_id:req.params.subject_id,
-        student_id:req.body.student_id,
-        test_id: req.params.test_id,
+    try{
+        const filter = {
+            school_id :req.body.school_id,
+            // subject_id:req.params.subject_id,
+            student_id:req.body.student_id,
+            test_id: req.params.test_id,
+        }
+        const data = await AttemptTest.findOne(filter)
+        const questions =  data?.questions;
+        return res.status(200).json({ 
+            data: questions, 
+        });
+    } catch(error){
+        res.status(500).json({
+            status: 500,
+            message: "Error occured",
+            errors: error.message
+        });
     }
-    const data = await AttemptTest.findOne(filter)
-    const questions =  data?.questions;
-    return res.status(200).json({ 
-        data: questions, 
-    }); 
 }
 
 const getLastScore = async (req,res) => {
-    const filter = {
-        school_id :req.body.school_id,
-        // subject_id:req.params.subject_id,
-        student_id:req.body.student_id,
-        class_id: req.body.class_id,
-    }
-    // const data = await AttemptTest.findOne(filter).sort({"created_at": -1}).limit(1)
-    const result = await AttemptTest.findOne(filter).limit(1).sort({$natural:-1})
-    // console.log(result)
-    let correctAnswers = 0;
-    let wrongAnswers = 0;
-    let totalQuestions = result?.questions?.length;
-    result?.questions?.map((item,key)=>{
-        if(item.answer != undefined ){
-            if(item.answer == item['correct_answer'] && item.option == item['correct_option']){
-                correctAnswers = correctAnswers + 1;
-            }else{
-                wrongAnswers = wrongAnswers + 1;
-            }
-        }
-    })
-    let data = {
-        totalQuestions : totalQuestions,
-        correctAnswers : correctAnswers,
-        wrongAnswers : wrongAnswers,
-        attemptedQuestions: correctAnswers + wrongAnswers,
-        create_at:result?.create_at,
-        _id:result?._id,
-        questions:result?.questions,
-        time_taken:result?.time_taken,
-        test_id:result?.test_id
-    }
-    if(!result){
-        data = null
-    }
-    return res.status(200).json({ 
-        data: data, 
-    }); 
-}
-
-const getCumulativeScore = async (req,res) => {
-    let filter = {};
-    if(req.params.subject_id != "undefined"){
-        filter = {
+    console.log(req.body)
+    try{
+        const filter = {
             school_id :req.body.school_id,
             // subject_id:req.params.subject_id,
             student_id:req.body.student_id,
             class_id: req.body.class_id,
-            "test_subjects.subject_id": {
-                $eq : req.params.subject_id
-            }
         }
-    }else{
-        filter = {
-            school_id :req.body.school_id,
-            student_id:req.body.student_id,
-            class_id: req.body.class_id,
-        }
-    }
-    const result = await AttemptTest.find(filter)
-    let totalTests = result?.length;
-    let correctAnswers = 0;
-    let wrongAnswers = 0;
-    let marksScored = 0;
-    let totalMarks = 0;
-    let newArray = [];
-    result?.map((item,key) => {
-        let obj = {correctAnswers : 0,wrongAnswers : 0,marksScored : 0,totalMarks : 0,created_at:null,};
-        obj.created_at = item.create_at;
-        obj.time_taken = item.time_taken;
-        obj.student_name = item.student_name;
-        obj.test_name = item.test_name
-        item?.questions?.map((it,key)=>{
-            if(it.answer != undefined ){
-                if(it.answer == it['correct_answer'] && it.option == it['correct_option']){
-                    obj.correctAnswers = obj.correctAnswers + 1;
+        // const data = await AttemptTest.findOne(filter).sort({"created_at": -1}).limit(1)
+        const result = await AttemptTest.findOne(filter).limit(1).sort({$natural:-1})
+        // console.log(result)
+        let correctAnswers = 0;
+        let wrongAnswers = 0;
+        let totalQuestions = result?.questions?.length;
+        result?.questions?.map((item,key)=>{
+            if(item.answer != undefined ){
+                if(item.answer == item['correct_answer'] && item.option == item['correct_option']){
                     correctAnswers = correctAnswers + 1;
                 }else{
-                    obj.wrongAnswers = obj.wrongAnswers + 1;
                     wrongAnswers = wrongAnswers + 1;
                 }
             }
         })
-        obj.marksScored = obj.correctAnswers;
-        obj.totalMarks = obj.correctAnswers +obj.wrongAnswers;
-        marksScored = correctAnswers;
-        totalMarks = correctAnswers + wrongAnswers;
-        newArray.push(obj);
-    })
-    if(!result){
-        data = null
+        let data = {
+            totalQuestions : totalQuestions,
+            correctAnswers : correctAnswers,
+            wrongAnswers : wrongAnswers,
+            attemptedQuestions: correctAnswers + wrongAnswers,
+            create_at:result?.create_at,
+            _id:result?._id,
+            questions:result?.questions,
+            time_taken:result?.time_taken,
+            test_id:result?.test_id
+        }
+        if(!result){
+            data = null
+        }
+        return res.status(200).json({ 
+            data: data, 
+        }); 
+    }   catch(error){
+        res.status(500).json({
+            status: 500,
+            message: "Error occured",
+            errors: error.message
+        });
     }
-    return res.status(200).json({ 
-        data: newArray, 
-    }); 
+}
+
+const getCumulativeScore = async (req,res) => {
+    try{
+        let filter = {};
+        if(req.params.subject_id != "undefined"){
+            filter = {
+                school_id :req.body.school_id,
+                // subject_id:req.params.subject_id,
+                student_id:req.body.student_id,
+                class_id: req.body.class_id,
+                "test_subjects.subject_id": {
+                    $eq : req.params.subject_id
+                }
+            }
+        }else{
+            filter = {
+                school_id :req.body.school_id,
+                student_id:req.body.student_id,
+                class_id: req.body.class_id,
+            }
+        }
+        const result = await AttemptTest.find(filter)
+        let totalTests = result?.length;
+        let correctAnswers = 0;
+        let wrongAnswers = 0;
+        let marksScored = 0;
+        let totalMarks = 0;
+        let newArray = [];
+        result?.map((item,key) => {
+            let obj = {correctAnswers : 0,wrongAnswers : 0,marksScored : 0,totalMarks : 0,created_at:null,};
+            obj.created_at = item.create_at;
+            obj.time_taken = item.time_taken;
+            obj.student_name = item.student_name;
+            obj.test_name = item.test_name
+            item?.questions?.map((it,key)=>{
+                if(it.answer != undefined ){
+                    if(it.answer == it['correct_answer'] && it.option == it['correct_option']){
+                        obj.correctAnswers = obj.correctAnswers + 1;
+                        correctAnswers = correctAnswers + 1;
+                    }else{
+                        obj.wrongAnswers = obj.wrongAnswers + 1;
+                        wrongAnswers = wrongAnswers + 1;
+                    }
+                }
+            })
+            obj.marksScored = obj.correctAnswers;
+            obj.totalMarks = obj.correctAnswers +obj.wrongAnswers;
+            marksScored = correctAnswers;
+            totalMarks = correctAnswers + wrongAnswers;
+            newArray.push(obj);
+        })
+        if(!result){
+            data = null
+        }
+        return res.status(200).json({ 
+            data: newArray, 
+        }); 
+    } catch(error){
+        res.status(500).json({
+            status: 500,
+            message: "Error occured",
+            errors: error.message
+        });
+    }
 }
 
 const getResult = async (req,res) => {
-    const result = await AttemptTest.findOne({_id: req?.params?.attempt_id});
-    let correctAnswers = 0;
-    let wrongAnswers = 0;
-    let totalQuestions = result?.questions?.length;
-    result?.questions?.map((item,key)=>{
-        if(item.answer != undefined ){
-            if(item.answer == item['correct_answer'] && item.option == item['correct_option']){
-                correctAnswers = correctAnswers + 1;
-            }else{
-                wrongAnswers = wrongAnswers + 1;
+    try{
+        const result = await AttemptTest.findOne({_id: req?.params?.attempt_id});
+        let correctAnswers = 0;
+        let wrongAnswers = 0;
+        let totalQuestions = result?.questions?.length;
+        result?.questions?.map((item,key)=>{
+            if(item.answer != undefined ){
+                if(item.answer == item['correct_answer'] && item.option == item['correct_option']){
+                    correctAnswers = correctAnswers + 1;
+                }else{
+                    wrongAnswers = wrongAnswers + 1;
+                }
             }
+        })
+        let data = {
+            totalQuestions : totalQuestions,
+            correctAnswers : correctAnswers,
+            wrongAnswers : wrongAnswers,
+            attemptedQuestions: correctAnswers + wrongAnswers,
         }
-    })
-    let data = {
-        totalQuestions : totalQuestions,
-        correctAnswers : correctAnswers,
-        wrongAnswers : wrongAnswers,
-        attemptedQuestions: correctAnswers + wrongAnswers,
-    }
 
-    return res.status(200).json({ 
-        data: data, 
-    }); 
+        return res.status(200).json({ 
+            data: data, 
+        }); 
+    } catch(error){
+        res.status(500).json({
+            status: 500,
+            message: "Error occured",
+            errors: error.message
+        });
+    }
 }
 
 const getStudentWiseReport = async (req,res) => {
-    const filter = {
-        school_id :req.params.school_id,
-        // subject_id:req.params.subject_id,
-        class_id: req.params.class_id,
-        test_id: req.params.test_id,
-        "test_subjects.subject_id": {
-            $eq : req.params.subject_id
-        },
-    }
-    let correctAnswers = 0;
-    let wrongAnswers = 0;
-    let marksScored = 0;
-    let totalMarks = 0;
-    const TestsAttemptedByStudents = await AttemptTest.find(filter).lean();
-    TestsAttemptedByStudents.map((item,key)=>{
-        totalMarks = item.questions.length;
-        correctAnswers = 0;
-        wrongAnswers = 0;
-        item.questions.map((it,key)=>{
-            if(it.answer != undefined ){
-                if(it.answer == it['correct_answer'] && it.option == it['correct_option']){
-                    correctAnswers = correctAnswers + 1;
-                }else{
-                    wrongAnswers = wrongAnswers + 1;
+    try{
+        const filter = {
+            school_id :req.params.school_id,
+            // subject_id:req.params.subject_id,
+            class_id: req.params.class_id,
+            test_id: req.params.test_id,
+            "test_subjects.subject_id": {
+                $eq : req.params.subject_id
+            },
+        }
+        let correctAnswers = 0;
+        let wrongAnswers = 0;
+        let marksScored = 0;
+        let totalMarks = 0;
+        const TestsAttemptedByStudents = await AttemptTest.find(filter).lean();
+        TestsAttemptedByStudents.map((item,key)=>{
+            totalMarks = item.questions.length;
+            correctAnswers = 0;
+            wrongAnswers = 0;
+            item.questions.map((it,key)=>{
+                if(it.answer != undefined ){
+                    if(it.answer == it['correct_answer'] && it.option == it['correct_option']){
+                        correctAnswers = correctAnswers + 1;
+                    }else{
+                        wrongAnswers = wrongAnswers + 1;
+                    }
                 }
-            }
+            })
+            item.totalMarks = totalMarks;
+            item.correctAnswers = correctAnswers;
+            item.wrongAnswers = wrongAnswers;
+            item.cScorePercentage = correctAnswers/totalMarks *100;
         })
-        item.totalMarks = totalMarks;
-        item.correctAnswers = correctAnswers;
-        item.wrongAnswers = wrongAnswers;
-        item.cScorePercentage = correctAnswers/totalMarks *100;
-    })
-    return res.status(200).json({ 
-        data: TestsAttemptedByStudents, 
-    }); 
+        return res.status(200).json({ 
+            data: TestsAttemptedByStudents, 
+        }); 
+    } catch(error){
+        res.status(500).json({
+            status: 500,
+            message: "Error occured",
+            errors: error.message
+        });
+    }
 }
 
 const getAssignedTestsTeacher = async(req, res) => {
-    const filter = {
-        school_id:req.params.school_id,
-        "test_subjects.subject_id": {
-            $eq : req.params.subject_id
-        },
-        class_id:req.params.class_id,
-        assigned:true,
+    try{
+        const filter = {
+            school_id:req.params.school_id,
+            "test_subjects.subject_id": {
+                $eq : req.params.subject_id
+            },
+            class_id:req.params.class_id,
+            assigned:true,
+        }
+        const assignedTest = await AssignTest.find(filter).lean();
+        await Promise.all(assignedTest.map(async (item) => {
+            const data = await UnitTest.findOne({_id:item.test_id},{test_name:1})
+            item.test_name = data.test_name;
+        }))
+        return res.status(200).json({ 
+            data: assignedTest, 
+        }); 
+    } catch(error){
+        res.status(500).json({
+            status: 500,
+            message: "Error occured",
+            errors: error.message
+        });
     }
-    const assignedTest = await AssignTest.find(filter).lean();
-    await Promise.all(assignedTest.map(async (item) => {
-        const data = await UnitTest.findOne({_id:item.test_id},{test_name:1})
-        item.test_name = data.test_name;
-    }))
-    return res.status(200).json({ 
-        data: assignedTest, 
-    }); 
 }
 
 const getClassesWithStudents = async (req, res) => {
-    const filter = {
-        school_id:req.params.school_id,
-    }
-    const classes = await Class.find().lean();
-    const students = await Student.find(filter);
-    classes.forEach(item =>{
-        const class_id = item._id;
-        let countStudents = 0 ; 
-        students.forEach(element =>{
-            if(element.class_id == class_id){
-                countStudents = countStudents + 1
-            }
+    try{
+        const filter = {
+            school_id:req.params.school_id,
+        }
+        const classes = await Class.find().lean();
+        const students = await Student.find(filter);
+        classes.forEach(item =>{
+            const class_id = item._id;
+            let countStudents = 0 ; 
+            students.forEach(element =>{
+                if(element.class_id == class_id){
+                    countStudents = countStudents + 1
+                }
+            })
+            item.student_count = countStudents;
         })
-        item.student_count = countStudents;
-    })
-    return res.status(200).json({ 
-        data: classes, 
-    }); 
+        return res.status(200).json({ 
+            data: classes, 
+        }); 
+    } catch(error){
+        res.status(500).json({
+            status: 500,
+            message: "Error occured",
+            errors: error.message
+        });
+    }
 }
 
 const getAllTeachersOfSchool = async (req, res) => {
-    let filter = null;
-    if(req.body.subject_id){
-        filter = {
-            school_id:req.params.school_id,
-            subject_id:req?.body?.subject_id
+    try{
+        let filter = null;
+        if(req.body.subject_id){
+            filter = {
+                school_id:req.params.school_id,
+                subject_id:req?.body?.subject_id
+            }
+        }else{
+            filter = {
+                school_id:req.params.school_id,
+            }
         }
-    }else{
-        filter = {
-            school_id:req.params.school_id,
-        }
-    }
 
-    const teachers = await Teacher.find(filter);
-    
-    return res.status(200).json({ 
-        data: teachers, 
-    }); 
+        const teachers = await Teacher.find(filter);
+        
+        return res.status(200).json({ 
+            data: teachers, 
+        }); 
+    } catch(error){
+        res.status(500).json({
+            status: 500,
+            message: "Error occured",
+            errors: error.message
+        });
+    }
 }
 
 const getAllSubjects = async (req, res) => {
-    const subjects = await Subject.find();
-    
-    return res.status(200).json({ 
-        data: subjects, 
-    }); 
+    try{
+        const subjects = await Subject.find();
+        
+        return res.status(200).json({ 
+            data: subjects, 
+        });
+    } catch(error){
+        res.status(500).json({
+            status: 500,
+            message: "Error occured",
+            errors: error.message
+        });
+    }
 }
 
 const getSchoolLogo = async (req, res) => {
-    const school = await School.findOne({sub_domain : req.params.sub_domain});
-    
-    return res.status(200).json({ 
-        data: school, 
-    }); 
+    try{
+        const school = await School.findOne({sub_domain : req.params.sub_domain});
+        
+        return res.status(200).json({ 
+            data: school, 
+        });
+    } catch(error){
+        res.status(500).json({
+            status: 500,
+            message: "Error occured",
+            errors: error.message
+        });
+    }
 }
 
 const getAllTeacherAssignedTests = async (req, res) => {
-    const tests = await AssignTest.find({teacher_id : req.params.teacher_id,school_id:req.params.school_id});
-    return res.status(200).json({ 
-        data: tests, 
-    }); 
+    try{
+        const tests = await AssignTest.find({teacher_id : req.params.teacher_id,school_id:req.params.school_id});
+        return res.status(200).json({ 
+            data: tests, 
+        }); 
+    } catch(error){
+        res.status(500).json({
+            status: 500,
+            message: "Error occured",
+            errors: error.message
+        });
+    }
 }
 
 const getSectionStudent = async (req, res) => {
-    const classes = await Class.findOne({class_name : req.params.class_name}).lean();
-    await Promise.all(classes?.section?.map( async (sec, k)=>{
-        let attemptedCount = 0;
-        students = await Student.find({ section : sec, school_id:req.params.school_id })
-        classes[`${sec}-count`] = students?.length;  
-        await Promise.all (students.map( async (item)=>{
-            // console.log(item.email, sec)
-            const data = await AttemptTest.find({student_id: item._id, section: sec})
-            if(data.length>0){
-                attemptedCount = attemptedCount + 1;
-            }
-        }))  
-        classes[`${sec}-attempted`] = attemptedCount;
-        classes[`${sec}-percentage`] = (attemptedCount/classes[`${sec}-count`])*100;
-    }))
-    return res.status(200).json({ 
-        data: classes, 
-    }); 
+    try{
+        const classes = await Class.findOne({class_name : req.params.class_name}).lean();
+        await Promise.all(classes?.section?.map( async (sec, k)=>{
+            let attemptedCount = 0;
+            students = await Student.find({ section : sec, school_id:req.params.school_id })
+            classes[`${sec}-count`] = students?.length;  
+            await Promise.all (students.map( async (item)=>{
+                // console.log(item.email, sec)
+                const data = await AttemptTest.find({student_id: item._id, section: sec})
+                if(data.length>0){
+                    attemptedCount = attemptedCount + 1;
+                }
+            }))  
+            classes[`${sec}-attempted`] = attemptedCount;
+            classes[`${sec}-percentage`] = (attemptedCount/classes[`${sec}-count`])*100;
+        }))
+        return res.status(200).json({ 
+            data: classes, 
+        }); 
+    } catch(error){
+        res.status(500).json({
+            status: 500,
+            message: "Error occured",
+            errors: error.message
+        });
+    }
 }
 
 const getClassSectionStudents = async (req, res) => {
-    const students = await Student.find({class_id:req.params.class_id, section:req.params.section,school_id:req.params.school_id});
-    const filter = {
-        school_id :req.body.school_id,
-        // subject_id:req.params.subject_id,
-        student_id:req.body.student_id,
-        class_id: req.body.class_id,
+    try{
+        const students = await Student.find({class_id:req.params.class_id, section:req.params.section,school_id:req.params.school_id}).lean();
+        const filter = {
+            school_id :req.params.school_id,
+            // subject_id:req.params.subject_id,
+            class_id: req.params.class_id,
+            section: req.params.section
+        }
+       
+        await Promise.all(students.map(async(item, key)=>{
+            const result = await AttemptTest.findOne({student_id:item._id,class_id:req.params.class_id,section:req.params.section, school_id:req.params.school_id}).limit(1).sort({$natural:-1})
+            let correctAnswers = 0;
+            let wrongAnswers = 0;
+            let totalQuestions = result?.questions?.length;
+            result?.questions?.map((item,key)=>{
+                if(item.answer != undefined ){
+                    if(item.answer == item['correct_answer'] && item.option == item['correct_option']){
+                        correctAnswers = correctAnswers + 1;
+                    }else{
+                        wrongAnswers = wrongAnswers + 1;
+                    }
+                }
+            })
+            students.correctAnswers = correctAnswers;
+            console.log(students)
+        }))
+        return res.status(200).json({ 
+            data: students, 
+        }); 
+    } catch(error){
+        res.status(500).json({
+            status: 500,
+            message: "Error occured",
+            errors: error.message
+        });
     }
-    // const data = await AttemptTest.findOne(filter).sort({"created_at": -1}).limit(1)
-    const result = await AttemptTest.findOne(filter).limit(1).sort({$natural:-1})
-    return res.status(200).json({ 
-        data: students, 
-    }); 
 }
 
 const getAllStudentAttemptedTests = async (req, res) => {
-    const filter = {
-        school_id :req.params.school_id,
-        class_id: req.params.class_id,
-        test_id: req.params.test_id,
-    }
-    let correctAnswers = 0;
-    let wrongAnswers = 0;
-    let marksScored = 0;
-    let totalMarks = 0;
-    const TestsAttemptedByStudents = await AttemptTest.find(filter).lean();
-    TestsAttemptedByStudents.map((item,key)=>{
-        totalMarks = item.questions.length;
-        correctAnswers = 0;
-        wrongAnswers = 0;
-        item.questions.map((it,key)=>{
-            if(it.answer != undefined ){
-                if(it.answer == it['correct_answer'] && it.option == it['correct_option']){
-                    correctAnswers = correctAnswers + 1;
-                }else{
-                    wrongAnswers = wrongAnswers + 1;
+    try{
+        const filter = {
+            school_id :req.params.school_id,
+            class_id: req.params.class_id,
+            test_id: req.params.test_id,
+        }
+        let correctAnswers = 0;
+        let wrongAnswers = 0;
+        let marksScored = 0;
+        let totalMarks = 0;
+        const TestsAttemptedByStudents = await AttemptTest.find(filter).lean();
+        TestsAttemptedByStudents.map((item,key)=>{
+            totalMarks = item.questions.length;
+            correctAnswers = 0;
+            wrongAnswers = 0;
+            item.questions.map((it,key)=>{
+                if(it.answer != undefined ){
+                    if(it.answer == it['correct_answer'] && it.option == it['correct_option']){
+                        correctAnswers = correctAnswers + 1;
+                    }else{
+                        wrongAnswers = wrongAnswers + 1;
+                    }
                 }
-            }
+            })
+            item.totalMarks = totalMarks;
+            item.correctAnswers = correctAnswers;
+            item.wrongAnswers = wrongAnswers;
+            item.cScorePercentage = correctAnswers/totalMarks *100;
         })
-        item.totalMarks = totalMarks;
-        item.correctAnswers = correctAnswers;
-        item.wrongAnswers = wrongAnswers;
-        item.cScorePercentage = correctAnswers/totalMarks *100;
-    })
-    return res.status(200).json({ 
-        data: TestsAttemptedByStudents, 
-    }); 
+        return res.status(200).json({ 
+            data: TestsAttemptedByStudents, 
+        }); 
+    } catch(error){
+        res.status(500).json({
+            status: 500,
+            message: "Error occured",
+            errors: error.message
+        });
+    }
 }
 
 module.exports = {
