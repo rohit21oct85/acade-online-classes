@@ -25,9 +25,10 @@ const CreateTeacher = async (req, res) => {
 }
 const UpdateTeacher = async (req, res) =>{
     try {
+        
         await Teacher.findOneAndUpdate({_id: req.params.id},req.body)
                 .then(response => {
-                    return res.status(202).json({
+                    res.status(202).json({
                         message: "Teacher, Updated successfully"
                     })
                 })
@@ -110,18 +111,21 @@ function getSubjectID(arr, name){
     return data && data[0]._id;
 }
 function getClassId(arr, class_name){
-    const data = arr.filter(el => el.class_name === class_name);
+    const data = arr.filter(el => el.class_name == class_name);
     return data && data[0]._id;
 }
 
-function getSubjectFirstLetetr(subject_name){
-    let subj ;
-    if(subject_name?.match(" ")){
-        let fSubj = subject_name?.split(" ")[0].charAt(0);
-        let lSubj = subject_name?.split(" ")[1].charAt(0);
-        return subj = fSubj+lSubj;
+function getSubjectFirstLetetr(string){
+    let fl;
+
+    if(string.match(" ")){
+        let data = string.split(" ").map( el => {
+            return fl += el.charAt(0);
+            
+        })
+        return data[1].split("undefined")[1];
     }else{
-        return subj = subject_name.charAt(0);
+        return string.charAt(0);
     }
     
 }

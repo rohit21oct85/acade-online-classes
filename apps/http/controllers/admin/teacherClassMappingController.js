@@ -37,32 +37,6 @@ const CreateTeacherClassMapping = async (req, res) => {
     }
 }
 
-// const UpdateTeacherClassMapping = async (req, res) =>{
-//     try {
-//         const moduleData = req?.body?.modules;
-//         const school_id = req?.body?.school_id;
-//         const role_id = req?.body?.role_id;
-//         var options = { upsert: true, new: true, setDefaultsOnInsert: true };  
-//         const permissionCount = await Permission.countDocuments({school_id: school_id,role_id: role_id});
-        
-//         if(permissionCount > 0){
-//             await Permission.updateMany({school_id: school_id,role_id: role_id},{$set: moduleData},options);
-//             res.status(200).json({ 
-//                 message: "Permission Updated sucessfully"
-//             });
-//         }else{
-//             await Permission.insertMany(moduleData);
-//             res.status(200).json({ 
-//                 message: "Permission created sucessfully"
-//             });
-//         }
-
-//     } catch (error) {
-//         res.status(409).json({
-//             message: error.message
-//         });
-//     }
-// }
 
 const ViewTeacherClassMapping = async (req, res) => {
     try{

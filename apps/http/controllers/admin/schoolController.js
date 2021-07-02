@@ -1,4 +1,5 @@
 const School = require('../../../models/admin/School');
+const AssignTest = require('../../../models/admin/AssignTest');
 const csv = require('csv-parser')
 const fs = require('fs')
 const bcrypt = require('bcryptjs');
@@ -227,8 +228,24 @@ const searchSchool = async (req, res) => {
         schools
     });
 }
-
+const schoolReport = async (req, res) => {
+    try {
+        const data = await AssignTest.find({
+            school_id: req?.params?.school_id,
+            class_id: req?.params?.class_id
+        });
+        res.status(201).json({
+            data: data
+        })
+    } catch (error) {
+        res.json({
+            status: 500,
+            message: err.message
+        })
+    }
+}
 module.exports = {
+    schoolReport,
     checkSubDomain,
     addFields,
     CreateSchool,

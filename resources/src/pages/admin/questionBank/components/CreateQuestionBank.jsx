@@ -13,11 +13,13 @@ import useUpdateQuestion from '../hooks/useUpdateQuestion';
 import useUploadQuestion from '../hooks/useUploadQuestion';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from 'ckeditor5-classic-with-mathtype';
+import { useToasts } from 'react-toast-notifications';
 
 export default function CreateQuestionBank() {
       
       const params = useParams();
       const history = useHistory();
+      const { addToast } = useToasts();
       const {data:classDatas} = useClassList();
       const {data:subjects, isLoading: subjectLoading} = useClassSubjectList();
       const {data:units, isLoading: unitLoading} = useUnitList();
@@ -111,27 +113,31 @@ export default function CreateQuestionBank() {
             let subject_id = params?.subject_id
             let unit_id = params?.unit_id
             let chapter_id = params?.chapter_id
+            if(class_id && subject_id && unit_id && chapter_id){
+                  let class_name = getFilteredData(classDatas,'_id' ,class_id, 'class_name');
+                  let subject_name = getFilteredData(subjects,'subject_id' , subject_id, 'subject_name');
+                  let unit_no = getFilteredData(units,'_id' , unit_id, 'unit_no');
+                  let unit_name = getFilteredData(units,'_id' , unit_id, 'unit_name');
+                  let chapter_no = getFilteredData(chapters,'_id' , chapter_id, 'chapter_no');
+                  let chapter_name = getFilteredData(chapters,'_id' , chapter_id, 'chapter_name');
 
-            let class_name = getFilteredData(classDatas,'_id' ,class_id, 'class_name');
-            let subject_name = getFilteredData(subjects,'subject_id' , subject_id, 'subject_name');
-            let unit_no = getFilteredData(units,'_id' , unit_id, 'unit_no');
-            let unit_name = getFilteredData(units,'_id' , unit_id, 'unit_name');
-            let chapter_no = getFilteredData(chapters,'_id' , chapter_id, 'chapter_no');
-            let chapter_name = getFilteredData(chapters,'_id' , chapter_id, 'chapter_name');
-
-            formDataUpload.append('file',file);
-            formDataUpload.append('class_id',class_id);
-            formDataUpload.append('class_name',class_name);
-            formDataUpload.append('subject_id',subject_id);
-            formDataUpload.append('subject_name',subject_name);
-            formDataUpload.append('unit_id',unit_id);
-            formDataUpload.append('unit_no',unit_no);
-            formDataUpload.append('unit_name',unit_name);
-            formDataUpload.append('chapter_id',chapter_id);
-            formDataUpload.append('chapter_no',chapter_no);
-            formDataUpload.append('chapter_name',chapter_name);
-            formDataUpload.append('extension',extension);
-            await uploadMutation.mutate(formDataUpload);
+                  formDataUpload.append('file',file);
+                  formDataUpload.append('class_id',class_id);
+                  formDataUpload.append('class_name',class_name);
+                  formDataUpload.append('subject_id',subject_id);
+                  formDataUpload.append('subject_name',subject_name);
+                  formDataUpload.append('unit_id',unit_id);
+                  formDataUpload.append('unit_no',unit_no);
+                  formDataUpload.append('unit_name',unit_name);
+                  formDataUpload.append('chapter_id',chapter_id);
+                  formDataUpload.append('chapter_no',chapter_no);
+                  formDataUpload.append('chapter_name',chapter_name);
+                  formDataUpload.append('extension',extension);
+                  await uploadMutation.mutate(formDataUpload);
+            }else{
+                  addToast('Please select class, subject, unit and chapter fields to upload question', { appearance: 'error', autoDismiss: true }); 
+            }
+            
             
       }
       

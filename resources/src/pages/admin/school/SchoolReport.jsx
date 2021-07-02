@@ -1,15 +1,12 @@
 import React, {useEffect} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
-import CreateSchool from './components/CreateSchool';
-import AllSchools from './components/AllSchools';
-import UploadSchools from './components/UploadSchools';
-
 
 import useModule from '../../../hooks/useModule';
 import useAccess from '../../../hooks/useAccess';
 import useSchoolLists from './hooks/useSchoolLists';
-import useSubjectList from '../subject/hooks/useSubjectList';
-import useSubjectClassList from './hooks/useSubjectClassList';
+import useClassList from '../class/hooks/useClassList';
+import useClassSubjectList from '../../../hooks/classSubjectMapping/useClassSubjectList';
+import useSchoolAssignedTests from './hooks/useSchoolAssignedTests';
 
 export default function SchoolReport() {
     const params = useParams();
@@ -34,17 +31,18 @@ export default function SchoolReport() {
     }
 
     const {data: schools} = useSchoolLists();
-    const {data: subjects} = useSubjectList()
-    const {data: sClass} = useSubjectClassList()
-    console.log(sClass)
+    const {data: sClass} = useClassList();
+    const {data: reports } = useSchoolAssignedTests();
+
+    console.log(reports)
     function handleSchoolChange(e){
             history.push(`/admin/school-report/${e.target.value}`);
     }
     function handleSubjectChange(e){
-            history.push(`/admin/school-report/${params?.school_id}/${e.target.value}`);
+            history.push(`/admin/school-report/${params?.school_id}/${params?.class_id}/${e.target.value}`);
     }
     function handleClassChange(e){
-            history.push(`/admin/school-report/${params?.school_id}/${params?.subject_id}/${e.target.value}`);
+            history.push(`/admin/school-report/${params?.school_id}/${e.target.value}`);
     }
     return (
         <div className="col-lg-10 col-md-10 main_dash_area">
@@ -67,33 +65,50 @@ export default function SchoolReport() {
                                           <option value={school?._id}>{school?.school_name}</option>
                                     )
                               })}
-                        </select>      
+                        </select>       
                         <select className="form-control col-md-2 ml-2"
-                        value={params?.subject_id}
-                        onChange={handleSubjectChange}>
-                              <option value="">Select subject</option>
-                              {subjects?.map(subject => {
-                                    return(
-                                          <option value={subject?._id}>{subject?.subject_name}</option>
-                                    )
-                              })}
-                        </select>      
-                        <select className="form-control col-md-1 ml-2"
                         value={params?.class_id}
                         onChange={handleClassChange}>
                               <option value="">Select Class</option>
                               {sClass?.map(sc => {
                                     return(
-                                          <option value={sc?._id}>{sc?.class_name}</option>
+                                          <option value={sc?._id}>{sc?.class_name}Th </option>
                                     )
                               })}
                         </select>      
+                        
                   </div>
                   </div>
                   <div className="clearfix"></div>
                   <div className="dash-cont-start">
-                  <div className="row">
+                  <div className="row col-md-12">
+                        <table className="table table-bordered col-md-12 pt-2 pb-2">
+                            <tr>
+                              <td>Test Name</td>  
+                              <td>Test Type</td>  
+                              <td>Test Subjects</td>  
+                              <td>Test Window</td>  
+                              <td>Test Duration</td>  
+                              <td>Test Start Time</td>  
+                              <td>Test End Time</td>  
+                            </tr>
                         
+                        {reports?.map(rep => {
+                              let tsubjects = Array.prototype.map.call(rep?.test_subjects, function(items) { return items.subject_name}).join(', ');
+                              return(
+                              <tr className="table-bordered col-md-12">
+                                    <td>{rep?.test_name}</td>  
+                                    <td>{rep?.test_type}</td>  
+                                    <td>{tsubjects}</td>  
+                                    <td>{rep?.test_window}</td>  
+                                    <td>{rep?.test_duration}</td>  
+                                    <td>{rep?.start_date}</td>  
+                                    <td>{rep?.start_date}</td>  
+                              </tr>      
+                              )
+                        })}
+                        </table>
+
                   </div>
                   </div>    
                 </div>
