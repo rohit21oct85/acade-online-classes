@@ -174,7 +174,9 @@ const UpdateSubAdmin = async (req, res) => {
         const admin = await Admin.findOneAndUpdate({_id: req.body?.admin_id},{$set: {
             first_name: req?.body?.first_name,
             last_name: req?.body?.last_name,
-            role_name: req?.body?.role_name
+            role_name: req?.body?.role_name,
+            role: req?.body?.role,
+
         }},{__v: 0});
         res.status(200).json({ 
             data: admin 

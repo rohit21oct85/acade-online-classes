@@ -30,8 +30,8 @@ export default function CreateTeacher() {
     const {data:subjects} = useSubjectList();
     const { data:SClassess} =useClassList();
     const [SingleTeacher, setSingleTeacher] = useState({});
-    const [teacherClass, setTeacehrClass] = useState([]);
-
+    
+    
     const {data : schools, isLoading } = useSchoolLists();
     const pattern = /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/;
     const initialData = {
@@ -51,8 +51,8 @@ export default function CreateTeacher() {
         setSingleTeacher(data)
     }
 
-    const createMutation = useCreateTeacher();
-    const updateMutation = useUpdateTeacher();
+    const createMutation = useCreateTeacher(formData);
+    const updateMutation = useUpdateTeacher(SingleTeacher);
 
     function getFirstletter(string){
         let fl;
@@ -79,19 +79,27 @@ export default function CreateTeacher() {
                 class_name: tclass.dataset.class_name,
                 checked: tclass?.checked === true ? true: false
             }
-            // setTeacehrClass(teacherClass => [...teacherClass, ])
         })
 
         if(params?.teacher_id){
-                let firstName = SingleTeacher?.name
-                let UID = `${domainName}${firstName.split(' ')[0]}${getFirstletter(subject_name)}T`;
-                SingleTeacher.EmpID = UID
-                SingleTeacher.subject_id = params?.subject_id
+                if(SingleTeacher.EmpID === ''){
+                    let UID = `${domainName}${SingleTeacher?.name.split(' ')[0]}${getFirstletter(subject_name)}T`;
+                    SingleTeacher.EmpID = UID
+                }
+                
+                SingleTeacher.school_id = params?.school_id
                 SingleTeacher.subject_name = subject_name
                 SingleTeacher.classess = teacherClas;
+                // delete SingleTeacher[0]
+                // delete SingleTeacher[1]
+                // delete SingleTeacher[2]
+                // delete SingleTeacher[3]
+                // delete SingleTeacher[4]
+                // delete SingleTeacher[5]
+                // delete SingleTeacher[6]
                 
-                // console.log(SingleTeacher);
-                await updateMutation.mutate(SingleTeacher);
+                console.log(SingleTeacher);
+                //await updateMutation.mutate(SingleTeacher);
         }else{
             formData.school_id = params.school_id ? params.school_id : ''
 
@@ -132,6 +140,7 @@ export default function CreateTeacher() {
             }
         }
     }
+
     async function handleChangeTeacher(e){
         const subject_name = e.target.options[e.target.selectedIndex].dataset.subject_name
         if(e.target.value != 999){
@@ -202,13 +211,12 @@ export default function CreateTeacher() {
                                     data-class_name={clas?.class_name}
                                     checked={checkClass}
                                     onChange={e => {
-                                        SingleTeacher?.classess.map( cls => {
-                                            if(cls?.class_id === clas?.class_id){
+                                        setSingleTeacher(SingleTeacher?.classess?.map( cls => {
+                                            if(clas?.class_id === e.target.value){
                                                 cls.checked = true
-                                            }else{
-                                                cls.checked = false
                                             }
-                                        })
+                                        }));
+                                        
                                     }}
                                     />
                                     {clas?.class_name}Th

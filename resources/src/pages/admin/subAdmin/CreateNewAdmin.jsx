@@ -40,10 +40,12 @@ export default function CreateNewAdmin() {
         e.preventDefault();
         setLoading(true);
         if(params?.admin_id){
-            formData['role_name'] = helper.getFilteredData(appRoles, 'role_id' ,params?.role, 'role_slug');
             formData['first_name'] = formData?.first_name ?? singleAdmin?.first_name
             formData['last_name'] = formData?.last_name ?? singleAdmin?.last_name
             formData['admin_id'] = params?.admin_id
+            formData['role'] = params?.role
+            formData['role_name'] = formData['role_name']
+            console.log(formData)
             await updateMutation.mutate(formData);
         }else{
             await createMutation.mutate(formData);
@@ -67,11 +69,12 @@ export default function CreateNewAdmin() {
                   <div className="form-group">
                     <select className="form-control"
                     name="role"
-                    value={singleAdmin?.role}
+                    value={params?.role}
                     onChange={e => {
                         if(params?.admin_id){
-                            setSingleAdmin({...singleAdmin, role: e.target.value})
-                            history.push(`/admin/manage-sub-admin/${singleAdmin?._id}/${params?.admin_id}`)
+                            const role_name = helper.getFilteredData(appRoles, 'role_id',e.target.value,'role_slug')
+                            setFormData({...formData, role: e.target.value,['role_name']: role_name})
+                            history.push(`/admin/manage-sub-admin/${params?.page_type}/${e.target.value}/${params?.admin_id}`)
                         }else{
                             setFormData({...formData, [e.target.name]: e.target.value})
                         }

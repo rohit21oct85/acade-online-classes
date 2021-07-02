@@ -38,6 +38,11 @@ export default function CreateAppPermission() {
             key: 'upload',
             value: 'Upload',
             icon: `<span class="bi bi-cloud-upload-fill"></span>`
+        },
+        {
+            key: 'view',
+            value: 'View',
+            icon: `<span class="bi bi-eye-fill"></span>`
         }
     ]
     const [loading, setLoading] = useState(false);
@@ -46,7 +51,6 @@ export default function CreateAppPermission() {
     const {data:roles} = useAppRoles();
     const {data:modules} = useAppModule();
     const {data:subAdmins, isLoading: sAdminLoading} = useSubAdminByRole();
-
     const [formData, setFormData] = useState({});
     
     function clearFields(){
@@ -102,6 +106,7 @@ export default function CreateAppPermission() {
                     })
                 }
             })
+            // console.log({module: ArrayModule, method: ArrayMethod});
 
             await createMutation.mutate({module: ArrayModule, method: ArrayMethod});
         }
@@ -211,13 +216,13 @@ export default function CreateAppPermission() {
                                     {module?.module_name}
                                     </label>
                                     
-                                    <div className="flex ml-2 mr-2">
+                                    <div className="row ml-2 mr-2">
                                         {methods?.map( method => {
                                             let chkMethodDisabled = checkExists(permissions, 'method_name', `${method?.key}-${module?.module_slug}`);
                                             if(module?.module_slug !== 'dashboard')
                                             return(
                                             <>    
-                                            <div className="col-md-3 pl-0 pr-0 pt-1 pb-1" key={method?._id}>
+                                            <div className="col-md-4 pl-0 pr-0 pt-1 pb-1" key={method?._id}>
                                               <label className="mb-0"
                                                 style={{fontSize: '0.85rem'}}
                                               >
@@ -262,7 +267,7 @@ export default function CreateAppPermission() {
                         )}
                         
                     </button>
-                    {params?.school_id && params?.role_id && (
+                    {params?.role && (
                         <button 
                         type="button"
                         className="btn btn-sm bg-warning ml-2 br-5"

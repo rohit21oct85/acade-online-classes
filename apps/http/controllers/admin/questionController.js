@@ -199,7 +199,6 @@ let FinalData = [];
 try {
     const class_id = req.body.class_id;
     const class_name = req.body.class_name;
-    const chapter_id = req.body.chapter_id;
     const chapter_name = req.body.chapter_name;
     const chapter_no = req.body.chapter_no;
     const extension = req.body.extension;

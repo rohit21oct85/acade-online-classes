@@ -11,5 +11,6 @@ router
     .get('/view-all/:role_slug?/:user_email?',checkAuth,adminAuth, Auth.ViewAllPermission)
     .post('/delete',checkAuth,adminAuth, Auth.DeletePermission)
     .post('/delete-all',checkAuth,adminAuth, Auth.DeleteAllPermission)
+    .post('/delete-all-module-permission',checkAuth,adminAuth, Auth.DeleteAllModulePermission)
     ;
 module.exports = router;
