@@ -38,10 +38,13 @@ const AttemptTestSchema = new mongoose.Schema({
         type: String,
     },
     test_subjects :{
-            type: Array,
+        type: Array,
     },
     test_name:{
-            type:String,
+        type:String,
+    },
+    section:{
+        type:String,
     },
     status:{
         type: Boolean,

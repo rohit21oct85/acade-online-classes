@@ -4,9 +4,18 @@ const fs = require('fs')
 
 const CreateClass = async (req, res) => {
     const body = req.body;
+    console.log(body)
     try {
-        const newClass = new Class(body);
-        await newClass.save();
+        const found = await Class.findOne({ class_name:body.class_name })
+        if(found){
+            const section = found?.section;
+            if(!section.includes(body.section)){
+                section.push(body.section);
+                await Class.findOneAndUpdate({class_name:body.class_name}, {$set: {"section":section}},{ upsert: true })    
+            }
+        }else{
+            await Class.findOneAndUpdate({class_name:body.class_name}, {$set: {"section":body.section,"capacity":body.capacity}},{ upsert: true })
+        }
         return res.status(200).json({ 
             message: "Class created sucessfully"
         });
