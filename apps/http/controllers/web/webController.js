@@ -632,7 +632,6 @@ const getAllQuestions = async (req,res) => {
 }
 
 const getLastScore = async (req,res) => {
-    console.log(req.body)
     try{
         const filter = {
             school_id :req.body.school_id,
@@ -855,20 +854,25 @@ const getAssignedTestsTeacher = async(req, res) => {
 
 const getClassesWithStudents = async (req, res) => {
     try{
+        // console.log(req.body,req.params)
         const filter = {
             school_id:req.params.school_id,
         }
-        const classes = await Class.find().lean();
+        const teacher = await Teacher.findOne({school_id:req.params.school_id,_id:req.params.teacher_id}).lean()
+        // const classes = await Class.find().lean();
+        const classes = teacher.classess;
         const students = await Student.find(filter);
-        classes.forEach(item =>{
-            const class_id = item._id;
+        classes.forEach(async (item)=>{
+            const class_id = item.class_id;
+            // const classes = await Class.find({_id: class_id});
             let countStudents = 0 ; 
-            students.forEach(element =>{
+            students.forEach(async (element) =>{
                 if(element.class_id == class_id){
                     countStudents = countStudents + 1
                 }
             })
             item.student_count = countStudents;
+            // item.section=classes?.section
         })
         return res.status(200).json({ 
             data: classes, 
@@ -962,16 +966,16 @@ const getSectionStudent = async (req, res) => {
         const classes = await Class.findOne({class_name : req.params.class_name}).lean();
         await Promise.all(classes?.section?.map( async (sec, k)=>{
             let attemptedCount = 0;
-            students = await Student.find({ section : sec, school_id:req.params.school_id })
+            students = await Student.find({ section : sec, school_id:req.params.school_id,class_id:req.params.class_id })
             classes[`${sec}-count`] = students?.length;  
             await Promise.all (students.map( async (item)=>{
-                // console.log(item.email, sec)
-                const data = await AttemptTest.find({student_id: item._id, section: sec})
+                const data = await AttemptTest.find({student_id: item._id, section: sec, class_id:req.params.class_id})
                 if(data.length>0){
                     attemptedCount = attemptedCount + 1;
                 }
             }))  
             classes[`${sec}-attempted`] = attemptedCount;
+            // const assign = await AssignTest.find({school_id:req.params.school_id, class_id:req.params.class_id,assigned:true})
             classes[`${sec}-percentage`] = (attemptedCount/classes[`${sec}-count`])*100;
         }))
         return res.status(200).json({ 
@@ -997,21 +1001,29 @@ const getClassSectionStudents = async (req, res) => {
         }
        
         await Promise.all(students.map(async(item, key)=>{
-            const result = await AttemptTest.findOne({student_id:item._id,class_id:req.params.class_id,section:req.params.section, school_id:req.params.school_id}).limit(1).sort({$natural:-1})
-            let correctAnswers = 0;
-            let wrongAnswers = 0;
-            let totalQuestions = result?.questions?.length;
-            result?.questions?.map((item,key)=>{
-                if(item.answer != undefined ){
-                    if(item.answer == item['correct_answer'] && item.option == item['correct_option']){
-                        correctAnswers = correctAnswers + 1;
-                    }else{
-                        wrongAnswers = wrongAnswers + 1;
+            const result = await AttemptTest.find({student_id:item._id,class_id:req.params.class_id,section:req.params.section, school_id:req.params.school_id})
+            item.attemptedTests = result?.length;
+            item.totalMarks = 0
+            result?.map((babe,key)=>{
+                let correctAnswers = 0;
+                let wrongAnswers = 0;
+                let totalQuestions = babe?.questions?.length;
+                babe?.questions?.map((it,key)=>{
+                    if(it.answer != undefined ){
+                        if(it.answer == it['correct_answer'] && it.option == it['correct_option']){
+                            correctAnswers = correctAnswers + 1;
+                        }else{
+                            wrongAnswers = wrongAnswers + 1;
+                        }
                     }
-                }
+                })
+                item.correctAnswers = correctAnswers
+                item.totalMarks = item.totalMarks + correctAnswers
+                item.totalQuestions = totalQuestions
+                item.wrongAnswers = wrongAnswers
+                item.percentage = ((item.totalMarks / totalQuestions) *100)?.toFixed(2)
+                item.average = item.totalMarks / item.attemptedTests
             })
-            students.correctAnswers = correctAnswers;
-            console.log(students)
         }))
         return res.status(200).json({ 
             data: students, 

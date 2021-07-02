@@ -37,7 +37,7 @@ router
     //principal
     .get('/view-principal/:id', checkAuth, Web.getPrincipal)
     .patch('/update-principal/:id', checkAuth, Web.updatePrincipal)
-    .get('/classes-with-student-no/:school_id?', checkAuth, Web.getClassesWithStudents)
+    .get('/classes-with-student-no/:school_id?/:teacher_id', checkAuth, Web.getClassesWithStudents)
     .post('/get-all-teachers/:school_id?', checkAuth, Web.getAllTeachersOfSchool)
     .get('/get-all-subjects', checkAuth, Web.getAllSubjects)
     .get('/get-all-teacher-assigned-tests/:school_id?/:teacher_id?', checkAuth, Web.getAllTeacherAssignedTests)
