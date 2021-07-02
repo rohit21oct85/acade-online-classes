@@ -408,7 +408,7 @@ export default function CreateQuestionBank() {
             )}    
             {params?.page_type === 'upload' && (
                  <> 
-                <form encType="multipart/formData">
+                <form encType="multipart/form-data">
                   <label>Upload Questions and Options </label>
                   <hr className="mt-1 mb-2"/>
                   <div className="form-group">
