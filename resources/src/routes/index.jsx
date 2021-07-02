@@ -138,7 +138,7 @@ export const adminRoutes = [
     },
     
     {
-        path: '/admin/school-report/:school_id?/:subject_id?/:class_id?',
+        path: '/admin/school-report/:school_id?/:class_id?/:subject_id?',
         component: SchoolReport
     },
 
