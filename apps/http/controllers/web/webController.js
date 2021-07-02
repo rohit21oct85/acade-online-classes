@@ -858,15 +858,15 @@ const getSectionStudent = async (req, res) => {
         let attemptedCount = 0;
         students = await Student.find({ section : sec, school_id:req.params.school_id })
         classes[`${sec}-count`] = students?.length;  
-        students.map( async (item)=>{
+        await Promise.all (students.map( async (item)=>{
             // console.log(item.email, sec)
             const data = await AttemptTest.find({student_id: item._id, section: sec})
-            console.log(data)
-            if(data){
+            if(data.length>0){
                 attemptedCount = attemptedCount + 1;
             }
-        })     
-        classes[`${sec}-attempted`] = attemptedCount; 
+        }))  
+        classes[`${sec}-attempted`] = attemptedCount;
+        classes[`${sec}-percentage`] = (attemptedCount/classes[`${sec}-count`])*100;
     }))
     return res.status(200).json({ 
         data: classes, 
