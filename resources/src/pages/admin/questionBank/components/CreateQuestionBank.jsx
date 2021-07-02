@@ -97,13 +97,13 @@ export default function CreateQuestionBank() {
             const ext = filename.split('.')[1];
             
             setExtension(ext);
-            if(ext === "csv" || ext === "docx" || ext === "doc"){
+            if(ext === "docx"){
                 setBtnDisbaled(false);
                 setFile(e.target.files[0]);
                 formDataUpload.append('file', e.target.files[0]);
             }else{
                 setBtnDisbaled(true);
-                addToast('Only .csv, .docx, .doc files are allowed', { appearance: 'error', autoDismiss: true });
+                addToast('Only .docx files are allowed', { appearance: 'error', autoDismiss: true });
             }
       }
       
