@@ -217,6 +217,7 @@ const getAllAssignedTestsClassBased = async (req, res) => {
                 school_id:req.params.school_id,
                 class_id:req.params.class_id,
                 assigned:false,
+                test_type: "single-test",
                 "test_subjects.subject_id": {
                     $eq : req.params.subject_id
                 },
@@ -284,6 +285,7 @@ const getAllAssignedTests = async (req, res) => {
                 },
                 school_id:req.params.school_id,
                 assigned:false,
+                test_type: "single-test",
                 $and: [
                     {
                         "start_date": { 
@@ -515,6 +517,7 @@ const attemptTestByStudent = async (req, res) =>{
             questions: newData.test_question,
             test_subjects:newData.test_subjects,
             test_name:newData.test_name,
+            section:req.body.section,
             // student_roll_no: student.roll_no,
         });    
         await attempt.save();
@@ -850,11 +853,38 @@ const getAllTeacherAssignedTests = async (req, res) => {
 }
 
 const getSectionStudent = async (req, res) => {
-    console.log(req.params, req.body)
-    const classes = await Class.find({class_name : req.params.class_name});
-    
+    const classes = await Class.findOne({class_name : req.params.class_name}).lean();
+    await Promise.all(classes?.section?.map( async (sec, k)=>{
+        let attemptedCount = 0;
+        students = await Student.find({ section : sec, school_id:req.params.school_id })
+        classes[`${sec}-count`] = students?.length;  
+        students.map( async (item)=>{
+            // console.log(item.email, sec)
+            const data = await AttemptTest.find({student_id: item._id, section: sec})
+            console.log(data)
+            if(data){
+                attemptedCount = attemptedCount + 1;
+            }
+        })     
+        classes[`${sec}-attempted`] = attemptedCount; 
+    }))
     return res.status(200).json({ 
         data: classes, 
+    }); 
+}
+
+const getClassSectionStudents = async (req, res) => {
+    const students = await Student.find({class_id:req.params.class_id, section:req.params.section,school_id:req.params.school_id});
+    const filter = {
+        school_id :req.body.school_id,
+        // subject_id:req.params.subject_id,
+        student_id:req.body.student_id,
+        class_id: req.body.class_id,
+    }
+    // const data = await AttemptTest.findOne(filter).sort({"created_at": -1}).limit(1)
+    const result = await AttemptTest.findOne(filter).limit(1).sort({$natural:-1})
+    return res.status(200).json({ 
+        data: students, 
     }); 
 }
 
@@ -923,5 +953,6 @@ module.exports = {
     getSchoolLogo,
     getAllTeacherAssignedTests,
     getSectionStudent,
-    getAllStudentAttemptedTests
+    getAllStudentAttemptedTests,
+    getClassSectionStudents
 }

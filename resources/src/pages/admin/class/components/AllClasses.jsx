@@ -65,12 +65,12 @@ export default function AllClasses({update, Delete}) {
                         </tr>
                     </thead>
                     <tbody>
-                        {data?.map( (item,key) => { 
+                        {data?.map( (item,key) => {
                             return (
                                 <tr key={item?._id}>
                                 <th scope="row">{key}</th>
                                 <td>{item.class_name}</td>
-                                <td>{item.section}</td>
+                                <td>{item.section +" , "}</td>
                                 <td>{item.capacity}</td>
                                 <td>
                                 {update === true && (

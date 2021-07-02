@@ -31,7 +31,8 @@ router
     .put('/update-assigned-test/:class_id?/:id?',checkAuth, Web.assignTestToStudent)
     .get('/get-student-wise-report/:school_id?/:class_id?/:subject_id?/:test_id?', checkAuth, Web.getStudentWiseReport)
     .get('/get-assigned-tests-teacher/:school_id?/:class_id?/:subject_id?', checkAuth, Web.getAssignedTestsTeacher)
-    .get('/get-sections-student-count/:school_id?/:class_id?/:subject_id/:class_name', checkAuth, Web.getSectionStudent)
+    .get('/get-sections-student-count/:school_id?/:class_id?/:class_name', checkAuth, Web.getSectionStudent)
+    .get('/get-class-sections-students/:school_id?/:class_id?/:class_name/:section', checkAuth, Web.getClassSectionStudents)
 
     //principal
     .get('/view-principal/:id', checkAuth, Web.getPrincipal)

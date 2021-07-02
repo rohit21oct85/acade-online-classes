@@ -12,8 +12,7 @@ const ClassSchema = new mongoose.Schema({
         required: true,
     },
     section: {
-        type: String,
-        required: true,
+        type: Array,
     },
     capacity: {
         type: Number,

@@ -28,6 +28,7 @@ export default function CreateClass() {
     // const {data : schools, isLoading } = useSchoolLists();
 
     const [SingleClass, setSingleClass] = useState({});
+    const [secs, setSecs] = useState([]);
 
     const [teacher, setTeacher] = useState();
 
@@ -44,6 +45,7 @@ export default function CreateClass() {
     useEffect(setModule, [data]);
     function setModule(){
         setSingleClass(data)
+        setSecs(data?.section)
     }
 
     const queryClient = useQueryClient()
@@ -55,6 +57,7 @@ export default function CreateClass() {
     }
 
     const mutation = useMutation(formData => {
+        console.log(formData)
         return axios.post(`${API_URL}v1/class/create`, formData, options)
     },{
         onSuccess: () => {
@@ -87,6 +90,14 @@ export default function CreateClass() {
         if(params?.class_id){
                 await updateMutation.mutate(SingleClass);
         }else{
+            const sec = await Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map( tclass => {
+                    return tclass?.value
+            })
+            console.log(sec)
+            formData.section = sec;
+            // setFormData({...formData, ['section']: classSection})
+            // formData.section  = classSection
+            // setFormData({...formData, ['section']: classSection})
             // formData.school_id = params.school_id ? params.school_id : '' 
             // if(formData.school_id == ''){
             //     setLoading(false);
@@ -98,9 +109,15 @@ export default function CreateClass() {
     }
 
     async function handleChange(e){
+        // let classSection = []
         if(params?.class_id){
-                setSingleClass({...SingleClass, [e.target.name]: e.target.value})
+            setSingleClass({...SingleClass, [e.target.name]: e.target.value})
         }else{
+            // if(e.target.type == "checkbox"){
+            //     classSection = await Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map( tclass => {
+            //         return tclass?.value
+            //     })
+            // }
             setFormData({...formData, [e.target.name]: e.target.value})
         }
     }
@@ -116,6 +133,15 @@ export default function CreateClass() {
             }
         }
     }
+
+    const sections = [
+        {'value': 'A'},{'value':'B'},{'value':'C'},{'value':'D'},{'value':'E'},
+        {'value': 'F'},{'value':'G'},{'value':'H'},{'value':'I'},{'value':'J'},
+        {'value': 'K'},{'value':'L'},{'value':'M'},{'value':'N'},{'value':'O'},
+        {'value': 'P'},{'value':'Q'},{'value':'R'},{'value':'S'},{'value':'T'},
+        {'value': 'U'},{'value':'V'},{'value':'W'},{'value':'X'},{'value':'Y'},
+        {'value': 'Z'},
+    ]
 
     return (
         <>
@@ -142,15 +168,31 @@ export default function CreateClass() {
                         onChange={handleChange}
                         placeholder="Class Name"/>
                 </div>
-            
                 <div className="form-group">
-                    <input 
+                    {/* <input 
                         type="text" 
                         className="form-control" 
                         name="section"
                         value={params?.class_id ? SingleClass?.section : formData?.section}
                         onChange={handleChange}
-                        placeholder="Section"/>
+                        placeholder="Section"/> */}
+                        {/* <select className="form-control" aria-label="Default select example" name="section" onChange={handleChange}> */}
+                            {/* <option value="999">Select Section</option> */}
+                            {sections && sections.map((item,key) => {
+                                // console.log(secs.includes(item?.value))
+                                return( 
+                                    // <option value={item.value} key={key}>{item.value}</option>
+                                <label className="col-md-4 pl-0" key={key}>
+                                    <input type="checkbox" className="mr-1 classSection"
+                                    value={item?.value} 
+                                    // onChange={handleChange}
+                                    // checked={secs && secs.includes(item?.value) ? "true" : ""}
+                                    />
+                                    {item?.value}
+                                </label>
+                                )
+                            })}
+                        {/* </select> */}
                 </div>
 
                 <div className="form-group">
