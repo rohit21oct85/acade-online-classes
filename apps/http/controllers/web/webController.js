@@ -33,8 +33,6 @@ const getSubjects = async (req, res) => {
 
 const getAssignedTestsStudent = async (req, res) => {
     try{
-        
-        // return res.send(req.body)
         let newArray = [];
         let newArray1 = [];
 
@@ -52,7 +50,7 @@ const getAssignedTestsStudent = async (req, res) => {
                 //         }
                 //     ]
             },{__v: 0});
-        // console.log(AssignedTests)
+            console.log(AssignedTests.length)
         const attemptedTest = await AttemptTest.find(
             {
                 // subject_id:req.params.subject_id,
@@ -60,12 +58,13 @@ const getAssignedTestsStudent = async (req, res) => {
                 class_id:req.params.class_id,
                 student_id:req.body.student_id,
             },{__v: 0});
-        
+        console.log(attemptedTest.length)
         if(attemptedTest.length != AssignedTests.length){
             if(attemptedTest.length > 0){
                 AssignedTests.forEach(item=>{
                     attemptedTest.forEach(it => {
                         if(item.test_id != it.test_id && it.student_id == req.body.student_id){
+                            console.log(item.test_id,it.test_id)
                             newArray.push({
                                 subject_id:item.subject_id,
                                 class_id:item.class_id,
@@ -246,7 +245,7 @@ const getAllAssignedTestsClassBased = async (req, res) => {
                     newArray.push({
                         // test_question: it.test_question,
                         test_name:it.test_name,
-                        test_duration:it.test_duration,
+                        test_duration_unit:it.test_duration,
                         unit_id:it.unit_id,
                         unit_name:it.unit_name,
                         test_slug:it.test_slug,
@@ -260,7 +259,9 @@ const getAllAssignedTestsClassBased = async (req, res) => {
                         assign_table_id: item._id,
                         test_window: item.test_window,
                         start_date: item.start_date,
-                        test_subjects: item.test_subjects
+                        test_subjects: item.test_subjects,
+                        test_duration:item.test_duration,
+
                     })
                 }
             })
@@ -308,7 +309,7 @@ const getAllAssignedTests = async (req, res) => {
                     newArray.push({
                         // test_question: it.test_question,
                         test_name:it.test_name,
-                        test_duration:it.test_duration,
+                        test_duration_unit:it.test_duration,
                         unit_id:it.unit_id,
                         unit_name:it.unit_name,
                         test_slug:it.test_slug,
@@ -323,6 +324,7 @@ const getAllAssignedTests = async (req, res) => {
                         test_window: item.test_window,
                         start_date: item.start_date,
                         test_subjects:item.test_subjects,
+                        test_duration:item.test_duration
                     })
                 }
             })
@@ -454,7 +456,7 @@ const assignTestToStudent = async (req, res) =>{
         const as = await AssignTest.findOne({_id: req.params.id})
         const testWindow = req.body.testWindow != null ? req.body?.testWindow : as.test_window
         
-        const assignTest = await AssignTest.findOne({class_id: req.params.class_id, assigned: true},{start_date:1,test_window:1})
+        const assignTest = await AssignTest.findOne({class_id: req.params.class_id, school_id:req.body.school_id, assigned: true},{start_date:1,test_window:1}).limit(1).sort({$natural:-1})
         let timeAlTest = new Date(assignTest?.start_date)
         timeAlTest.setMinutes( timeAlTest.getMinutes() + assignTest?.test_window );
         
@@ -886,6 +888,35 @@ const getClassesWithStudents = async (req, res) => {
     }
 }
 
+const getClassesWithStudentsPrincipal = async (req, res) => {
+    try{
+        const filter = {
+            school_id:req.params.school_id,
+        }
+        const classes = await Class.find().lean();
+        const students = await Student.find(filter);
+        classes.forEach(item =>{
+            const class_id = item._id;
+            let countStudents = 0 ; 
+            students.forEach(element =>{
+                if(element.class_id == class_id){
+                    countStudents = countStudents + 1
+                }
+            })
+            item.student_count = countStudents;
+        })
+        return res.status(200).json({ 
+            data: classes, 
+        }); 
+    } catch(error){
+        res.status(500).json({
+            status: 500,
+            message: "Error occured",
+            errors: error.message
+        });
+    }
+}
+
 const getAllTeachersOfSchool = async (req, res) => {
     try{
         let filter = null;
@@ -1111,5 +1142,6 @@ module.exports = {
     getAllTeacherAssignedTests,
     getSectionStudent,
     getAllStudentAttemptedTests,
-    getClassSectionStudents
+    getClassSectionStudents,
+    getClassesWithStudentsPrincipal,
 }
