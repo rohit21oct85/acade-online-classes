@@ -92,9 +92,15 @@ export default function CreateTest() {
             else if(!chapter_id){
                   addToast('please select chapters', { appearance: 'error', autoDismiss: true });
             }
-            else if(formData['test_duration']){
+            else if(!formData['test_duration']){
                   addToast('please enter test duration', { appearance: 'error', autoDismiss: true });
-            }else{
+            }
+            
+            else if(selectedQuestions?.length === 0){
+                  addToast('please select questions', { appearance: 'error', autoDismiss: true });
+            }
+
+            else{
                   let class_name = getFilteredData(sClassess,'_id' ,class_id, 'class_name');
                   let subject_name = getFilteredData(subjects,'subject_id' , subject_id, 'subject_name');
                   let unit_name = getFilteredData(units,'_id' , unit_id, 'unit_name');
