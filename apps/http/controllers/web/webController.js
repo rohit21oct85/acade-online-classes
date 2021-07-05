@@ -42,13 +42,13 @@ const getAssignedTestsStudent = async (req, res) => {
                 school_id:req.params.school_id,
                 class_id:req.params.class_id,
                 assigned: true,
-                // $and: [
-                //         {
-                //             "start_date": { 
-                //                 $gte: new Date().toISOString()
-                //             }
-                //         }
-                //     ]
+                $and: [
+                        {
+                            "start_date": { 
+                                $gte: new Date().toISOString()
+                            }
+                        }
+                    ]
             },{__v: 0});
             console.log(AssignedTests.length)
         const attemptedTest = await AttemptTest.find(
@@ -452,7 +452,7 @@ const assignTestToStudent = async (req, res) =>{
         timeAlTest.setMinutes( timeAlTest.getMinutes() + assignTest?.test_window );
         
         let timeNwTest = new Date(req.body.startDate)
-        timeNwTest.setMinutes( timeNwTest.getMinutes() + testWindow );
+        // timeNwTest.setMinutes( timeNwTest.getMinutes() + testWindow );
         // console.log(timeNwTest,timeAlTest)
         // console.log(timeAlTest instanceof Date && !isNaN(timeAlTest.valueOf()))
         if(!(timeAlTest instanceof Date && !isNaN(timeAlTest.valueOf()))){ //check for valid date
