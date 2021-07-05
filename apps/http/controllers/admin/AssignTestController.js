@@ -119,41 +119,12 @@ const ViewAllAssignedTest = async (req, res) => {
 
 const AssignedTestToClass = async (req, res) => {
    try {
-        
-        const assignedTest = await AssignTest.findOne({
-          school_id:  req.body.school_id,
-          class_id:  req.body.class_id,
-          assigned: true},{start_date:1,test_window:1
-        }).limit(1).sort({$natural:-1});
-
-        let timeAlTest = new Date(assignedTest?.start_date)
-        timeAlTest.setMinutes( timeAlTest.getMinutes() + assignedTest?.test_window );
-
-        let currentTest = await AssignTest.findOne({
-          test_id: req.body._id
-        })
-        
-        let timeNwTest = new Date(currentTest.start_date)
-        
-        if(assignedTest === null){
-          await AssignTest.findByIdAndUpdate({_id: req.body._id}, {
-            assigned: true
-          }); 
-          res.status(200).json({
-            message: "Assigned Test to class sucessfully",
-          });   
-        }else if(timeNwTest > timeAlTest){
-          await AssignTest.findByIdAndUpdate({_id: req.body._id}, {
-            assigned: true
-          });  
-          res.status(200).json({
-            message: "Assigned Test to class sucessfully",
-          });
-        }else{
-          res.status(405).json({
-            message: "Cannot Assigned Test , Already one is assigned",
-          });
-        }
+        await AssignTest.findByIdAndUpdate({_id: req.body._id}, {
+          assigned: true
+        });  
+        res.status(200).json({
+          message: "Assigned Test to class sucessfully",
+        });
         
    } catch (error) {
       res.status(203).json({

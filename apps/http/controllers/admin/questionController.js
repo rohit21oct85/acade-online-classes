@@ -79,10 +79,11 @@ const ViewQuestion = async (req, res) => {
 const ViewAllQuestion = async (req, res) => {
     try{
         let filter = {}
-        if(req?.params?.class_id && req?.params?.subject_id){
+        if(req?.params?.class_id && req?.params?.subject_id && req?.params?.unit_id){
                 filter = {
                     class_id: req.params?.class_id,
-                    subject_id: req.params?.subject_id
+                    subject_id: req.params?.subject_id,
+                    unit_id: req.params?.unit_id,
                 }
         } 
         

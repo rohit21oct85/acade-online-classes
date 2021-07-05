@@ -70,7 +70,7 @@ export default function AllAssignedTest({update, Delete}) {
                     <tr>
                         <td>{test?.school_name}</td>
                         <td>{test?.test_name} ({(test?.total_question)} Qes)</td>
-                        <td>{test?.test_duration}Sec / {test?.test_window} Min</td>
+                        <td>{test?.test_duration} Min / {test?.test_window} Min</td>
                         <td>{subjects}</td>
                         <td>{new Date(test?.start_date).toLocaleString()}</td>
                         <td>{test_window.toLocaleString()}</td>
@@ -78,7 +78,7 @@ export default function AllAssignedTest({update, Delete}) {
 
                             <button className={`btn btn-sm dark ${test?.assigned ? 'bg-danger':'bg-success'}`} disabled={test?.assigned}
                             onClick={() => handleAssignTest(test?._id)}>
-                                {test?.assigned ? 'Already Assigned ':'Assign to Class'}
+                                {test?.assigned === true ? 'Already Assigned ':'Assign to Class'}
                             </button>
                         </td>
                     </tr>

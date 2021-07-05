@@ -25,15 +25,11 @@ export default function CreateTest() {
       const [questions, setQuestions] = useState([])
       const {data:questionDB, isLoading: qLoading} = useQuestionList();
       
-      useEffect(setDBQuestions,[params?.class_id, params?.subject_id, params?.unit_id, params?.chapter_id]);
+      useEffect(setDBQuestions,[params?.unit_id, params?.chapter_id]);
       function setDBQuestions(){
             if(params?.class_id && params?.subject_id && params?.unit_id && params?.chapter_id){
                   setQuestions(questionDB?.filter(ques => (ques?.chapter_id === params?.chapter_id)))
             }else if(params?.class_id && params?.subject_id && params?.unit_id){
-                  setQuestions(questionDB?.filter(ques => ques?.unit_id === params?.unit_id))
-            }else if(params?.class_id && params?.subject_id){
-                  setQuestions(questionDB?.filter(ques => (ques?.subject_id === params?.subject_id)))
-            }else{
                   setQuestions(questionDB)
             }
       }
@@ -287,7 +283,7 @@ export default function CreateTest() {
                   }} 
                   >
                         <option value="_">{chapterLoading ? 'loading ...':'Chapters'}</option>
-                        {chapters?.map( chapter => {
+                        {!qLoading && chapters?.map( chapter => {
                               return(
                                     <option value={chapter?._id} key={chapter?._id}>{chapter?.chapter_no}-{chapter?.chapter_name}</option>
                               )
@@ -315,7 +311,7 @@ export default function CreateTest() {
                   </div>
                   <div  className="pr-2" style={{ height: '300px', overflowY: 'scroll'}}>
                         {qLoading && (<><span className="fa fa-spinner"></span>Loading...</>)}      
-                        {questions?.map((q,i) => {
+                        {!qLoading && questions?.map((q,i) => {
                               let subject_name = getFilteredData(subjects,'subject_id' , q?.subject_id, 'subject_name');
                               let sel = helper.checkExists(selectedQuestions,'_id',q?._id);
                               if(!sel)

@@ -11,9 +11,9 @@ export default function useQuestionList() {
     const params = useParams();
     let key = '';
     let url = '';
-    if(params?.class_id && params?.subject_id){
-        key = `questions-${params?.class_id}-${params?.subject_id}`;
-        url = `${API_URL}v1/question-bank/view-all/${params?.class_id}/${params?.subject_id}`
+    if(params?.class_id && params?.subject_id && params?.unit_id){
+        key = `questions-${params?.class_id}-${params?.subject_id}-${params?.unit_id}`;
+        url = `${API_URL}v1/question-bank/view-all/${params?.class_id}/${params?.subject_id}/${params?.unit_id}`
     }
     
     return useQuery(`${key}`, async () => {
