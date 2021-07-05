@@ -42,15 +42,14 @@ const getAssignedTestsStudent = async (req, res) => {
                 school_id:req.params.school_id,
                 class_id:req.params.class_id,
                 assigned: true,
-                $and: [
-                        {
-                            "start_date": { 
-                                $gte: new Date().toISOString()
-                            }
-                        }
-                    ]
+                // $and: [
+                //         {
+                //             "start_date": { 
+                //                 $gte: new Date().toISOString()
+                //             }
+                //         }
+                //     ]
             },{__v: 0});
-            console.log(AssignedTests.length)
         const attemptedTest = await AttemptTest.find(
             {
                 // subject_id:req.params.subject_id,
@@ -58,13 +57,11 @@ const getAssignedTestsStudent = async (req, res) => {
                 class_id:req.params.class_id,
                 student_id:req.body.student_id,
             },{__v: 0});
-        console.log(attemptedTest.length)
         if(attemptedTest.length != AssignedTests.length){
             if(attemptedTest.length > 0){
                 AssignedTests.forEach(item=>{
                     attemptedTest.forEach(it => {
                         if(item.test_id != it.test_id && it.student_id == req.body.student_id){
-                            console.log(item.test_id,it.test_id)
                             newArray.push({
                                 subject_id:item.subject_id,
                                 class_id:item.class_id,
