@@ -33,11 +33,12 @@ router
     .get('/get-assigned-tests-teacher/:school_id?/:class_id?/:subject_id?', checkAuth, Web.getAssignedTestsTeacher)
     .get('/get-sections-student-count/:school_id?/:class_id?/:class_name', checkAuth, Web.getSectionStudent)
     .get('/get-class-sections-students/:school_id?/:class_id?/:class_name/:section', checkAuth, Web.getClassSectionStudents)
+    .get('/classes-with-student-no/:school_id?/:teacher_id', checkAuth, Web.getClassesWithStudents)
 
     //principal
     .get('/view-principal/:id', checkAuth, Web.getPrincipal)
     .patch('/update-principal/:id', checkAuth, Web.updatePrincipal)
-    .get('/classes-with-student-no/:school_id?/:teacher_id', checkAuth, Web.getClassesWithStudents)
+    .get('/classes-with-student-no-principal/:school_id?', checkAuth, Web.getClassesWithStudentsPrincipal)
     .post('/get-all-teachers/:school_id?', checkAuth, Web.getAllTeachersOfSchool)
     .get('/get-all-subjects', checkAuth, Web.getAllSubjects)
     .get('/get-all-teacher-assigned-tests/:school_id?/:teacher_id?', checkAuth, Web.getAllTeacherAssignedTests)
