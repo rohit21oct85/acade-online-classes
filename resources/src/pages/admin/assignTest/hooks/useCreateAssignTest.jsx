@@ -29,8 +29,8 @@ export default function useCreateAssignTest(formData) {
         },{
             onSuccess: () => {
                 queryClient.invalidateQueries(`${key}`)
-                history.push(`${path}/`);
-                addToast('Questions added successfully', { appearance: 'success', autoDismiss: true });
+                history.push(`${path}`);
+                addToast('test assigned successfully', { appearance: 'success', autoDismiss: true });
             }
         });
       

@@ -95,6 +95,7 @@ export default function SchoolReport() {
                         
                         {reports?.map(rep => {
                               let tsubjects = Array.prototype.map.call(rep?.test_subjects, function(items) { return items.subject_name}).join(', ');
+
                               return(
                               <tr className="table-bordered col-md-12">
                                     <td>{rep?.test_name}</td>  

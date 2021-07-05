@@ -20,9 +20,6 @@ export default function useAssignedTestList() {
     }
 
     return useQuery(`${key}`, async () => {
-        
-        
-
         const result = await axios.get(url,{
             headers: {
                 'Content-Type': 'Application/json',

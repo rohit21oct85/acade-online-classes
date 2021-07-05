@@ -874,3 +874,38 @@ input[disabled]{
 figure > img {
     width: 100% !important
 }
+.datetime .react-datepicker-wrapper {
+    width: 200%;
+}
+
+.react-datepicker__time-box ul li {
+    display: block;
+    width: 100%;
+}
+.datetime ul li {
+    padding: 0px 15px;
+    vertical-align: top;
+    display: inline-block;
+    width: 49%;
+}
+.datetime ul li input {
+    height: 38px;
+    padding: 10px;
+    width: 100%;
+}
+
+.react-datepicker__time-box ul li {
+    display: block;
+    width: 100%;
+}
+.react-datepicker {
+    font-family: "Helvetica Neue", helvetica, arial, sans-serif;
+    font-size: 0.8rem;
+    background-color: #fff;
+    color: #000;
+    border: 1px solid #aeaeae;
+    border-radius: 0.3rem;
+    display: inline-block;
+    position: relative;
+    width: 328px;
+}

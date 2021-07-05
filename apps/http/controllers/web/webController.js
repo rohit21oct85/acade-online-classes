@@ -85,15 +85,7 @@ const getAssignedTestsStudent = async (req, res) => {
 
             const units = await UnitTest.find(
                 {
-                    // subject_id:req.params.subject_id,
                     class_id:req.params.class_id,
-                    // $and: [
-                    //     {
-                    //         "start_date": { 
-                    //             $gte: new Date().toISOString()
-                    //         }
-                    //     }
-                    // ]
                 },{__v: 0});
             
             let newData = [];
@@ -107,7 +99,6 @@ const getAssignedTestsStudent = async (req, res) => {
                 units.forEach(it => {
                     if(item.test_id == it._id){
                         newArray1.push({
-                            // test_question: it.test_question,
                             test_name:it.test_name,
                             test_duration:it.test_duration,
                             unit_id:it.unit_id,
@@ -489,7 +480,7 @@ const assignTestToStudent = async (req, res) =>{
                         })
                     });
         }else{
-            return res.status(405).json({
+            res.status(405).json({
                 message: "Test Cant be assigned, a test is already assigned for this time"
             })
         }

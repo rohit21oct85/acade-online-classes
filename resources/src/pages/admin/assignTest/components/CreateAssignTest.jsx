@@ -13,10 +13,12 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import useSchoolLists from '../../school/hooks/useSchoolLists';
 import useSubjectList from '../../subject/hooks/useSubjectList';
+import { useToasts } from 'react-toast-notifications';
 
 export default function CreateAssignTest() {
       const params = useParams();
-      
+      const { addToast } = useToasts();
+
       const history = useHistory();
       const page_type = params?.page_type;
       const school_id = params?.school_id;
@@ -40,31 +42,58 @@ export default function CreateAssignTest() {
       const [startDate, setStartDate] = useState(new Date());
       const [testWindow, setTestWindow] = useState(null);
       
-
+      function checkAssigned(test_id){
+            if(!isLoading && testLists != 'undefined'){
+                  return testLists?.some(test => test?.test_id == test_id);
+            }
+      }
       async function handleSubmit(e){
             e.preventDefault();
-            let class_id = params?.class_id
             let school_id = params?.school_id
-            let school_name = getFilteredData(schools,'_id' ,school_id, 'school_name');
-            let class_name = getFilteredData(SClass,'_id' ,class_id, 'class_name');
-            let test_name = getFilteredData(unitTests,'_id' ,formData['test_id'], 'test_name');
-            let testData = helper.getCollectionData(unitTests, '_id', formData['test_id']);
-            let subject = helper.getCollectionData(subjects,'subject_name',testData?.subject_name,'_id')
-            formData['school_name'] = school_name
-            formData['school_id'] = school_id
-            formData['class_id'] = class_id
-            formData['class_name'] = class_name
-            formData['test_name'] = test_name
-            formData['test_window'] = +testWindow*60
-            formData['test_type'] = testData?.test_type
-            formData['test_subjects'] = testData?.test_subjects
-            formData['subject_id'] = subject?._id
-            formData['subject_name'] = testData?.subject_name
-            formData['test_duration'] = testData?.test_duration
-            formData['total_question'] = testData?.total_question
-            formData['start_date'] = startDate
-            console.log(formData);
-            await createMutation.mutate(formData);
+            let class_id = params?.class_id
+            if(!school_id || school_id == "undefined"){
+                  addToast('please select school', { appearance: 'error', autoDismiss: true });
+            }
+            else if(!class_id || class_id == "undefined"){
+                  addToast('please select class', { appearance: 'error', autoDismiss: true });
+            }
+            else if(!testWindow){
+                  addToast('please select test window', { appearance: 'error', autoDismiss: true });
+            }
+            else if(!formData['test_id']){
+                  addToast('please select tests', { appearance: 'error', autoDismiss: true });
+            }
+            else{
+                  let school_name = getFilteredData(schools,'_id' ,school_id, 'school_name');
+                  let class_name = getFilteredData(SClass,'_id' ,class_id, 'class_name');
+                  let test_name = getFilteredData(unitTests,'_id' ,formData['test_id'], 'test_name');
+                  let testData = helper.getCollectionData(unitTests, '_id', formData['test_id']);
+                  let subject = helper.getCollectionData(subjects,'subject_name',testData?.subject_name,'_id')
+      
+                  formData['school_name'] = school_name
+                  formData['school_id'] = school_id
+                  formData['class_id'] = class_id
+                  formData['class_name'] = class_name
+                  formData['test_name'] = test_name
+                  formData['test_window'] = +testWindow*60
+                  formData['test_type'] = testData?.test_type
+                  formData['test_subjects'] = testData?.test_subjects
+                  formData['subject_id'] = subject?._id
+                  formData['subject_name'] = testData?.subject_name
+                  formData['test_duration'] = testData?.test_duration
+                  formData['total_question'] = testData?.total_question
+                  formData['start_date'] = startDate
+                  await createMutation.mutate(formData, {
+                        onError: (error) => {
+                              if(error.response.status == 405){
+                                    let message = 'Test cant be assigned at this time\n Some test with the same timing already assigned.\n Change test timing and assign again';
+                                    addToast(message, { appearance: 'error', autoDismiss: true });
+                              }
+                        }
+                  });
+            }
+
+            
             
       }
       return (
@@ -117,13 +146,14 @@ export default function CreateAssignTest() {
                   
                         <div className="pt-2 pr-0 no-gutter" style={{ height: '200px',maxHeight: '200px', overflowY: 'scroll', overflowX: 'hidden'}}>
                               {unitTests?.map((tests, index) => {
+                              let assigned = checkAssigned(tests?._id);      
                               let subjects = '';
                               if(tests?.test_type === 'combine-test'){
                                     subjects = Array.prototype.map.call(tests?.test_subjects, function(item) { return item.subject_name; }).join(",");
                               }else{
                                     subjects = tests?.subject_name
                               }
-                              
+                              if(!assigned)
                               return(
                               <div className="flex" key={tests?._id}>
                                     <div style={{ width: '300px'}}>
@@ -141,6 +171,7 @@ export default function CreateAssignTest() {
                                     <div style={{ width: '150px'}}><b>{tests?.total_question} Ques</b></div>
                                     <div style={{ width: '150px'}}><b>{tests?.test_type === 'combine-test' ? 'combine-test': 'single-test'}</b></div>
                                     <div style={{ width: '150px'}}><b>{subjects}</b></div>
+                                    <div style={{ width: '150px'}}><b>{assigned?.toString()}</b></div>
                               </div>
                               )})}
                               </div>
