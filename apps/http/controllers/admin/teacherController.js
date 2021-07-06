@@ -110,6 +110,7 @@ function getSubjectID(arr, name){
     const data = arr.filter(el => el.subject_name === name);
     return data && data[0]._id;
 }
+
 function getClassId(arr, class_name){
     const data = arr.filter(el => el.class_name == class_name);
     return data && data[0]._id;
