@@ -519,7 +519,8 @@ const attemptTestByStudent = async (req, res) =>{
             section:req.body.section,
         });    
         await attempt.save();
-        await AssignTest.findOneAndUpdate({_id:req.body.assign_test_id}, {
+        // console.log(req.body.assign_test_id);
+        await AssignTest.findOneAndUpdate({test_id:req.body.id}, {
             $addToSet: {
                 attemptedStudentIds: req.body.user_id
             }
