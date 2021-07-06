@@ -505,7 +505,7 @@ const attemptTestByStudent = async (req, res) =>{
             {
                 _id: req.body.id,
             },{__v: 0});
-        // const student = await Student.findOne({_id: req.body.user_id});
+
         const attempt = new AttemptTest({
             school_id: req.body.school_id,
             class_id: req.body.class_id,
@@ -517,10 +517,13 @@ const attemptTestByStudent = async (req, res) =>{
             test_subjects:newData.test_subjects,
             test_name:newData.test_name,
             section:req.body.section,
-            // student_roll_no: student.roll_no,
         });    
         await attempt.save();
-        // await AssignTest.findOneAndUpdate({_id:req.body.assign_test_id}, {$set: {"attempted": true}})
+        await AssignTest.findOneAndUpdate({_id:req.body.assign_test_id}, {
+            $addToSet: {
+                attemptedStudentIds: req.body.user_id
+            }
+        })
         return res.status(200).json({
             message: "AttemptTest created sucessfully",
         });
@@ -1107,6 +1110,21 @@ const getAllStudentAttemptedTests = async (req, res) => {
     }
 }
 
+const deleteStudents = async (req, res) => {
+    try{
+        const data = await Student.deleteMany({school_id:req.params.school_id});
+        return res.status(200).json({ 
+            msg: "deleted", 
+        }); 
+    } catch(error){
+        res.status(500).json({
+            status: 500,
+            message: "Error occured",
+            errors: error.message
+        });
+    }
+}
+
 module.exports = {
     getSubjects,
     getAssignedTestsStudent,
@@ -1141,4 +1159,5 @@ module.exports = {
     getAllStudentAttemptedTests,
     getClassSectionStudents,
     getClassesWithStudentsPrincipal,
+    deleteStudents,
 }

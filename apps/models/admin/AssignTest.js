@@ -66,9 +66,8 @@ const AssignTestSchema = new mongoose.Schema({
             type: Boolean,
             default: false
       },
-      attempted:{
-            type: Boolean,
-            default: false
+      attemptedStudentIds:{
+            type: Array
       },
       create_at: {
         type: Date,
