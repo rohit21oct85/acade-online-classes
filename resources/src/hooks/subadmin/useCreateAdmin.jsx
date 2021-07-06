@@ -27,7 +27,7 @@ export default function useCreateAdmin(formData) {
             onSuccess: () => {
                   queryClient.invalidateQueries('sub-admins')
                   addToast('App Module added successfully', { appearance: 'success',autoDismiss: true });
-                  history.push(`${path}`);
+                  history.push(`/admin/manage-sub-admin/`);
             },
             onError: () => {
                   addToast('Error White Creating Modules', { appearance: 'error',autoDismiss: true });

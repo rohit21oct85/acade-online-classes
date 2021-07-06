@@ -11,13 +11,13 @@ import useQuestionList from '../../questionBank/hooks/useQuestionList';
 
 import * as helper from '../../../../utils/helper'
 import * as utils from '../../../../utils/utils'
-
+import { useToasts } from 'react-toast-notifications';
 import useSubjectChapterList from '../../mappingSubjectChapter/hooks/useSubjectChapterList';
 
 export default function CreateTest() {
       const params = useParams();
       const history = useHistory();
-      
+      const { addToast } = useToasts();
       const {data:sClassess} = useClassList();
       const {data:subjects, isLoading: subjectLoading} = useClassSubjectList();
       const {data:units, isLoading: unitLoading} = useUnitList();
@@ -25,15 +25,11 @@ export default function CreateTest() {
       const [questions, setQuestions] = useState([])
       const {data:questionDB, isLoading: qLoading} = useQuestionList();
       
-      useEffect(setDBQuestions,[params?.class_id, params?.subject_id, params?.unit_id, params?.chapter_id]);
+      useEffect(setDBQuestions,[params?.unit_id, params?.chapter_id]);
       function setDBQuestions(){
             if(params?.class_id && params?.subject_id && params?.unit_id && params?.chapter_id){
                   setQuestions(questionDB?.filter(ques => (ques?.chapter_id === params?.chapter_id)))
             }else if(params?.class_id && params?.subject_id && params?.unit_id){
-                  setQuestions(questionDB?.filter(ques => ques?.unit_id === params?.unit_id))
-            }else if(params?.class_id && params?.subject_id){
-                  setQuestions(questionDB?.filter(ques => (ques?.subject_id === params?.subject_id)))
-            }else{
                   setQuestions(questionDB)
             }
       }
@@ -75,38 +71,66 @@ export default function CreateTest() {
             let subject_id = params?.subject_id
             let unit_id = params?.unit_id
             let chapter_id = params?.chapter_id
-            
-            let class_name = getFilteredData(sClassess,'_id' ,class_id, 'class_name');
-            let subject_name = getFilteredData(subjects,'subject_id' , subject_id, 'subject_name');
-            let unit_name = getFilteredData(units,'_id' , unit_id, 'unit_name');
+            let test_type = params?.test_type;
 
-            let selectedQuestionsId = selectedQuestions?.map((i) => {
-                  return {
-                        question_id: i.question_id,
-                        unit_id: i.unit_id,
-                        unit_name: i.unit_name,
-                        chapter_id: i.chapter_id,
-                        chapter_name: i.chapter_name,
-                  }
-            });
-            formData['test_type'] = params?.test_type
-            formData['test_subjects'] = subject
-            formData['class_id'] = class_id
-            formData['class_name'] = class_name
-            formData['subject_id'] = subject_id
-            formData['subject_name'] = subject_name
-            formData['unit_id'] = unit_id
-            formData['unit_name'] = unit_name
-            formData['test_slug'] = utils.MakeSlug(formData.test_name)
-            formData['test_date'] = startDate
-            formData['total_question'] = selectedQuestions?.length
-            formData['test_question'] = selectedQuestionsId
+            if(!test_type){
+                  addToast('please select test type', { appearance: 'error', autoDismiss: true });
+            }
+            else if(!class_id){
+                  addToast('please select class', { appearance: 'error', autoDismiss: true });
+            }
+            else if(!subject_id){
+                  addToast('please select subject', { appearance: 'error', autoDismiss: true });
+            }
+            else if(!unit_id){
+                  addToast('please select unit', { appearance: 'error', autoDismiss: true });
+            }
+            else if(!chapter_id){
+                  addToast('please select chapters', { appearance: 'error', autoDismiss: true });
+            }
+            else if(!formData['test_duration']){
+                  addToast('please enter test duration', { appearance: 'error', autoDismiss: true });
+            }
             
-            // console.log(formData); return;
-            if(class_id && subject_id)
-            await createMutation.mutate(formData);
-            localStorage.removeItem('selectedQuestions')
-            setSelectedQuestions([]);
+            else if(selectedQuestions?.length === 0){
+                  addToast('please select questions', { appearance: 'error', autoDismiss: true });
+            }
+
+            else{
+                  let class_name = getFilteredData(sClassess,'_id' ,class_id, 'class_name');
+                  let subject_name = getFilteredData(subjects,'subject_id' , subject_id, 'subject_name');
+                  let unit_name = getFilteredData(units,'_id' , unit_id, 'unit_name');
+
+                  let selectedQuestionsId = selectedQuestions?.map((i) => {
+                        return {
+                              question_id: i.question_id,
+                              unit_id: i.unit_id,
+                              unit_name: i.unit_name,
+                              chapter_id: i.chapter_id,
+                              chapter_name: i.chapter_name,
+                        }
+                  });
+                  formData['test_type'] = test_type
+                  formData['test_subjects'] = subject
+                  formData['class_id'] = class_id
+                  formData['class_name'] = class_name
+                  formData['subject_id'] = subject_id
+                  formData['subject_name'] = subject_name
+                  formData['unit_id'] = unit_id
+                  formData['unit_name'] = unit_name
+                  formData['test_slug'] = utils.MakeSlug(formData.test_name)
+                  formData['test_date'] = startDate
+                  formData['total_question'] = selectedQuestions?.length
+                  formData['test_question'] = selectedQuestionsId
+                  
+                  // console.log(formData); return;
+                  
+                  await createMutation.mutate(formData);
+                  localStorage.removeItem('selectedQuestions')
+                  setSelectedQuestions([]);
+            }
+
+            
       }
       async function handleSelectQuestion(id){
             setClicked(true)
@@ -168,12 +192,16 @@ export default function CreateTest() {
                   </div>
                   <div className="col-md-3 pl-0 pr-0">
                               <input type="text" className="form-control"
+                              maxLength="2"
                               value={formData?.test_duration} 
                               onChange={ e => {
-
-                                    setFormData({...formData, test_duration: e.target.value})
+                                    if(!isNaN(e.target.value)){
+                                          setFormData({...formData, test_duration: e.target.value})
+                                    }else{
+                                          addToast('please enter test duration in numbers', { appearance: 'error', autoDismiss: true });
+                                    }
                               }}
-                              placeholder="Enter Test Duration in Seconds"/>
+                              placeholder="Enter Test Duration in Minute"/>
                   </div>
                                
                   </div> 
@@ -255,7 +283,7 @@ export default function CreateTest() {
                   }} 
                   >
                         <option value="_">{chapterLoading ? 'loading ...':'Chapters'}</option>
-                        {chapters?.map( chapter => {
+                        {!qLoading && chapters?.map( chapter => {
                               return(
                                     <option value={chapter?._id} key={chapter?._id}>{chapter?.chapter_no}-{chapter?.chapter_name}</option>
                               )
@@ -283,7 +311,7 @@ export default function CreateTest() {
                   </div>
                   <div  className="pr-2" style={{ height: '300px', overflowY: 'scroll'}}>
                         {qLoading && (<><span className="fa fa-spinner"></span>Loading...</>)}      
-                        {questions?.map((q,i) => {
+                        {!qLoading && questions?.map((q,i) => {
                               let subject_name = getFilteredData(subjects,'subject_id' , q?.subject_id, 'subject_name');
                               let sel = helper.checkExists(selectedQuestions,'_id',q?._id);
                               if(!sel)

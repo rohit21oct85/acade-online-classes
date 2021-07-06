@@ -90,8 +90,11 @@ const ViewPermission = async (req, res) => {
 const ViewAllPermission = async (req, res) => {
     try{
         let filter = {}
-        if(req?.params?.role_slug){
-            filter = {role_slug: req?.params?.role_slug, email: req.params?.user_email}
+        if(req?.params?.role_slug && req?.params?.user_email){
+            filter = {
+                role_slug: req?.params?.role_slug,
+                email: req?.params?.user_email,
+            }
         }
         const AllPermissions = await Permission.find(filter,{__v: 0});
         return res.status(200).json({ 
@@ -136,6 +139,22 @@ const DeleteAllPermission = async (req, res) =>{
         });
     }
 };
+const DeleteAllModulePermission = async (req, res) =>{
+    const email = req.body.email;
+    try {
+        await RoleModule.deleteMany({email: email});
+        await Permission.deleteMany({email: email});
+        res.status(201).json({
+            message: "Permission, deleted successfully"
+        })
+    } catch (error) {
+        res.status(409).json({
+            message: error.message
+        });
+    }
+};
+
+
 
 const OtherModules = async (req, res) => {
     try {
@@ -158,5 +177,6 @@ module.exports = {
     ViewPermission,
     ViewAllPermission,
     DeletePermission,
-    DeleteAllPermission
+    DeleteAllPermission,
+    DeleteAllModulePermission
 }

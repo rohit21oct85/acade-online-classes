@@ -34,7 +34,6 @@ export default function SchoolReport() {
     const {data: sClass} = useClassList();
     const {data: reports } = useSchoolAssignedTests();
 
-    console.log(reports)
     function handleSchoolChange(e){
             history.push(`/admin/school-report/${e.target.value}`);
     }
@@ -95,6 +94,9 @@ export default function SchoolReport() {
                         
                         {reports?.map(rep => {
                               let tsubjects = Array.prototype.map.call(rep?.test_subjects, function(items) { return items.subject_name}).join(', ');
+                              let test_window = new Date(rep?.start_date)
+                              test_window.setMinutes( test_window.getMinutes() + rep?.test_window );
+                              if(rep?.assigned === true)
                               return(
                               <tr className="table-bordered col-md-12">
                                     <td>{rep?.test_name}</td>  
@@ -102,8 +104,8 @@ export default function SchoolReport() {
                                     <td>{tsubjects}</td>  
                                     <td>{rep?.test_window}</td>  
                                     <td>{rep?.test_duration}</td>  
-                                    <td>{rep?.start_date}</td>  
-                                    <td>{rep?.start_date}</td>  
+                                    <td>{new Date(rep?.start_date).toLocaleString()}</td>  
+                                    <td>{test_window.toLocaleString()}</td>  
                               </tr>      
                               )
                         })}

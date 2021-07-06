@@ -35,7 +35,7 @@ export default function AllStudents({update, Delete}) {
                     <thead>
                         <tr>
                         <th scope="col">#EmpId</th>
-                        <th scope="col">School Name</th>
+                        {/* <th scope="col">School Name</th> */}
                         <th scope="col">Name</th>
                         <th scope="col">Class</th>
                         <th scope="col">Section</th>
@@ -48,11 +48,11 @@ export default function AllStudents({update, Delete}) {
                     </thead>
                     <tbody>
                         {data?.map( (item,key) => { 
-                            let school_name = helper.getFilteredData(schools,'_id', item?.school_id, 'school_name')
+                            // let school_name = helper.getFilteredData(schools,'_id', item?.school_id, 'school_name')
                             return (
                                 <tr key={item?._id}>
                                 <th scope="row">{(item?.EmpId)}</th>
-                                <td>{school_name}</td>
+                                
                                 <td>{item.name}</td>
                                 <td>{item.class}</td>
                                 <td>{item.section}</td>

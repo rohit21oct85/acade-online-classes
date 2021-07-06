@@ -41,10 +41,10 @@ export default function AppPermissionList() {
             <div className="col-md-12 pl-0 no-gutter data-container">
             
             {modules?.map( module => {
-                let filter_methods = data?.filter( method => method?.module_slug === module?.module_slug);
+                let filter_methods = data?.filter( method => method?.module_slug == module?.module_slug);
                 return (
                     <div className="col-md-12 card pl-0 pr-0 ml-0 mb-2" id={`${module?._id}`} key={module?._id}>
-                        <p className="pr-2 mb-1 pb-0 ml-0 pl-2">
+                        <p className="pr-2 mb-1 pt-2 pb-2 ml-0 pl-2" style={{ backgroundColor:'rgb(0, 55, 77)', color: '#fff'}}>
                             <span className={`bi ${module?.module_icon} mr-2 mb-1`}></span>
                             {module?.module_name}
                             <span 
@@ -60,7 +60,7 @@ export default function AppPermissionList() {
                             </span>
                         </p>
                         <hr className="mt-0 mb-1"/>
-                        <div className="flex">
+                        <div className="row col-md-12">
                         {filter_methods?.map( methos => 
                             <SinglePermission permission={methos} key={methos?._id}/>
                         )}

@@ -25,7 +25,7 @@ const CreateTeacher = async (req, res) => {
 }
 const UpdateTeacher = async (req, res) =>{
     try {
-        
+        res.json(req.body); return;
         await Teacher.findOneAndUpdate({_id: req.params.id},req.body)
                 .then(response => {
                     res.status(202).json({
