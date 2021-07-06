@@ -104,6 +104,7 @@ const getStudentBySchoolIdAndClassId = async (req, res) => {
 const uploadStudent = async(req, res) => {
     const data = req.body;
     const hashedPassword = await bcrypt.hash("password", 10)
+    let SClass = await Class.find({});
     let FinalData = [];
     
     try {
@@ -120,6 +121,13 @@ const uploadStudent = async(req, res) => {
                     }else{
                         firstName = student.name;
                     }
+                    let student_class = student.class;
+                    let fetched_id ="";
+                    if(req.body.class_id == "undefined"){
+                        fetched_id = getClassId(SClass, student_class)
+                    }else{
+                        fetched_id = req.body.class_id;
+                    }
                     FinalData.push({ 
                         name: student.name, 
                         class: student.class, 
@@ -134,7 +142,7 @@ const uploadStudent = async(req, res) => {
                         status: student.status, 
                         EmpId: `${req.body.short}${firstName}${student.class}${student.section}${student.roll_no}`,
                         school_id: req.body.school_id,
-                        class_id: req.body.class_id,
+                        class_id: fetched_id,
                         username: student.name?.replace(' ','').toLowerCase()+student?.class+student?.section,
                         password: hashedPassword,
                     })
@@ -150,6 +158,11 @@ const uploadStudent = async(req, res) => {
             errors: error.message
         });
     }
+}
+
+function getClassId(arr, class_name){
+    const data = arr.filter(el => el.class_name == class_name);
+    return data && data[0]._id;
 }
 
 const otherFunction = async(res, FinalData, callback) => {

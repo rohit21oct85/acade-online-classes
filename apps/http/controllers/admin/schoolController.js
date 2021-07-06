@@ -208,7 +208,7 @@ const searchSchool = async (req, res) => {
     const schools = await School.find({ 
         $or:
         // [{book_isbn: { $regex: search}},{book_name:{ $regex:search }},{question:{$regex:search}}]
-        [{school_name: {$regex:search, '$options' : 'i'}}]
+        [{school_name: {$regex:search, '$options' : 'i'}},{sub_domain: {$regex:search, '$options' : 'i'}}]
     },{
         _id:0,
         school_name:1,

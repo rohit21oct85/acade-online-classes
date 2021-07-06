@@ -30,7 +30,7 @@ export default function AllStudents({update, Delete}) {
         </p>
         <hr className="mt-0"/>
         <Loading isLoading={isLoading} /> 
-        <div className="col-md-12 row no-gutter data-container-category">
+        <div className="col-md-12 table-responsive row no-gutter data-container-category" style={{"overflowX":"scroll"}}>
         <table className="table table-hover">
                     <thead>
                         <tr>
