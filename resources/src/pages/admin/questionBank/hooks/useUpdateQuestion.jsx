@@ -29,7 +29,8 @@ export default function useUpdateQuestion(formData) {
         },{
             onSuccess: () => {
                 queryClient.invalidateQueries(`${key}`)
-                history.push(`${path}`);
+                let url = `/admin/question-bank/upload/${params?.class_id}/${params?.subject_id}/${params?.unit_id}/${params?.chapter_id}`;
+                window.location.href = url  
                 addToast('Question Updated successfully', { appearance: 'success',autoDismiss: true });
             }
         });

@@ -41,13 +41,27 @@ export default function CreateQuestionBank() {
             document.body.appendChild(script);
             
       },[params?.qbank_id, params?.chapter_id, params?.unit_id]);
+      let options = []
+      let optionsDocx = [{key: 0,value: " A"},{key: 1,value: " B"},{key: 3,value: " C"},{key: 4,value: " D"}];
       
-      const options = [
-            {key: 'option_a', value: 'Option A'},
-            {key: 'option_b', value: 'Option B'},
-            {key: 'option_c', value: 'Option C'},
-            {key: 'option_d', value: 'Option D'},
-      ]
+      if(params?.qbank_id){
+            options = chapter?.options
+            optionsDocx = [{key: 0,value: " A"},{key: 1,value: " B"},{key: 3,value: " C"},{key: 4,value: " D"}];
+      }else{
+            options = [
+                  {key: 'option_a', value: 'Option A'},
+                  {key: 'option_b', value: 'Option B'},
+                  {key: 'option_c', value: 'Option C'},
+                  {key: 'option_d', value: 'Option D'},
+            ]
+            optionsDocx = [
+                  {key: 'option_a', value: 'Option A'},
+                  {key: 'option_b', value: 'Option B'},
+                  {key: 'option_c', value: 'Option C'},
+                  {key: 'option_d', value: 'Option D'},
+            ]
+      }
+      
       const formDataUpload = new FormData();
       const [extension, setExtension] = useState('');
       const [file, setFile] = useState('');
@@ -82,7 +96,17 @@ export default function CreateQuestionBank() {
             formData.chapter_id = chapter_id
             formData.chapter_no = chapter_no
             formData.chapter_name = chapter_name
+
+            let QuestionStem = formData['question'];
+            let desQuestionStem;
+            if(QuestionStem.includes("*")){
+                desQuestionStem = QuestionStem.split('*').join("<br/>");
+            }else{
+                desQuestionStem = formData['question'];
+            }
+            formData['question'] = desQuestionStem
             console.log(formData);
+            // return;
             if(qbank_id){
                   await updateMutation.mutate(formData);
             }else{
@@ -277,6 +301,7 @@ export default function CreateQuestionBank() {
                                     ]
                               },
                               }}
+                              data={chapter && chapter?.question}
                               onChange={ ( event, editor ) => {
                               const data = editor.getData();
                               setFormData( { ...formData, question : data } );
@@ -287,22 +312,27 @@ export default function CreateQuestionBank() {
                   </div>      
                   <div className="row">
                   {options?.map( (option,index) => {
-                  let option_answer = '';      
+                  let option_answer = '';  
+                  let option_name = '';    
                   if(index === 0){
                         option_answer = chapter && chapter?.option_a
+                        option_name = 'option A'
                   }
                   else if(index === 1){
                         option_answer = chapter && chapter?.option_b
+                        option_name = 'option B'
                   }      
                   else if(index === 2){
                         option_answer = chapter && chapter?.option_c
+                        option_name = 'option C'
                   }      
                   else if(index === 3){
                         option_answer = chapter && chapter?.option_d
+                        option_name = 'option D'
                   }      
                   return(
                         <div className="form-group col-md-6" key={index}>
-                        <label>{option?.value}: </label>
+                        <label>{params?.qbank_id ? option_name :option?.value}: </label>
                               <CKEditor
                               editor={ ClassicEditor }
                               config={{
@@ -325,28 +355,28 @@ export default function CreateQuestionBank() {
                                     ]
                               },
                               }}
-                              data={option_answer}
+                              
+                              data={`&nbsp; ${params?.qbank_id ? option :option?.value}`}
                               onChange={ ( event, editor ) => {
                               const data = editor.getData();
                               setFormData( { ...formData, [option?.key] : data } );
                               } }
                         />
-                        
-                        
                   </div>
                   )})}
                   </div>
                   <div className="form-group">
                               <select className="form-control"
-                              value={chapter && chapter?.answer}
                               onChange={e => {
                               setFormData( { ...formData, answer : e.target.value } );
                               }}
                               >
                                     <option>Correct Answer</option>
-                                    {options?.map( option => {
+                                    {optionsDocx?.map( (option, index) => {
                                     return(
-                                    <option value={option?.key}>{option?.value}</option>
+                                    <option value={option?.key}
+                                    selected={chapter && chapter?.answer === option.value}
+                                    >{`${option?.value}`}</option>
                                     )})}
                               </select>
                   </div>

@@ -47,7 +47,7 @@ export default function AllQuestions({update, Delete}) {
         <hr className="mt-1"/>
         <Loading isLoading={isLoading} /> 
         <div className="col-md-12 pr-0 row no-gutter" style={{ height: '460px', overflowY: 'scroll', overflowX: 'hidden'}}>
-            {data?.map((q,i) => {
+            {params?.chapter_id && data?.map((q,i) => {
                 return(
                     <div className="card question col-md-12 pl-0 pr-0 mr-3 mb-2">
                         
@@ -57,8 +57,8 @@ export default function AllQuestions({update, Delete}) {
                             {update && (
                                 <button className="dark bg-success"
                                 onClick={e => {
-                                    // window.location.href = `/admin/question-bank/update/${params?.class_id}/${params?.subject_id}/${params?.unit_id}/${params?.chapter_id}/${q?._id}`
-                                    history.push(`/admin/question-bank/update/${params?.class_id}/${params?.subject_id}/${params?.unit_id}/${params?.chapter_id}/${q?._id}`)
+                                    window.location.href = `/admin/question-bank/update/${params?.class_id}/${params?.subject_id}/${params?.unit_id}/${params?.chapter_id}/${q?._id}`
+                                    // history.push(`/admin/question-bank/update/${params?.class_id}/${params?.subject_id}/${params?.unit_id}/${params?.chapter_id}/${q?._id}`)
                                 }}>
                                    <span className="bi bi-pencil"></span></button>
                             )}
