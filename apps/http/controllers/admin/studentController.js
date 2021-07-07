@@ -143,7 +143,7 @@ const uploadStudent = async(req, res) => {
                         EmpId: `${req.body.short}${firstName}${student.class}${student.section}${student.roll_no}`,
                         school_id: req.body.school_id,
                         class_id: fetched_id,
-                        username: student.name?.replace(' ','').toLowerCase()+student?.class+student?.section,
+                        username: student.name?.substr(0,student.name.indexOf(' ')).toLowerCase()+student?.class+student?.section+student?.roll_no,
                         password: hashedPassword,
                     })
                 })
@@ -282,7 +282,6 @@ const ForgotPassword = async (req, res) => {
         const email = req.body.email;
         const data = await Student.findOne({email: email});
         if(data){
-            console.log(data);
             return res.status(201).json(data)
         }else{
             return res.status(402).json({message: "Email does not belongs to our Database"})    
