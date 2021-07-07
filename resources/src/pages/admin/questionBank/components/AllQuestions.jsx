@@ -19,14 +19,17 @@ export default function AllQuestions({update, Delete}) {
         formData['qbank_id'] = id
         await deleteMutation.mutate(formData)
     }
+    // script.src = "https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image";
     useEffect(() => {
         const script = document.createElement("script");
         script.id = 'editor';
         script.src = "https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image";
         script.async = true;
         document.body.appendChild(script);
-    },[params?.chapter_id])
+    });
+
     let optionsDocx = [{key: 0,value: " A"},{key: 1,value: " B"},{key: 3,value: " C"},{key: 4,value: " D"}];
+    
     return (
         <>
         <p className="form-heading">

@@ -193,7 +193,16 @@ const getFromBetween = {
 function slitDataContent(string, delimeter){
     return string.split(delimeter)[0];
 }
-
+const uploadQuestion__ = async (req, res) => {
+    try {
+        const data = req.body;
+        const data2 = fs.readFile(req.file.path, function(error, data){
+            if(error) console.log(error)
+        })    
+    } catch (error) {
+        console.log(error.message())
+    }
+}
 const uploadQuestion = async (req, res) => {
 const data = req.body;
 let FinalData = [];
@@ -260,7 +269,7 @@ try {
             let desConceptField = decode(ConceptField).trim().replace(/\r?\n|\r/g, "");
             
             let QuestionStem = decode(question).split('Question Stem:').pop().split('Options:')[0];
-            let desQuestionStem = decode(QuestionStem).trim().replace(/\r?\n|\r/g, "");
+            let desQuestionStem = decode(QuestionStem);
 
             let Options = decode(question).split('Options:').pop().split('Solution:')[0];
             let desOptions = decode(Options).trim().replace(/\r?\n|\r/g, "").split("#").filter(el => el.length > 0);
