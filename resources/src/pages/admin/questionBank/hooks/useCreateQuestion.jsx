@@ -29,7 +29,7 @@ export default function useCreateQuestion(formData) {
         },{
             onSuccess: () => {
                 queryClient.invalidateQueries(`${key}`)
-                history.push(`/admin/question-bank/create/${params?.class_id}/${params?.subject_id}/${params?.unit_id}/${params?.chapter_id}`);
+                history.push(`/admin/question-bank/create/${params?.class_id}/${params?.subject_id}/${params?.unit_id}`);
                 addToast('Questions added successfully', { appearance: 'success', autoDismiss: true });
                 setTimeout(() => {
                   window.location.reload()

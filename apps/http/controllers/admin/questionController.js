@@ -195,9 +195,10 @@ function slitDataContent(string, delimeter){
 }
 const uploadQuestion__ = async (req, res) => {
     try {
-        const data = req.body;
-        const data2 = fs.readFile(req.file.path, function(error, data){
-            if(error) console.log(error)
+        
+        fs.readFile(req.file.path,'utf-8',function(error, data){
+            if(error) console.log(error.message())
+            console.log(data)
         })    
     } catch (error) {
         console.log(error.message())
@@ -240,6 +241,7 @@ try {
         let desBloomsTaxonomy;
         let desDOKLevel;
         let desKeywordsTags;
+        let desQuestionStem;
         
         questionArray.forEach( question => {
 
@@ -269,7 +271,11 @@ try {
             let desConceptField = decode(ConceptField).trim().replace(/\r?\n|\r/g, "");
             
             let QuestionStem = decode(question).split('Question Stem:').pop().split('Options:')[0];
-            let desQuestionStem = decode(QuestionStem);
+            if(QuestionStem.match('*')){
+                desQuestionStem = decode(QuestionStem).split('*').join("<br/>");
+            }else{
+                desQuestionStem = decode(QuestionStem).trim().replace(/\r?\n|\r/g, "");
+            }
 
             let Options = decode(question).split('Options:').pop().split('Solution:')[0];
             let desOptions = decode(Options).trim().replace(/\r?\n|\r/g, "").split("#").filter(el => el.length > 0);
