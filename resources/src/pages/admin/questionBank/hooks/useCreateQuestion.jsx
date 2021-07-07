@@ -22,14 +22,14 @@ export default function useCreateQuestion(formData) {
             }
       }      
       const { addToast } = useToasts();
-      const key = `questions-${params?.class_id}-${params?.subject_id}`;
+      const key = `questions-${params?.class_id}-${params?.subject_id}-${params?.unit_id}`;
     
       return useMutation(formData => {
             return axios.post(`${API_URL}v1/question-bank/create`, formData, options)
         },{
             onSuccess: () => {
                 queryClient.invalidateQueries(`${key}`)
-                history.push(`/admin/question-bank/create/${params?.class_id}/${params?.subject_id}/${params?.unit_id}/${params?.chapter_id}`);
+                history.push(`/admin/question-bank/create/${params?.class_id}/${params?.subject_id}/${params?.unit_id}`);
                 addToast('Questions added successfully', { appearance: 'success', autoDismiss: true });
                 setTimeout(() => {
                   window.location.reload()
