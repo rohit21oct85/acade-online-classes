@@ -496,6 +496,10 @@ const attemptTestByStudent = async (req, res) =>{
             {
                 _id: req.body.id,
             },{__v: 0});
+        const newData1 = await AssignTest.findOne(
+            {
+                test_id: req.body.id,
+            },{__v: 0});
 
         const attempt = new AttemptTest({
             school_id: req.body.school_id,
@@ -505,8 +509,8 @@ const attemptTestByStudent = async (req, res) =>{
             test_id: req.body.id,
             student_name: req.body.name,
             questions: newData.test_question,
-            test_subjects:newData.test_subjects,
-            test_name:newData.test_name,
+            test_subjects:newData1.test_subjects,
+            test_name:newData1.test_name,
             section:req.body.section,
         });    
         await attempt.save();
@@ -541,12 +545,13 @@ const getQuestions = async (req,res) => {
             return !("answer" in item);
         });
         const question = filteredArray[Math?.floor(Math?.random() * filteredArray?.length)];
-        const singleQuestion = await Questions.findOne({_id: question?.question_id},{answer:0})
+        const singleQuestion = await Questions.findOne({_id: question?.question_id},{answer:0,solution:0})
         
         // console.log(singleQuestion,question)
         // return res.status(200).json({ 
-        //     singleQuestion: singleQuestion, 
+        //     singleQuestion: singleQuestion,
         // }); 
+
         return res.send(singleQuestion);
     } catch(error){
         res.status(500).json({
@@ -559,17 +564,35 @@ const getQuestions = async (req,res) => {
 
 const saveAnswer = async (req,res) => {
     try{
+        let optionsDocx = [{key: 0,value: " A", option: "option_a",},{key: 1,value: " B", option: "option_b",},{key: 3,value: " C", option: "option_c",},{key: 4,value: " D", option: "option_d",}];
+
         const filter = {
             school_id :req.body.school_id,
-            // subject_id:req.params.subject_id,
             student_id:req.body.student_id,
             test_id: req.params.test_id,
         }
         const un = await Questions.findOne({_id:req.body.question_id})
         const data = await AttemptTest.findOne(filter)
-        data.questions.map((item, key)=>{
-            if(item.question_id == req.body.question_id)
+        data.questions.map(( item, key)=>{
+            if(un.extension == "docx" && item.question_id == req.body.question_id)
             {
+                var result  = optionsDocx.filter(function(o){return o.value == un.answer ;} );
+                item['answer'] = req.body.answer,
+                item['option'] = req.body.option,
+                item['correct_option'] = result[0]?.option,
+                item['correct_answer'] = un.solution,
+                item['unit_name'] = un.unit_name,
+                item['unit_no'] = un.unit_no,
+                item['chapter_name'] = un.chapter_name,
+                item['chapter_no'] = un.chapter_no,
+                item['question'] = un.question,
+                item['unit_id'] = un.unit_id,
+                item['option_a'] = un?.options[0],
+                item['option_b'] = un?.options[1],
+                item['option_c'] = un?.options[2],
+                item['option_d'] = un?.options[3],
+                item['extension'] = "docx"
+            } else if(item.question_id == req.body.question_id){
                 item['answer'] = req.body.answer,
                 item['option'] = req.body.option,
                 item['correct_option'] = un.answer,
@@ -584,7 +607,7 @@ const saveAnswer = async (req,res) => {
                 item['option_b'] = un.option_b,
                 item['option_c'] = un.option_c,
                 item['option_d'] = un.option_d
-            }  
+            }
         })
 
         const assigntests = await AttemptTest.findOneAndUpdate(filter, {$set: {"questions": data.questions,"time_taken":req.body.time_taken,"completion_status":req.body.completion_status}})
@@ -641,7 +664,7 @@ const getLastScore = async (req,res) => {
         let totalQuestions = result?.questions?.length;
         result?.questions?.map((item,key)=>{
             if(item.answer != undefined ){
-                if(item.answer == item['correct_answer'] && item.option == item['correct_option']){
+                if(item.option == item['correct_option']){
                     correctAnswers = correctAnswers + 1;
                 }else{
                     wrongAnswers = wrongAnswers + 1;
@@ -709,7 +732,7 @@ const getCumulativeScore = async (req,res) => {
             obj.test_name = item.test_name
             item?.questions?.map((it,key)=>{
                 if(it.answer != undefined ){
-                    if(it.answer == it['correct_answer'] && it.option == it['correct_option']){
+                    if(it.option == it['correct_option']){
                         obj.correctAnswers = obj.correctAnswers + 1;
                         correctAnswers = correctAnswers + 1;
                     }else{
@@ -747,7 +770,7 @@ const getResult = async (req,res) => {
         let totalQuestions = result?.questions?.length;
         result?.questions?.map((item,key)=>{
             if(item.answer != undefined ){
-                if(item.answer == item['correct_answer'] && item.option == item['correct_option']){
+                if(item.option == item['correct_option']){
                     correctAnswers = correctAnswers + 1;
                 }else{
                     wrongAnswers = wrongAnswers + 1;
@@ -795,7 +818,7 @@ const getStudentWiseReport = async (req,res) => {
             wrongAnswers = 0;
             item.questions.map((it,key)=>{
                 if(it.answer != undefined ){
-                    if(it.answer == it['correct_answer'] && it.option == it['correct_option']){
+                    if(it.option == it['correct_option']){
                         correctAnswers = correctAnswers + 1;
                     }else{
                         wrongAnswers = wrongAnswers + 1;
@@ -1033,7 +1056,7 @@ const getClassSectionStudents = async (req, res) => {
                 let totalQuestions = babe?.questions?.length;
                 babe?.questions?.map((it,key)=>{
                     if(it.answer != undefined ){
-                        if(it.answer == it['correct_answer'] && it.option == it['correct_option']){
+                        if(it.option == it['correct_option']){
                             correctAnswers = correctAnswers + 1;
                         }else{
                             wrongAnswers = wrongAnswers + 1;
@@ -1078,7 +1101,7 @@ const getAllStudentAttemptedTests = async (req, res) => {
             wrongAnswers = 0;
             item.questions.map((it,key)=>{
                 if(it.answer != undefined ){
-                    if(it.answer == it['correct_answer'] && it.option == it['correct_option']){
+                    if(it.option == it['correct_option']){
                         correctAnswers = correctAnswers + 1;
                     }else{
                         wrongAnswers = wrongAnswers + 1;
