@@ -271,7 +271,7 @@ try {
             let desConceptField = decode(ConceptField).trim().replace(/\r?\n|\r/g, "");
             
             let QuestionStem = decode(question).split('Question Stem:').pop().split('Options:')[0];
-            if(QuestionStem.match('*')){
+            if(QuestionStem.includes("*")){
                 desQuestionStem = decode(QuestionStem).split('*').join("<br/>");
             }else{
                 desQuestionStem = decode(QuestionStem).trim().replace(/\r?\n|\r/g, "");
