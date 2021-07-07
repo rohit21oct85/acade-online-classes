@@ -106,7 +106,8 @@ const uploadStudent = async(req, res) => {
     const hashedPassword = await bcrypt.hash("password", 10)
     let SClass = await Class.find({});
     let FinalData = [];
-    
+    let school = await School.findOne({_id:req.body.school_id});
+
     try {
         let results = [];
         // console.log(req.file.path)
@@ -143,7 +144,7 @@ const uploadStudent = async(req, res) => {
                         EmpId: `${req.body.short}${firstName}${student.class}${student.section}${student.roll_no}`,
                         school_id: req.body.school_id,
                         class_id: fetched_id,
-                        username: student.name?.substr(0,student.name.indexOf(' ')).toLowerCase()+student?.class+student?.section+student?.roll_no,
+                        username: student.name?.substr(0,student.name.indexOf(' ')).toLowerCase()+student?.class+student?.section+student?.roll_no+'@'+school.sub_domain+'.com',
                         password: hashedPassword,
                     })
                 })
