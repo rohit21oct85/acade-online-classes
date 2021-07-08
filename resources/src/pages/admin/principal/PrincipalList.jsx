@@ -21,13 +21,11 @@ export default function PrincipalList() {
     const create = useAccess('create');
     const update = useAccess('update');
     const upload = useAccess('upload');
+    const view = useAccess('view');
 
     useEffect(manageAccess,[create, update, upload]);
     function manageAccess(){
-        if(create === false){
-            history.push(`/admin/principal-management`)
-        }
-        if(update === false){
+        if(create === false || update === false || upload === false || view === false){
             history.push(`/admin/principal-management`)
         }
 
@@ -62,19 +60,32 @@ export default function PrincipalList() {
                                     <span className="fa fa-upload mr-2"></span>Upload Principals 
                                 </button>
                             )}
+                            {view && (
+                                <button className="btn btn-sm dark ml-2" 
+                                onClick={ e => {
+                                    history.push(`/admin/principal-management/view`)
+                                }}>
+                                    <span className="fa fa-eye mr-2"></span>View Principals 
+                                </button>
+                            )}
 
                         </div>
                     </div>
                     <div className="clearfix"></div>
                     <div className="dash-cont-start">
                         <div className="row">
-                            <div className="col-md-3">
+                            <div className="col-md-12">
                             { upload === true  && params.page_type === 'upload' && <UploadPrincipals />  }
+                            </div>
+                            
+                            <div className="col-md-12">
                             { (create === true || update === true )  &&  (params.page_type === 'create' ||params.page_type === 'update' ) && <CreatePrincipal />  }
                             </div>
                             
-                            <div className={`${(params?.page_type === 'create' || params?.page_type === 'update' || params?.page_type === 'upload') ? 'col-md-9':'col-md-12'}`}>
-                               <AllPrincipals />
+                            <div className="col-md-12">
+                              {(view === true && params?.page_type === 'view') && (
+                                <AllPrincipals />
+                              )}
                             </div>
 
                         </div>

@@ -79,7 +79,8 @@ const ViewTeacherClass = async (req, res) => {
 
 const ViewAllTeacher = async (req, res) => {
     try{
-        const AllTeachers = await Teacher.find({},{__v: 0});
+        const filter = {school_id: req.params.school_id,subject_id: req.params.subject_id}
+        const AllTeachers = await Teacher.find(filter,{__v: 0});
         return res.status(200).json({ 
             data: AllTeachers 
         });    

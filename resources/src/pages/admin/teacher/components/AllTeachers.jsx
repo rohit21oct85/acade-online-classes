@@ -7,6 +7,7 @@ import {AuthContext} from '../../../../context/AuthContext';
 import { useToasts } from 'react-toast-notifications';
 import React, {useState, useContext} from 'react'
 import useDeleteTeacher from '../hooks/useDeleteTeacher';
+import useSubjectList from '../../subject/hooks/useSubjectList';
 
 export default function AllTeachers({update, Delete}) {
 
@@ -22,6 +23,7 @@ export default function AllTeachers({update, Delete}) {
 
     const {data, isLoading} = useTeacherList();
     const {data:schools, schoolIsLoading} = useSchoolLists();
+    const {data: subjects} = useSubjectList();
     const school = schools?.filter( school => school?._id == params?.school_id)
 
     const options = {
@@ -49,15 +51,46 @@ export default function AllTeachers({update, Delete}) {
     return (
         <>
         <p className="form-heading">
-            <span className="fa fa-plus-circle mr-2"></span>{(school && school[0]?.name) ? "School: "+school[0].name: "All Teachers"}</p>
+            <span className="fa fa-plus-circle mr-2"></span>{ (params?.school_id !== '999' && school && school[0]?.school_name) ?? 'All teachers'}</p>
         <hr className="mt-1"/>
-        <Loading isLoading={isLoading} /> 
+        <div className="row col-md-12">
+        <div className="form-group col-md-3 pl-0">
+            <select className="form-control" aria-label="Default select example" 
+                name="school_id" 
+                onChange={(e) => {
+                    history.push(`/admin/teachers-management/view/${e.target.value}`)
+                }} 
+                value={params.school_id ? params.school_id : 999}>
+                <option value="999">Select School</option>
+                {!isLoading && schools?.map(school => {
+                return (
+                    <option value={school._id} key={school._id}>{school.school_name}</option>
+                )
+                })}
+            </select>
+        </div>
+        <div className="form-group col-md-3 pl-0">
+            <select className="form-control" aria-label="Default select example" 
+                name="school_id" 
+                onChange={(e) => {
+                    history.push(`/admin/teachers-management/view/${params?.school_id}/${e.target.value}`)
+                }} 
+                value={params.subject_id ? params.subject_id : 999}>
+                <option value="999">Select Subject</option>
+                {!isLoading && subjects?.map(subject => {
+                return (
+                    <option value={subject._id} key={subject._id}>{subject.subject_name}</option>
+                )
+                })}
+            </select>
+        </div>
+        </div>
+        
         <div className="col-md-12 row no-gutter data-container-category">
         <table className="table table-hover">
                     <thead>
                         <tr>
                         <th scope="col">#EmpID</th>
-                        <th scope="col">School Name</th>
                         <th scope="col">Name</th>
                         <th scope="col">Subject</th>
                         <th scope="col">Class</th>
@@ -67,8 +100,8 @@ export default function AllTeachers({update, Delete}) {
                         </tr>
                     </thead>
                     <tbody>
+                    <Loading isLoading={isLoading} /> 
                         {data?.map( (item,key) => {
-                            let school_name = getSchoolName(schools, item?.school_id);
                             let tclass = '';
                             
                             tclass = Array.prototype.map.call(item?.classess, function(items) { if(items.checked === true){return items.class_name+', '} });
@@ -76,21 +109,20 @@ export default function AllTeachers({update, Delete}) {
                             return (
                                 <tr key={item?._id}>
                                 <th scope="row">{item.EmpID}</th>
-                                <td>{school_name}</td>
                                 <td>{item.name}</td>
                                 <td>{item.subject_name}</td>
                                 <td>{tclass}</td>
                                 <td>{item.mobile}</td>
-                                <td>{item.email}</td>
+                                <td>{item.username}</td>
                                 <td>
                                     {update && (
                                         <button className="btn bg-primary text-white btn-sm mr-2" 
                                             onClick={
                                                 e => {
                                                     if(params.school_id){
-                                                        history.push(`/admin/teachers-management/update/${params?.school_id}/${params?.subject_id}/${params?.subject_name}/${item?._id}`)
+                                                        history.push(`/admin/teachers-management/update/${params?.school_id}/${params?.subject_id}/${item?._id}`)
                                                     }else{
-                                                        history.push(`/admin/teachers-management/update/${item.school_id}/${item?.subject_id}/${item?.subject_name}/${item?._id}`)
+                                                        history.push(`/admin/teachers-management/update/${item.school_id}/${item?.subject_id}/${item?._id}`)
                                                     }
                                                 }
                                             }>

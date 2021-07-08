@@ -21,10 +21,11 @@ export default function TeacherList() {
     const update = useAccess('update');
     const upload = useAccess('upload');
     const Delete = useAccess('delete');
+    const view = useAccess('view');
     
-    useEffect(manageAccess,[create, update, upload]);
+    useEffect(manageAccess,[create, update, upload, Delete, view]);
     function manageAccess(){
-        if(create === false || update === false || upload === false){
+        if(create === false || update === false || upload === false || view === false){
             history.push(`/admin/teachers-management`)
         }
     }
@@ -59,6 +60,15 @@ export default function TeacherList() {
                                 </button>
                             )}
                             
+                            {view && (
+                                <button className="btn btn-sm dark ml-2" 
+                                onClick={ e => {
+                                    history.push(`/admin/teachers-management/view`)
+                                }}>
+                                    <span className="fa fa-upload mr-2"></span>View Teachers 
+                                </button>
+                            )}
+                            
                             
                         </div>
                     </div>
@@ -67,13 +77,18 @@ export default function TeacherList() {
                     <div className="dash-cont-start">
                         <div className="row">
                             <div className="col-md-3">
-                            { upload === true  && params.page_type === 'upload' && <UploadTeachers />  }
-                            { (create === true || update === true )  &&  (params.page_type === 'create' ||params.page_type === 'update' ) && <CreateTeacher />  }
+                            { upload === true && params.page_type === 'upload' && <UploadTeachers />  }
                             </div>
                             
-                            <div className={`${(params?.page_type === 'create' || params?.page_type === 'update' || params?.page_type === 'upload') ? 'col-md-9':'col-md-12'}`}>
-                            <AllTeachers update={update} Delete={Delete}/>
+                            <div className="col-md-12">
+                            { (create === true || update === true )  &&  (params.page_type === 'create' ||params.page_type === 'update' ) && <CreateTeacher />  }
                             </div>
+
+                            {view === true && params?.page_type === 'view' && (
+                            <div className={`col-md-12`}>
+                                <AllTeachers update={update} Delete={Delete}/>
+                            </div>
+                            )}
 
                         </div>
                     </div>    

@@ -82,24 +82,14 @@ export default function CreateTeacher() {
         })
 
         if(params?.teacher_id){
-                if(SingleTeacher.EmpID === ''){
-                    let UID = `${domainName}${SingleTeacher?.name.split(' ')[0]}${getFirstletter(subject_name)}T`;
-                    SingleTeacher.EmpID = UID
-                }
-                
+                let UID = `${domainName}${SingleTeacher?.name.split(' ')[0]}${getFirstletter(subject_name)}T`;
+                SingleTeacher.EmpID = UID
                 SingleTeacher.school_id = params?.school_id
                 SingleTeacher.subject_name = subject_name
                 SingleTeacher.classess = teacherClas;
-                // delete SingleTeacher[0]
-                // delete SingleTeacher[1]
-                // delete SingleTeacher[2]
-                // delete SingleTeacher[3]
-                // delete SingleTeacher[4]
-                // delete SingleTeacher[5]
-                // delete SingleTeacher[6]
-                
+
                 console.log(SingleTeacher);
-                //await updateMutation.mutate(SingleTeacher);
+                await updateMutation.mutate(SingleTeacher);
         }else{
             formData.school_id = params.school_id ? params.school_id : ''
 
@@ -159,8 +149,8 @@ export default function CreateTeacher() {
             <p className="form-heading">
             <span className="fa fa-plus-circle mr-2"></span>Add New Teacher</p>
             <hr className="mt-1"/>
-            <form onSubmit={saveTeacher}>
-                <div className="form-group">
+            <form className="row col-md-12" onSubmit={saveTeacher}>
+                <div className="form-group col-md-2 pl-0">
                     <select className="form-control" aria-label="Default select example" name="school_id" onChange={handleChangeSchool} value={params.school_id ? params.school_id : 999}>
                         <option value="999">Select School</option>
                         {!isLoading && schools?.map(school => {
@@ -173,7 +163,7 @@ export default function CreateTeacher() {
                 
                 
 
-                <div className="form-group">
+                <div className="form-group col-md-2 pl-0">
                     <input 
                         type="text" 
                         className="form-control" 
@@ -182,7 +172,7 @@ export default function CreateTeacher() {
                         onChange={handleChange}
                         placeholder="Name"/>
                 </div>
-                <div className="form-group">
+                <div className="form-group col-md-2 pl-0">
                     <select className="form-control" aria-label="Default select example" 
                         name="teacher_subject" 
                         onChange={handleChangeTeacher} 
@@ -199,14 +189,15 @@ export default function CreateTeacher() {
                         })}
                     </select>
                 </div>
-                <div className="form-group">
-                    <label>Choose Class: </label>
-                    <div className="row col-md-12">
+                <div className="form-group col-md-6 pl-0 pr-0">
+                    <span>Choose Class: </span>
+                    <div className="row col-md-12 pr-0">
                         {SClassess?.map(clas => {
                             let checkClass = SingleTeacher?.classess?.some(cls => (cls?.class_id === clas?._id && cls?.checked === true))
                             return(
-                                <label className="col-md-4 pl-0">
-                                    <input type="checkbox" className="mr-1 teacherClass" 
+                                <>
+                                <label className="pl-0 pr-2 col-md-2">
+                                    <input type="checkbox" className="teacherClass mr-1" 
                                     defaultValue={clas?._id} 
                                     data-class_name={clas?.class_name}
                                     checked={checkClass}
@@ -219,13 +210,14 @@ export default function CreateTeacher() {
                                         
                                     }}
                                     />
-                                    {clas?.class_name}Th
+                                    {clas?.class_name} Th
                                 </label>
+                                </>
                             )
                         })}
                     </div>    
                 </div>
-                <div className="form-group">
+                <div className="form-group col-md-2 pl-0">
                     <input 
                         type="text" 
                         className="form-control" 
@@ -234,7 +226,7 @@ export default function CreateTeacher() {
                         onChange={handleChange}
                         placeholder="Mobile"/>
                 </div>
-                <div className="form-group">
+                <div className="form-group col-md-2 pl-0">
                     <input 
                         type="email" 
                         className="form-control" 
@@ -243,7 +235,7 @@ export default function CreateTeacher() {
                         onChange={handleChange}
                         placeholder="Email"/>
                 </div>
-                <div className="form-group">
+                <div className="form-group col-md-2 pl-0">
                     <input 
                         type="password" 
                         className="form-control" 
@@ -252,7 +244,7 @@ export default function CreateTeacher() {
                         onChange={handleChange}
                         placeholder="Password"/>
                 </div>
-                <div className="form-group">
+                <div className="form-group col-md-3 pl-0">
                     <input 
                         type="text" 
                         className="form-control" 
@@ -262,34 +254,31 @@ export default function CreateTeacher() {
                         autoComplete="no-password"
                         placeholder="Address"/>
                 </div>
-                <div className="row">
-                    <div className="col-md-6">
-                        <div className="form-group">
-                        <input 
-                            type="text" 
-                            className="form-control" 
-                            name="city"
-                            value={params?.teacher_id ? SingleTeacher?.city : formData?.city}
-                            onChange={handleChange}
-                            autoComplete="no-password"
-                            placeholder="City"/>
-                        </div>
-                    </div>
-                    <div className="col-md-6">
-                        <div className="form-group">
-                        <input 
-                            type="text" 
-                            className="form-control" 
-                            name="state"
-                            value={params?.teacher_id ? SingleTeacher?.state : formData?.state}
-                            onChange={handleChange}
-                            autoComplete="no-password"
-                            placeholder="State"/>
-                        </div>
-                    </div>
+                
+                <div className="form-group col-md-3 pl-0">
+                    <input 
+                        type="text" 
+                        className="form-control" 
+                        name="city"
+                        value={params?.teacher_id ? SingleTeacher?.city : formData?.city}
+                        onChange={handleChange}
+                        autoComplete="no-password"
+                        placeholder="City"/>
                 </div>
-                                
-                <div className="form-group">
+                <div className="form-group col-md-3 pl-0">
+                    <input 
+                        type="text" 
+                        className="form-control" 
+                        name="state"
+                        value={params?.teacher_id ? SingleTeacher?.state : formData?.state}
+                        onChange={handleChange}
+                        autoComplete="no-password"
+                        placeholder="State"/>
+                    
+                </div>
+            
+                            
+                <div className="form-group col-md-3 pl-0">
                     <input 
                         type="text" 
                         className="form-control" 
@@ -300,8 +289,11 @@ export default function CreateTeacher() {
                         autoComplete="no-password"
                         placeholder="Pincode"/>
                 </div>
+                <div className="col-md-12 pl-0">
+                    <hr />
+                </div>
             
-                <div className="form-group flex">
+                <div className="form-group col-md-3 mt-3 pl-0 flex">
                     <button className={`btn btn-sm dark`}
                     disabled={(createMutation?.isLoading || updateMutation?.isLoading)}>
                         {(createMutation?.isLoading || updateMutation?.isLoading) ? (
@@ -325,7 +317,7 @@ export default function CreateTeacher() {
                     <button className="btn btn-sm dark bg-danger ml-2"
                     onClick={e => {
                         e.preventDefault();
-                        history.push(`/admin/teachers-management`)
+                        history.push(`/admin/teachers-management/view/${params?.school_id}/${params?.subject_id}`)
                     }}>
                         <span className="fa fa-times"></span>
                     </button>

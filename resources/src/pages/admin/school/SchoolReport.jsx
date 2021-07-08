@@ -81,36 +81,30 @@ export default function SchoolReport() {
                   <div className="clearfix"></div>
                   <div className="dash-cont-start">
                   <div className="row col-md-12">
-                        <table className="table table-bordered col-md-12 pt-2 pb-2">
-                            <tr>
-                              <td>Test Name</td>  
-                              <td>Test Type</td>  
-                              <td>Test Subjects</td>  
-                              <td>Test Window</td>  
-                              <td>Test Duration</td>  
-                              <td>Test Start Time</td>  
-                              <td>Test End Time</td>  
-                            </tr>
-                        
+                       
                         {reports?.map(rep => {
                               let tsubjects = Array.prototype.map.call(rep?.test_subjects, function(items) { return items.subject_name}).join(', ');
                               let test_window = new Date(rep?.start_date)
                               test_window.setMinutes( test_window.getMinutes() + rep?.test_window );
                               if(rep?.assigned === true)
                               return(
-                              <tr className="table-bordered col-md-12">
-                                    <td>{rep?.test_name}</td>  
-                                    <td>{rep?.test_type}</td>  
-                                    <td>{tsubjects}</td>  
-                                    <td>{rep?.test_window}</td>  
-                                    <td>{rep?.test_duration}</td>  
-                                    <td>{new Date(rep?.start_date).toLocaleString()}</td>  
-                                    <td>{test_window.toLocaleString()}</td>  
-                              </tr>      
+                              <div className="col-md-4 card p-3">
+                                    <div className="flex"><strong>Test Name:</strong> {rep?.test_name}</div>  
+                                    <div className="flex"><strong>Test Type:</strong>{rep?.test_type}</div>  
+                                    <div className="flex"><strong>Test Subjects:</strong>{tsubjects}</div>  
+                                    <div className="flex"><strong>Test Attemted:</strong>{rep.attemptedStudentIds?.length}</div>  
+                                    <div className="flex"><strong>Test Window:</strong> {rep?.test_window}</div>  
+                                    <div className="flex"><strong>Test Duration:</strong>{rep?.test_duration}</div>  
+                                    <div className="flex"><strong>Test Starts:</strong>{new Date(rep?.start_date).toLocaleString()}</div>  
+                                    <div className="flex"><strong>Test Ends:</strong> {test_window.toLocaleString()}</div>  
+                                    <hr />
+                                    <button className="dark bg-success btn btn-sm">
+                                          View Results
+                                    </button>
+                              </div>      
                               )
                         })}
-                        </table>
-
+                        
                   </div>
                   </div>    
                 </div>

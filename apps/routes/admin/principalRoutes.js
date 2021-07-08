@@ -26,7 +26,7 @@ router
     .post('/create',checkAuth, Principal.CreatePrincipal)
     .patch('/update/:id',checkAuth, Principal.UpdatePrincipal)
     .get('/view/:id',checkAuth, Principal.ViewPrincipal)
-    .get('/view-all',checkAuth, Principal.ViewAllPrincipal)
+    .get('/view-all/:school_id?',checkAuth, Principal.ViewAllPrincipal)
     .post('/delete', checkAuth, Principal.DeletePrincipal)
     .post('/upload', upload.single('file'), checkAuth, Principal.uploadPrincipal);
 
