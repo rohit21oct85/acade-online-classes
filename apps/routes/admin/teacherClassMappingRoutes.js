@@ -8,6 +8,7 @@ router
     .post('/create',checkAuth,adminAuth, teacherClassMapping.CreateTeacherClassMapping)
      .get('/view/:school_id?/:teacher_id?',checkAuth,adminAuth, teacherClassMapping.ViewTeacherClassMapping)
     .get('/view-all/:school_id?/:teacher_id?',checkAuth,adminAuth, teacherClassMapping.ViewAllTeacherClassMapping)
-    .post('/delete',checkAuth,adminAuth, teacherClassMapping.DeleteTeacherClassMapping);
+    .post('/delete',checkAuth,adminAuth, teacherClassMapping.DeleteTeacherClassMapping)
+    .post('/delete-all',checkAuth,adminAuth, teacherClassMapping.DeleteAllTeacherClassMapping);
     
 module.exports = router;

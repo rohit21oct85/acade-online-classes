@@ -88,28 +88,27 @@ const DeleteTeacherClassMapping = async (req, res) =>{
         });
     }
 };
+const DeleteAllTeacherClassMapping = async (req, res) =>{
+    const school_id = req.body.school_id;
+    try {
+        await TeacherClass.deleteMany({school_id: school_id}).then( response => {
+            return res.status(201).json({
+                message: "Mapping, deleted successfully"
+              })
+        });
+    } catch (error) {
+        res.status(409).json({
+            message: error.message
+        });
+    }
+};
 
-// const OtherModules = async (req, res) => {
-//     try {
-//         const filter = {role_slug: req?.params?.role_slug}
-//         // res.status(201).json(filter)
-//         const AllModules = await RoleModule.find(filter,{__v: 0});
-//         return res.status(200).json({ 
-//             data: AllModules 
-//         });        
-//     } catch (error) {
-//         res.status(203).json({
-//             status: 203,
-//             message: error.message
-//         });
-//     }
-// }
+
 
 module.exports = {
-    // OtherModules,
     CreateTeacherClassMapping,
-    // UpdateTeacherClassMapping,
     ViewTeacherClassMapping,
     ViewAllTeacherClassMapping,
-    DeleteTeacherClassMapping
+    DeleteTeacherClassMapping,
+    DeleteAllTeacherClassMapping
 }
