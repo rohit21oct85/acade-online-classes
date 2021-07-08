@@ -25,8 +25,16 @@ const CreateTeacher = async (req, res) => {
 }
 const UpdateTeacher = async (req, res) =>{
     try {
-        res.json(req.body); return;
-        await Teacher.findOneAndUpdate({_id: req.params.id},req.body)
+        let body = [];
+        const school = await School.findOne({_id:req.params.school_id},{sub_domain:1})
+        const teacher = await Teacher.findOne({_id:req.params.id})
+        if(teacher.username == undefined || teacher.username == ""){
+            body = req.body
+            body.username = req.body.name.trimStart().split(" ")[0].toLowerCase()+req.body?.mobile.trim().substr(-4, 4)+'@'+school.sub_domain.trim()+'.com';
+        }else{
+            body = req.body
+        }
+        await Teacher.findOneAndUpdate({_id: req.params.id},body)
                 .then(response => {
                     res.status(202).json({
                         message: "Teacher, Updated successfully"
@@ -150,9 +158,9 @@ const uploadTeacher = async(req, res) => {
                     const re = /^(Mr|Mrs|Ms|Dr|Er)\.[A-Za-z]+$/;
                     if(teacher.name.match(" ")){
                         if(teacher.name.match(re)){
-                            firstName = teacher.name.split(" ")[0];
+                            firstName = teacher.name.trimStart().split(" ")[0];
                         }else{
-                            firstName = teacher.name.split(" ")[1];
+                            firstName = teacher.name.trimStart().split(" ")[1];
                         }
                     }else{
                         firstName = teacher.name;
@@ -211,7 +219,7 @@ const uploadTeacher = async(req, res) => {
                         state: teacher.state, 
                         pincode: teacher.pincode, 
                         school_id:req.body.school_id,
-                        username: teacher.name?.substr(0,teacher.name.indexOf(' ')).toLowerCase()+teacher?.mobile.trim().substr(-4, 4)+'@'+school.sub_domain.trim()+'.com',
+                        username: firstName.toLowerCase()+teacher?.mobile.trim().substr(-4, 4)+'@'+school.sub_domain.trim()+'.com',
                         classess: classArray
                     })
                 })

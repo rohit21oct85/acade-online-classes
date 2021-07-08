@@ -24,7 +24,8 @@ export default function useUpdateTeacher(formData) {
       const { addToast } = useToasts();
       return useMutation((formData) => {
             let teacher_id =  params?.teacher_id;
-            return axios.patch(`${API_URL}v1/teacher/update/${teacher_id}`, formData, options)
+            let school_id =  params?.school_id;
+            return axios.patch(`${API_URL}v1/teacher/update/${school_id}/${teacher_id}`, formData, options)
         },{
             onSuccess: () => {
                 let school_id =  params?.school_id;
