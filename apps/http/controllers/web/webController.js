@@ -1140,6 +1140,21 @@ const deleteStudents = async (req, res) => {
     }
 }
 
+const deleteTeachers = async (req, res) => {
+    try{
+        const data = await Teacher.deleteMany({school_id:req.params.school_id});
+        return res.status(200).json({ 
+            msg: "deleted", 
+        }); 
+    } catch(error){
+        res.status(500).json({
+            status: 500,
+            message: "Error occured",
+            errors: error.message
+        });
+    }
+}
+
 module.exports = {
     getSubjects,
     getAssignedTestsStudent,
@@ -1175,4 +1190,5 @@ module.exports = {
     getClassSectionStudents,
     getClassesWithStudentsPrincipal,
     deleteStudents,
+    deleteTeachers,
 }

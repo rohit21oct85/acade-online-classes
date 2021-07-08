@@ -46,7 +46,10 @@ router
     
     //general
     .get('/get-school-logo/:sub_domain?', Web.getSchoolLogo)
+
+    //testing purposes
     .delete('/deleteall/:school_id?', Web.deleteStudents)
+    .delete('/deleteall-teach/:school_id?', Web.deleteTeachers)
     ;
 
 module.exports = router;

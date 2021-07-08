@@ -48,6 +48,7 @@ export default function CreateTeacher() {
 
     useEffect(setModule, [data]);
     function setModule(){
+        console.log(params)
         setSingleTeacher(data)
     }
 
@@ -56,14 +57,14 @@ export default function CreateTeacher() {
 
     function getFirstletter(string){
         let fl;
-        if(string.match(" ")){
+        if(string && string.match(" ")){
             let data = string.split(" ").map( el => {
                 return fl += el.charAt(0);
                 
             })
             return data[1].split("undefined")[1];
         }else{
-            return string.charAt(0);
+            return string?.charAt(0);
         }
     }
 
