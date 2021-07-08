@@ -117,16 +117,17 @@ const uploadStudent = async(req, res) => {
             .on('data', (data) => results.push(data))
             .on('end', () => {
                 results.forEach( student => {
+                    console.log(student)
                     let firstName;
                     if(student.name.match(" ")){
                         firstName = student.name.trim().split(" ")[0];
                     }else{
                         firstName = student.name.trim();
                     }
-                    let student_class = student.class;
+                    let student_class = student?.class;
                     let fetched_id ="";
                     if(req.body.class_id == "undefined"){
-                        fetched_id = getClassId(SClass, student_class)
+                        fetched_id = student_class && getClassId(SClass, student_class)
                     }else{
                         fetched_id = req.body.class_id;
                     }
@@ -141,11 +142,12 @@ const uploadStudent = async(req, res) => {
                         state: student.state, 
                         pincode: student.pincode, 
                         email: student.email, 
+                        school_section: student.school_section, 
                         status: student.status, 
-                        EmpId: `${req.body.short}${firstName.trim()}${student.class.trim()}${student.section.trim()}${student.roll_no.trim()}`,
+                        EmpId: `${req.body.short}${firstName.trim()}${student?.class?.trim()}${student?.section?.trim()}${student?.roll_no?.trim()}`,
                         school_id: req.body.school_id,
                         class_id: fetched_id,
-                        username: student.name.trimStart().split(" ")[0].toLowerCase()+student?.class.trim()+student?.section.trim()+student?.roll_no.trim()+'@'+school.sub_domain.trim()+'.com',
+                        username: student?.name?.trimStart().split(" ")[0].toLowerCase()+student?.class?.trim()+student?.section?.trim()+student?.roll_no?.trim()+'@'+school?.sub_domain?.trim()+'.com',
                         password: hashedPassword,
                     })
                 })

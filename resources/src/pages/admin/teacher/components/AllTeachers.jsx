@@ -8,6 +8,7 @@ import { useToasts } from 'react-toast-notifications';
 import React, {useState, useContext} from 'react'
 import useDeleteTeacher from '../hooks/useDeleteTeacher';
 import useSubjectList from '../../subject/hooks/useSubjectList';
+import { MakeSlug } from '../../../../utils/utils'
 
 export default function AllTeachers({update, Delete}) {
 
@@ -120,9 +121,9 @@ export default function AllTeachers({update, Delete}) {
                                             onClick={
                                                 e => {
                                                     if(params.school_id){
-                                                        history.push(`/admin/teachers-management/update/${params?.school_id}/${params?.subject_id}/${item?._id}`)
+                                                        history.push(`/admin/teachers-management/update/${params?.school_id}/${params?.subject_id}/${MakeSlug(item.subject_name)}/${item?._id}`)
                                                     }else{
-                                                        history.push(`/admin/teachers-management/update/${item.school_id}/${item?.subject_id}/${item?._id}`)
+                                                        history.push(`/admin/teachers-management/update/${item.school_id}/${item?.subject_id}/${MakeSlug(item.subject_name)}/${item?._id}`)
                                                     }
                                                 }
                                             }>
