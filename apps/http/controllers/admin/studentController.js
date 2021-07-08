@@ -117,16 +117,17 @@ const uploadStudent = async(req, res) => {
             .on('data', (data) => results.push(data))
             .on('end', () => {
                 results.forEach( student => {
+                    console.log(student)
                     let firstName;
                     if(student.name.match(" ")){
                         firstName = student.name.trim().split(" ")[0];
                     }else{
                         firstName = student.name.trim();
                     }
-                    let student_class = student.class;
+                    let student_class = student?.class;
                     let fetched_id ="";
                     if(req.body.class_id == "undefined"){
-                        fetched_id = getClassId(SClass, student_class)
+                        fetched_id = student_class && getClassId(SClass, student_class)
                     }else{
                         fetched_id = req.body.class_id;
                     }
@@ -141,11 +142,12 @@ const uploadStudent = async(req, res) => {
                         state: student.state, 
                         pincode: student.pincode, 
                         email: student.email, 
+                        school_section: student.school_section, 
                         status: student.status, 
-                        EmpId: `${req.body.short}${firstName.trim()}${student.class.trim()}${student.section.trim()}${student.roll_no.trim()}`,
+                        EmpId: `${req.body.short}${firstName.trim()}${student?.class?.trim()}${student?.section?.trim()}${student?.roll_no?.trim()}`,
                         school_id: req.body.school_id,
                         class_id: fetched_id,
-                        username: student.name?.substr(0,student.name.indexOf(' ')).toLowerCase()+student?.class+student?.section+student?.roll_no+'@'+school.sub_domain+'.com',
+                        username: student?.name?.trimStart().split(" ")[0].toLowerCase()+student?.class?.trim()+student?.section?.trim()+student?.roll_no?.trim()+'@'+school?.sub_domain?.trim()+'.com',
                         password: hashedPassword,
                     })
                 })
@@ -188,7 +190,7 @@ const Login = async (req, res) => {
                 message: "No Such School Found"
             })
         }
-        await Student.findOne({email: req.body.email, school_id: school._id},{__v: 0}).then( student => {
+        await Student.findOne({username: req.body.email, school_id: school._id},{__v: 0}).then( student => {
             if(student){
                 bcrypt.compare(req.body.password, student.password, function(err,response){
                     if(err){

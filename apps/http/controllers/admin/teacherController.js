@@ -10,8 +10,13 @@ const Class = require('../../../models/admin/Class');
 let refreshTokens = [];
 
 const CreateTeacher = async (req, res) => {
-    const body = req.body;
     try {
+        const school = await School.findOne({_id:req.body.school_id},{sub_domain:1,short:1})
+        body = req.body;
+        const sub = getSubjectFirstLetetr(req.body.subject_name);
+        body.username = school.short+req.body.name.trimStart().split(" ")[0].toLowerCase()+req.body?.mobile.trim().substr(-4, 4)+sub+'t@'+school.sub_domain.trim()+'.com';
+        body.EmpID = school.short+req.body.name.trimStart().split(" ")[0].toLowerCase()+req.body?.mobile.trim().substr(-4, 4)+sub+'T';
+
         const newTeacher = new Teacher(body);
         await newTeacher.save();
         return res.status(200).json({ 
@@ -25,8 +30,19 @@ const CreateTeacher = async (req, res) => {
 }
 const UpdateTeacher = async (req, res) =>{
     try {
-        res.json(req.body); return;
-        await Teacher.findOneAndUpdate({_id: req.params.id},req.body)
+        let body = [];
+       
+        const teacher = await Teacher.findOne({_id:req.params.id})
+        const school = await School.findOne({_id:teacher.school_id},{sub_domain:1,short:1})
+        if(teacher.username == undefined || teacher.username == ""){
+            body = req.body;
+            const sub = getSubjectFirstLetetr(teacher.subject_name);
+            body.username = school.short+req.body.name.trimStart().split(" ")[0].toLowerCase()+req.body?.mobile.trim().substr(-4, 4)+sub+'t@'+school.sub_domain.trim()+'.com';
+            body.EmpID = school.short+req.body.name.trimStart().split(" ")[0].toLowerCase()+req.body?.mobile.trim().substr(-4, 4)+sub+'T';
+        }else{
+            body = req.body;
+        }
+        await Teacher.findOneAndUpdate({_id: req.params.id},body)
                 .then(response => {
                     res.status(202).json({
                         message: "Teacher, Updated successfully"
@@ -119,7 +135,6 @@ function getClassId(arr, class_name){
 
 function getSubjectFirstLetetr(string){
     let fl;
-
     if(string.match(" ")){
         let data = string.split(" ").map( el => {
             return fl += el.charAt(0);
@@ -136,48 +151,53 @@ const uploadTeacher = async(req, res) => {
     const hashedPassword = await bcrypt.hash('password', 10)
     let Subjects = await Subject.find({});
     let SClass = await Class.find({});
+    let school = await School.findOne({_id:req.body.school_id});
     let FinalData = [];
     try {
         let results = [];
-        // console.log(req.file.path)
         fs.createReadStream(req.file.path)
             .pipe(csv())
             .on('data', (data) => results.push(data))
             .on('end', () => {
                 results.forEach(async teacher => {
                     let firstName;
+                    const re = /^(Mr|Mrs|Ms|Dr|Er)\.[A-Za-z]+$/;
                     if(teacher.name.match(" ")){
-                        firstName = teacher.name.split(" ")[0];
+                        if(teacher.name.match(re)){
+                            firstName = teacher?.name.trimStart().split(" ")[0].toLowerCase();
+                        }else{
+                            firstName = teacher?.name.trimStart().split(" ")[1].toLowerCase();
+                        }
                     }else{
                         firstName = teacher.name;
                     }
                     let classArray = [];
                     
-                    let six_class = teacher.six_class;
+                    let six_class = teacher.six_class?.toLowerCase();
                     let six_class_id = getClassId(SClass, '6')
                     let six_class_data = {class_id: six_class_id, class_name: '6', checked: (six_class == 'no'?false: true)};
                     
-                    let seven_class = teacher.seven_class;
+                    let seven_class = teacher.seven_class?.toLowerCase();
                     let seven_class_id = getClassId(SClass, '7');
                     let seven_class_data = {class_id: seven_class_id, class_name: '7', checked: (seven_class == 'no'?false: true)};
                     
-                    let eight_class = teacher.eight_class;
+                    let eight_class = teacher.eight_class?.toLowerCase();
                     let eight_class_id = getClassId(SClass, '8');
                     let eight_class_data = {class_id: eight_class_id, class_name: '8', checked: (eight_class == 'no'?false: true)};
                     
-                    let nine_class = teacher.nine_class;
+                    let nine_class = teacher.nine_class?.toLowerCase();
                     let nine_class_id = getClassId(SClass, '9');
                     let nine_class_data = {class_id: nine_class_id, class_name: '9', checked: (nine_class == 'no'?false: true)};
                     
-                    let ten_class = teacher.ten_class;
+                    let ten_class = teacher.ten_class?.toLowerCase();
                     let ten_class_id = getClassId(SClass, '10');
                     let ten_class_data = {class_id: ten_class_id, class_name: '10', checked: (ten_class == 'no'?false: true)};
                     
-                    let eleven_class = teacher.eleven_class;
+                    let eleven_class = teacher.eleven_class?.toLowerCase();
                     let eleven_class_id = getClassId(SClass, '11');
                     let eleven_class_data = {class_id: eleven_class_id, class_name: '11', checked: (eleven_class == 'no'?false: true)};
                     
-                    let twelve_class = teacher.twelve_class;
+                    let twelve_class = teacher.twelve_class?.toLowerCase();
                     let twelve_class_id = getClassId(SClass, '12');
                     let twelve_class_data = {class_id: twelve_class_id, class_name: '12', checked: (twelve_class == 'no'?false: true)};
                     
@@ -194,7 +214,7 @@ const uploadTeacher = async(req, res) => {
                     
                     FinalData.push({ 
                         name: teacher.name, 
-                        EmpID: `${req.body.short}${firstName}${getSubjectFirstLetetr(teacher.subject)}T`, 
+                        EmpID: `${req.body.short}${firstName}${teacher?.mobile.trim().substr(-4, 4)}${getSubjectFirstLetetr(teacher.subject)}T`, 
                         subject_name: teacher.subject, 
                         subject_id: getSubjectID(Subjects, teacher?.subject), 
                         mobile: teacher.mobile, 
@@ -205,10 +225,10 @@ const uploadTeacher = async(req, res) => {
                         state: teacher.state, 
                         pincode: teacher.pincode, 
                         school_id:req.body.school_id,
+                        username: req.body.short+firstName+teacher?.mobile.trim().substr(-4, 4)+getSubjectFirstLetetr(teacher.subject)+'t@'+school.sub_domain.trim()+'.com',
                         classess: classArray
                     })
                 })
-                // console.log(FinalData);
                 otherFunction(res, FinalData, function() {
                     fs.unlinkSync(req.file.path)
                 })
@@ -257,7 +277,7 @@ const Login = async (req, res) => {
                 message: "No Such School Found"
             })
         }
-        await Teacher.findOne({email: req.body.email, school_id: school._id},{__v: 0}).then( Teacher => {
+        await Teacher.findOne({username: req.body.email, school_id: school._id},{__v: 0}).then( Teacher => {
             if(Teacher){
                 bcrypt.compare(req.body.password, Teacher.password, function(err,response){
                     if(err){
