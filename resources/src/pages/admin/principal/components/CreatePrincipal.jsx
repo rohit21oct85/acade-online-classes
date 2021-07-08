@@ -160,8 +160,8 @@ export default function CreatePrincipal() {
             <p className="form-heading">
             <span className="fa fa-plus-circle mr-2"></span>Add New Principal</p>
             <hr className="mt-1"/>
-            <form onSubmit={savePrincipal}>
-                <div className="form-group">
+            <form className="row col-md-12" onSubmit={savePrincipal}>
+                <div className="form-group col-md-3 pl-0">
                     <select 
                         className="form-control" aria-label="Default select example" 
                         name="school_id" 
@@ -174,7 +174,7 @@ export default function CreatePrincipal() {
                         })}
                     </select>
                 </div>
-                <div className="form-group">
+                <div className="form-group col-md-3 pl-0">
                     <select className="form-control"
                         name="title"
                         onChange={handleChange}
@@ -188,7 +188,7 @@ export default function CreatePrincipal() {
                             })}    
                         </select>
                 </div>
-                <div className="form-group">
+                <div className="form-group col-md-3 pl-0">
                     <input 
                         type="text" 
                         className="form-control" 
@@ -198,7 +198,7 @@ export default function CreatePrincipal() {
                         autoComplete="no-password"
                         placeholder="Principal Name"/>
                 </div>
-                <div className="form-group">
+                <div className="form-group col-md-3 pl-0">
                     <input 
                         type="text" 
                         className="form-control" 
@@ -208,7 +208,7 @@ export default function CreatePrincipal() {
                         autoComplete="no-password"
                         placeholder="Email"/>
                 </div>
-                <div className="form-group">
+                <div className="form-group col-md-3 pl-0">
                     <input 
                         type="password" 
                         className="form-control" 
@@ -218,7 +218,7 @@ export default function CreatePrincipal() {
                         autoComplete="no-password"
                         placeholder="Password"/>
                 </div>
-                <div className="form-group">
+                <div className="form-group col-md-3 pl-0">
                     <input 
                         type="text" 
                         className="form-control" 
@@ -229,7 +229,7 @@ export default function CreatePrincipal() {
                         autoComplete="no-Mobile"
                         placeholder="Mobile"/>
                 </div>
-                <div className="form-group">
+                <div className="form-group col-md-3 pl-0">
                     <input 
                         type="text" 
                         className="form-control" 
@@ -239,9 +239,7 @@ export default function CreatePrincipal() {
                         autoComplete="no-password"
                         placeholder="address"/>
                 </div>
-                <div className="row">
-                    <div className="col-md-6">
-                        <div className="form-group">
+                    <div className="form-group col-md-3 pl-0">
                             <input 
                                 type="text" 
                                 className="form-control" 
@@ -250,10 +248,10 @@ export default function CreatePrincipal() {
                                 onChange={handleChange}
                                 autoComplete="no-password"
                                 placeholder="city"/>
-                        </div>
+                
                     </div>
-                    <div className="col-md-6">
-                        <div className="form-group">
+                    <div className="form-group col-md-3 pl-0">
+                        
                             <input 
                                 type="text" 
                                 className="form-control" 
@@ -262,11 +260,11 @@ export default function CreatePrincipal() {
                                 onChange={handleChange}
                                 autoComplete="no-password"
                                 placeholder="state"/>
-                        </div>
+                        
                     </div>
-                </div>
                 
-                <div className="form-group">
+                
+                <div className="form-group col-md-3 pl-0">
                     <input 
                         type="text" 
                         className="form-control" 
@@ -279,7 +277,9 @@ export default function CreatePrincipal() {
                         placeholder="pincode"/>
                 </div>
                 
-
+                <div className="col-md-12 pl-0">
+                    <hr />
+                </div>            
                 <div className="form-group flex">
                     <button className="btn btn-sm dark br-5">
                         {(createMutation.isLoading || updateMutation.isLoading) ? (

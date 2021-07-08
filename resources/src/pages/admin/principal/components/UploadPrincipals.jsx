@@ -93,8 +93,8 @@ export default function UploadPrincipals() {
             </a>
             </p>
             <hr className="mt-1"/>
-            <form onSubmit={uploadFile} method="POST" encType="multipart/form-data">
-            <div className="form-group">
+            <form className="row col-md-12" onSubmit={uploadFile} method="POST" encType="multipart/form-data">
+            <div className="form-group col-md-3 pl-0">
                     <select 
                         className="form-control" aria-label="Default select example" 
                         name="school_id" 
@@ -107,7 +107,7 @@ export default function UploadPrincipals() {
                         })}
                     </select>
                 </div>
-                <div className="form-group">
+                <div className="form-group col-md-3 pl-0">
                     <input 
                         type="file" 
                         className="form-control" 
@@ -118,7 +118,7 @@ export default function UploadPrincipals() {
                             Upload Classes File in .csv format only.
                         </small>
                 </div>
-            
+                <div className="col-md-12"><hr /></div>        
                 <div className="form-group flex">
                     <button className="btn btn-sm dark" disabled={btnDisabled}>
                         {loading ? (

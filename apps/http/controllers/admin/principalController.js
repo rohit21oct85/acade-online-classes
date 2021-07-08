@@ -58,7 +58,7 @@ const ViewPrincipal = async (req, res) => {
 }
 const ViewAllPrincipal = async (req, res) => {
     try{
-        const AllPrincipal = await Principal.find({},{__v: 0});
+        const AllPrincipal = await Principal.find({school_id: req?.params?.school_id},{__v: 0});
         return res.status(200).json({ 
             data: AllPrincipal 
         });    
