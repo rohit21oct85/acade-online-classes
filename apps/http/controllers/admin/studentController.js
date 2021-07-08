@@ -187,7 +187,7 @@ const Login = async (req, res) => {
                 message: "No Such School Found"
             })
         }
-        await Student.findOne({email: req.body.email, school_id: school._id},{__v: 0}).then( student => {
+        await Student.findOne({username: req.body.email, school_id: school._id},{__v: 0}).then( student => {
             if(student){
                 bcrypt.compare(req.body.password, student.password, function(err,response){
                     if(err){
