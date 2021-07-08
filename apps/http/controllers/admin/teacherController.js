@@ -135,6 +135,7 @@ const uploadTeacher = async(req, res) => {
     const hashedPassword = await bcrypt.hash('password', 10)
     let Subjects = await Subject.find({});
     let SClass = await Class.find({});
+    let school = await School.findOne({_id:req.body.school_id});
     let FinalData = [];
     try {
         let results = [];
@@ -145,8 +146,13 @@ const uploadTeacher = async(req, res) => {
             .on('end', () => {
                 results.forEach(async teacher => {
                     let firstName;
+                    const re = /^(Mr|Mrs|Ms|Dr|Er)\.[A-Za-z]+$/;
                     if(teacher.name.match(" ")){
-                        firstName = teacher.name.split(" ")[0];
+                        if(teacher.name.match(re)){
+                            firstName = teacher.name.split(" ")[0];
+                        }else{
+                            firstName = teacher.name.split(" ")[1];
+                        }
                     }else{
                         firstName = teacher.name;
                     }
@@ -204,6 +210,7 @@ const uploadTeacher = async(req, res) => {
                         state: teacher.state, 
                         pincode: teacher.pincode, 
                         school_id:req.body.school_id,
+                        username: teacher.name?.substr(0,teacher.name.indexOf(' ')).toLowerCase()+teacher?.mobile.trim().substr(-4, 4)+'@'+school.sub_domain.trim()+'.com',
                         classess: classArray
                     })
                 })
@@ -256,7 +263,7 @@ const Login = async (req, res) => {
                 message: "No Such School Found"
             })
         }
-        await Teacher.findOne({email: req.body.email, school_id: school._id},{__v: 0}).then( Teacher => {
+        await Teacher.findOne({username: req.body.email, school_id: school._id},{__v: 0}).then( Teacher => {
             if(Teacher){
                 bcrypt.compare(req.body.password, Teacher.password, function(err,response){
                     if(err){

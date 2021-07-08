@@ -145,7 +145,7 @@ const uploadStudent = async(req, res) => {
                         EmpId: `${req.body.short}${firstName.trim()}${student.class.trim()}${student.section.trim()}${student.roll_no.trim()}`,
                         school_id: req.body.school_id,
                         class_id: fetched_id,
-                        username: student.name?.substr(0,student.name.indexOf(' ')).toLowerCase()+student?.class+student?.section+student?.roll_no+'@'+school.sub_domain+'.com',
+                        username: student.name.trimStart().split(" ")[0].toLowerCase()+student?.class.trim()+student?.section.trim()+student?.roll_no.trim()+'@'+school.sub_domain.trim()+'.com',
                         password: hashedPassword,
                     })
                 })
