@@ -7,7 +7,7 @@ import API_URL from '../../../helper/APIHelper';
 import * as utils from '../../../utils/utils'
 import { useToasts } from 'react-toast-notifications';
 import useSchoolLists from '../school/hooks/useSchoolLists';
-import useTeacherList from '../../../pages/admin/teacher/hooks/useTeacherList';
+import useTeacherBySchool from '../../../pages/admin/teacher/hooks/useTeacherBySchool';
 import useClassList from '../class/hooks/useClassList';
 import {MakeSlug} from '../../../utils/utils'
 import useSingleTeacherClass from '../../../hooks/teacherClassMapping/useSingleTeacherClass';
@@ -25,7 +25,7 @@ export default function CreateTeacherStudentMap() {
     const [loading, setLoading] = useState(false);
 
     const {data : schools, isLoading } = useSchoolLists();
-    const {data : teachers, teacherIsLoading } = useTeacherList();
+    const {data : teachers, teacherIsLoading } = useTeacherBySchool();
     const {data : classes, classesIsLoading } = useClassList();
     const {data: teacherClassess, teacherClassessLoading} = useSingleTeacherClass();
     

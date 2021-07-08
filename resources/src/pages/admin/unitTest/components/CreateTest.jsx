@@ -157,6 +157,7 @@ export default function CreateTest() {
             script.async = true;
             document.body.appendChild(script);
       },[])
+      let subject_name = getFilteredData(subjects,'subject_id' , params?.subject_id, 'subject_name');
       return (
             <div>
                   
@@ -296,36 +297,34 @@ export default function CreateTest() {
 
                   
                   <div className="col-md-12 pl-0">
-                  <div className="text-success mb-1">
+                  <div className="text-success mb-0">
                         <span className="badge-danger pl-2 pr-2">All Questions: {questions?.length??0}</span>
                         <span className="badge-success ml-3 pl-2 pr-2">Selected Questions: {selectedQuestions?.length}</span>
+                        <span className="badge-success ml-3 pl-2 pr-2">Subject: {subject_name}</span>
+
                   </div>
+                  <p>Select Questions: </p>
                   <div className="table table-bordered">
                         <div className="flex"> 
-                              <div className="col-md-2 pl-0">Subject Name</div>
-                              <div className="col-md-2 pl-0">Unit Name</div>
-                              <div className="col-md-2 pl-0">Chapter Name</div>
+                              <div className="col-md-6 pl-0">Unit/Chapter Name</div>
                               <div className="col-md-6 pl-0">Question</div>
                         </div>
-                        
                   </div>
                   <div  className="pr-2" style={{ height: '300px', overflowY: 'scroll'}}>
                         {qLoading && (<><span className="fa fa-spinner"></span>Loading...</>)}      
                         {!qLoading && questions?.map((q,i) => {
-                              let subject_name = getFilteredData(subjects,'subject_id' , q?.subject_id, 'subject_name');
+                              
                               let sel = helper.checkExists(selectedQuestions,'_id',q?._id);
                               if(!sel)
                               return(
                               <div 
-                              className={`card question col-md-12 pl-2 pr-2 mb-2`}
+                              className={`card question col-md-12 pl-2 pr-2 mb-1`}
                               key={q?._id}
                               id={`${q?._id}`}
                               onClick={handleSelectQuestion.bind(this, q?._id)}
                               >
                                     <div className="flex">
-                                          <div className="col-md-2 pl-0">{subject_name}</div>
-                                          <div className="col-md-2 pl-0">{q?.unit_no} - {q?.unit_name}</div>
-                                          <div className="col-md-2 pl-0">{q?.chapter_no} - {q?.chapter_name}</div>
+                                          <div className="col-md-6 pl-0">{q?.unit_no}.{q?.unit_name}/{q?.chapter_no}.{q?.chapter_name} </div>
                                           <div className="question col-md-6 pl-0" dangerouslySetInnerHTML={{ __html: q?.question  }} />
                                     </div>
                               </div>

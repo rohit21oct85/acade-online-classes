@@ -11,7 +11,7 @@ export default function useTeacherList() {
     const params = useParams();
     const key = `teachers-${params.school_id}-${params.subject_id}`
     return useQuery(key, async () => {
-        if(state.access_token){
+        if(state.access_token && params?.school_id && params?.subject_id){
             
                 const result = await axios.get(`${API_URL}v1/teacher/view-all/${params.school_id}/${params?.subject_id}`,{
                     headers: {
