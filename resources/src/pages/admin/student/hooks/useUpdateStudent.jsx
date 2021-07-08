@@ -27,9 +27,8 @@ export default function useUpdateStudent(formData) {
             return axios.patch(`${API_URL}v1/student/update/${student_id}`, formData, options)
         },{
             onSuccess: () => {
-                let school_id =  params?.school_id;
-                queryClient.invalidateQueries(`students-${school_id}`)
-                history.push(`/admin/students-management`);
+                queryClient.invalidateQueries(`students-${params?.school_id}-${params?.class_id}`)
+                history.push(`/admin/students-management/view/${params?.school_id}/${params?.class_id}`);
                 addToast('Student Updated successfully', { appearance: 'success',autoDismiss: true });
             }
         });

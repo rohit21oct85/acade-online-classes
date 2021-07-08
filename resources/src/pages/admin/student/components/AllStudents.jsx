@@ -2,9 +2,11 @@ import useStudentList from '../hooks/useStudentList';
 import useSchoolLists from '../../school/hooks/useSchoolLists';
 import Loading from '../../../../components/Loading';
 import {useHistory, useParams} from 'react-router-dom'
-import React from 'react'
+import React, { useEffect } from 'react'
 import useDeleteStudent from '../hooks/useDeleteStudent';
 import * as helper from '../../../../utils/helper'
+import useClassList from '../../class/hooks/useClassList';
+import { useState } from 'react';
 
 
 export default function AllStudents({update, Delete}) {
@@ -13,8 +15,10 @@ export default function AllStudents({update, Delete}) {
     
     const {data, isLoading} = useStudentList();
     const {data:schools} = useSchoolLists();
-    const school = schools?.filter( school => school?._id == params?.school_id)
+    const {data : classes } = useClassList();
 
+    const school = schools?.filter( school => school?._id == params?.school_id)
+    
 
     const deleteMutation = useDeleteStudent();
 
@@ -28,9 +32,41 @@ export default function AllStudents({update, Delete}) {
             <span className="fa fa-plus-circle mr-2"></span> All Students
             <span className="dark bg-success br-15 pl-3 pr-3 ml-2">{school && school[0]?.school_name}</span>
         </p>
-        <hr className="mt-0"/>
-        <Loading isLoading={isLoading} /> 
+        
+        <div className="row col-md-12">
+        <div className="form-group col-md-3 pl-0">
+            <select 
+                className="form-control " aria-label="Default select example" 
+                name="school_id" 
+                onChange={(e) => {
+                    history.push(`/admin/students-management/view/${e.target.value}`)
+                }} 
+                value={params.school_id ? params.school_id : 999}>
+                <option value="999">Select School</option>
+                {schools?.map(school => {
+                return (
+                    <option value={school._id} key={school._id}>{school.school_name}</option>
+                )
+                })}
+            </select>
+        </div>
+        <div className="form-group col-md-3 pl-0">
+            <select className="form-control " aria-label="Default select example" 
+                    name="class_id" 
+                    onChange={(e) => {
+                        history.push(`/admin/students-management/view/${params?.school_id}/${e.target.value}`)
+                    }} value={params.class_id}>
+                <option>Select Class</option>
+                {classes?.map(sclass => {
+                return (
+                    <option value={sclass._id} key={sclass._id}>{sclass.class_name} Th</option>
+                )
+                })}
+            </select>
+        </div>
+        </div>
         <div className="col-md-12 table-responsive row no-gutter data-container-category" style={{"overflowX":"scroll"}}>
+        
         <table className="table table-hover">
                     <thead>
                         <tr>
@@ -38,16 +74,16 @@ export default function AllStudents({update, Delete}) {
                         {/* <th scope="col">School Name</th> */}
                         <th scope="col">Name</th>
                         <th scope="col">Class</th>
-                        <th scope="col">Section</th>
-                        <th scope="col">Roll No</th>
+                        <th scope="col">Sec.</th>
+                        <th scope="col">Roll</th>
                         <th scope="col">Mobile</th>
                         <th scope="col">Email</th>
-
                         <th scope="col">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {data?.map( (item,key) => { 
+                        <Loading isLoading={isLoading} /> 
+                        {!isLoading && data?.map( (item,key) => { 
                             // let school_name = helper.getFilteredData(schools,'_id', item?.school_id, 'school_name')
                             return (
                                 <tr key={item?._id}>
@@ -58,8 +94,8 @@ export default function AllStudents({update, Delete}) {
                                 <td>{item.section}</td>
                                 <td>{item.roll_no}</td>
                                 <td>{item.mobile}</td>
-                                <td>{item.email}</td>
-                                <td>
+                                <td>{item?.username.toLowerCase()}</td>
+                                <td className="flex">
                                     {update === true && (
                                         <button className="btn bg-primary text-white btn-sm mr-2" 
                                             onClick={

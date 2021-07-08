@@ -53,7 +53,7 @@ export default function CreateStudent() {
     const saveStudent = async (e) => {
         e.preventDefault();
         setLoading(true);
-        const domainName = helper.getFilteredData(schools, '_id',params.school_id,'sub_domain');
+        const domainName = helper.getFilteredData(schools, '_id',params.school_id,'short');
         
         if(params?.student_id){
             let firstName = SingleStudent?.name
@@ -62,10 +62,12 @@ export default function CreateStudent() {
             let rollNo = SingleStudent?.roll_no
             const first_name = firstName?.replaceAll(" ",".").toLowerCase();
             SingleStudent.username = first_name + SingleStudent.mobile.substr(-4) + `@${domainName}.com`;
-            if(SingleStudent?.EmpId === undefined){
-                let UID = helper.generateEmpId(domainName, firstName, className, sectionName, rollNo);
-                SingleStudent.EmpId = UID
+            if(firstName.includes(' ')){
+                firstName = firstName.trim().split(" ")[0]
             }
+            let UID = `${domainName}${firstName}${className.trim()}${sectionName.trim()}${rollNo.trim()}`
+            SingleStudent.EmpId = UID.toUpperCase();
+            // console.log(SingleStudent);
             await updateMutation.mutate(SingleStudent);
         }else{
             formData.school_id = params.school_id ? params.school_id : ''
@@ -82,9 +84,11 @@ export default function CreateStudent() {
                     let className = formData?.class
                     let sectionName = formData?.section
                     let rollNo = formData?.roll_no
-                    
-                    let EmpId = helper.generateEmpId(domainName, firstName, className, sectionName, rollNo);
-                    let UID = EmpId.toUpperCase();
+                    if(firstName.includes(' ')){
+                        firstName = firstName.split(" ")[0]
+                    }
+                    let UID = `${domainName}${firstName}${className.trim()}${sectionName.trim()}${rollNo.trim()}`
+                    UID = UID.toUpperCase();
                     
                     const first_name = formData?.name?.replaceAll(" ","").toLowerCase();
                     formData.username = first_name+sectionName;
