@@ -59,7 +59,8 @@ const ViewStudent = async (req, res) => {
 }
 const ViewAllStudent = async (req, res) => {
     try{
-        const AllStudents = await Student.find({},{__v: 0});
+        const filter = {school_id: req.params.school_id, class_id: req.params.class_id}
+        const AllStudents = await Student.find(filter,{__v: 0});
         return res.status(200).json({ 
             data: AllStudents 
         });    
@@ -117,9 +118,9 @@ const uploadStudent = async(req, res) => {
                 results.forEach( student => {
                     let firstName;
                     if(student.name.match(" ")){
-                        firstName = student.name.split(" ")[0];
+                        firstName = student.name.trim().split(" ")[0];
                     }else{
-                        firstName = student.name;
+                        firstName = student.name.trim();
                     }
                     let student_class = student.class;
                     let fetched_id ="";
@@ -140,7 +141,7 @@ const uploadStudent = async(req, res) => {
                         pincode: student.pincode, 
                         email: student.email, 
                         status: student.status, 
-                        EmpId: `${req.body.short}${firstName}${student.class}${student.section}${student.roll_no}`,
+                        EmpId: `${req.body.short}${firstName.trim()}${student.class.trim()}${student.section.trim()}${student.roll_no.trim()}`,
                         school_id: req.body.school_id,
                         class_id: fetched_id,
                         username: student.name?.replace(' ','').toLowerCase()+student?.class+student?.section,

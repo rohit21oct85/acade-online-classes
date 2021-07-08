@@ -27,7 +27,7 @@ router
     .post('/logout',checkAuth, Student.Logout)
     .patch('/update/:id', checkAuth, Student.UpdateStudent)
     .get('/view/:id', checkAuth, Student.ViewStudent)
-    .get('/view-all', checkAuth, Student.ViewAllStudent)
+    .get('/view-all/:school_id?/:class_id', checkAuth, Student.ViewAllStudent)
     .delete('/delete/:id', checkAuth, Student.DeleteStudent)
     .post('/upload', upload.single('file'), checkAuth, Student.uploadStudent)
 

@@ -22,6 +22,7 @@ export default function StudentList() {
     const update = useAccess('update');
     const upload = useAccess('upload');
     const Delete = useAccess('delete');
+    const view = useAccess('view');
     
     useEffect(manageAccess,[create, update, upload]);
     function manageAccess(){
@@ -60,6 +61,16 @@ export default function StudentList() {
                                 </button>
                             )}
                             
+                            {view && (
+                                <button className="btn btn-sm dark ml-2" 
+                                onClick={ e => {
+                                    history.push(`/admin/students-management/view`)
+                                }}>
+                                    <span className="fa fa-eye mr-2"></span>View Students 
+                                </button>
+                            )}
+
+                            
                         </div>
                     </div>
                     <div className="clearfix"></div>
@@ -69,10 +80,13 @@ export default function StudentList() {
                             { upload === true  && params.page_type === 'upload' && <UploadStudents />  }
                             { (create === true || update === true )  &&  (params.page_type === 'create' ||params.page_type === 'update' ) && <CreateStudent />  }
                             </div>
-                            
-                            <div className={`${(params?.page_type === 'create' || params?.page_type === 'update' || params?.page_type === 'upload') ? 'col-md-9':'col-md-12'}`}>
+                            {params?.page_type === 'view' && (
+                            <>
+                            <div className={`${(params?.page_type === 'view') ? 'col-md-12':'col-md-12'}`}>
                                 <AllStudents update={update} Delete={Delete}/>
                             </div>
+                            </>
+                            )}
 
                         </div>
                     </div>    
