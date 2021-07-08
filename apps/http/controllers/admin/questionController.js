@@ -244,7 +244,7 @@ try {
         let desQuestionStem;
         
         questionArray.forEach( question => {
-
+            console.log(question)
             let QuestionType = decode(question).split('Question Type:').pop().split('Question Variety:')[0];
             let desQuestionType = decode(QuestionType).trim().replace(/\r?\n|\r/g, "");
             

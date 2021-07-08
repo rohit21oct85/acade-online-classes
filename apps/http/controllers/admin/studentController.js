@@ -107,7 +107,8 @@ const uploadStudent = async(req, res) => {
     const hashedPassword = await bcrypt.hash("password", 10)
     let SClass = await Class.find({});
     let FinalData = [];
-    
+    let school = await School.findOne({_id:req.body.school_id});
+
     try {
         let results = [];
         // console.log(req.file.path)
@@ -144,7 +145,7 @@ const uploadStudent = async(req, res) => {
                         EmpId: `${req.body.short}${firstName.trim()}${student.class.trim()}${student.section.trim()}${student.roll_no.trim()}`,
                         school_id: req.body.school_id,
                         class_id: fetched_id,
-                        username: student.name?.replace(' ','').toLowerCase()+student?.class+student?.section,
+                        username: student.name?.substr(0,student.name.indexOf(' ')).toLowerCase()+student?.class+student?.section+student?.roll_no+'@'+school.sub_domain+'.com',
                         password: hashedPassword,
                     })
                 })
@@ -283,7 +284,6 @@ const ForgotPassword = async (req, res) => {
         const email = req.body.email;
         const data = await Student.findOne({email: email});
         if(data){
-            console.log(data);
             return res.status(201).json(data)
         }else{
             return res.status(402).json({message: "Email does not belongs to our Database"})    

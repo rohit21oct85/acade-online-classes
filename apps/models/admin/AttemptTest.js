@@ -37,6 +37,9 @@ const AttemptTestSchema = new mongoose.Schema({
     completion_status:{
         type: String,
     },
+    extension:{
+        type: String,
+    },
     test_subjects :{
         type: Array,
     },
