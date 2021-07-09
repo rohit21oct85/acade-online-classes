@@ -170,9 +170,11 @@ const getASingleQuestions = async (req, res) => {
 
 const getAllClasses = async (req, res) => {
     try{
-        const AllClasss = await Class.find({},{__v: 0});
+        const teacher = await Teacher.findOne({_id:req.body.user_id}).lean()
+        const classes = teacher.classess.filter(it => it.checked == true);
+        // const AllClasss = await Class.find({},{__v: 0});
         return res.status(200).json({ 
-            data: AllClasss 
+            data: classes 
         });    
     } catch(error){
         res.status(409).json({
@@ -877,7 +879,7 @@ const getClassesWithStudents = async (req, res) => {
         }
         const teacher = await Teacher.findOne({school_id:req.params.school_id,_id:req.params.teacher_id}).lean()
         // const classes = await Class.find().lean();
-        const classes = teacher.classess;
+        const classes = teacher.classess.filter(it => it.checked == true);
         const students = await Student.find(filter);
         classes.forEach(async (item)=>{
             const class_id = item.class_id;
