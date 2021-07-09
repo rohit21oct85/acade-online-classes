@@ -11,6 +11,7 @@ router
     .get('/view-all',checkAuth,auth.ViewAllSubAdmin)
     .get('/role-view-all/:role?',checkAuth,auth.ViewSubAdminByRole)
     .get('/view/:admin_id', checkAuth, auth.ViewSubAdmin)
+    .post('/delete', checkAuth, auth.DeleteSubAdmin)
     .post('/update', checkAuth, auth.UpdateSubAdmin)
     .post('/forgot-password', auth.ForgotPassword)
     .post('/refresh-token', auth.RefreshToken)

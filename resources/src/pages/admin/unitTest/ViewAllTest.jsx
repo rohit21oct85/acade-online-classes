@@ -70,21 +70,34 @@ export default function ViewAllTest() {
                               <button className="btn btn-sm dark mr-2" onClick={e => { history.push(`/admin/dashboard`)}}>
                                 <span className="fa fa-dashboard"></span>
                               </button>
+                              
+                                <select className="form-control col-md-2"
+                                value={params?.test_type}
+                                onChange={e => {
+                                    history.push(`/admin/view-all-test/${e.target.value}`)
+                                    document.getElementById("class").selectedIndex = '0'
+                                }}>
+                                    <option value="">Test Type</option>
+                                    <option value="combine-test">Combined Test</option>
+                                    <option value="single-test">Single Test</option>
+                                </select>
+                  
                               <select className="form-control col-md-2 ml-2"
+                              id="class"
                               value={params?.class_id}
                               onChange={e => {
                                     if(e.target.value === '_'){
                                           history.push(`/admin/view-all-test`)  
                                     }else{
                                           
-                                        history.push(`/admin/view-all-test/${e.target.value}`)  
+                                        history.push(`/admin/view-all-test/${params?.test_type}/${e.target.value}`)  
                                           
                                     }
                               }}>
                                 <option value="_">Class</option>    
                                 {sClasses?.map(sClass => {
                                       return(
-                                          <option value={sClass?._id}>{sClass?.class_name}</option>
+                                          <option value={sClass?._id}>{sClass?.class_name} Th</option>
                                       )
                                 })}
                               </select>
@@ -99,15 +112,15 @@ export default function ViewAllTest() {
                             }}>
                                 <div className="col-md-12 row table-bordered ml-2 mr-2">
                                     <div className="col-md-2 mt-2 mb-2 pl-0"><b>Test Name</b></div>
-                                    <div className="col-md-1 mt-2 mb-2 pl-0"><b>Total Que</b></div>
+                                    <div className="col-md-1 mt-2 mb-2 pl-0"><b>Question</b></div>
                                     <div className="col-md-1 mt-2 mb-2 pl-0"><b>Duration</b></div>
                                     <div className="col-md-2 mt-2 mb-2 pl-0"><b>Test Type</b></div>
                                     <div className="col-md-2 mt-2 mb-2 pl-0"><b>Test Subject</b></div>
-                                    <div className="col-md-2 mt-2 mb-2 pl-0"><b>Assigned</b></div>
+                                    
                                     
                                 </div>    
                                 {unitTests?.map(unit => {
-                                    let assigned = checkAssigned(unit?._id)
+                                    
                                     let subjects = '';
                                     if(unit?.test_type === 'combine-test'){
                                         subjects = Array.prototype.map.call(unit?.test_subjects, function(item) { return item.subject_name; }).join(",");
@@ -121,8 +134,6 @@ export default function ViewAllTest() {
                                           <div className="col-md-1 mt-1 mb-1 pl-0"><b>{unit?.test_duration} Min</b></div>
                                           <div className="col-md-2 mt-1 mb-1 pl-0"><b>{unit?.test_type === 'combine-test' ? 'combine-test': 'single-test'}</b></div>
                                           <div className="col-md-2 mt-1 mb-1 pl-0"><b>{subjects}</b></div>
-                                          <div className="col-md-2 mt-1 mb-1 pl-0"><b>{assigned?.toString()}</b></div>
-                                    
                                         </div>
                                     )
                                 })}

@@ -43,8 +43,8 @@ export default function CreateAssignTest() {
       const [testWindow, setTestWindow] = useState(null);
       
       function checkAssigned(test_id){
-            if(!isLoading && testLists != 'undefined'){
-                  return testLists?.some(test => test?.test_id == test_id);
+            if(!isLoading && testLists !== 'undefined'){
+                  return testLists?.some(test => test?.test_id == test_id && test?.school_id === params?.school_id);
             }
       }
       async function handleSubmit(e){
@@ -83,6 +83,7 @@ export default function CreateAssignTest() {
                   formData['test_duration'] = testData?.test_duration
                   formData['total_question'] = testData?.total_question
                   formData['start_date'] = startDate
+                  // console.log(formData); return;
                   await createMutation.mutate(formData, {
                         onError: (error) => {
                               if(error.response.status == 405){
@@ -136,11 +137,12 @@ export default function CreateAssignTest() {
                         <div className="table table-responsive table-borded">
                         
                               <div className="flex">
-                                    <div style={{ width: '300px'}}>Test Name</div> 
-                                    <div style={{ width: '150px'}}>Duration</div> 
-                                    <div style={{ width: '150px'}}>Total Question</div> 
-                                    <div style={{ width: '150px'}}>Test Type</div> 
-                                    <div style={{ width: '150px'}}>Test Subjects</div> 
+                                    <div style={{ width: '220px'}}>Test Name</div> 
+                                    <div style={{ width: '110px'}}>Duration</div> 
+                                    <div style={{ width: '110px'}}>Question</div> 
+                                    <div style={{ width: '110px'}}>Test Type</div> 
+                                    <div style={{ width: '110px'}}>Test Subjects</div> 
+                                    <div style={{ width: '110px'}}>Assigned</div> 
                               </div>
                         
                   
@@ -156,7 +158,7 @@ export default function CreateAssignTest() {
                               if(!assigned)
                               return(
                               <div className="flex" key={tests?._id}>
-                                    <div style={{ width: '300px'}}>
+                                    <div style={{ width: '220px'}}>
                                     <b>
                                     <label>
                                           <input className="mr-2" type="radio" name={`test`}
@@ -167,11 +169,11 @@ export default function CreateAssignTest() {
                                           {tests?.test_name}</label>
                                     </b>
                                     </div>
-                                    <div style={{ width: '150px'}}><b>{tests?.test_duration} Min</b></div>
-                                    <div style={{ width: '150px'}}><b>{tests?.total_question} Ques</b></div>
-                                    <div style={{ width: '150px'}}><b>{tests?.test_type === 'combine-test' ? 'combine-test': 'single-test'}</b></div>
-                                    <div style={{ width: '150px'}}><b>{subjects}</b></div>
-                                    <div style={{ width: '150px'}}><b>{assigned?.toString()}</b></div>
+                                    <div style={{ width: '120px'}}><b>{tests?.test_duration} Min</b></div>
+                                    <div style={{ width: '120px'}}><b>{tests?.total_question} Ques</b></div>
+                                    <div style={{ width: '110px'}}><b>{tests?.test_type === 'combine-test' ? 'combine-test': 'single-test'}</b></div>
+                                    <div style={{ width: '110px'}}><b>{subjects}</b></div>
+                                    <div style={{ width: '100px'}}><b>{assigned?.toString()}</b></div>
                               </div>
                               )})}
                               </div>

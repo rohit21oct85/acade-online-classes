@@ -100,11 +100,11 @@ export const privateRoutes = [
     },
 
     {
-        path: '/admin/assign-test/:page_type?/:school_id?/:class_id?',
+        path: '/admin/assign-test/:page_type?/:school_id?/:test_type?/:class_id?',
         component: AssignTests
     },
     {
-        path: '/admin/view-all-test/:class_id?',
+        path: '/admin/view-all-test/:test_type?/:class_id?',
         component: ViewAllTest
     },
 

@@ -1,12 +1,18 @@
 import React from 'react'
 import { useParams } from 'react-router';
+
 import Loading from '../../../components/Loading';
+import useDeleteAllMapping from '../../../hooks/teacherClassMapping/useDeleteAllMapping';
 import useTeacherClassList from '../../../hooks/teacherClassMapping/useTeacherClassList';
 import SingleMapping from './SingleMapping';
 
 export default function AllTeacherClassMapping() {
     const {data, isLoading} = useTeacherClassList();
     const params = useParams();
+    const deleteAllMutation = useDeleteAllMapping();
+    async function handleDeleteAll(){
+        await deleteAllMutation.mutate();
+    }
     return (
         <>
             <p className="form-heading">
@@ -21,6 +27,11 @@ export default function AllTeacherClassMapping() {
                     fontSize: '0.90rem'
                 }}>
                     {params?.teacher_slug?.replaceAll('-'," ")}</span>
+                {params?.school_id && (<button className="btn btn-sm dark bg-danger pull-right"
+                onClick={handleDeleteAll}>
+                    Delete All Mapping
+                </button>)}
+                
             </p>
             <hr className="mt-1"/>
                 {isLoading && (<Loading isLoading={isLoading}/>)}

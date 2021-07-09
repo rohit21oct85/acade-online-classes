@@ -7,6 +7,12 @@ const UnitTestSchema = new mongoose.Schema({
       test_slug: {
             type: String,
       },
+      assign_class_id: {
+            type: String
+      },
+      assign_class_name: {
+            type: String
+      },
       class_id: {
             type: String,
       },

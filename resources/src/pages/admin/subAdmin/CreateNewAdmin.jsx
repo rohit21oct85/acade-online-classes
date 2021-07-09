@@ -44,7 +44,12 @@ export default function CreateNewAdmin() {
             formData['last_name'] = formData?.last_name ?? singleAdmin?.last_name
             formData['admin_id'] = params?.admin_id
             formData['role'] = params?.role
-            formData['role_name'] = formData['role_name']
+            let role_name = helper.getFilteredData(appRoles, 'role_id',params?.role,'role_slug')
+            if(formData['role_name'] === undefined){
+                formData['role_name'] = role_name
+            }else{
+                formData['role_name'] = formData['role_name']
+            }
             console.log(formData)
             await updateMutation.mutate(formData);
         }else{
@@ -55,7 +60,7 @@ export default function CreateNewAdmin() {
 
     async function handleDelete(e){
         e.preventDefault();
-        formData['module_id'] = params?.admin_id;
+        formData['admin_id'] = params?.admin_id;
         await deleteMutation.mutate(formData);
     }
 
@@ -68,7 +73,7 @@ export default function CreateNewAdmin() {
                   
                   <div className="form-group">
                     <select className="form-control"
-                    name="role"
+                    name="role_name"
                     value={params?.role}
                     onChange={e => {
                         if(params?.admin_id){
@@ -83,7 +88,7 @@ export default function CreateNewAdmin() {
                           {appRoles?.map(role => {
                                 if(role?.role_id > 1)
                                 return(
-                                    <option value={role?.role_id} key={role?._id}>{role?.role_name}</option>
+                                    <option value={role?.role_id} data-role_name={role?.role_name} key={role?._id}>{role?.role_name}</option>
                                 )
                           })}
                     </select>

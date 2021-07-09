@@ -23,12 +23,12 @@ export default function useDeleteAdmin(formData) {
 
       const { addToast } = useToasts();
       return useMutation(formData => {
-                  return axios.post(`${API_URL}v1/sub-admin/delete/${params?.admin_id}`, formData, options)
+                  return axios.post(`${API_URL}v1/admin/delete`, formData, options)
             },{
             onSuccess: () => {
                   queryClient.invalidateQueries('sub-admins')
                   addToast('Module deleted successfully', { appearance: 'success',autoDismiss: true });
-                  history.push('/admin/manage-sub-admins');
+                  history.push('/admin/manage-sub-admin');
             },
             onError: () => {
                   addToast('Error White Updating Modules', { appearance: 'error',autoDismiss: true });

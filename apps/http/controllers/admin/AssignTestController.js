@@ -62,6 +62,8 @@ const CreateAssignTest = async (req, res) => {
               school_name: data?.school_name,
               class_id: data?.class_id,
               class_name: data?.class_name,
+              test_class_id: data?.test_class_id,
+              test_class_name: data?.test_class_name,
               subject_id: data?.subject_id,
               subject_name: data?.subject_name,
               test_id: data?.test_id,
@@ -100,10 +102,13 @@ const ViewAllAssignedTest = async (req, res) => {
    try {
       let filter = '';
       if(req?.params?.school_id && req?.params?.class_id ){
-        filter = {
-          class_id: req?.params?.class_id,
-          school_id: req?.params?.school_id
-        }
+        
+          filter = {
+            school_id: req?.params?.school_id,
+            test_type: req?.params?.test_type,
+            class_id: req?.params?.class_id,
+          }
+        
       }
      
      const AssignTests = await AssignTest.find(filter);

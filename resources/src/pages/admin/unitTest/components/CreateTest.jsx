@@ -72,6 +72,7 @@ export default function CreateTest() {
             let unit_id = params?.unit_id
             let chapter_id = params?.chapter_id
             let test_type = params?.test_type;
+            
 
             if(!test_type){
                   addToast('please select test type', { appearance: 'error', autoDismiss: true });
@@ -88,7 +89,7 @@ export default function CreateTest() {
             else if(!chapter_id){
                   addToast('please select chapters', { appearance: 'error', autoDismiss: true });
             }
-            else if(!formData['test_duration']){
+            else if(!localStorage.getItem('test_duration')){
                   addToast('please enter test duration', { appearance: 'error', autoDismiss: true });
             }
             
@@ -97,7 +98,12 @@ export default function CreateTest() {
             }
 
             else{
+                  let assign_class_id = localStorage.getItem('assignClass')
+                  let test_name = localStorage.getItem('test_name')
+                  let test_duration = localStorage.getItem('test_duration')
+
                   let class_name = getFilteredData(sClassess,'_id' ,class_id, 'class_name');
+                  let assign_class_name = getFilteredData(sClassess,'_id' ,assign_class_id, 'class_name');
                   let subject_name = getFilteredData(subjects,'subject_id' , subject_id, 'subject_name');
                   let unit_name = getFilteredData(units,'_id' , unit_id, 'unit_name');
 
@@ -122,11 +128,19 @@ export default function CreateTest() {
                   formData['test_date'] = startDate
                   formData['total_question'] = selectedQuestions?.length
                   formData['test_question'] = selectedQuestionsId
+                  formData['assign_class_id'] = assign_class_id
+                  formData['assign_class_name'] = assign_class_name
+                  formData['test_name'] = test_name
+                  formData['test_duration'] = test_duration
                   
                   // console.log(formData); return;
                   
                   await createMutation.mutate(formData);
+
                   localStorage.removeItem('selectedQuestions')
+                  localStorage.removeItem('assignClass')
+                  localStorage.removeItem('test_name')
+                  localStorage.removeItem('test_duration')
                   setSelectedQuestions([]);
             }
 
@@ -157,7 +171,12 @@ export default function CreateTest() {
             script.async = true;
             document.body.appendChild(script);
       },[])
-      let subject_name = getFilteredData(subjects,'subject_id' , params?.subject_id, 'subject_name');
+      let subject_name;
+      if(params?.subject_id){
+            subject_name = getFilteredData(subjects,'subject_id' , params?.subject_id, 'subject_name');
+      }else{
+            subject_name = '';
+      }
       return (
             <div>
                   
@@ -182,22 +201,42 @@ export default function CreateTest() {
                               <option value="single-test">Single Test</option>
                         </select>
                   </div>
+                  {params?.test_type === 'combine-test' && (
+                  <div className="col-md-3 pl-0">
+                        <select className="form-control"
+                        value={localStorage.getItem('assignClass')}
+                        onChange={e => {
+                              setFormData({...formData, ['assign_to']: e.target.value})
+                              localStorage.setItem('assignClass', e.target.value)
+                        }}>
+                              <option value="_">Select Class</option>
+                              {sClassess?.map(sclass => {
+                                    return(
+                                          <option value={sclass?._id} key={sclass?._id}>{sclass?.class_name} Th</option>
+                                    );
+                              })}
+                        </select>
+                  </div>
+                  )}
+                  
                   <div className="col-md-3 form-group">
                         <input type="text" name="test_name" 
-                        value={formData?.test_name} 
+                        value={localStorage.getItem('test_name')} 
                         onChange={ e => {
                               setFormData({...formData, test_name: e.target.value})
+                              localStorage.setItem('test_name', e.target.value)
                         }}
                         className="form-control" placeholder="test name"/>
                         
                   </div>
-                  <div className="col-md-3 pl-0 pr-0">
+                  <div className="col-md-2 pl-0 pr-0">
                               <input type="text" className="form-control"
                               maxLength="2"
-                              value={formData?.test_duration} 
+                              value={localStorage.getItem('test_duration')} 
                               onChange={ e => {
                                     if(!isNaN(e.target.value)){
                                           setFormData({...formData, test_duration: e.target.value})
+                                          localStorage.setItem('test_duration', e.target.value)
                                     }else{
                                           addToast('please enter test duration in numbers', { appearance: 'error', autoDismiss: true });
                                     }
@@ -242,7 +281,17 @@ export default function CreateTest() {
                                                       subject_name: subject_name
                                                 }])
                                           }
-                                          history.push(`/admin/manage-unit-test/${params?.page_type}/${params?.test_type}/${params?.class_id}/${e.target.value}`)                          
+                                          if(params?.test_type === 'combine-test'){
+                                                history.push(`/admin/manage-unit-test/${params?.page_type}/${params?.test_type}/${params?.class_id}/${e.target.value}`)                          
+                                          }else{
+                                                if(params?.subject_id){
+                                                      addToast('if you want to create combine test then please change test type', { appearance: 'error', autoDismiss: true, duration: '20s' });
+                                                      history.push(`/admin/manage-unit-test/${params?.page_type}/${params?.test_type}/${params?.class_id}/${params?.subject_id}`)                          
+                                                }else{
+                                                      history.push(`/admin/manage-unit-test/${params?.page_type}/${params?.test_type}/${params?.class_id}/${e.target.value}`)                          
+                                                      
+                                                }
+                                          }
                                     }
                               }}>
                                     <option value="_">{subjectLoading ? 'Loading...':'Select Subjects'}</option>
