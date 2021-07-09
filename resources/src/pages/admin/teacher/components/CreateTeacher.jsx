@@ -26,7 +26,7 @@ export default function CreateTeacher() {
 
     const [loading, setLoading] = useState(false);
 
-    const {data} = useSingleTeacher();
+    const {data, isLoading: Loadingteacher} = useSingleTeacher();
     const {data:subjects} = useSubjectList();
     const { data:SClassess} =useClassList();
     const [SingleTeacher, setSingleTeacher] = useState({});
@@ -34,21 +34,10 @@ export default function CreateTeacher() {
     
     const {data : schools, isLoading } = useSchoolLists();
     const pattern = /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/;
-    const initialData = {
-        name: '',
-        mobile: '',
-        email: '',
-        password: '',
-        address: '',
-        city: '',
-        state: '',
-        pincode: '',
-    } 
-    const [formData, setFormData] = useState(initialData);
+    const [formData, setFormData] = useState({});
 
-    useEffect(setModule, [data]);
+    useEffect(setModule, [data, params?.teacher_id]);
     function setModule(){
-        console.log(params)
         setSingleTeacher(data)
     }
 
@@ -83,15 +72,11 @@ export default function CreateTeacher() {
         })
 
         if(params?.teacher_id){
-                let UID = `${domainName}${SingleTeacher?.name.split(' ')[0]}${getFirstletter(subject_name)}T`;
-                SingleTeacher.EmpID = UID
-                
-                SingleTeacher.school_id = params?.school_id
-                SingleTeacher.subject_name = subject_name
-                SingleTeacher.classess = teacherClas;
-
-                console.log(SingleTeacher);
-                await updateMutation.mutate(SingleTeacher);
+                formData.school_id = params?.school_id
+                formData.subject_name = subject_name
+                formData['classess'] = teacherClas
+                // console.log(formData);
+                await updateMutation.mutate(formData);
         }else{
             formData.school_id = params.school_id ? params.school_id : ''
 
@@ -103,8 +88,11 @@ export default function CreateTeacher() {
                 addToast('Please Enter a valid 10 digit phone no', { appearance: 'error',autoDismiss: true });
             }else{
                 let firstName = formData?.name
-                let UID = `${domainName}${firstName.split(' ')[0]}${getFirstletter(subject_name)}T`;
-                formData.EmpID = UID
+                if(firstName.includes(" ")){
+                    firstName = firstName.split(' ')[0]
+                }else{
+                    firstName = firstName
+                }
                 formData.subject_id = params?.subject_id
                 formData.subject_name = subject_name
                 formData.classess = teacherClas;
@@ -115,7 +103,7 @@ export default function CreateTeacher() {
 
     async function handleChange(e){
         if(params?.teacher_id){
-                setSingleTeacher({...SingleTeacher, [e.target.name]: e.target.value})
+            setFormData({...setFormData, [e.target.name]: e.target.value})
         }else{
                 setFormData({...formData, [e.target.name]: e.target.value})
         }
@@ -124,7 +112,7 @@ export default function CreateTeacher() {
     async function handleChangeSchool(e){
         if(e.target.value != 999){
             if(params?.teacher_id){
-                setSingleTeacher({...SingleTeacher, [e.target.name]: e.target.value})
+                setFormData({...setFormData, [e.target.name]: e.target.value})
                 history.push(`/admin/teachers-management/update/${e.target.value}/${params?.subject_id}/${params?.subject_name}/${params.teacher_id}`)
             }else{
                 setFormData({...formData, ['school_id']: e.target.value})
@@ -170,7 +158,7 @@ export default function CreateTeacher() {
                         type="text" 
                         className="form-control" 
                         name="name"
-                        value={params?.teacher_id ? SingleTeacher?.name : formData?.name}
+                        value={formData?.name ?? SingleTeacher?.name}
                         onChange={handleChange}
                         placeholder="Name"/>
                 </div>
@@ -205,10 +193,12 @@ export default function CreateTeacher() {
                                     checked={checkClass}
                                     onChange={e => {
                                         setSingleTeacher(SingleTeacher?.classess?.map( cls => {
-                                            if(clas?.class_id === e.target.value){
+                                            if(cls?.class_id === e.target.value){
+                                                cls,
                                                 cls.checked = true
                                             }
                                         }));
+                                        
                                         
                                     }}
                                     />
@@ -224,7 +214,7 @@ export default function CreateTeacher() {
                         type="text" 
                         className="form-control" 
                         name="mobile"
-                        value={params?.teacher_id ? SingleTeacher?.mobile : formData?.mobile}
+                        value={formData?.mobile ?? SingleTeacher?.mobile}
                         onChange={handleChange}
                         placeholder="Mobile"/>
                 </div>
@@ -233,7 +223,7 @@ export default function CreateTeacher() {
                         type="email" 
                         className="form-control" 
                         name="email"
-                        value={params?.teacher_id ? SingleTeacher?.email : formData?.email}
+                        value={formData?.email ?? SingleTeacher?.email}
                         onChange={handleChange}
                         placeholder="Email"/>
                 </div>
@@ -242,7 +232,7 @@ export default function CreateTeacher() {
                         type="password" 
                         className="form-control" 
                         name="password"
-                        value={params?.teacher_id ? SingleTeacher?.password : formData?.password}
+                        value={formData?.password ?? SingleTeacher?.password}
                         onChange={handleChange}
                         placeholder="Password"/>
                 </div>
@@ -251,7 +241,7 @@ export default function CreateTeacher() {
                         type="text" 
                         className="form-control" 
                         name="address"
-                        value={params?.teacher_id ? SingleTeacher?.address : formData?.address}
+                        value={formData?.address ?? SingleTeacher?.address }
                         onChange={handleChange}
                         autoComplete="no-password"
                         placeholder="Address"/>
@@ -262,7 +252,7 @@ export default function CreateTeacher() {
                         type="text" 
                         className="form-control" 
                         name="city"
-                        value={params?.teacher_id ? SingleTeacher?.city : formData?.city}
+                        value={formData?.city ?? SingleTeacher?.city }
                         onChange={handleChange}
                         autoComplete="no-password"
                         placeholder="City"/>
@@ -272,7 +262,7 @@ export default function CreateTeacher() {
                         type="text" 
                         className="form-control" 
                         name="state"
-                        value={params?.teacher_id ? SingleTeacher?.state : formData?.state}
+                        value={formData?.state ?? SingleTeacher?.state }
                         onChange={handleChange}
                         autoComplete="no-password"
                         placeholder="State"/>
@@ -286,7 +276,7 @@ export default function CreateTeacher() {
                         className="form-control" 
                         name="pincode"
                         maxLength={6}
-                        value={params?.teacher_id ? SingleTeacher?.pincode : formData?.pincode}
+                        value={formData?.pincode ?? SingleTeacher?.pincode }
                         onChange={handleChange}
                         autoComplete="no-password"
                         placeholder="Pincode"/>

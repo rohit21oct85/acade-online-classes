@@ -41,7 +41,9 @@ const UpdateTeacher = async (req, res) =>{
             body.EmpID = school.short+req.body.name.trimStart().split(" ")[0].toLowerCase()+req.body?.mobile.trim().substr(-4, 4)+sub+'T';
         }else{
             body = req.body;
+            // body.classess = req.body.classess
         }
+        // res.json(body); return;
         await Teacher.findOneAndUpdate({_id: req.params.id},body)
                 .then(response => {
                     res.status(202).json({

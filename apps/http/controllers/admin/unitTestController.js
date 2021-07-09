@@ -74,9 +74,17 @@ const ViewAllUnitTest = async (req, res) => {
   try {
     let filter = {};
     if (req.params?.class_id) {
-      filter = {
-        class_id: req.params?.class_id
-      };
+      if(req?.params?.test_type === 'combine-test'){
+        filter = {
+          test_type: req?.params?.test_type,
+          assign_class_id: req?.params?.class_id,
+        }
+      }else{
+        filter = {
+          test_type: req?.params?.test_type,
+          class_id: req?.params?.class_id,
+        }
+      }
     }
     const AllUnitTests = await UnitTest.find(filter,{
           _id:1,

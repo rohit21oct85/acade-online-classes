@@ -46,11 +46,23 @@ export default function AssignTests() {
                                 <span className="fa fa-dashboard"></span>
                             </button>
                             
-                            <button className="btn btn-sm dark ml-2" onClick={e => { history.push(`/admin/assign-test/create/${params?.school_id}/${params?.class_id}`)}}>
+                            <button className="btn btn-sm dark ml-2" onClick={e => { 
+                                if(params?.school_id && params?.test_type && params?.class_id){
+                                    history.push(`/admin/assign-test/create/${params?.school_id}/${params?.test_type}/${params?.class_id}`)
+                                }else{
+                                    history.push(`/admin/assign-test/create/`)
+                                }
+                            }}>
                                 <span className="bi bi-assign"></span>
                                 Assign New Test
                             </button>
-                            <button className="btn btn-sm dark ml-2" onClick={e => { history.push(`/admin/assign-test/view/${params?.school_id}/${params?.class_id}`)}}>
+                            <button className="btn btn-sm dark ml-2" onClick={e => { 
+                                if(params?.school_id && params?.test_type && params?.class_id){
+                                    history.push(`/admin/assign-test/view/${params?.school_id}/${params?.test_type}/${params?.class_id}`)
+                                }else{
+                                    history.push(`/admin/assign-test/view/`)
+                                }
+                            }}>
                                 <span className="bi bi-assign"></span>
                                 View Assign Test
                             </button>
@@ -59,7 +71,7 @@ export default function AssignTests() {
                     </div>
                     {(params?.page_type == 'create' || params?.page_type == 'view') && (
                         <>
-<div className="dash-con-heading">
+                        <div className="dash-con-heading">
                         <div className="col-md-12 row pl-0">
                         <div className="col-md-2">
                         <select className="form-control"
@@ -73,11 +85,22 @@ export default function AssignTests() {
                         )}
                         </select>
                         </div>
+                        <div className="col-md-3">
+                                <select className="form-control"
+                                value={params?.test_type}
+                                onChange={e => {
+                                    history.push(`/admin/assign-test/${params?.page_type}/${params?.school_id}/${e.target.value}`)
+                                }}>
+                                    <option value="">Test Type</option>
+                                    <option value="combine-test">Combined Test</option>
+                                    <option value="single-test">Single Test</option>
+                                </select>
+                        </div>
                             <div className="col-md-2">
                             <select className="form-control"
                                 value={params?.class_id}
                                 onChange={e => {
-                                        history.push(`/admin/assign-test/${params?.page_type}/${params?.school_id}/${e.target.value}`)
+                                        history.push(`/admin/assign-test/${params?.page_type}/${params?.school_id}/${params?.test_type}/${e.target.value}`)
                                 }}
                                 >
                                         <option className="_">Classess</option>

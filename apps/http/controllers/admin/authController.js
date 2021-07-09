@@ -175,9 +175,21 @@ const UpdateSubAdmin = async (req, res) => {
             first_name: req?.body?.first_name,
             last_name: req?.body?.last_name,
             role_name: req?.body?.role_name,
-            role: req?.body?.role,
-
+            role: req?.body?.role
         }},{__v: 0});
+        res.status(200).json({ 
+            data: admin 
+        });    
+    } catch(error){
+        res.status(409).json({
+            message: "Error occured",
+            errors: error.message
+        });
+    }
+}
+const DeleteSubAdmin = async (req, res) => {
+    try{
+        const admin = await Admin.findByIdAndDelete({_id: req.body?.admin_id},{__v: 0});
         res.status(200).json({ 
             data: admin 
         });    
@@ -194,6 +206,7 @@ module.exports = {
     ViewSubAdminByRole,
     ViewSubAdmin,
     ViewAllSubAdmin,
+    DeleteSubAdmin,
     Register,
     Login,
     Logout,
