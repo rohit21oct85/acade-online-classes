@@ -53,19 +53,21 @@ export default function CreateStudent() {
     const saveStudent = async (e) => {
         e.preventDefault();
         setLoading(true);
-        const domainName = helper.getFilteredData(schools, '_id',params.school_id,'short');
+        const short = helper.getFilteredData(schools, '_id',params.school_id,'short');
+        const domain = helper.getFilteredData(schools, '_id',params.school_id,'sub_domain');
         
         if(params?.student_id){
             let firstName = SingleStudent?.name
             let className = SingleStudent?.class
             let sectionName = SingleStudent?.section
             let rollNo = SingleStudent?.roll_no
-            const first_name = firstName?.replaceAll(" ",".").toLowerCase();
-            SingleStudent.username = first_name + SingleStudent.mobile.substr(-4) + `@${domainName}.com`;
             if(firstName.includes(' ')){
                 firstName = firstName.trim().split(" ")[0]
             }
-            let UID = `${domainName}${firstName}${className.trim()}${sectionName.trim()}${rollNo.trim()}`
+            const username = short+firstName+className+sectionName+rollNo+`@${domain}.com`
+            SingleStudent.username = username.toLowerCase();
+            
+            let UID = `${short}${firstName}${className.trim()}${sectionName.trim()}${rollNo.trim()}`
             SingleStudent.EmpId = UID.toUpperCase();
             // console.log(SingleStudent);
             await updateMutation.mutate(SingleStudent);
@@ -85,14 +87,13 @@ export default function CreateStudent() {
                     let sectionName = formData?.section
                     let rollNo = formData?.roll_no
                     if(firstName.includes(' ')){
-                        firstName = firstName.split(" ")[0]
+                        firstName = firstName.trim().split(" ")[0]
                     }
-                    let UID = `${domainName}${firstName}${className.trim()}${sectionName.trim()}${rollNo.trim()}`
-                    UID = UID.toUpperCase();
+                    const username = short+firstName+className+sectionName+rollNo+`@${domain}.com`
+                    formData.username = username.toLowerCase();
                     
-                    const first_name = formData?.name?.replaceAll(" ","").toLowerCase();
-                    formData.username = first_name+sectionName;
-                    formData.EmpId = UID
+                    let UID = `${short}${firstName}${className.trim()}${sectionName.trim()}${rollNo.trim()}`
+                    formData.EmpId = UID.toUpperCase();
                     
                     await createMutation.mutate(formData);
                 }
