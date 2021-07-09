@@ -83,6 +83,9 @@ export default function CreateTeacher() {
         })
 
         if(params?.teacher_id){
+                let UID = `${domainName}${SingleTeacher?.name.split(' ')[0]}${getFirstletter(subject_name)}T`;
+                SingleTeacher.EmpID = UID
+                
                 SingleTeacher.school_id = params?.school_id
                 SingleTeacher.subject_name = subject_name
                 SingleTeacher.classess = teacherClas;

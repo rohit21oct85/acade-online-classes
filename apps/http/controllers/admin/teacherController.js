@@ -95,7 +95,12 @@ const ViewTeacherClass = async (req, res) => {
 
 const ViewAllTeacher = async (req, res) => {
     try{
-        const filter = {school_id: req.params.school_id,subject_id: req.params.subject_id}
+        let filter = {};
+        if(req.params.subject_id == "all"){
+            filter = {school_id: req.params.school_id}
+        }else{
+            filter = {school_id: req.params.school_id,subject_id: req.params.subject_id}
+        }
         const AllTeachers = await Teacher.find(filter,{__v: 0});
         return res.status(200).json({ 
             data: AllTeachers 
@@ -216,7 +221,7 @@ const uploadTeacher = async(req, res) => {
                         name: teacher.name, 
                         EmpID: `${req.body.short}${firstName}${teacher?.mobile.trim().substr(-4, 4)}${getSubjectFirstLetetr(teacher.subject)}T`, 
                         subject_name: teacher.subject, 
-                        subject_id: getSubjectID(Subjects, teacher?.subject), 
+                        subject_id: getSubjectID(Subjects, teacher?.subject.toLowerCase()), 
                         mobile: teacher.mobile, 
                         email: teacher.email, 
                         password: hashedPassword, 

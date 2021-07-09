@@ -576,13 +576,13 @@ const saveAnswer = async (req,res) => {
         const un = await Questions.findOne({_id:req.body.question_id})
         const data = await AttemptTest.findOne(filter)
         data.questions.map(( item, key)=>{
-            if(un.extension == "docx" && item.question_id == req.body.question_id)
+            if(un?.extension == "docx" && item.question_id == req.body.question_id)
             {
                 var result  = optionsDocx.filter(function(o){return o.value == un.answer ;} );
                 item['answer'] = req.body.answer,
                 item['option'] = req.body.option,
                 item['correct_option'] = result[0]?.option,
-                item['correct_answer'] = un.solution,
+                item['correct_answer'] = un.answer,
                 item['unit_name'] = un.unit_name,
                 item['unit_no'] = un.unit_no,
                 item['chapter_name'] = un.chapter_name,

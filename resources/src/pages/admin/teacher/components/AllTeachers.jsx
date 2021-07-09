@@ -74,10 +74,13 @@ export default function AllTeachers({update, Delete}) {
             <select className="form-control" aria-label="Default select example" 
                 name="school_id" 
                 onChange={(e) => {
-                    history.push(`/admin/teachers-management/view/${params?.school_id}/${e.target.value}`)
+                    if(e.target.value != 999){
+                        history.push(`/admin/teachers-management/view/${params?.school_id}/${e.target.value}`)
+                    }
                 }} 
                 value={params.subject_id ? params.subject_id : 999}>
                 <option value="999">Select Subject</option>
+                <option value="all">All</option>
                 {!isLoading && subjects?.map(subject => {
                 return (
                     <option value={subject._id} key={subject._id}>{subject.subject_name}</option>
@@ -94,10 +97,10 @@ export default function AllTeachers({update, Delete}) {
                         <th scope="col">#EmpID</th>
                         <th scope="col">Name</th>
                         <th scope="col">Subject</th>
-                        <th scope="col">Class</th>
-                        <th scope="col">Mobile</th>
+                        <th scope="col" className="hidden_col">Class</th>
+                        <th scope="col" className="hidden_col">Mobile</th>
                         <th scope="col">Email</th>
-                        <th scope="col">Action</th>
+                        <th scope="col" className="hidden_col">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -112,10 +115,10 @@ export default function AllTeachers({update, Delete}) {
                                 <th scope="row">{item.EmpID}</th>
                                 <td>{item.name}</td>
                                 <td>{item.subject_name}</td>
-                                <td>{tclass}</td>
-                                <td>{item.mobile}</td>
+                                <td className="hidden_col">{tclass}</td>
+                                <td className="hidden_col">{item.mobile}</td>
                                 <td>{item.username}</td>
-                                <td>
+                                <td className="hidden_col">
                                     {update && (
                                         <button className="btn bg-primary text-white btn-sm mr-2" 
                                             onClick={

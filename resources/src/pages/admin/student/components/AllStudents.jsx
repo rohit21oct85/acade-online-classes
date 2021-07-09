@@ -74,11 +74,11 @@ export default function AllStudents({update, Delete}) {
                         {/* <th scope="col">School Name</th> */}
                         <th scope="col">Name</th>
                         <th scope="col">Class</th>
-                        <th scope="col">Sec.</th>
-                        <th scope="col">Roll</th>
-                        <th scope="col">Mobile</th>
+                        <th scope="col" className="hidden_col">Sec.</th>
+                        <th scope="col" className="hidden_col">Roll</th>
+                        <th scope="col" className="hidden_col">Mobile</th>
                         <th scope="col">Email</th>
-                        <th scope="col">Action</th>
+                        <th scope="col" className="hidden_col">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -86,16 +86,16 @@ export default function AllStudents({update, Delete}) {
                         {!isLoading && data?.map( (item,key) => { 
                             // let school_name = helper.getFilteredData(schools,'_id', item?.school_id, 'school_name')
                             return (
-                                <tr key={item?._id}>
+                                <tr key={item?._id} >
                                 <th scope="row">{(item?.EmpId)}</th>
                                 
                                 <td>{item.name}</td>
                                 <td>{item.class}</td>
-                                <td>{item.section}</td>
-                                <td>{item.roll_no}</td>
-                                <td>{item.mobile}</td>
+                                <td className="hidden_col">{item.section}</td>
+                                <td className="hidden_col">{item.roll_no}</td>
+                                <td className="hidden_col">{item.mobile}</td>
                                 <td>{item?.username.toLowerCase()}</td>
-                                <td className="flex">
+                                <td className="flex hidden_col">
                                     {update === true && (
                                         <button className="btn bg-primary text-white btn-sm mr-2" 
                                             onClick={
@@ -107,7 +107,7 @@ export default function AllStudents({update, Delete}) {
                                         </button>
                                     )}
                                     {Delete === true && (
-                                        <button className="btn bg-danger text-white btn-sm"
+                                        <button className="btn bg-danger text-white btn-sm" id="csvDownload"
                                             onClick={() => deleteStudent(item?._id)}>
                                             {deleteMutation?.isLoading ?
                                             <span className="fa fa-spinner"></span>
