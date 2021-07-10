@@ -34,7 +34,9 @@ router
     .get('/get-sections-student-count/:school_id?/:class_id?/:class_name', checkAuth, Web.getSectionStudent)
     .get('/get-class-sections-students/:school_id?/:class_id?/:class_name/:section', checkAuth, Web.getClassSectionStudents)
     .get('/classes-with-student-no/:school_id?/:teacher_id', checkAuth, Web.getClassesWithStudents)
-
+    .get('/view-all-units/:class_id?/:subject_id?', checkAuth, Web.ViewAllUnit)
+    .get('/view-all-chapters/:class_id?/:subject_id?/:unit_id?', checkAuth, Web.ViewAllChapters)
+   
     //principal
     .get('/view-principal/:id', checkAuth, Web.getPrincipal)
     .patch('/update-principal/:id', checkAuth, Web.updatePrincipal)

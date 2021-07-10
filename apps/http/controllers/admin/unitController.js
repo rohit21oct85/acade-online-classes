@@ -65,7 +65,7 @@ const ViewUnit = async (req, res) => {
       errors: error.message,
     });
   }
-};
+};  
 const ViewAllUnit = async (req, res) => {
   try {
     let filter = {};

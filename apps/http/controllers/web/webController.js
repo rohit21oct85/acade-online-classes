@@ -10,6 +10,8 @@ const AttemptTest = require('../../../models/admin/AttemptTest');
 const Questions = require('../../../models/admin/Question');
 const Subject = require('../../../models/admin/Subject');
 const School = require('../../../models/admin/School');
+const Unit = require('../../../models/admin/Unit');
+const Chapter = require('../../../models/admin/Chapter');
 
 const getSubjects = async (req, res) => {
     try{
@@ -1157,6 +1159,62 @@ const deleteTeachers = async (req, res) => {
     }
 }
 
+
+const ViewAllUnit = async (req, res) => {
+    try {
+        let filter = {};
+        if(req.params?.class_id && req.params?.subject_id) {
+            filter = {
+            class_id: req.params?.class_id,
+            subject_id: req.params?.subject_id,
+            };
+        }else if (req.params?.class_id) {
+            filter = {
+            class_id: req.params?.class_id
+            };
+        }
+    
+        const AllUnits = await Unit.find(filter, { __v: 0 });
+        res.status(200).json({
+            data: AllUnits,
+        });
+    } catch (error) {
+        res.status(409).json({
+            message: "Error occured",
+            errors: error.message,
+        });
+    }
+};
+
+const ViewAllChapters = async (req, res) => {
+    try{
+        let filter = {};
+        if(req.params?.class_id && req.params?.subject_id && req.params?.unit_id){
+            filter = {
+                class_id: req.params?.class_id, 
+                subject_id: req.params?.subject_id,
+                unit_id: req.params?.unit_id,
+            };
+        }
+        else if(req.params?.class_id && req.params?.subject_id){
+            filter = {
+                class_id: req.params?.class_id, 
+                subject_id: req.params?.subject_id
+            };
+        }
+        // res.send(filter);
+        const AllChapters = await Chapter.find(filter,{__v: 0});
+        return res.status(200).json({ 
+            data: AllChapters 
+        });    
+    } catch(error){
+        res.status(409).json({
+            message: "Error occured",
+            errors: error.message
+        });
+    }
+};
+
 module.exports = {
     getSubjects,
     getAssignedTestsStudent,
@@ -1193,4 +1251,6 @@ module.exports = {
     getClassesWithStudentsPrincipal,
     deleteStudents,
     deleteTeachers,
+    ViewAllUnit,
+    ViewAllChapters,
 }
