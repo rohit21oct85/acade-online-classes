@@ -161,7 +161,7 @@ const uploadSchool = async(req, res) => {
                         school_name: school.School_name, 
                         school_slug: school_slug, 
                         short: short, 
-                        sub_domain: school.domain, 
+                        sub_domain: school.domain.trim().toLowerCase(), 
                         school_logo: school_logo, 
                         address: school.address, 
                         city: school.city, 
