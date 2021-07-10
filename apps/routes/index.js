@@ -9,6 +9,7 @@ const subjectRoutes = require('./admin/subjectRoutes');
 const unitRoutes = require('./admin/unitRoutes');
 const unitTestRoutes = require('./admin/unitTestRoutes');
 const assignTestRoutes = require('./admin/assignTestRoutes');
+const mockTestRoutes = require('./admin/mockTestRoutes');
 
 const chapterRoutes = require('./admin/chapterRoutes');
 const studentRoutes = require('./admin/studentRoutes');
@@ -40,4 +41,5 @@ module.exports = {
     teacherClassMappingRoutes,
     classSubjectMappingRoutes,
     webRoutes,
+    mockTestRoutes
 }

@@ -186,9 +186,42 @@ const otherFunction = async(res, FinalData, callback) => {
       });
   })
 }
-
+const UpdateChapterSubject = async (req, res) => {
+    try {
+      let subject_name = req.body.subject_name
+      let new_subject_id = req.body.subject_id
+      await Chapter.updateMany({subject_name: subject_name}, {
+        subject_id: new_subject_id,
+      })
+      res.status(200).send('Unit Updated')
+    } catch (error) {
+      res.status(409).json({
+          message: "Error while updating Data",
+          errors: error.message
+      });
+    }
+  }
+  const UpdateChapterClass = async (req, res) => {
+    try {
+      await Chapter.updateMany({
+        class_name: req.body.class_name
+      },{
+        class_id: req.body.class_id
+      });
+      
+      res.status(200).send('Unit Updated')
+    } catch (error) {
+      res.status(409).json({
+          message: "Error while updating Data",
+          errors: error.message
+      });
+    }
+  }
+  
 
 module.exports = {
+    UpdateChapterSubject,
+    UpdateChapterClass,
     Create,
     Upload,
     Update,

@@ -869,7 +869,7 @@ input[disabled]{
     cursor: no-drop;
 }
 .question > figure > img {
-    width: 25% !important
+    width: 50% !important
 }
 figure > img {
     width: 100% !important

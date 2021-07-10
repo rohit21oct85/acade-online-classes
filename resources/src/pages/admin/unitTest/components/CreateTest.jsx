@@ -25,14 +25,6 @@ export default function CreateTest() {
       const [questions, setQuestions] = useState([])
       const {data:questionDB, isLoading: qLoading} = useQuestionList();
       
-      useEffect(setDBQuestions,[params?.unit_id, params?.chapter_id]);
-      function setDBQuestions(){
-            if(params?.class_id && params?.subject_id && params?.unit_id && params?.chapter_id){
-                  setQuestions(questionDB?.filter(ques => (ques?.chapter_id === params?.chapter_id)))
-            }else if(params?.class_id && params?.subject_id && params?.unit_id){
-                  setQuestions(questionDB)
-            }
-      }
       const {data:unitTest} = useSingleUnitTest();
       
       const [formData, setFormData] = useState({});
@@ -361,7 +353,7 @@ export default function CreateTest() {
                   </div>
                   <div  className="pr-2" style={{ height: '300px', overflowY: 'scroll'}}>
                         {qLoading && (<><span className="fa fa-spinner"></span>Loading...</>)}      
-                        {!qLoading && questions?.map((q,i) => {
+                        {questionDB?.map((q,i) => {
                               
                               let sel = helper.checkExists(selectedQuestions,'_id',q?._id);
                               if(!sel)

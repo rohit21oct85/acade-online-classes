@@ -1,13 +1,11 @@
 import React,{useEffect} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
 
-import CreateQuestionBank from './components/CreateQuestionBank';
-import AllQuestions from './components/AllQuestions';
-
 import useModule from '../../../hooks/useModule';
 import useAccess from '../../../hooks/useAccess';
+import CreateMockTestQuestion from './components/CreateMockTestQuestion';
 
-export default function Questionbank() {
+export default function MockTest() {
     const params = useParams();
     const history = useHistory();
     const accessUrl = useModule();
@@ -21,11 +19,12 @@ export default function Questionbank() {
     const update = useAccess('update');
     const upload = useAccess('upload');
     const Delete = useAccess('delete');
+    const view = useAccess('view');
     
-    useEffect(manageAccess,[create, update, upload]);
+    useEffect(manageAccess,[create, update, upload, Delete, view]);
     function manageAccess(){
         if(create === false && update === false){
-            history.push(`/admin/question-bank`)
+            history.push(`/admin/mock-test`)
         }
     }
 
@@ -34,7 +33,7 @@ export default function Questionbank() {
             <div className="main-area-all">
                 <div className="dashboard_main-container">
                         <div className="dash-main-head">
-                            <h2>All Questions</h2>
+                            <h2>Mock Test</h2>
                         </div>
                     <div className="dash-con-heading">
                         <div className="col-md-12 row"> 
@@ -45,32 +44,21 @@ export default function Questionbank() {
                             {create && (
                                 <button className="btn btn-sm dark mr-2" 
                                 onClick={ e => {
-                                    history.push(`/admin/question-bank/create`)
+                                    history.push(`/admin/mock-test/add-mock-test-question`)
                                 }}>
-                                    <span className="fa fa-plus mr-2"></span>Create Question 
+                                    <span className="fa fa-plus mr-2"></span>Add Mock Test Question
                                 </button>
                             )}
-                            {upload && (
-                                <button className="btn btn-sm dark" 
-                                onClick={ e => {
-                                    history.push(`/admin/question-bank/upload`)
-                                }}>
-                                    <span className="fa fa-upload mr-2"></span>Upload Question 
-                                </button>
-                            )}
-                            
                         </div>
                     </div>
                     <div className="clearfix"></div>
                     <div className="dash-cont-start">
                         <div className="row">
-                            <div className="col-md-7 pr-0">
-                                { (create === true || update === true || upload === true)  &&  (params.page_type === 'create' ||params.page_type === 'update' || params.page_type === 'upload') && <CreateQuestionBank />  }
-                            </div>
-                            <div className={`${(params?.page_type === 'create' || params?.page_type === 'update' || params?.page_type === 'upload') ? 'col-md-5 pr-0':'col-md-12'}`}>
-                                <AllQuestions update={update} Delete={Delete}/>
-                            </div>
-
+                             {params?.page_type == 'add-mock-test-question' && (
+                                <div className="col-md-3">
+                                    <CreateMockTestQuestion />
+                                </div>   
+                             )}
                         </div>
                     </div>    
                 </div>

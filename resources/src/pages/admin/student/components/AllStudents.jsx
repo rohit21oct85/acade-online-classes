@@ -94,7 +94,7 @@ export default function AllStudents({update, Delete}) {
                                 <td>{item.section}</td>
                                 <td>{item.roll_no}</td>
                                 <td>{item.mobile}</td>
-                                <td>{item?.username.toLowerCase()}</td>
+                                <td>{item?.username}</td>
                                 <td className="flex">
                                     {update === true && (
                                         <button className="btn bg-primary text-white btn-sm mr-2" 
