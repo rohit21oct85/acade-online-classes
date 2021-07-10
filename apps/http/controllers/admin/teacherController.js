@@ -131,7 +131,7 @@ const DeleteTeacher = async (req, res) =>{
 };
 
 function getSubjectID(arr, name){
-    const data = arr.filter(el => el.subject_name.toLowerCase() === name.toLowerCase());
+    const data = arr.filter(el => el.subject_name.toLowerCase().trim() == name.toLowerCase().trim());
     return data && data[0]._id;
 }
 
@@ -218,7 +218,6 @@ const uploadTeacher = async(req, res) => {
                         eleven_class_data,
                         twelve_class_data
                     );
-                    console.log(teacher.subject)
                     FinalData.push({ 
                         name: teacher.name, 
                         EmpID: `${req.body.short}${firstName}${teacher?.mobile.trim().substr(-4, 4)}${getSubjectFirstLetetr(teacher.subject)}T`, 
