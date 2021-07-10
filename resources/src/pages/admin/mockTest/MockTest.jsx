@@ -4,6 +4,7 @@ import {useHistory, useParams} from 'react-router-dom'
 import useModule from '../../../hooks/useModule';
 import useAccess from '../../../hooks/useAccess';
 import CreateMockTestQuestion from './components/CreateMockTestQuestion';
+import MockTestQuestionList from './components/MockTestQuestionList';
 
 export default function MockTest() {
     const params = useParams();
@@ -44,19 +45,55 @@ export default function MockTest() {
                             {create && (
                                 <button className="btn btn-sm dark mr-2" 
                                 onClick={ e => {
-                                    history.push(`/admin/mock-test/add-mock-test-question`)
+                                    if(params?.question_for !== undefined){
+                                        history.push(`/admin/mock-test/create/mock-test-question/${params?.question_for}`)
+                                    }else{
+                                        history.push(`/admin/mock-test/create/mock-test-question`)
+                                    }
                                 }}>
                                     <span className="fa fa-plus mr-2"></span>Add Mock Test Question
                                 </button>
                             )}
+                            {view && (
+                                <button className="btn btn-sm dark mr-2" 
+                                onClick={ e => {
+                                    if(params?.question_for !== undefined){
+                                        history.push(`/admin/mock-test/view/list-mock-test-question/${params?.question_for}`)
+                                    }else{
+                                        history.push(`/admin/mock-test/view/list-mock-test-question`)
+                                    }
+                                }}>
+                                    <span className="fa fa-eye mr-2"></span>View Mock Test Question
+                                </button>
+                            )}
                         </div>
+                    </div>
+                    <div className="dash-con-heading">
+                    <div className="form-group">
+                             <select className="form-control"
+                             value={params?.question_for}
+                             onChange={(e) => {
+                              if(e.target.value !== '')   
+                              history.push(`/admin/mock-test/${params?.page_type}/${params?.module_type}/${e.target.value}`)
+                             }}>
+                                    <option value="">Question For</option>
+                                    <option value="student">Student</option>
+                                    <option value="teacher">Teacher</option>
+                                    <option value="principal">Principal</option>
+                             </select>
+                       </div>
                     </div>
                     <div className="clearfix"></div>
                     <div className="dash-cont-start">
                         <div className="row">
-                             {params?.page_type == 'add-mock-test-question' && (
+                             {create === true && params?.page_type === 'create' && params?.module_type === 'mock-test-question' && (
                                 <div className="col-md-3">
                                     <CreateMockTestQuestion />
+                                </div>   
+                             )}
+                             {view === true && params?.page_type === 'view' && params?.module_type === 'list-mock-test-question' && (
+                                <div className="col-md-12">
+                                    <MockTestQuestionList />
                                 </div>   
                              )}
                         </div>

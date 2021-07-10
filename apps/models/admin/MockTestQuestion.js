@@ -7,8 +7,11 @@ const MockTestQuestionSchema = new mongoose.Schema({
       question:{
             type: String
       },
-      options:{
-            type: Array
+      option_a:{
+            type: String
+      },
+      option_b:{
+            type: String
       },
       answer:{
             type: String

@@ -6,10 +6,10 @@ const MockTestQuestion = require("../../../models/admin/MockTestQuestion");
 
 const AddMockTestQuestion = async (req, res) => {
   const body = req.body;
-  res.json(body);return;
+//   res.json(body);return;
   try {
-    const MockTestQuestion = new MockTestQuestion(body);    
-    await MockTestQuestion.save();
+    const MockQues = new MockTestQuestion(body);    
+    await MockQues.save();
     return res.status(200).json({
       message: "MockTest created sucessfully",
     });
@@ -19,6 +19,20 @@ const AddMockTestQuestion = async (req, res) => {
     });
   }
 };
+const AllMockTestQuestion = async (req, res) => {
+  try {
+    const Question = await MockTestQuestion.find({question_for: req.params?.question_for})
+    return res.status(200).json({
+      data: Question
+    });
+  } catch (error) {
+    res.status(502).json({
+      message: error.message,
+    });
+  }
+};
+
+
 
 const CreateMockTest = async (req, res) => {
   const body = req.body;
@@ -121,9 +135,20 @@ const DeleteMockTest = async (req, res) => {
     res.status(409).json({ message: error.message });
   }
 };
+const DeleteMockTestQuestion = async (req, res) => {
+  try {
+    const mqid = req.body.mqid;
+    await MockTestQuestion.deleteOne({ _id: mqid });
+    res.status(201).json({ message: "deleted" });
+  } catch (error) {
+    res.status(409).json({ message: error.message });
+  }
+};
 
 module.exports = {
   AddMockTestQuestion,
+  AllMockTestQuestion,
+  DeleteMockTestQuestion,
   CreateMockTest,
   UpdateMockTest,
   ViewMockTest,
