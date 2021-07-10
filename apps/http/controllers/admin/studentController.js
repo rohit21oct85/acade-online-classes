@@ -12,8 +12,8 @@ const CreateStudent = async (req, res) => {
     try {
         const school = await School.findOne({_id:req.body.school_id},{sub_domain:1,short:1})
         let body = req.body;
-        const empid = `${school.short}${req.body.name.trimStart().split(" ")[0].toLowerCase()}${req.body?.class?.trim()}${req.body?.section?.trim()}${req.body?.roll_no?.trim()}`;
-        const username = `${school.short}${req.body.name.trimStart().split(" ")[0].toLowerCase()}${req.body?.class?.trim()}${req.body?.section?.trim()}${req.body?.roll_no?.trim()}@${school?.sub_domain?.trim()}.com`;
+        const empid = `${school.short}${req.body.name.trimStart().split(" ")[0].toLowerCase()}${req.body?.class?.trim()}${req.body?.section?.trim().toLowerCase()}${req.body?.roll_no?.trim()}`;
+        const username = `${school.short}${req.body.name.trimStart().split(" ")[0].toLowerCase()}${req.body?.class?.trim()}${req.body?.section?.trim().toLowerCase()}${req.body?.roll_no?.trim()}@${school?.sub_domain?.trim()}.com`;
         body.EmpId = empid.toUpperCase();
         body.username = username;
         
@@ -35,8 +35,8 @@ const UpdateStudent = async (req, res) =>{
         const school = await School.findOne({_id:student.school_id},{sub_domain:1,short:1})
         if(student.username == undefined || student.username == ""){
             body = req.body;
-            const empid = `${school.short}${req.body.name.trimStart().split(" ")[0].toLowerCase()}${req.body?.class?.trim()}${req.body?.section?.trim()}${req.body?.roll_no?.trim()}`;
-            const username = `${school.short}${req.body.name.trimStart().split(" ")[0].toLowerCase()}${req.body?.class?.trim()}${req.body?.section?.trim()}${req.body?.roll_no?.trim()}@${school?.sub_domain?.trim()}.com`;
+            const empid = `${school.short}${req.body.name.trimStart().split(" ")[0].toLowerCase()}${req.body?.class?.trim()}${req.body?.section?.trim().toLowerCase()}${req.body?.roll_no?.trim()}`;
+            const username = `${school.short}${req.body.name.trimStart().split(" ")[0].toLowerCase()}${req.body?.class?.trim()}${req.body?.section?.trim().toLowerCase()}${req.body?.roll_no?.trim()}@${school?.sub_domain?.trim()}.com`;
             body.EmpId = empid.toUpperCase();
             body.username = username;
         }else{
@@ -149,6 +149,10 @@ const uploadStudent = async(req, res) => {
                     }else{
                         fetched_id = req.body.class_id;
                     }
+                    const empid = `${req.body.short}${firstName.trim()}${student?.class?.trim().toLowerCase()}${student?.section?.trim()}${student?.roll_no?.trim()}`;
+                    const username = school?.short+student?.name?.trimStart().split(" ")[0].toLowerCase()+student?.class?.trim()+student?.section?.trim().toLowerCase()+student?.roll_no?.trim()+'@'+school?.sub_domain?.trim()+'.com';
+                    // body.EmpId = empid.toUpperCase();
+                    // body.username = username;
                     FinalData.push({ 
                         name: student.name, 
                         class: student.class, 
@@ -162,10 +166,10 @@ const uploadStudent = async(req, res) => {
                         email: student.email, 
                         school_section: student.school_section, 
                         status: student.status, 
-                        EmpId: `${req.body.short}${firstName.trim()}${student?.class?.trim()}${student?.section?.trim()}${student?.roll_no?.trim()}`,
+                        EmpId: empid,
                         school_id: req.body.school_id,
                         class_id: fetched_id,
-                        username: school?.short+student?.name?.trimStart().split(" ")[0].toLowerCase()+student?.class?.trim()+student?.section?.trim()+student?.roll_no?.trim()+'@'+school?.sub_domain?.trim()+'.com',
+                        username: username,
                         password: hashedPassword,
                     })
                 })
