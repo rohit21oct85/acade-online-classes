@@ -5,6 +5,7 @@ import AllPrincipals from './components/AllPrincipals';
 import UploadPrincipals from './components/UploadPrincipals';
 import useAccess from '../../../hooks/useAccess';
 import useModule from '../../../hooks/useModule';
+import { export_table_to_csv } from '../../../utils/helper'
 
 export default function PrincipalList() {
     
@@ -31,6 +32,11 @@ export default function PrincipalList() {
 
     }
 
+    const handleExport = () => {
+        var html = document.querySelector("table").outerHTML;
+        export_table_to_csv(html, "table.csv");
+    }
+    
     return (
         <div className="col-lg-10 col-md-10 main_dash_area">
             <div className="main-area-all">
@@ -68,6 +74,10 @@ export default function PrincipalList() {
                                     <span className="fa fa-eye mr-2"></span>View Principals 
                                 </button>
                             )}
+
+                            {params.school_id ? <button className="btn btn-sm dark ml-2" onClick={handleExport}> 
+                                <span className="fa fa-download mr-2"></span>Export to CSV 
+                            </button> : "" }
 
                         </div>
                     </div>

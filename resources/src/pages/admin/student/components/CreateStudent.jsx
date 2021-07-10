@@ -57,19 +57,6 @@ export default function CreateStudent() {
         const domain = helper.getFilteredData(schools, '_id',params.school_id,'sub_domain');
         
         if(params?.student_id){
-            let firstName = SingleStudent?.name
-            let className = SingleStudent?.class
-            let sectionName = SingleStudent?.section
-            let rollNo = SingleStudent?.roll_no
-            if(firstName.includes(' ')){
-                firstName = firstName.trim().split(" ")[0]
-            }
-            const username = short+firstName+className+sectionName+rollNo+`@${domain}.com`
-            SingleStudent.username = username.toLowerCase();
-            
-            let UID = `${short}${firstName}${className.trim()}${sectionName.trim()}${rollNo.trim()}`
-            SingleStudent.EmpId = UID.toUpperCase();
-            // console.log(SingleStudent);
             await updateMutation.mutate(SingleStudent);
         }else{
             formData.school_id = params.school_id ? params.school_id : ''
@@ -81,20 +68,7 @@ export default function CreateStudent() {
                 if(!pattern.test(formData.mobile)){
                     setLoading(false);
                     addToast('Please Enter a valid 10 digit phone no', { appearance: 'error',autoDismiss: true });
-                }else{
-                    let firstName = formData?.name
-                    let className = formData?.class
-                    let sectionName = formData?.section
-                    let rollNo = formData?.roll_no
-                    if(firstName.includes(' ')){
-                        firstName = firstName.trim().split(" ")[0]
-                    }
-                    const username = short+firstName+className+sectionName+rollNo+`@${domain}.com`
-                    formData.username = username.toLowerCase();
-                    
-                    let UID = `${short}${firstName}${className.trim()}${sectionName.trim()}${rollNo.trim()}`
-                    formData.EmpId = UID.toUpperCase();
-                    
+                }else{        
                     await createMutation.mutate(formData);
                 }
             }
