@@ -53,7 +53,8 @@ export default function CreateStudent() {
     const saveStudent = async (e) => {
         e.preventDefault();
         setLoading(true);
-        const domainName = helper.getFilteredData(schools, '_id',params.school_id,'short');
+        const short = helper.getFilteredData(schools, '_id',params.school_id,'short');
+        const domain = helper.getFilteredData(schools, '_id',params.school_id,'sub_domain');
         
         if(params?.student_id){
             await updateMutation.mutate(SingleStudent);
