@@ -14,8 +14,8 @@ const CreateTeacher = async (req, res) => {
         const school = await School.findOne({_id:req.body.school_id},{sub_domain:1,short:1})
         body = req.body;
         const sub = getSubjectFirstLetetr(req.body.subject_name);
-        body.username = school.short+req.body.name.trimStart().split(" ")[0].toLowerCase()+req.body?.mobile.trim().substr(-4, 4)+sub+'t@'+school.sub_domain.trim()+'.com';
-        body.EmpID = school.short+req.body.name.trimStart().split(" ")[0].toLowerCase()+req.body?.mobile.trim().substr(-4, 4)+sub+'T';
+        body.username = school.short+req.body.name.trimStart().split(" ")[0].toLowerCase()+req.body?.mobile.trim().substr(-4, 4)+sub.toLowerCase()+'t@'+school.sub_domain.trim()+'.com';
+        body.EmpID = school.short+req.body.name.trimStart().split(" ")[0].toLowerCase()+req.body?.mobile.trim().substr(-4, 4)+sub.toLowerCase()+'T';
 
         const newTeacher = new Teacher(body);
         await newTeacher.save();
@@ -37,8 +37,8 @@ const UpdateTeacher = async (req, res) =>{
         if(teacher.username == undefined || teacher.username == ""){
             body = req.body;
             const sub = getSubjectFirstLetetr(teacher.subject_name);
-            body.username = school.short+req.body.name.trimStart().split(" ")[0].toLowerCase()+req.body?.mobile.trim().substr(-4, 4)+sub+'t@'+school.sub_domain.trim()+'.com';
-            body.EmpID = school.short+req.body.name.trimStart().split(" ")[0].toLowerCase()+req.body?.mobile.trim().substr(-4, 4)+sub+'T';
+            body.username = school.short+req.body.name.trimStart().split(" ")[0].toLowerCase()+req.body?.mobile.trim().substr(-4, 4)+sub.toLowerCase()+'t@'+school.sub_domain.trim()+'.com';
+            body.EmpID = school.short+req.body.name.trimStart().split(" ")[0].toLowerCase()+req.body?.mobile.trim().substr(-4, 4)+sub.toLowerCase()+'T';
         }else{
             body = req.body;
             // body.classess = req.body.classess
@@ -97,7 +97,12 @@ const ViewTeacherClass = async (req, res) => {
 
 const ViewAllTeacher = async (req, res) => {
     try{
-        const filter = {school_id: req.params.school_id,subject_id: req.params.subject_id}
+        let filter = {};
+        if(req.params.subject_id == "all"){
+            filter = {school_id: req.params.school_id}
+        }else{
+            filter = {school_id: req.params.school_id,subject_id: req.params.subject_id}
+        }
         const AllTeachers = await Teacher.find(filter,{__v: 0});
         return res.status(200).json({ 
             data: AllTeachers 
@@ -126,7 +131,7 @@ const DeleteTeacher = async (req, res) =>{
 };
 
 function getSubjectID(arr, name){
-    const data = arr.filter(el => el.subject_name === name);
+    const data = arr.filter(el => el.subject_name.toLowerCase() === name.toLowerCase());
     return data && data[0]._id;
 }
 
@@ -213,7 +218,7 @@ const uploadTeacher = async(req, res) => {
                         eleven_class_data,
                         twelve_class_data
                     );
-                    
+                    console.log(teacher.subject)
                     FinalData.push({ 
                         name: teacher.name, 
                         EmpID: `${req.body.short}${firstName}${teacher?.mobile.trim().substr(-4, 4)}${getSubjectFirstLetetr(teacher.subject)}T`, 
@@ -227,7 +232,7 @@ const uploadTeacher = async(req, res) => {
                         state: teacher.state, 
                         pincode: teacher.pincode, 
                         school_id:req.body.school_id,
-                        username: req.body.short+firstName+teacher?.mobile.trim().substr(-4, 4)+getSubjectFirstLetetr(teacher.subject)+'t@'+school.sub_domain.trim()+'.com',
+                        username: req.body.short+firstName+teacher?.mobile.trim().substr(-4, 4)+getSubjectFirstLetetr(teacher.subject.toLowerCase())+'t@'+school.sub_domain.trim()+'.com',
                         classess: classArray
                     })
                 })

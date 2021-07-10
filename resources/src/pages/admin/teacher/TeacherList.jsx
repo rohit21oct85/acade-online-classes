@@ -6,6 +6,7 @@ import AllTeachers from './components/AllTeachers';
 
 import useModule from '../../../hooks/useModule';
 import useAccess from '../../../hooks/useAccess';
+import { export_table_to_csv } from '../../../utils/helper'
 
 export default function TeacherList() {
     const params = useParams();
@@ -28,6 +29,11 @@ export default function TeacherList() {
         if(create === false || update === false || upload === false || view === false){
             history.push(`/admin/teachers-management`)
         }
+    }
+   
+    const handleExport = () => {
+        var html = document.querySelector("table").outerHTML;
+        export_table_to_csv(html, "table.csv");
     }
 
     return (
@@ -68,7 +74,10 @@ export default function TeacherList() {
                                     <span className="fa fa-upload mr-2"></span>View Teachers 
                                 </button>
                             )}
-                            
+
+                            {params.subject_id ? <button className="btn btn-sm dark ml-2" onClick={handleExport}> 
+                                <span className="fa fa-download mr-2"></span>Export to CSV 
+                            </button> : "" }
                             
                         </div>
                     </div>

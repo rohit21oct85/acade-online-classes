@@ -7,6 +7,7 @@ import AllStudents from './components/AllStudents';
 
 import useModule from '../../../hooks/useModule';
 import useAccess from '../../../hooks/useAccess';
+import { export_table_to_csv } from '../../../utils/helper'
 
 export default function StudentList() {
     const params = useParams();
@@ -29,6 +30,11 @@ export default function StudentList() {
         if(create === false || update === false || upload === false){
             history.push(`/admin/students-management`)
         }
+    }
+   
+    const handleExport = () => {
+        var html = document.querySelector("table").outerHTML;
+        export_table_to_csv(html, "table.csv");
     }
 
     return (
@@ -69,6 +75,10 @@ export default function StudentList() {
                                     <span className="fa fa-eye mr-2"></span>View Students 
                                 </button>
                             )}
+
+                            {params.class_id ? <button className="btn btn-sm dark ml-2" onClick={handleExport}> 
+                                <span className="fa fa-download mr-2"></span>Export to CSV 
+                            </button> : "" }
 
                             
                         </div>

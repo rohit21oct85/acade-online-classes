@@ -45,10 +45,10 @@ export default function AllPrincipals() {
                   <table className="table table-hover">
                         <thead>
                               <tr>
-                              <th scope="col">School Name</th>
+                              <th scope="col" className="hidden_col">School Name</th>
                               <th scope="col">Name</th>
                               <th scope="col">Email</th>
-                              {update === true && <th scope="col">Action</th>}
+                              {update === true && <th scope="col" className="hidden_col">Action</th>}
                               </tr>
                         </thead>
                         <tbody>
@@ -57,13 +57,13 @@ export default function AllPrincipals() {
                               const school_name = getSchoolData(item?.school_id, 'name');      
                               return (
                                     <tr key={item?._id}>
-                                    <td>{school_name}</td>
+                                    <td className="hidden_col">{school_name}</td>
                                     <td>{item.name}</td>
                                     <td>{item.email}</td>
                                     
                                     {update === true && 
                                           <>
-                                          <td>
+                                          <td className="hidden_col">
                                           <button className="btn bg-primary text-white btn-sm mr-2" 
                                           onClick={
                                                 e => {

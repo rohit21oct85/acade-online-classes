@@ -9,8 +9,14 @@ const bcrypt = require('bcryptjs');
 let refreshTokens = [];
 
 const CreateStudent = async (req, res) => {
-    const body = req.body;
     try {
+        const school = await School.findOne({_id:req.body.school_id},{sub_domain:1,short:1})
+        let body = req.body;
+        const empid = `${school.short}${req.body.name.trimStart().split(" ")[0].toLowerCase()}${req.body?.class?.trim()}${req.body?.section?.trim().toLowerCase()}${req.body?.roll_no?.trim()}`;
+        const username = `${school.short}${req.body.name.trimStart().split(" ")[0].toLowerCase()}${req.body?.class?.trim()}${req.body?.section?.trim().toLowerCase()}${req.body?.roll_no?.trim()}@${school?.sub_domain?.trim()}.com`;
+        body.EmpId = empid.toUpperCase();
+        body.username = username;
+        
         const newStudent = new Student(body);
         await newStudent.save();
         return res.status(200).json({ 
@@ -24,7 +30,19 @@ const CreateStudent = async (req, res) => {
 }
 const UpdateStudent = async (req, res) =>{
     try {
-        await Student.findOneAndUpdate({_id: req.params.id},req.body)
+        let body = []
+        const student = await Student.findOne({_id:req.params.id})
+        const school = await School.findOne({_id:student.school_id},{sub_domain:1,short:1})
+        if(student.username == undefined || student.username == ""){
+            body = req.body;
+            const empid = `${school.short}${req.body.name.trimStart().split(" ")[0].toLowerCase()}${req.body?.class?.trim()}${req.body?.section?.trim().toLowerCase()}${req.body?.roll_no?.trim()}`;
+            const username = `${school.short}${req.body.name.trimStart().split(" ")[0].toLowerCase()}${req.body?.class?.trim()}${req.body?.section?.trim().toLowerCase()}${req.body?.roll_no?.trim()}@${school?.sub_domain?.trim()}.com`;
+            body.EmpId = empid.toUpperCase();
+            body.username = username;
+        }else{
+            body = req.body;
+        }
+        await Student.findOneAndUpdate({_id: req.params.id},body)
                 .then(response => {
                     return res.status(202).json({
                         message: "Student, Updated successfully"
@@ -117,7 +135,7 @@ const uploadStudent = async(req, res) => {
             .on('data', (data) => results.push(data))
             .on('end', () => {
                 results.forEach( student => {
-                    console.log(student)
+                    // console.log(student)
                     let firstName;
                     if(student.name.match(" ")){
                         firstName = student.name.trim().split(" ")[0];
@@ -131,6 +149,10 @@ const uploadStudent = async(req, res) => {
                     }else{
                         fetched_id = req.body.class_id;
                     }
+                    const empid = `${req.body.short}${firstName.trim()}${student?.class?.trim().toLowerCase()}${student?.section?.trim()}${student?.roll_no?.trim()}`;
+                    const username = school?.short+student?.name?.trimStart().split(" ")[0].toLowerCase()+student?.class?.trim()+student?.section?.trim().toLowerCase()+student?.roll_no?.trim()+'@'+school?.sub_domain?.trim()+'.com';
+                    // body.EmpId = empid.toUpperCase();
+                    // body.username = username;
                     FinalData.push({ 
                         name: student.name, 
                         class: student.class, 
@@ -144,10 +166,10 @@ const uploadStudent = async(req, res) => {
                         email: student.email, 
                         school_section: student.school_section, 
                         status: student.status, 
-                        EmpId: `${req.body.short}${firstName.trim()}${student?.class?.trim()}${student?.section?.trim()}${student?.roll_no?.trim()}`,
+                        EmpId: empid,
                         school_id: req.body.school_id,
                         class_id: fetched_id,
-                        username: student?.name?.trimStart().split(" ")[0].toLowerCase()+student?.class?.trim()+student?.section?.trim()+student?.roll_no?.trim()+'@'+school?.sub_domain?.trim()+'.com',
+                        username: username,
                         password: hashedPassword,
                     })
                 })
