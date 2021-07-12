@@ -4,18 +4,26 @@ import {useQuery} from 'react-query';
 import axios from 'axios';
 import {AuthContext} from '../../../../context/AuthContext.jsx';
 import API_URL from '../../../../helper/APIHelper'
-import {useParams} from 'react-router-dom'
+import {useLocation, useParams} from 'react-router-dom'
 
-export default function useSingleQuestion() {
+export default function useMockTestList() {
     const {state } = useContext(AuthContext);
     const params = useParams();
+    const location = useLocation();
+    const path = location.pathname.split('/')
     let key = '';
     let url = '';
+    let mock_test_for = localStorage.getItem('mock_test_for');
+    if(path[2] == 'assign-test'){
+        url = `${API_URL}v1/mock-test/view-all/${mock_test_for}/active`
+    }else{
+        url = `${API_URL}v1/mock-test/view-all/${params?.question_for}/`
+    }
     key = `mock-questions-${params?.question_for}`;
-    url = `${API_URL}v1/mock-test/single-question/${params?.test_id}`
+   
     
     return useQuery(`${key}`, async () => {
-        if(params?.question_for){
+        
             const result = await axios.get(`${url}`,{
                 headers: {
                     'Content-Type': 'Application/json',
@@ -23,7 +31,6 @@ export default function useSingleQuestion() {
                 }
             });
             return result.data.data; 
-        }
         
     });
     

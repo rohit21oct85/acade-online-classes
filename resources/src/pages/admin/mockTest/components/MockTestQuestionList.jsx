@@ -1,14 +1,21 @@
 import React, { useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom';
+import useDeleteMockQuestion from '../hooks/useDeleteMockQuestion';
 import useMockQuestionList from '../hooks/useMockQuestionList'
 
 export default function MockTestQuestionList() {
       const {data:mocktests} = useMockQuestionList();
       const params = useParams();
       const history = useHistory();
+      const [formData, setFormData] = useState({});
+      const deleteMutation = useDeleteMockQuestion(formData);
+      async function handleDelete(id){
+            formData['test_id'] = id
+            await deleteMutation.mutate(formData);
+      }
       return (
             <div className="flex no-gutter" style={{ flexDirection: 'row', flexWrap: 'wrap', height: '500px', overflow: 'hidden scroll'}}>
-                 {mocktests?.map((mq,ind) => {
+                 {mocktests !== undefined && Array.from(mocktests)?.map((mq,ind) => {
                        return(
                               <div className="card flex col-md-6 p-2 mb-2" style={{ 
                                     cursor: 'pointer', 
@@ -30,9 +37,22 @@ export default function MockTestQuestionList() {
                                         Edit
                                     </button>
                                     
-                                    <button className="dark">
-                                        <span className="fa fa-trash mr-2"></span>
-                                        Delete
+                                    <button className="dark"
+                                    disabled={deleteMutation.isLoading}
+                                    onClick={(e) => handleDelete(mq?._id)}
+                                    >
+                                          {deleteMutation.isLoading ? (
+                                                <>
+                                                <span className="fa fa-spinner mr-2"></span>
+                                                processing...
+                                                </>
+                                          ) : (
+                                                <>
+                                                <span className="fa fa-trash mr-2"></span>
+                                                Delete
+                                                </>
+                                          )}
+                                        
                                     </button>
                                     </div>  
                               </div>

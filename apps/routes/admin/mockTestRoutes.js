@@ -12,9 +12,9 @@ router
     .post('/delete-question', checkAuth, MockTest.DeleteMockTestQuestion)
     
     .post('/create', checkAuth, MockTest.CreateMockTest)
-    .patch('/update/:id', checkAuth, MockTest.UpdateMockTest)
+    .post('/update-mock-test', checkAuth, MockTest.UpdateMockTest)
     .get('/view/:id', checkAuth, MockTest.ViewMockTest)
-    .get('/view-all/:class_id?/:test_type?', checkAuth, MockTest.ViewAllMockTest)
+    .get('/view-all/:test_for?/:status?', checkAuth, MockTest.ViewAllMockTest)
     .post('/delete', checkAuth, MockTest.DeleteMockTest)
 ;
 

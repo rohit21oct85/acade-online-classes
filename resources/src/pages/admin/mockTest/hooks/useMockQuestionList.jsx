@@ -11,13 +11,12 @@ export default function useMockQuestionList() {
     const params = useParams();
     let key = '';
     let url = '';
-    if(params?.question_for){
-      key = `mock-questions-${params?.question_for}`;
-      url = `${API_URL}v1/mock-test/all-question/${params?.question_for}`
-    }
+    
+    key = `mock-questions-${params?.question_for}`;
+    url = `${API_URL}v1/mock-test/all-question/${params?.question_for}`
     
     return useQuery(`${key}`, async () => {
-        if(params?.question_for){
+        
             const result = await axios.get(`${url}`,{
                 headers: {
                     'Content-Type': 'Application/json',
@@ -25,7 +24,6 @@ export default function useMockQuestionList() {
                 }
             });
             return result.data.data; 
-        }
         
     });
     
