@@ -94,8 +94,25 @@ export default function AssignTests() {
                                     <option value="">Test Type</option>
                                     <option value="combine-test">Combined Test</option>
                                     <option value="single-test">Single Test</option>
+                                    <option value="mock-test">Mock Test</option>
                                 </select>
                         </div>
+                        {params?.test_type == 'mock-test' && (
+                            <div className="form-group col-md-2">
+                            <select className="form-control "
+                            value={localStorage.getItem('mock_test_for')}
+                            onChange={(e) => {
+                             if(e.target.value !== '')   
+                             localStorage.setItem('mock_test_for', e.target.value)
+                            }}>
+                                   <option value="">Mock Test For</option>
+                                   <option value="student">Student</option>
+                                   <option value="teacher">Teacher</option>
+                                   <option value="principal">Principal</option>
+                            </select>
+                            </div>
+                        )}
+                        {params?.test_type !== 'mock-test' && (
                             <div className="col-md-2">
                             <select className="form-control"
                                 value={params?.class_id}
@@ -109,6 +126,8 @@ export default function AssignTests() {
                                         )}
                                 </select>
                             </div>
+                        )}
+                            
                             
 
                         </div>

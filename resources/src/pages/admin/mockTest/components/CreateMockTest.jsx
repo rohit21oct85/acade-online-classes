@@ -1,84 +1,105 @@
-import React, { useState } from 'react'
-import { useHistory, useParams } from 'react-router-dom'
-import { useToasts } from 'react-toast-notifications';
-import useCreateMockQuestion from '../hooks/useCreateMockQuestion';
+import React, { useState } from "react";
+import { useHistory, useParams } from "react-router-dom";
+import { useToasts } from "react-toast-notifications";
+
+import useCreateMockTest from "../hooks/useCreateMockTest";
+import useSingleQuestion from "../hooks/useSingleQuestion";
+import useUpdateMockTestQuestion from "../hooks/useUpdateMockQuestion";
 
 export default function CreateMockTest() {
-      const params = useParams();
-      const history = useHistory();
-      const { addToast } = useToasts()
-      const [formData, setFormData] = useState({})
-      const createMutation = useCreateMockQuestion(formData);
-      async function handleSubmit(e){
-            e.preventDefault();
-            formData['question_for'] = params?.question_for
-            if(!formData?.question){
-                  addToast('Please write a question?', { appearance: 'error',autoDismiss: true });
-                  return;
-            }
-            else if(!formData?.option_a){
-                  addToast('Please write a option a?', { appearance: 'error',autoDismiss: true });
-                  return;
-            }
-            else if(!formData?.option_b){
-                  addToast('Please write a option b?', { appearance: 'error',autoDismiss: true });
-                  return;
-            }
-            else if(!formData?.answer){
-                  addToast('Please select correct answer?', { appearance: 'error',autoDismiss: true });
-                  return;
-            }
-            else{
-                  console.log(formData);
-                  await createMutation.mutate(formData)
-            }
+  const params = useParams();
+  const history = useHistory();
+  const { addToast } = useToasts();
+  const [formData, setFormData] = useState({});
+  const createMutation = useCreateMockTest(formData);
+  const updateMutation = useUpdateMockTestQuestion(formData);
+  const { data: singleQuestion } = useSingleQuestion();
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    formData["question_for"] = params?.question_for;
+    if (!formData?.test_name) {
+      addToast("Please write a test_name?", {
+        appearance: "error",
+        autoDismiss: true,
+      });
+      return;
+    } else if (!formData?.test_duration) {
+      addToast("Please write test_duration?", {
+        appearance: "error",
+        autoDismiss: true,
+      });
+      return;
+    } else {
+      formData["test_for"] = params?.question_for;
+      formData["test_type"] = "mock-test";
+      await createMutation.mutate(formData);
+    }
+  }
+
+  function handleChange(e) {
+    if (params?.test_id) {
+      setFormData({ ...formData, [e.target.name]: e.target.value });
+    } else {
+      if (e.target.name === "test_duration") {
+        if (!isNaN(e.target.value)) {
+          setFormData({ ...formData, [e.target.name]: e.target.value });
+        } else {
+          addToast("please enter test duration in numbers", {
+            appearance: "error",
+            autoDismiss: true,
+          });
+        }
+      } else {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
       }
-      return (
-            <div>
-                 <form onSubmit={handleSubmit}>
-                        <div className="form-group">
-                              <input type="text" 
-                                    className="form-control"
-                                    placeholder="enter question"
-                                    value={formData.question}
-                                    onChange={(e) => setFormData({...formData, ['question']: e.target.value})}/>
-                        </div>
-                       
-                        <div className="form-group">
-                              <input type="text" 
-                                    className="form-control"
-                                    placeholder="enter option a"
-                                    name="option_a"
-                                    value={formData.option_a}
-                                    onChange={(e) => setFormData({...formData, [e.target.name]: e.target.value})}/>
-                        </div>
-                       
-                        <div className="form-group">
-                             <input type="text" 
-                              className="form-control"
-                              name="option_b"
-                              placeholder="enter option b"
-                              value={formData.option_b}
-                              onChange={(e) => setFormData({...formData, [e.target.name]: e.target.value})}/>
-                        </div>
-                        <div className="form-group">
-                             <select className="form-control"
-                             name="answer"
-                             onChange={(e) => setFormData({...formData, [e.target.name]: e.target.value})}
-                             >
-                                    <option>Answer</option>
-                                    <option value="a">Option A</option>
-                                    <option value="b">Option B</option>
-                             </select>
-                       </div>
-                       <div className="form-group">
-                             <button className="btnb tn-sm dark bg-success">
-                              Save Question
-                             </button>
-                       </div>
+    }
+  }
+  return (
+    <>
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <input
+            type="text"
+            className="form-control"
+            name="test_name"
+            placeholder="enter test name"
+            value={formData.test_name ?? singleQuestion?.test_name}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="form-group">
+          <input
+            type="text"
+            className="form-control"
+            name="test_duration"
+            placeholder="enter test duration"
+            value={formData.test_duration ?? singleQuestion?.test_duration}
+            onChange={handleChange}
+          />
+        </div>
 
+        <div className="form-group">
+          <button className="btnb tn-sm dark bg-success">
+            {createMutation.isLoading && (
+              <>
+                <span className="fa fa-spinner mr-2"></span> Processing
+              </>
+            )}
+            {!createMutation.isLoading && params?.test_id && (
+              <>
+                <span className="fa fa-save mr-2"></span> Update Mock Test
+              </>
+            )}
 
-                 </form>  
-            </div>
-      )
+            {!createMutation.isLoading && !params?.test_id && (
+              <>
+                <span className="fa fa-save mr-2"></span> Save Mock test
+              </>
+            )}
+          </button>
+        </div>
+      </form>
+    </>
+  );
 }

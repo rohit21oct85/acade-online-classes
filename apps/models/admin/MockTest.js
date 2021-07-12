@@ -13,6 +13,9 @@ const MockTestSchema = new mongoose.Schema({
       test_type: {
             type: String,
       },
+      test_for: {
+            type: String,
+      },
       status:{
         type: Boolean,
         default: false

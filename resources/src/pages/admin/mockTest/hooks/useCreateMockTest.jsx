@@ -6,7 +6,7 @@ import API_URL from '../../../../helper/APIHelper';
 import { useToasts } from 'react-toast-notifications';
 import {AuthContext} from '../../../../context/AuthContext';
 
-export default function useCreateMockQuestion(formData) {
+export default function useCreateMockTest(formData) {
       
       const queryClient = useQueryClient()
       const {state} = useContext(AuthContext);
@@ -25,13 +25,13 @@ export default function useCreateMockQuestion(formData) {
       const key = `mock-questions-${params?.question_for}`;
     
       return useMutation(formData => {
-            return axios.post(`${API_URL}v1/mock-test/add-question`, formData, options)
+            return axios.post(`${API_URL}v1/mock-test/create`, formData, options)
         },{
             onSuccess: () => {
                 queryClient.invalidateQueries(`${key}`)
                 
-                addToast('Questions added successfully', { appearance: 'success', autoDismiss: true });
-                window.location.href = `/admin/mock-test/view/mock-test-question/${params?.question_for}`;
+                addToast('Mock Test added successfully', { appearance: 'success', autoDismiss: true });
+                window.location.href = `/admin/mock-test/view/mock-test/${params?.question_for}`;
             }
         });
       

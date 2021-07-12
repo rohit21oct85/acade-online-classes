@@ -29,8 +29,8 @@ export default function useUpdateMockTestQuestion(formData) {
         },{
             onSuccess: () => {
                 queryClient.invalidateQueries(`${key}`)
-                history.push(`/admin/mock-test/view/mock-test-question/${params?.question_for}`);
                 addToast('Questions added successfully', { appearance: 'success', autoDismiss: true });
+                window.location.href = `/admin/mock-test/view/mock-test-question/${params?.question_for}`;
             }
         });
       

@@ -53,7 +53,7 @@ const UpdateMockTestQuestion = async (req, res) => {
 
 const AllMockTestQuestion = async (req, res) => {
   try {
-    const Question = await MockTestQuestion.find({question_for: req.params?.question_for})
+    const Question = await MockTestQuestion.find({question_for: req?.params?.question_for})
     return res.status(200).json({
       data: Question
     });
@@ -66,7 +66,7 @@ const AllMockTestQuestion = async (req, res) => {
 
 const SingleMockTestQuestion = async (req, res) => {
   try {
-    const Question = await MockTestQuestion.findOne({_id: req.params?.question_for})
+    const Question = await MockTestQuestion.findOne({_id: req.params?.test_id})
     return res.status(200).json({
       data: Question
     });
@@ -95,7 +95,9 @@ const CreateMockTest = async (req, res) => {
 };
 const UpdateMockTest = async (req, res) => {
   try {
-    await MockTest.findOneAndUpdate({ _id: req.params.id }, req.body)
+    await MockTest.findOneAndUpdate({ _id: req.body.test_id }, {$set: {
+      status: req.body.status
+    }})
       .then(() => {
         return res.status(202).json({
           message: "MockTest, Updated successfully",
@@ -129,34 +131,21 @@ const ViewMockTest = async (req, res) => {
 };
 const ViewAllMockTest = async (req, res) => {
   try {
-    let filter = {};
-    if (req.params?.class_id) {
-      if(req?.params?.test_type === 'combine-test'){
-        filter = {
-          test_type: req?.params?.test_type,
-          assign_class_id: req?.params?.class_id,
-        }
-      }else{
-        filter = {
-          test_type: req?.params?.test_type,
-          class_id: req?.params?.class_id,
-        }
+    let filter;
+    let status = req?.params?.status;
+    
+    if(status){
+      filter = {
+        test_for: req?.params?.test_for,
+        status: (status == 'active') ? true: false,
+     }
+    }else{
+      filter = {
+        test_for: req?.params?.test_for
       }
     }
-    const AllMockTests = await MockTest.find(filter,{
-          _id:1,
-          test_name: 1, 
-          class_name: 1, 
-          test_subjects: 1,
-          subject_name: 1, 
-          unit_name: 1, 
-          test_slug: 1,
-          test_date: 1,
-          test_window: 1,
-          test_duration: 1,
-          total_question: 1,
-          test_type: 1,
-      },{__v:0,test_question: 0 });
+    // res.json(filter); return;
+    const AllMockTests = await MockTest.find(filter,{__v:0,test_question: 0 });
 
     res.status(200).json({
       data: AllMockTests,
@@ -182,7 +171,7 @@ const DeleteMockTest = async (req, res) => {
 };
 const DeleteMockTestQuestion = async (req, res) => {
   try {
-    const mqid = req.body.mqid;
+    const mqid = req.body.test_id;
     await MockTestQuestion.deleteOne({ _id: mqid });
     res.status(201).json({ message: "deleted" });
   } catch (error) {

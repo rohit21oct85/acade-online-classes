@@ -6,6 +6,7 @@ import useAccess from '../../../hooks/useAccess';
 import CreateMockTestQuestion from './components/CreateMockTestQuestion';
 import CreateMockTest from './components/CreateMockTest';
 import MockTestQuestionList from './components/MockTestQuestionList';
+import MockTestList from './components/MockTestList';
 
 export default function MockTest() {
     const params = useParams();
@@ -68,6 +69,7 @@ export default function MockTest() {
                                 </>
                             )}
                             {view && (
+                                <>
                                 <button className="btn btn-sm dark mr-2" 
                                 onClick={ e => {
                                     if(params?.question_for !== undefined){
@@ -78,6 +80,17 @@ export default function MockTest() {
                                 }}>
                                     <span className="fa fa-eye mr-2"></span>View Mock Test Question
                                 </button>
+                                <button className="btn btn-sm dark mr-2" 
+                                onClick={ e => {
+                                    if(params?.question_for !== undefined){
+                                        history.push(`/admin/mock-test/view/mock-test/${params?.question_for}`)
+                                    }else{
+                                        history.push(`/admin/mock-test/view/mock-test`)
+                                    }
+                                }}>
+                                    <span className="fa fa-eye mr-2"></span>View Mock Test
+                                </button>
+                                </>
                             )}
                         </div>
                     </div>
@@ -114,6 +127,11 @@ export default function MockTest() {
                              {view === true && params?.page_type === 'view' && params?.module_type === 'mock-test-question' && (
                                 <div className="col-md-12">
                                     <MockTestQuestionList />
+                                </div>   
+                             )}
+                             {view === true && params?.page_type === 'view' && params?.module_type === 'mock-test' && (
+                                <div className="col-md-12">
+                                    <MockTestList />
                                 </div>   
                              )}
                         </div>

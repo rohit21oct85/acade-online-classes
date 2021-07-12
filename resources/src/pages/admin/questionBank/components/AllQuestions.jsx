@@ -46,7 +46,7 @@ export default function AllQuestions({update, Delete}) {
         </p>
         <hr className="mt-1"/>
         <Loading isLoading={isLoading} /> 
-        <div className="col-md-12 pr-0 row no-gutter" style={{ height: '460px', overflowY: 'scroll', overflowX: 'hidden'}}>
+        <div className="col-md-12 pr-0 pb-3 row no-gutter" style={{ height: '460px', overflowY: 'scroll', overflowX: 'hidden'}}>
             {params?.chapter_id && data?.map((q,i) => {
                 return(
                     <div className="card question col-md-12 pl-0 pr-0 mr-3 mb-2">
@@ -71,27 +71,38 @@ export default function AllQuestions({update, Delete}) {
 
                             
                         </div>
-                        <div className="question pl-3 pr-2 pt-3" dangerouslySetInnerHTML={{ __html: q?.question  }}></div>
+                        <div className="pl-3 mt-2">Question: </div>
+                        <div className="question pl-3 pr-2" dangerouslySetInnerHTML={{ __html: q?.question  }}></div>
                         
-                        <div className="pl-3">Answers</div>
-                        <div className="row ml-3 pb-3 option">
+                        <div className="pl-3 mt-2 mb-2">Answers</div>
+                        <div className="row ml-3 mt-2 option pb-3">
                             {q?.extension === 'docx' && optionsDocx?.map((option, index) => {
                                 return(
-                                    <div className="row col-md-6 pr-0">
-                                        <div className="pl-3 pr-3"> {option.value}: </div>
+                                    <div className="col-md-11 flex pr-0" style={{
+                                        justifyContent: 'flex-start',
+                                        flexWrap: 'wrap',
+                                        border: '1px solid #ededed'
+                                    }}>
+                                        <div className="pr-3"> {option.value}: 
                                         {(q?.answer === option.value) ? 
-                                            <span className="bi bi-check-circle-fill text-success"></span>: 
+                                            <span className="bi bi-check-circle-fill text-success  ml-1"></span>: 
                                             <span className="bi bi-x-circle-fill text-danger ml-1"></span>
                                         }
-                                        <div className="pl-3 pr-3"  dangerouslySetInnerHTML={{ __html: q?.options[index] }}/>
+                                        </div>
+                                        <div dangerouslySetInnerHTML={{ __html: q?.options[index] }}/>
                                         
                                     </div>
                                 )
                             })}
                             {q?.extension !== 'docx' && (
                             <>    
-                            <div className="row col-md-6 pr-0">
-                                <div className="pl-3 pr-3"> A: </div>
+                            <div className="col-md-11 flex pr-0"
+                            style={{
+                                justifyContent: 'flex-start',
+                                flexWrap: 'wrap',
+                                border: '1px solid #ededed'
+                            }}>
+                                <div className="pr-3"> A: </div>
                                 {(q?.answer === 'option_a') ? 
                                     <span className="bi bi-check-circle-fill text-success"></span>: 
                                     <span className="bi bi-x-circle-fill text-danger ml-1"></span>
@@ -99,8 +110,13 @@ export default function AllQuestions({update, Delete}) {
                                 <div className="pl-3 pr-3"  dangerouslySetInnerHTML={{ __html: q?.option_a }}/>
                                 
                             </div>
-                            <div className="row col-md-6 pr-0">
-                                <div className="pl-3 pr-3"> B: </div>
+                            <div className="col-md-11 flex pr-0"
+                            style={{
+                                justifyContent: 'flex-start',
+                                flexWrap: 'wrap',
+                                border: '1px solid #ededed'
+                            }}>
+                                <div className="pr-3"> B: </div>
                                 
                                 {(q?.answer === 'option_b') ? 
                                     <span className="bi bi-check-circle-fill text-success"></span>: 
@@ -108,8 +124,13 @@ export default function AllQuestions({update, Delete}) {
                                 }
                                 <div className="pl-3 pr-3"  dangerouslySetInnerHTML={{ __html: q?.option_b }}/>
                             </div>
-                            <div className="row col-md-6 pr-0">
-                                <div className="pl-3 pr-3"> C: </div>
+                            <div className="col-md-11 flex pr-0"
+                            style={{
+                                justifyContent: 'flex-start',
+                                flexWrap: 'wrap',
+                                border: '1px solid #ededed'
+                            }}>
+                                <div className="pr-3"> C: </div>
                                 
                                 {(q?.answer === 'option_c') ? 
                                     <span className="bi bi-check-circle-fill text-success"></span>: 
@@ -117,8 +138,13 @@ export default function AllQuestions({update, Delete}) {
                                 }
                                 <div className="pl-3 pr-3"  dangerouslySetInnerHTML={{ __html: q?.option_c }}/>
                             </div>
-                            <div className="row col-md-6 pr-0">
-                                <div className="pl-3 pr-3"> D: </div>
+                            <div className="col-md-11 flex pr-0"
+                            style={{
+                                justifyContent: 'flex-start',
+                                flexWrap: 'wrap',
+                                border: '1px solid #ededed'
+                            }}>
+                                <div className="pr-3"> D: </div>
                                 {(q?.answer === 'option_d') ? 
                                     <span className="bi bi-check-circle-fill text-success"></span>: 
                                     <span className="bi bi-x-circle-fill text-danger ml-1"></span>

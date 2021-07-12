@@ -95,7 +95,12 @@ export default function CreateTest() {
                   let test_duration = localStorage.getItem('test_duration')
 
                   let class_name = getFilteredData(sClassess,'_id' ,class_id, 'class_name');
-                  let assign_class_name = getFilteredData(sClassess,'_id' ,assign_class_id, 'class_name');
+                  let assign_class_name;
+                  if(assign_class_id){
+                        assign_class_name = getFilteredData(sClassess,'_id' ,assign_class_id, 'class_name');
+                  }else{
+                        assign_class_name = class_name
+                  }
                   let subject_name = getFilteredData(subjects,'subject_id' , subject_id, 'subject_name');
                   let unit_name = getFilteredData(units,'_id' , unit_id, 'unit_name');
 
@@ -120,7 +125,7 @@ export default function CreateTest() {
                   formData['test_date'] = startDate
                   formData['total_question'] = selectedQuestions?.length
                   formData['test_question'] = selectedQuestionsId
-                  formData['assign_class_id'] = assign_class_id
+                  formData['assign_class_id'] = (assign_class_id === undefined) ? class_id: assign_class_id
                   formData['assign_class_name'] = assign_class_name
                   formData['test_name'] = test_name
                   formData['test_duration'] = test_duration

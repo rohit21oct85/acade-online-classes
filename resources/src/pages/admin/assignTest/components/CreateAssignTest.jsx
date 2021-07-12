@@ -14,6 +14,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import useSchoolLists from '../../school/hooks/useSchoolLists';
 import useSubjectList from '../../subject/hooks/useSubjectList';
 import { useToasts } from 'react-toast-notifications';
+import useMockTestList from '../../mockTest/hooks/useMockTestList';
 
 export default function CreateAssignTest() {
       const params = useParams();
@@ -30,6 +31,7 @@ export default function CreateAssignTest() {
       const {data:subjects} = useSubjectList();
       const {data: unitTests}      = useUnitTestList();
       const {data: testLists, isLoading} = useAssignedTestList();
+      const {data: mockTests} = useMockTestList();
       const timeWindows = [
             {key:'2', value:'2 Hrs'},
             {key:'3', value:'3 Hrs'},
@@ -54,7 +56,7 @@ export default function CreateAssignTest() {
             if(!school_id || school_id == "undefined"){
                   addToast('please select school', { appearance: 'error', autoDismiss: true });
             }
-            else if(!class_id || class_id == "undefined"){
+            else if((!class_id || class_id == "undefined") && params?.test_type !== 'mock-test'){
                   addToast('please select class', { appearance: 'error', autoDismiss: true });
             }
             else if(!testWindow){
@@ -65,33 +67,52 @@ export default function CreateAssignTest() {
             }
             else{
                   let school_name = getFilteredData(schools,'_id' ,school_id, 'school_name');
-                  let class_name = getFilteredData(SClass,'_id' ,class_id, 'class_name');
-                  let test_name = getFilteredData(unitTests,'_id' ,formData['test_id'], 'test_name');
-                  let testData = helper.getCollectionData(unitTests, '_id', formData['test_id']);
-                  let subject = helper.getCollectionData(subjects,'subject_name',testData?.subject_name,'_id')
-      
                   formData['school_name'] = school_name
                   formData['school_id'] = school_id
-                  formData['class_id'] = class_id
-                  formData['class_name'] = class_name
-                  formData['test_name'] = test_name
-                  formData['test_window'] = +testWindow*60
-                  formData['test_type'] = testData?.test_type
-                  formData['test_subjects'] = testData?.test_subjects
-                  formData['subject_id'] = subject?._id
-                  formData['subject_name'] = testData?.subject_name
-                  formData['test_duration'] = testData?.test_duration
-                  formData['total_question'] = testData?.total_question
-                  formData['start_date'] = startDate
-                  // console.log(formData); return;
-                  await createMutation.mutate(formData, {
-                        onError: (error) => {
-                              if(error.response.status == 405){
-                                    let message = 'Test cant be assigned at this time\n Some test with the same timing already assigned.\n Change test timing and assign again';
-                                    addToast(message, { appearance: 'error', autoDismiss: true });
+                  if(params?.test_type === 'mock-test'){
+                        let testData = helper.getCollectionData(mockTests, '_id', formData['test_id']);
+                        formData['test_name'] = testData?.test_name
+                        formData['test_window'] = +testWindow*60
+                        formData['test_type'] = testData?.test_type
+                        formData['start_date'] = startDate
+                        await createMutation.mutate(formData, {
+                              onError: (error) => {
+                                    if(error.response.status == 405){
+                                          let message = 'Test cant be assigned at this time\n Some test with the same timing already assigned.\n Change test timing and assign again';
+                                          addToast(message, { appearance: 'error', autoDismiss: true });
+                                    }
                               }
-                        }
-                  });
+                        });
+
+                        
+                  }else{
+                        let class_name = getFilteredData(SClass,'_id' ,class_id, 'class_name');
+                        let test_name = getFilteredData(unitTests,'_id' ,formData['test_id'], 'test_name');
+                        let testData = helper.getCollectionData(unitTests, '_id', formData['test_id']);
+                        let subject = helper.getCollectionData(subjects,'subject_name',testData?.subject_name,'_id')
+                        formData['class_id'] = class_id
+                        formData['class_name'] = class_name
+                        formData['test_name'] = test_name
+                        formData['test_window'] = +testWindow*60
+                        formData['test_type'] = testData?.test_type
+                        formData['test_subjects'] = testData?.test_subjects
+                        formData['subject_id'] = subject?._id
+                        formData['subject_name'] = testData?.subject_name
+                        formData['test_duration'] = testData?.test_duration
+                        formData['total_question'] = testData?.total_question
+                        formData['start_date'] = startDate
+                        // console.log(formData); return;
+                        await createMutation.mutate(formData, {
+                              onError: (error) => {
+                                    if(error.response.status == 405){
+                                          let message = 'Test cant be assigned at this time\n Some test with the same timing already assigned.\n Change test timing and assign again';
+                                          addToast(message, { appearance: 'error', autoDismiss: true });
+                                    }
+                              }
+                        });
+                  }
+      
+                  
             }
 
             
@@ -135,15 +156,28 @@ export default function CreateAssignTest() {
                   </div>  
                   <div className="row col-md-12 mt-3">
                         <div className="table table-responsive table-borded">
-                        
-                              <div className="flex">
-                                    <div style={{ width: '220px'}}>Test Name</div> 
-                                    <div style={{ width: '110px'}}>Duration</div> 
-                                    <div style={{ width: '110px'}}>Question</div> 
-                                    <div style={{ width: '110px'}}>Test Type</div> 
-                                    <div style={{ width: '110px'}}>Test Subjects</div> 
-                                    <div style={{ width: '110px'}}>Assigned</div> 
-                              </div>
+                              {params?.test_type === 'mock-test' ? 
+                              (
+                                    <div className="flex">
+                                          <div style={{ width: '220px'}}>Test Name</div> 
+                                          <div style={{ width: '110px'}}>Duration</div> 
+                                          <div style={{ width: '110px'}}>Test Type</div> 
+                                          <div style={{ width: '110px'}}>Published</div> 
+                                    </div>
+                              )
+                              :
+                              (
+                                    <div className="flex">
+                                          <div style={{ width: '220px'}}>Test Name</div> 
+                                          <div style={{ width: '110px'}}>Duration</div> 
+                                          <div style={{ width: '110px'}}>Question</div> 
+                                          <div style={{ width: '110px'}}>Test Type</div> 
+                                          <div style={{ width: '110px'}}>Test Subjects</div> 
+                                          <div style={{ width: '110px'}}>Assigned</div> 
+                                    </div>
+                              )
+                              }
+                              
                         
                   
                         <div className="pt-2 pr-0 no-gutter" style={{ height: '200px',maxHeight: '200px', overflowY: 'scroll', overflowX: 'hidden'}}>
@@ -176,6 +210,23 @@ export default function CreateAssignTest() {
                                     <div style={{ width: '100px'}}><b>{assigned?.toString()}</b></div>
                               </div>
                               )})}
+                              {params?.test_type === 'mock-test' && mockTests?.map(mtes => {
+                                    return(
+                                          <div className="flex" key={mtes?._id}>
+                                               <div style={{ width: '220px'}}>
+                                                      <label>
+                                                      <input className="mr-2" type="radio" name={`test`}
+                                                      value={mtes?._id}
+                                                      onChange={e => setFormData({...formData, test_id: e.target.value})}
+                                                      />
+                                                      {mtes?.test_name}</label>
+                                                </div>
+                                                <div style={{ width: '120px'}}><b>{mtes?.test_duration} Min</b></div>
+                                                <div style={{ width: '110px'}}><b>{mtes?.test_type}</b></div>
+                                                <div style={{ width: '110px'}}><b>{mtes?.status?.toString()}</b></div>
+                                          </div>
+                                    )
+                              })}
                               </div>
                   </div>  
                         </div>                  
