@@ -7,7 +7,7 @@ import AllQuestions from './components/AllQuestions';
 import useModule from '../../../hooks/useModule';
 import useAccess from '../../../hooks/useAccess';
 
-export default function UnitsList() {
+export default function Questionbank() {
     const params = useParams();
     const history = useHistory();
     const accessUrl = useModule();

@@ -118,6 +118,7 @@ app.use("/api/v1/principal", Routes.principalRoutes);
 app.use("/api/v1/teacher-subject-mapping", Routes.teacherSubjectMappingRoutes);
 app.use("/api/v1/teacher-class-mapping", Routes.teacherClassMappingRoutes);
 app.use("/api/v1/class-subject-mapping", Routes.classSubjectMappingRoutes);
+app.use("/api/v1/mock-test", Routes.mockTestRoutes);
 app.use("/api/v1/web", Routes.webRoutes);
 
 

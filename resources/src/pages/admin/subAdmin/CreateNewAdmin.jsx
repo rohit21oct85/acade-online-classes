@@ -53,6 +53,14 @@ export default function CreateNewAdmin() {
             console.log(formData)
             await updateMutation.mutate(formData);
         }else{
+            // console.log(formData)
+            // return;
+            let role = formData['role_name'];
+            let role_name = helper.getFilteredData(appRoles, 'role_id',role,'role_slug')
+            formData['role_name'] = role_name
+            formData['role'] = role
+            // console.log(formData);
+
             await createMutation.mutate(formData);
         }
         clearFields();
@@ -78,7 +86,7 @@ export default function CreateNewAdmin() {
                     onChange={e => {
                         if(params?.admin_id){
                             const role_name = helper.getFilteredData(appRoles, 'role_id',e.target.value,'role_slug')
-                            setFormData({...formData, role: e.target.value,['role_name']: role_name})
+                            setFormData({...formData, ['role']: e.target.value,['role_name']: role_name})
                             history.push(`/admin/manage-sub-admin/${params?.page_type}/${e.target.value}/${params?.admin_id}`)
                         }else{
                             setFormData({...formData, [e.target.name]: e.target.value})

@@ -16,6 +16,8 @@ import TeacherSubjectList from '../pages/admin/mappingTeacherSubject/TeacherSubj
 import TeacherClassList from '../pages/admin/mappingTeacherClass/TeacherClassList'
 import ClassSubjectList from '../pages/admin/mappingClassSubject/ClassSubjectList'
 import QuestionBank from '../pages/admin/questionBank/QuestionBank'
+import MockTest from '../pages/admin/mockTest/MockTest'
+
 import ViewAllQuestions from '../pages/admin/questionBank/ViewAllQuestions'
 import UnitsList from '../pages/admin/units/UnitsList'
 import UnitTests from '../pages/admin/unitTest/UnitTest'
@@ -23,6 +25,7 @@ import ViewAllTest from '../pages/admin/unitTest/ViewAllTest'
 import SchoolReport from '../pages/admin/school/SchoolReport'
 import AssignTests from '../pages/admin/assignTest/AssignTests'
 import SubjectChapterList from '../pages/admin/mappingSubjectChapter/SubjectChapterList'
+
 
 export const webRoutes =  [
     { 
@@ -107,6 +110,12 @@ export const privateRoutes = [
         path: '/admin/view-all-test/:test_type?/:class_id?',
         component: ViewAllTest
     },
+    
+    {
+        path: '/admin/mock-test/:page_type?/:module_type?/:question_for?/:test_id?',
+        component: MockTest
+    },
+
 
 ];
 

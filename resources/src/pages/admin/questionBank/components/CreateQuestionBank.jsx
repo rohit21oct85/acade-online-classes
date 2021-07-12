@@ -96,14 +96,20 @@ export default function CreateQuestionBank() {
             formData.chapter_id = chapter_id
             formData.chapter_no = chapter_no
             formData.chapter_name = chapter_name
-
-            let QuestionStem = formData['question'];
+            let QuestionStem;
             let desQuestionStem;
-            if(QuestionStem.includes("*")){
-                desQuestionStem = QuestionStem.split('*').join("<br/>");
+            if(params?.qbank_id){
+                  QuestionStem = chapter['question'];   
             }else{
-                desQuestionStem = formData['question'];
+                  QuestionStem = formData['question'];  
             }
+            if(QuestionStem.includes("*")){
+                  desQuestionStem = QuestionStem.split('*').join("<br/>");
+              }else{
+                  desQuestionStem = formData['question'];
+              }
+            
+            
             formData['question'] = desQuestionStem
             console.log(formData);
             // return;

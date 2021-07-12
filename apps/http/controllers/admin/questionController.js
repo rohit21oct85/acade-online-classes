@@ -79,11 +79,12 @@ const ViewQuestion = async (req, res) => {
 const ViewAllQuestion = async (req, res) => {
     try{
         let filter = {}
-        if(req?.params?.class_id && req?.params?.subject_id && req?.params?.unit_id){
+        if(req?.params?.class_id && req?.params?.subject_id && req?.params?.unit_id && req?.params?.chapter_id){
                 filter = {
                     class_id: req.params?.class_id,
                     subject_id: req.params?.subject_id,
                     unit_id: req.params?.unit_id,
+                    chapter_id: req.params?.chapter_id,
                 }
         } 
         
@@ -193,17 +194,7 @@ const getFromBetween = {
 function slitDataContent(string, delimeter){
     return string.split(delimeter)[0];
 }
-const uploadQuestion__ = async (req, res) => {
-    try {
-        
-        fs.readFile(req.file.path,'utf-8',function(error, data){
-            if(error) console.log(error.message())
-            console.log(data)
-        })    
-    } catch (error) {
-        console.log(error.message())
-    }
-}
+
 const uploadQuestion = async (req, res) => {
 const data = req.body;
 let FinalData = [];
@@ -508,103 +499,6 @@ const uploadQuestionTable = async (req, res) => {
         res.status(500).json({
             success: false,
             code: 500,
-            errors: error.message
-        });
-    }
-}
-const uploadQuestionTAG = async(req, res) => {
-
-    const data = req.body;
-    const class_id = req.body.class_id;
-    const class_name = req.body.class_name;
-    const chapter_id = req.body.chapter_id;
-    const chapter_name = req.body.chapter_name;
-    const chapter_no = req.body.chapter_no;
-    const extension = req.body.extension;
-    const subject_id = req.body.subject_id;
-    const subject_name = req.body.subject_name;
-    const unit_id = req.body.unit_id;
-    const unit_no = req.body.unit_no;
-    const unit_name = req.body.unit_name;
-    const user_id = req.body.user_id;
-
-    let FinalData = [];
-    try {
-        let results = [];
-        if(req.body.extension == 'docx'){
-            
-            docxParser.parseDocx(req.file.path, function(data){
-                let finalArray = []
-                var result = getFromBetween.get(decode(data),"#Ques#","#/Ques#");
-                result.forEach( val => {
-                    // let innerUnit = getFromBetween.get(decode(val),"#unit#","#/unit#");
-                    // let innerChapter = getFromBetween.get(decode(val),"#chapter#","#/chapter#");
-                    let innerQuestion = getFromBetween.get(decode(val),"#question#","#/question#");
-                    let innerOptions = getFromBetween.get(decode(val),"#options#","#/options#");
-                    let Options = innerOptions[0].replace(/\r?\n|\r/g, "").split("#option#").filter(el => el.length > 0);
-
-                    let innerAnswer = getFromBetween.get(decode(val),"#answer#","#/answer#");
-                    let innerExplanation = getFromBetween.get(decode(val),"#explanation#","#/explanation#");
-                    finalArray.push({
-                        "user_id": user_id,
-                        "class_id": class_id,
-                        "class_name": class_name,
-                        "chapter_id": chapter_id,
-                        "chapter_name": chapter_name,
-                        "chapter_no": chapter_no,
-                        "extension": extension,
-                        "subject_id": subject_id,
-                        "subject_name": subject_name,
-                        "unit_id": unit_id,
-                        "unit_no": unit_no,
-                        "unit_name": unit_name,
-                        "question": decode(innerQuestion[0]).replace(/\r?\n|\r/g, ""),
-                        "options": decode(Options),
-                        "answer": decode(innerAnswer[0]).replace(/\r?\n|\r/g, ""),
-                        "explanation": decode(innerExplanation[0]).replace(/\r?\n|\r/g, "")
-                    })
-                    
-                })
-                    // console.log(finalArray); return;
-                otherFunction(res, finalArray, function() {
-                    fs.unlinkSync(req.file.path)
-                })
-                
-            })
-
-            
-
-        }else{
-            fs.createReadStream(req.file.path)
-            .pipe(csv())
-            .on('data', (data) => results.push(data))
-            .on('end', () => {
-                results.forEach(Question => {
-                    FinalData.push({ 
-                        class_id: Question.class_id, 
-                        class_name: Question.class_name, 
-                        subject_id: Question.subject_id, 
-                        subject_name: Question.subject_name, 
-                        question: Question.question, 
-                        option_a: Question.option_a, 
-                        option_b: Question.option_b, 
-                        option_c: Question.option_c, 
-                        option_d: Question.option_d, 
-                        answer: Question.answer, 
-                        qtype: Question.qtype, 
-                        atype: Question.atype, 
-                        
-                    })
-                })
-                otherFunction(res, FinalData, function() {
-                    fs.unlinkSync(req.file.path)
-                })
-            });
-        }
-        
-    } catch (error) {
-        res.status(409).json({
-            message: "External Error occured",
             errors: error.message
         });
     }

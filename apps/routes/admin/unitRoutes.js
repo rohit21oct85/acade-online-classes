@@ -27,6 +27,7 @@ router
     .get('/view-all/:class_id?/:subject_id?', checkAuth, Unit.ViewAllUnit)
     .post('/delete', checkAuth, Unit.DeleteUnit)
     .post('/update-subject', checkAuth, Unit.UpdateUnitSubject)
+    .post('/update-class', checkAuth, Unit.UpdateUnitClass)
 ;
 
 module.exports = router;

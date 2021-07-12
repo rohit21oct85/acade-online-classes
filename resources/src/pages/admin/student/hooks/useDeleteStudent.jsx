@@ -27,7 +27,7 @@ export default function useDeleteStudent(formData) {
             return axios.delete(`${API_URL}v1/student/delete/${student_id}`, options)
         },{
             onSuccess: () => {
-                const key = (params.school_id ) ? `students-${params.school_id}` : `students`
+                const key = `students-${params.school_id}-${params.class_id}`
                 queryClient.invalidateQueries(key)
                 addToast('Student Deleted successfully', { appearance: 'success',autoDismiss: true });
             }
