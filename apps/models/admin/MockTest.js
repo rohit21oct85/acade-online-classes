@@ -10,12 +10,6 @@ const MockTestSchema = new mongoose.Schema({
       test_duration: {
             type: String,
       },
-      total_question: {
-            type: Number,
-      },
-      test_question: {
-            type: Array,
-      },
       test_type: {
             type: String,
       },

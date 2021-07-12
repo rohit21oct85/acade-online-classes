@@ -4,6 +4,7 @@ import {useHistory, useParams} from 'react-router-dom'
 import useModule from '../../../hooks/useModule';
 import useAccess from '../../../hooks/useAccess';
 import CreateMockTestQuestion from './components/CreateMockTestQuestion';
+import CreateMockTest from './components/CreateMockTest';
 import MockTestQuestionList from './components/MockTestQuestionList';
 
 export default function MockTest() {
@@ -43,6 +44,7 @@ export default function MockTest() {
                                 <span className="fa fa-dashboard"></span>
                             </button>
                             {create && (
+                                <>
                                 <button className="btn btn-sm dark mr-2" 
                                 onClick={ e => {
                                     if(params?.question_for !== undefined){
@@ -53,14 +55,25 @@ export default function MockTest() {
                                 }}>
                                     <span className="fa fa-plus mr-2"></span>Add Mock Test Question
                                 </button>
+                                <button className="btn btn-sm dark mr-2" 
+                                onClick={ e => {
+                                    if(params?.question_for !== undefined){
+                                        history.push(`/admin/mock-test/create/mock-test/${params?.question_for}`)
+                                    }else{
+                                        history.push(`/admin/mock-test/create/mock-test`)
+                                    }
+                                }}>
+                                    <span className="fa fa-plus mr-2"></span>Create Mock Test
+                                </button>
+                                </>
                             )}
                             {view && (
                                 <button className="btn btn-sm dark mr-2" 
                                 onClick={ e => {
                                     if(params?.question_for !== undefined){
-                                        history.push(`/admin/mock-test/view/list-mock-test-question/${params?.question_for}`)
+                                        history.push(`/admin/mock-test/view/mock-test-question/${params?.question_for}`)
                                     }else{
-                                        history.push(`/admin/mock-test/view/list-mock-test-question`)
+                                        history.push(`/admin/mock-test/view/mock-test-question`)
                                     }
                                 }}>
                                     <span className="fa fa-eye mr-2"></span>View Mock Test Question
@@ -70,7 +83,7 @@ export default function MockTest() {
                     </div>
                     <div className="dash-con-heading">
                     <div className="form-group">
-                             <select className="form-control"
+                             <select className="form-control col-md-2"
                              value={params?.question_for}
                              onChange={(e) => {
                               if(e.target.value !== '')   
@@ -91,7 +104,14 @@ export default function MockTest() {
                                     <CreateMockTestQuestion />
                                 </div>   
                              )}
-                             {view === true && params?.page_type === 'view' && params?.module_type === 'list-mock-test-question' && (
+                             
+                             {create === true && params?.page_type === 'create' && params?.module_type === 'mock-test' && (
+                                <div className="col-md-3">
+                                    <CreateMockTest />
+                                </div>   
+                             )}
+
+                             {view === true && params?.page_type === 'view' && params?.module_type === 'mock-test-question' && (
                                 <div className="col-md-12">
                                     <MockTestQuestionList />
                                 </div>   

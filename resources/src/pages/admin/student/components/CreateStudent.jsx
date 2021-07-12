@@ -47,8 +47,8 @@ export default function CreateStudent() {
         setSingleStudent(data)
     }
 
-    const createMutation = useCreateStudent(SingleStudent);
-    const updateMutation = useUpdateStudent(formData);
+    const createMutation = useCreateStudent(formData);
+    const updateMutation = useUpdateStudent(SingleStudent);
 
     const saveStudent = async (e) => {
         e.preventDefault();

@@ -25,11 +25,11 @@ export default function useCreateMockQuestion(formData) {
       const key = `mock-questions-${params?.question_for}`;
     
       return useMutation(formData => {
-            return axios.post(`${API_URL}v1/question-bank/create`, formData, options)
+            return axios.post(`${API_URL}v1/mock-test/add-question`, formData, options)
         },{
             onSuccess: () => {
                 queryClient.invalidateQueries(`${key}`)
-                history.push(`/admin/mock-test/${params?.page_type}/${params?.module_type}/${params?.question_for}`);
+                history.push(`/admin/mock-test/view/list-mock-test-question/${params?.question_for}`);
                 addToast('Questions added successfully', { appearance: 'success', autoDismiss: true });
             }
         });

@@ -11,13 +11,27 @@ export default function CreateMockTestQuestion() {
       const createMutation = useCreateMockQuestion(formData);
       async function handleSubmit(e){
             e.preventDefault();
-            formData['questio_for'] = params?.question_for
-            if(formData?.question == ''){
+            formData['question_for'] = params?.question_for
+            if(!formData?.question){
                   addToast('Please write a question?', { appearance: 'error',autoDismiss: true });
                   return;
             }
-            console.log(formData);
-            await createMutation.mutate(formData)
+            else if(!formData?.option_a){
+                  addToast('Please write a option a?', { appearance: 'error',autoDismiss: true });
+                  return;
+            }
+            else if(!formData?.option_b){
+                  addToast('Please write a option b?', { appearance: 'error',autoDismiss: true });
+                  return;
+            }
+            else if(!formData?.answer){
+                  addToast('Please select correct answer?', { appearance: 'error',autoDismiss: true });
+                  return;
+            }
+            else{
+                  console.log(formData);
+                  await createMutation.mutate(formData)
+            }
       }
       return (
             <div>
