@@ -141,7 +141,7 @@ export default function CreateTest() {
       async function handleSelectQuestion(id){
             setClicked(true)
             document.getElementById(id).style.display = 'none';
-            const filtered = await questions?.filter(q => q._id === id);
+            let filtered = await questionDB?.filter(q => q._id === id);
             setSelectedQuestions((selectedQuestions) => [...selectedQuestions, {
                   question_id: filtered[0]._id,
                   unit_id: filtered[0].unit_id,

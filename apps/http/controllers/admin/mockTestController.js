@@ -19,9 +19,54 @@ const AddMockTestQuestion = async (req, res) => {
     });
   }
 };
+const UpdateMockTestQuestion = async (req, res) => {
+ 
+  try {
+    await MockTestQuestion.findOneAndUpdate({_id: req.body.test_id},{$set: {
+      question_for: req.body.question_for,
+      question: req.body.question,
+      option_a: req.body.option_a,
+      option_b: req.body.option_b,
+      answer: req.body.answer,
+  }})
+        .then(response => {
+            return res.status(202).json({
+                message: "Question, Updated successfully"
+            })
+        })
+        .catch(error => {
+            return res.status(500).json({
+                message: "Error Found",
+                errors: error.message
+            })
+        });
+
+    return res.status(200).json({
+      message: "MockTest created sucessfully",
+    });
+  } catch (error) {
+    res.status(502).json({
+      message: error.message,
+    });
+  }
+};
+
 const AllMockTestQuestion = async (req, res) => {
   try {
     const Question = await MockTestQuestion.find({question_for: req.params?.question_for})
+    return res.status(200).json({
+      data: Question
+    });
+  } catch (error) {
+    res.status(502).json({
+      message: error.message,
+    });
+  }
+};
+
+const SingleMockTestQuestion = async (req, res) => {
+  try {
+    const Question = await MockTestQuestion.findOne({_id: req.params?.question_for})
     return res.status(200).json({
       data: Question
     });
@@ -149,6 +194,8 @@ module.exports = {
   AddMockTestQuestion,
   AllMockTestQuestion,
   DeleteMockTestQuestion,
+  SingleMockTestQuestion,
+  UpdateMockTestQuestion,
   CreateMockTest,
   UpdateMockTest,
   ViewMockTest,

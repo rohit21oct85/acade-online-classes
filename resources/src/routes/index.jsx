@@ -112,7 +112,7 @@ export const privateRoutes = [
     },
     
     {
-        path: '/admin/mock-test/:page_type?/:module_type?/:question_for?/:class_id?',
+        path: '/admin/mock-test/:page_type?/:module_type?/:question_for?/:test_id?',
         component: MockTest
     },
 

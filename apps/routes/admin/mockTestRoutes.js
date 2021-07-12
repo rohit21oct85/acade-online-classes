@@ -6,8 +6,11 @@ const router = express.Router();
 
 router
     .post('/add-question', checkAuth, MockTest.AddMockTestQuestion)
+    .post('/update-question', checkAuth, MockTest.UpdateMockTestQuestion)
     .get('/all-question/:question_for?', checkAuth, MockTest.AllMockTestQuestion)
+    .get('/single-question/:test_id?', checkAuth, MockTest.SingleMockTestQuestion)
     .post('/delete-question', checkAuth, MockTest.DeleteMockTestQuestion)
+    
     .post('/create', checkAuth, MockTest.CreateMockTest)
     .patch('/update/:id', checkAuth, MockTest.UpdateMockTest)
     .get('/view/:id', checkAuth, MockTest.ViewMockTest)

@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
+import { useHistory, useParams } from 'react-router-dom';
 import useMockQuestionList from '../hooks/useMockQuestionList'
 
 export default function MockTestQuestionList() {
       const {data:mocktests} = useMockQuestionList();
+      const params = useParams();
+      const history = useHistory();
       return (
             <div className="flex no-gutter" style={{ flexDirection: 'row', flexWrap: 'wrap', height: '500px', overflow: 'hidden scroll'}}>
                  {mocktests?.map((mq,ind) => {
@@ -21,7 +24,8 @@ export default function MockTestQuestionList() {
 
                                   <hr />
                                   <div className="col-md-12 mt-3">
-                                    <button className="dark mr-2">
+                                    <button className="dark mr-2"
+                                    onClick={(e) => history.push(`/admin/mock-test/create/mock-test-question/${params?.question_for}/${mq?._id}`)}>
                                         <span className="fa fa-pencil mr-2"></span>
                                         Edit
                                     </button>
