@@ -56,7 +56,7 @@ export default function CreateTest() {
             }
       
       }
-
+      
       async function handleSubmit(e){
             e.preventDefault();
             let class_id = params?.class_id
@@ -157,6 +157,13 @@ export default function CreateTest() {
                   setClicked(false)
             }
       }
+      async function deleteSelected(e){
+            e.preventDefault();
+            localStorage.removeItem('selectedQuestions');
+            setSelectedQuestions([])
+      }
+      const [view, setView] = useState(false);
+      const [savedQuestion, setSavedQuestion] = useState([]);
       useEffect(() => {
             const script = document.createElement("script");
             script.src = "https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image";
@@ -340,38 +347,94 @@ export default function CreateTest() {
                   <div className="col-md-12 pl-0">
                   <div className="text-success mb-0">
                         <span className="badge-danger pl-2 pr-2">All Questions: {questions?.length??0}</span>
-                        <span className="badge-success ml-3 pl-2 pr-2">Selected Questions: {selectedQuestions?.length}</span>
+                        
                         <span className="badge-success ml-3 pl-2 pr-2">Subject: {subject_name}</span>
-
-                  </div>
-                  <p>Select Questions: </p>
-                  <div className="table table-bordered">
-                        <div className="flex"> 
-                              <div className="col-md-6 pl-0">Unit/Chapter Name</div>
-                              <div className="col-md-6 pl-0">Question</div>
-                        </div>
-                  </div>
-                  <div  className="pr-2" style={{ height: '300px', overflowY: 'scroll'}}>
-                        {qLoading && (<><span className="fa fa-spinner"></span>Loading...</>)}      
-                        {questionDB?.map((q,i) => {
+                        <span className="badge-success ml-3 pl-2 pr-2">
+                              Selected Questions: {selectedQuestions?.length}
                               
-                              let sel = helper.checkExists(selectedQuestions,'_id',q?._id);
-                              if(!sel)
-                              return(
-                              <div 
-                              className={`card question col-md-12 pl-2 pr-2 mb-1`}
-                              key={q?._id}
-                              id={`${q?._id}`}
-                              onClick={handleSelectQuestion.bind(this, q?._id)}
-                              >
-                                    <div className="flex">
-                                          <div className="col-md-6 pl-0">{q?.unit_no}.{q?.unit_name}/{q?.chapter_no}.{q?.chapter_name} </div>
-                                          <div className="question col-md-6 pl-0" dangerouslySetInnerHTML={{ __html: q?.question  }} />
-                                    </div>
-                              </div>
-                              )
-                        })}
+                        </span>
+                        {selectedQuestions?.length > 0 && (
+                              <>
+                              <span className="fa fa-trash bg-danger text-white p-1 ml-2" style={{
+                                    display: 'inline-block',
+                                    cursor: 'pointer'
+                              }}
+                              onClick={deleteSelected}> Delete Selected</span>
+                              
+                              <span className="fa fa-eye bg-success text-white p-1 ml-2" style={{
+                                    display: 'inline-block',
+                                    cursor: 'pointer'
+                              }}
+                              onClick={(e) => {
+                                    
+                                    setSavedQuestion(JSON.parse(JSON.stringify(selectedQuestions)))
+                                    setView(!view);
+                              }}> View Selected</span>
+
+                              </>
+                              
+                        )}
                   </div>
+                  {view && (
+                  <div className="col-md-12 row mt-2">
+                      <p>Selected Questions: </p>
+                      {/* {JSON.stringify(savedQuestion)}   */}
+                        <div className="table table-bordered">
+                              <div className="flex"> 
+                                    <div className="col-md-4 pl-2">Question ID</div>
+                                    <div className="col-md-4 pl-2">Unit Name</div>
+                                    <div className="col-md-4 pl-2">Chapter Name</div>
+                              </div>
+                        </div>  
+                      {savedQuestion?.map( sQue => {
+                            return(
+                              <div className="table table-bordered mb-1">
+                              <div className="flex"> 
+                                    <div className="col-md-4 pl-2">{sQue?.question_id}</div>
+                                    <div className="col-md-4 pl-2">{sQue?.unit_name}</div>
+                                    <div className="col-md-4 pl-2">{sQue?.chapter_name}</div>
+                              </div>
+                        </div>
+                            );
+                      })} 
+                  </div>            
+                  )}
+                  {!view && (
+                        <div className="row col-md-12 mt-2">
+                        <p>Select Questions: </p>
+                        <div className="table table-bordered">
+                              <div className="flex"> 
+                                    <div className="col-md-6 pl-0">Unit/Chapter Name</div>
+                                    <div className="col-md-6 pl-0">Question</div>
+                              </div>
+                        </div>
+
+                        <div  className="pr-2" style={{ height: '300px', overflowY: 'scroll'}}>
+                              {qLoading && (<><span className="fa fa-spinner"></span>Loading...</>)}      
+                              {questionDB?.map((q,i) => {
+                                    let localData = JSON.stringify(selectedQuestions);
+                                    let sel = JSON.parse(localData).some(ques => ques?.question_id === q?._id);
+                                    if(!sel)
+                                    return(
+                                    <div 
+                                    className={`card question col-md-12 pl-2 pr-2 mb-1`}
+                                    key={q?._id}
+                                    id={`${q?._id}`}
+                                    onClick={handleSelectQuestion.bind(this, q?._id)}
+                                    >
+                                          <div className="flex">
+                                                <div className="col-md-6 pl-0">{q?.unit_no}.{q?.unit_name}/{q?.chapter_no}.{q?.chapter_name} </div>
+                                                <div className="question col-md-6 pl-0" dangerouslySetInnerHTML={{ __html: q?.question  }} />
+                                          </div>
+                                    </div>
+                                    )
+                              })}
+                        </div>
+                        
+                        </div>
+                  )}
+                 
+
                   
                   </div>
 
@@ -386,7 +449,7 @@ export default function CreateTest() {
                         Processing...</>
                         :
                         <><span className="bi bi-save mr-2"></span>
-                        Save Question</>      
+                        Save Unit Test</>      
                         }
                               
                         </button>
@@ -395,6 +458,7 @@ export default function CreateTest() {
                         className="btn btn-sm bg-danger br-5 text-white ml-2"
                         onClick={e => {
                               e.preventDefault();
+                              deleteSelected();
                               history.push(`/admin/manage-unit-test`)
                   }}>
                         <span className="fa fa-times"></span>
