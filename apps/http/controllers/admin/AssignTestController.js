@@ -1,4 +1,5 @@
 const AssignTest = require("../../../models/admin/AssignTest");
+const MockTestQuestion = require("../../../models/admin/MockTestQuestion");
 
 const CreateAssignTest = async (req, res) => {
   try {
@@ -121,6 +122,31 @@ const ViewAllAssignedTest = async (req, res) => {
       });
    }
 }
+const ViewAssignedMockTest = async (req, res) => {
+   try {
+      let filter = '';
+      if(req?.params?.school_id){
+          filter = {
+            school_id: req?.params?.school_id,
+            test_type: req?.params?.test_type
+          }
+      }
+      let totalQuestion = await MockTestQuestion.find({question_for: req?.params?.test_type});
+      let AssignTests = await AssignTest.find(filter);
+      AssignTests.total_question = totalQuestion
+     
+      //res.json(AssignTests); return; 
+
+     res.status(201).json({
+       data: AssignTests
+     })
+   } catch (error) {
+      res.status(502).json({
+        message: error.message,
+      });
+   }
+}
+
 
 const AssignedTestToClass = async (req, res) => {
    try {
@@ -142,5 +168,6 @@ const AssignedTestToClass = async (req, res) => {
 module.exports = {
   CreateAssignTest,
   ViewAllAssignedTest,
+  ViewAssignedMockTest,
   AssignedTestToClass
 }

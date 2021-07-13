@@ -24,14 +24,14 @@ export default function CreateQuestionBank() {
       const {data:subjects, isLoading: subjectLoading} = useClassSubjectList();
       const {data:units, isLoading: unitLoading} = useUnitList();
       const {data:chapters, isLoading: chapterLoading} = useSubjectChapterList();
-      const {data:chapter} = useSingleQuestion();
+      const {data:chapter, isLoading: questionLoading} = useSingleQuestion();
       const [formData, setFormData] = useState({});
       const [singleChapter, setSingleChapter] = useState({});
       const [btnDisabled, setBtnDisbaled] = useState(true)
-      
-      useEffect(() => {
-            setSingleChapter(chapter);
-      },[params?.qbank_id]);
+      console.log(chapter);
+      // useEffect(() => {
+      //       setSingleChapter(chapter);
+      // },[params?.qbank_id]);
 
       useEffect(() => {
             const script = document.createElement("script");
@@ -40,12 +40,12 @@ export default function CreateQuestionBank() {
             script.async = true;
             document.body.appendChild(script);
             
-      },[params?.qbank_id, params?.chapter_id, params?.unit_id]);
-      let options = []
-      let optionsDocx = [{key: 0,value: " A"},{key: 1,value: " B"},{key: 3,value: " C"},{key: 4,value: " D"}];
+      },[params?.qbank_id,params?.subject_id, params?.class_id, params?.chapter_id, params?.unit_id]);
+      let options;
+      let optionsDocx;
       
-      if(params?.qbank_id){
-            options = chapter?.options
+      if(params?.qbank_id && chapter?.extension == 'docx'){
+            options = chapter && chapter?.options
             optionsDocx = [{key: 0,value: " A"},{key: 1,value: " B"},{key: 3,value: " C"},{key: 4,value: " D"}];
       }else{
             options = [
@@ -276,7 +276,7 @@ export default function CreateQuestionBank() {
                   </div>
             {(params?.page_type === 'create' || params?.page_type === 'update') && (
                           
-            <form>
+            <form method="POST" encType="multipart/formData">
                   <div className="form-group">
                   <label>Add Questions and Options </label>
                   <hr className="mt-0 mb-1"/>
@@ -317,9 +317,9 @@ export default function CreateQuestionBank() {
                         
                   </div>      
                   <div className="row">
-                  {options?.map( (option,index) => {
-                  let option_answer = '';  
-                  let option_name = '';    
+                  {!questionLoading && chapter && chapter?.extension == 'docx' && options?.map( (option,index) => {
+                  let option_answer;  
+                  let option_name;    
                   if(index === 0){
                         option_answer = chapter && chapter?.option_a
                         option_name = 'option A'
@@ -337,8 +337,8 @@ export default function CreateQuestionBank() {
                         option_name = 'option D'
                   }      
                   return(
-                        <div className="form-group col-md-6" key={index}>
-                        <label>{params?.qbank_id ? option_name :option?.value}: </label>
+                  <div className="form-group col-md-6" key={`option-${index}`}>
+                        <label>{option_name ?? option?.value}: </label>
                               <CKEditor
                               editor={ ClassicEditor }
                               config={{
@@ -361,8 +361,7 @@ export default function CreateQuestionBank() {
                                     ]
                               },
                               }}
-                              
-                              data={`&nbsp; ${params?.qbank_id ? option :option?.value}`}
+                              data={`&nbsp; ${option}`}
                               onChange={ ( event, editor ) => {
                               const data = editor.getData();
                               setFormData( { ...formData, [option?.key] : data } );
@@ -377,11 +376,11 @@ export default function CreateQuestionBank() {
                               setFormData( { ...formData, answer : e.target.value } );
                               }}
                               >
-                                    <option>Correct Answer</option>
+                                    <option value="">Correct Answer</option>
                                     {optionsDocx?.map( (option, index) => {
                                     return(
                                     <option value={option?.key}
-                                    selected={chapter && chapter?.answer === option.value}
+                                    selected={chapter?.answer == option?.value ? 'selected':''}
                                     >{`${option?.value}`}</option>
                                     )})}
                               </select>
@@ -392,21 +391,21 @@ export default function CreateQuestionBank() {
                               editor={ ClassicEditor }
                               config={{
                               toolbar: {
-                                    items: [
-                                          'MathType', 'ChemType','heading', 
-                                          '|',
-                                          'bold',
-                                          'italic',
-                                          'link',
-                                          'bulletedList',
-                                          'numberedList',
-                                          'imageUpload',
-                                          'mediaEmbed',
-                                          'insertTable',
-                                          'blockQuote',
-                                          'undo',
-                                          'redo'
-                                    ]
+                              items: [
+                                    'MathType', 'ChemType','heading', 
+                                    '|',
+                                    'bold',
+                                    'italic',
+                                    'link',
+                                    'bulletedList',
+                                    'numberedList',
+                                    'imageUpload',
+                                    'mediaEmbed',
+                                    'insertTable',
+                                    'blockQuote',
+                                    'undo',
+                                    'redo'
+                              ]
                               },
                               }}
                               data={chapter && chapter?.solution}

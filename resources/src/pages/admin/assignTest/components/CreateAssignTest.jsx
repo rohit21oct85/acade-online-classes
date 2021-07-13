@@ -74,6 +74,7 @@ export default function CreateAssignTest() {
                         formData['test_name'] = testData?.test_name
                         formData['test_window'] = +testWindow*60
                         formData['test_type'] = testData?.test_type
+                        formData['test_duration'] = testData?.test_duration
                         formData['start_date'] = startDate
                         await createMutation.mutate(formData, {
                               onError: (error) => {
