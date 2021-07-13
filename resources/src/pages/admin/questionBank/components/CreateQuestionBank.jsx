@@ -276,7 +276,7 @@ export default function CreateQuestionBank() {
                   </div>
             {(params?.page_type === 'create' || params?.page_type === 'update') && (
                           
-            <form method="POST" encType="multipart/formData">
+            <form>
                   <div className="form-group">
                   <label>Add Questions and Options </label>
                   <hr className="mt-0 mb-1"/>
@@ -317,7 +317,7 @@ export default function CreateQuestionBank() {
                         
                   </div>      
                   <div className="row">
-                  {!questionLoading && chapter && chapter?.extension == 'docx' && options?.map( (option,index) => {
+                  {options?.map( (option,index) => {
                   let option_answer;  
                   let option_name;    
                   if(index === 0){
@@ -361,7 +361,7 @@ export default function CreateQuestionBank() {
                                     ]
                               },
                               }}
-                              data={`&nbsp; ${option}`}
+                              data={`&nbsp; ${params?.qbank_id ? option : ""}`}
                               onChange={ ( event, editor ) => {
                               const data = editor.getData();
                               setFormData( { ...formData, [option?.key] : data } );
@@ -420,10 +420,12 @@ export default function CreateQuestionBank() {
                   
                                           
                   <div className="form-group mt-2">
-                        <button className="btn btn-sm dark"
-                        disabled={(createMutation?.isLoading || updateMutation?.isLoading)}
-                        onClick={handleSubmit}>
-                        {(createMutation?.isLoading || updateMutation?.isLoading) 
+                        <button
+                              type="button"
+                              className="btn btn-sm dark"
+                              disabled={(createMutation?.isLoading || updateMutation?.isLoading)}
+                              onClick={handleSubmit}>
+                              {(createMutation?.isLoading || updateMutation?.isLoading) 
                         ?
                         <><span className="bi bi-spinner mr-2"></span>
                         Processing...</>
@@ -434,12 +436,16 @@ export default function CreateQuestionBank() {
                         </>      
                         }
                         </button>
-                        <button>
-                              <span></span> Cancel  
+                        <button type="button" className="btn btn-sm dark bg-success ml-2"
+                        onClick={() => {
+                              window.location.href= `/admin/question-bank/upload/${params?.class_id}/${params?.subject_id}/${params?.subject_id}/${params?.chapter_id}`
+                        }}>
+                              <span className="fa fa-times"></span> Cancel  
                         </button>
                   </div>
 
             </form>  
+            
             )}    
             {params?.page_type === 'upload' && (
                  <> 

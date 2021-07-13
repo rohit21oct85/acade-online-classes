@@ -49,6 +49,9 @@ const AssignTestSchema = new mongoose.Schema({
       test_duration:{
             type: Number,
       },
+      total_question:{
+            type: Number,
+      },
       test_subjects: {
             type: Array,
       },

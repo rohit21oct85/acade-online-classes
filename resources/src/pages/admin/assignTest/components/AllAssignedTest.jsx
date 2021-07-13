@@ -88,13 +88,13 @@ export default function AllAssignedTest({update, Delete}) {
                     </tr>
                 )
             })}
-            {assignMockTests?.map(test => {
+            {localStorage.getItem('mock_test_for') === 'student' && assignMockTests?.map(test => {
                 let test_window = new Date(test?.start_date)
                 test_window.setMinutes( test_window.getMinutes() + test?.test_window );
                 return(
                     <tr>
                         <td>{test?.school_name}</td>
-                        <td>{test?.test_name} ({(test?.total_question)} Qes)</td>
+                        <td>{test?.test_name}  ({(test?.total_question)} Qes)</td>
                         <td>{test?.test_duration} Min / {test?.test_window} Min</td>
                         <td>No Subject</td>
                         <td>{new Date(test?.start_date).toLocaleString()}</td>

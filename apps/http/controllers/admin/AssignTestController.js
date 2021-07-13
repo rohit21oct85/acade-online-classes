@@ -128,12 +128,16 @@ const ViewAssignedMockTest = async (req, res) => {
       if(req?.params?.school_id){
           filter = {
             school_id: req?.params?.school_id,
-            test_type: req?.params?.test_type
+            test_type: req?.params?.test_type,
           }
       }
-      let totalQuestion = await MockTestQuestion.find({question_for: req?.params?.test_type});
+      let totalQuestion = await MockTestQuestion.countDocuments({question_for: "student"});
+      // console.log(totalQuestion); return;
       let AssignTests = await AssignTest.find(filter);
-      AssignTests.total_question = totalQuestion
+      AssignTests.map( assignTest => {
+        assignTest.total_question = totalQuestion
+      })
+      
      
       //res.json(AssignTests); return; 
 

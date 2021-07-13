@@ -12,8 +12,9 @@ export default function useAssignedMockTestList() {
     const school_id = params?.school_id
     let key = '';
     let url = '';
+    let mock_test_for = localStorage.getItem('mock_test_for')
     if(state.access_token && school_id && params?.test_type){
-        url = `${API_URL}v1/assign-test/view-assigned-mock-test/${school_id}/${params?.test_type}`;
+        url = `${API_URL}v1/assign-test/view-assigned-mock-test/${school_id}/${params?.test_type}/${mock_test_for}`;
         key = `assign-tests-${school_id}-${params?.test_type}`;
     }
 

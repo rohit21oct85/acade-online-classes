@@ -134,7 +134,7 @@ const ViewAllMockTest = async (req, res) => {
   try {
     let filter;
     let status = req?.params?.status;
-    
+    let test_for = req?.params?.test_for;
     if(status){
       filter = {
         test_for: req?.params?.test_for,
@@ -145,9 +145,12 @@ const ViewAllMockTest = async (req, res) => {
         test_for: req?.params?.test_for
       }
     }
-    // res.json(filter); return;
-    const AllMockTests = await MockTest.find(filter,{__v:0,test_question: 0 });
-
+    let totalQuestion = await MockTestQuestion.countDocuments({question_for: test_for});
+    // res.json(totalQuestion); return;
+    let AllMockTests = await MockTest.find(filter,{__v:0,test_question: 0 });
+    AllMockTests.map( assignTest => {
+      assignTest.total_question = totalQuestion
+    })
     res.status(200).json({
       data: AllMockTests,
     });

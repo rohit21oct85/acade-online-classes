@@ -193,8 +193,8 @@ export default function CreateTest() {
                           
             <form>
                   
-                  <div className="row">
-                  <div className="col-md-3">
+                  <div className="row col-md-12">
+                  <div className="col-md-2">
                         <select className="form-control"
                         value={params?.test_type}
                         onChange={e => {
@@ -206,12 +206,14 @@ export default function CreateTest() {
                         </select>
                   </div>
                   {params?.test_type === 'combine-test' && (
-                  <div className="col-md-3 pl-0">
+                  <div className="col-md-2 pl-0">
                         <select className="form-control"
                         value={localStorage.getItem('assignClass')}
                         onChange={e => {
+                              
                               setFormData({...formData, ['assign_to']: e.target.value})
                               localStorage.setItem('assignClass', e.target.value)
+                              
                         }}>
                               <option value="_">Select Class</option>
                               {sClassess?.map(sclass => {
@@ -223,7 +225,7 @@ export default function CreateTest() {
                   </div>
                   )}
                   
-                  <div className="col-md-3 form-group">
+                  <div className="col-md-2 pl-0 form-group">
                         <input type="text" name="test_name" 
                         value={localStorage.getItem('test_name')} 
                         onChange={ e => {
@@ -245,21 +247,21 @@ export default function CreateTest() {
                                           addToast('please enter test duration in numbers', { appearance: 'error', autoDismiss: true });
                                     }
                               }}
-                              placeholder="Enter Test Duration in Minute"/>
+                              placeholder="Test Duration in Minute"/>
                   </div>
-                               
-                  </div> 
-                  
-                  <div className="flex">
-                        <div className="col-md-3 pl-0">
+                  <div className="form-group col-md-2">
                               <select className="form-control"
+                              id="classdiv"
                               value={params?.class_id}
                               onChange={e => {
-                                    if(e.target.value === '_'){
-                                          history.push(`/admin/manage-unit-test/${params?.page_type}/${params?.test_type}/`)  
+                                    if(params?.test_type == "undefined" || typeof params?.test_type !== 'string'){
+                                          addToast('please select test type first', { appearance: 'error', autoDismiss: true });
+                                          history.push(`/admin/manage-unit-test/create/`)
+                                          document.getElementById("classdiv").selectedIndex = '0'
                                     }else{
                                           history.push(`/admin/manage-unit-test/${params?.page_type}/${params?.test_type}/${e.target.value}`)  
                                     }
+                                    
                               }}>
                                     <option value="_">Select Class</option>
                                     {sClassess?.map(sclass => {
@@ -268,8 +270,9 @@ export default function CreateTest() {
                                           );
                                     })}
                               </select>
-                        </div>
-                        <div className="col-md-3 pl-0">
+                        </div>  
+
+                        <div className="col-md-2 pl-0">
                               <select className="form-control"
                               value={params?.subject_id}
                               onChange={e => {
@@ -306,7 +309,13 @@ export default function CreateTest() {
                                     })}
                               </select>
                         </div>
-                        <div className="form-group col-md-3 pl-0 pr-0">
+
+                  
+                  
+                  
+                        
+                        
+                        <div className="form-group col-md-2">
                         <select className="form-control"
                         value={params?.unit_id}
                         onChange={e => {
@@ -325,7 +334,7 @@ export default function CreateTest() {
                               })}
                         </select>
                   </div>
-                  <div className="form-group col-md-3">
+                  <div className="form-group col-md-2">
                   <select className="form-control"
                   value={params?.chapter_id}
                   onChange={e => {
@@ -345,11 +354,11 @@ export default function CreateTest() {
                   </select>
                   </div>
 
-                  </div>
+                  </div> 
                   
 
                   
-                  <div className="col-md-12 pl-0">
+                  <div className="col-md-12 mt-2">
                   <div className="text-success mb-0">
                         <span className="badge-danger pl-2 pr-2">All Questions: {questions?.length??0}</span>
                         

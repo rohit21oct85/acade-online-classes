@@ -33,7 +33,7 @@ export default function SchoolReport() {
     const {data: schools} = useSchoolLists();
     const {data: sClass} = useClassList();
     const {data: reports } = useSchoolAssignedTests();
-
+    
     function handleSchoolChange(e){
             history.push(`/admin/school-report/${e.target.value}`);
     }
@@ -82,7 +82,7 @@ export default function SchoolReport() {
                   <div className="dash-cont-start">
                   <div className="row col-md-12">
                        
-                        {reports?.map(rep => {
+                        {!params?.test_id && reports?.map(rep => {
                               let tsubjects = Array.prototype.map.call(rep?.test_subjects, function(items) { return items.subject_name}).join(', ');
                               let test_window = new Date(rep?.start_date)
                               test_window.setMinutes( test_window.getMinutes() + rep?.test_window );
@@ -95,15 +95,23 @@ export default function SchoolReport() {
                                     <div className="flex"><strong>Test Attemted:</strong>{rep.attemptedStudentIds?.length}</div>  
                                     <div className="flex"><strong>Test Window:</strong> {rep?.test_window}</div>  
                                     <div className="flex"><strong>Test Duration:</strong>{rep?.test_duration}</div>  
+                                    <div className="flex"><strong>Total Question:</strong>{rep?.total_question}</div>  
                                     <div className="flex"><strong>Test Starts:</strong>{new Date(rep?.start_date).toLocaleString()}</div>  
                                     <div className="flex"><strong>Test Ends:</strong> {test_window.toLocaleString()}</div>  
                                     <hr />
-                                    <button className="dark bg-success btn btn-sm">
+                                    <button className="dark bg-success btn btn-sm"
+                                    onClick={() => {
+                                          history.push(`/admin/school-report/${params?.school_id}/${params?.class_id}/${rep?.test_id}`)
+                                    }}>
                                           View Results
                                     </button>
                               </div>      
                               )
                         })}
+
+                        {params?.test_id && (
+                              <h2>Test result: </h2>
+                        )}
                         
                   </div>
                   </div>    

@@ -17,7 +17,7 @@ export default function useMockTestList() {
     if(path[2] == 'assign-test'){
         url = `${API_URL}v1/mock-test/view-all/${mock_test_for}/active`
     }else{
-        url = `${API_URL}v1/mock-test/view-all/${params?.question_for}/`
+        url = `${API_URL}v1/mock-test/view-all/${params?.question_for}`
     }
     key = `mock-questions-${params?.question_for}`;
    
