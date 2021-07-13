@@ -83,8 +83,10 @@ export default function AllQuestions({update, Delete}) {
                                         flexWrap: 'wrap',
                                         border: '1px solid #ededed'
                                     }}>
-                                        <div className="pr-3"> {option.value}: 
-                                        {(q?.answer === option.value) ? 
+                                        <div className="pr-3">
+                                         
+                                        {option.value}: 
+                                        {(q?.answer === option.value || q?.answer == option.key) ? 
                                             <span className="bi bi-check-circle-fill text-success  ml-1"></span>: 
                                             <span className="bi bi-x-circle-fill text-danger ml-1"></span>
                                         }
