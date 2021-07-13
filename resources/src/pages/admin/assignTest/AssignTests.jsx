@@ -104,6 +104,7 @@ export default function AssignTests() {
                             onChange={(e) => {
                              if(e.target.value !== '')   
                              localStorage.setItem('mock_test_for', e.target.value)
+                             window.location.href= `/admin/assign-test/${params?.page_type}/${params?.school_id}/${params?.test_type}`
                             }}>
                                    <option value="">Mock Test For</option>
                                    <option value="student">Student</option>
