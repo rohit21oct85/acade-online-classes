@@ -126,11 +126,12 @@ export default function AllQuestions({update, Delete}) {
                                 }
                                 <div className="pl-3 pr-3"  dangerouslySetInnerHTML={{ __html: q?.option_b }}/>
                             </div>
-                            <div className="col-md-11 flex pr-0"
-                            style={{
-                                justifyContent: 'flex-start',
-                                flexWrap: 'wrap',
-                                border: '1px solid #ededed'
+                            <div 
+                                className="col-md-11 flex pr-0"
+                                    style={{
+                                    justifyContent: 'flex-start',
+                                    flexWrap: 'wrap',
+                                    border: '1px solid #ededed'
                             }}>
                                 <div className="pr-3"> C: </div>
                                 

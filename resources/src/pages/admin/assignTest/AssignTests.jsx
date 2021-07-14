@@ -8,6 +8,7 @@ import useModule from '../../../hooks/useModule';
 import useAccess from '../../../hooks/useAccess';
 import useClassList from '../class/hooks/useClassList';
 import useSchoolLists from '../school/hooks/useSchoolLists';
+import { useToasts } from 'react-toast-notifications';
 
 export default function AssignTests() {
     const params = useParams();
@@ -15,7 +16,7 @@ export default function AssignTests() {
     const accessUrl = useModule();
     const {data: SClass}     = useClassList()
     const {data: schools}    = useSchoolLists();
-
+    const { addToast } = useToasts();
     useEffect(checkPageAccessControl,[accessUrl]);
     function checkPageAccessControl(){
         if(accessUrl === false){
@@ -89,7 +90,11 @@ export default function AssignTests() {
                                 <select className="form-control"
                                 value={params?.test_type}
                                 onChange={e => {
-                                    history.push(`/admin/assign-test/${params?.page_type}/${params?.school_id}/${e.target.value}`)
+                                    if(params?.school_id == "undefined"){
+                                        addToast("please select school id", { appearance: 'error', autoDismiss: true });
+                                    }else{
+                                        history.push(`/admin/assign-test/${params?.page_type}/${params?.school_id}/${e.target.value}`)
+                                    }
                                 }}>
                                     <option value="">Test Type</option>
                                     <option value="combine-test">Combined Test</option>
@@ -102,9 +107,8 @@ export default function AssignTests() {
                             <select className="form-control "
                             value={localStorage.getItem('mock_test_for')}
                             onChange={(e) => {
-                             if(e.target.value !== '')   
-                             localStorage.setItem('mock_test_for', e.target.value)
-                             window.location.href= `/admin/assign-test/${params?.page_type}/${params?.school_id}/${params?.test_type}`
+                                localStorage.setItem('mock_test_for', e.target.value)
+                                window.location.href= `/admin/assign-test/${params?.page_type}/${params?.school_id}/${params?.test_type}`
                             }}>
                                    <option value="">Mock Test For</option>
                                    <option value="student">Student</option>

@@ -15,23 +15,31 @@ export default function MockTestList() {
             formData['status'] = status
             await updateStatusMutation.mutate(formData);
       }
+      console.log(mocktests)
       return (
-            <div className="flex no-gutter" style={{ flexDirection: 'row', flexWrap: 'wrap', height: '150px', overflow: 'hidden scroll'}}>
+            <div className="flex no-gutter" style={{ flexDirection: 'row', flexWrap: 'wrap'}}>
                  {mocktests !== undefined && Array.from(mocktests)?.map((mq,ind) => {
                        return(
-                              <div className="card flex col-md-6 p-2 mb-2" style={{ 
+                              <div 
+                                    className="card flex col-md-6 p-2 mb-2" 
+                                    key={ind}
+                                    style={{ 
                                     cursor: 'pointer', 
                                     flexDirection: 'row', 
                                     flexWrap: 'wrap',
-                                    alignItems: 'flex-start',
+                                    alignItems: 'flex-end',
                                     color: 'white'
                               }}>
-                                  <span className="col-md-6 text-dark">Test Name: &nbsp;{mq.test_name}</span>
-                                  <span className={`col-md-4 ${mq.answer === 'a'? 'bg-success': 'bg-danger'}`}>
+                                  <div className="col-md-6 text-dark">Test Name: &nbsp;{mq.test_name}</div>
+                                  <span className={`col-md-6 ${mq.answer === 'a'? 'bg-success': 'bg-danger'}`}>
                                     Test Type: {mq.test_type}
                                   </span>
-                                  <span className="col-md-6 text-dark">Test For: &nbsp;{mq.test_for}</span>
-
+                                  <div className="col-md-6 text-dark">Test For: &nbsp;{mq.test_for}</div>
+                                  <span className={`col-md-6 mt-2 ${mq.answer === 'a'? 'bg-success': 'bg-danger'}`}>
+                                    Total Question: {mq.total_question}
+                                  </span>
+                                  <div className="col-md-6 text-dark">Test Duration: &nbsp;{mq.test_duration} Min</div>
+                                  
                                   <hr />
                                   <div className="col-md-12 mt-3">
                                     <button className={`dark mr-2 ${mq?.status ? 'bg-success': 'bg-danger'}`}
