@@ -12,6 +12,8 @@ const Subject = require('../../../models/admin/Subject');
 const School = require('../../../models/admin/School');
 const Unit = require('../../../models/admin/Unit');
 const Chapter = require('../../../models/admin/Chapter');
+const TeacherAssignmentTest = require('../../../models/admin/TeacherAssignmentTest');
+const MockTestQuestions = require('../../../models/admin/MockTestQuestion');
 
 const getSubjects = async (req, res) => {
     try{
@@ -1215,6 +1217,74 @@ const ViewAllChapters = async (req, res) => {
     }
 };
 
+const CreateTest = async ( req, res ) => {
+    try {
+        console.log(req.body.files,req.files)
+        return res.status(200).json({ 
+            data: req.body,
+            files:req.files
+        });
+        console.log(req.body,req.files);
+        const body =  req.body;
+        body.answers = req.body.correctAnswers;
+        body.class_id = req.params.class_id;
+        body.unit_id = req.params.unit_id;
+        body.chapter_id = req.params.chapter_id;
+        body.questionDocs = req.params.files;
+        const newTest = new TeacherAssignmentTest(body);
+        await newTest.save();
+        return res.status(200).json({ 
+            message: "Teacher created sucessfully"
+        });
+    } catch (error) {
+        res.status(502).json({
+            message : error.message
+        })
+    }
+}
+
+const getMockTest = async ( req, res ) => {
+    try {
+        const AssignedTests = await AssignTest.find(
+            {
+                school_id:req.params.school_id,
+                // class_id:req.params.class_id,
+                assigned: true,
+                test_type:"mock-test",
+                attemptedStudentIds:{
+                    $nin:[req.params.student_id]
+                },
+                $and: [
+                        {
+                            "start_date": { 
+                                $gte: new Date().toISOString()
+                            }
+                        }
+                    ]
+            },{__v: 0});
+        return res.status(200).json({ 
+            data: AssignedTests
+        });
+    } catch (error) {
+        res.status(502).json({
+            message : error.message
+        })
+    }
+}
+
+const getMockTestQuestions = async ( req, res ) => {
+    try {
+        const mockQuestions = await MockTestQuestions.find();
+        return res.status(200).json({ 
+            data: mockQuestions
+        });
+    } catch (error) {
+        res.status(502).json({
+            message : error.message
+        })
+    }
+}
+
 module.exports = {
     getSubjects,
     getAssignedTestsStudent,
@@ -1253,4 +1323,7 @@ module.exports = {
     deleteTeachers,
     ViewAllUnit,
     ViewAllChapters,
+    CreateTest,
+    getMockTest,
+    getMockTestQuestions
 }
