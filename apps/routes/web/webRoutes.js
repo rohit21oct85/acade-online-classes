@@ -26,10 +26,10 @@ router
     .get('/get-test-questions/:test_id?', checkAuth, Web.getTestQuestions)
     .get('/get-a-test-question/:test_id?', checkAuth, Web.getASingleQuestions)
     .post('/attempt-test/:school_id?/:class_id?/:user_id?', checkAuth, Web.attemptTestByStudent)
-    .post('/get-question/:test_id?', checkAuth, Web.getQuestions)
-    .patch('/save-answer/:test_id?', checkAuth, Web.saveAnswer)
+    .post('/get-question/:test_id?/:test_type?', checkAuth, Web.getQuestions)
+    .patch('/save-answer/:test_id?/:test_type?', checkAuth, Web.saveAnswer)
     .get('/get-result/:attempt_id?', checkAuth, Web.getResult)
-    .post('/get-all-questions/:test_id?', checkAuth, Web.getAllQuestions)
+    .post('/get-all-questions/:test_id?/:test_type?', checkAuth, Web.getAllQuestions)
     .post('/get-last-score', checkAuth, Web.getLastScore)
     .post('/get-cumulative-score/:subject_id?', checkAuth, Web.getCumulativeScore)
     .get('/get-mock-test/:school_id?/:student_id?', checkAuth, Web.getMockTest)
@@ -53,7 +53,7 @@ router
     .get('/classes-with-student-no/:school_id?/:teacher_id', checkAuth, Web.getClassesWithStudents)
     .get('/view-all-units/:class_id?/:subject_id?', checkAuth, Web.ViewAllUnit)
     .get('/view-all-chapters/:class_id?/:subject_id?/:unit_id?', checkAuth, Web.ViewAllChapters)
-    .post('/create-test/:class_id?/:unit_id?/:chapter_id?/:teacher_id?', upload.array('files', 10), checkAuth, Web.CreateTest)
+    .post('/create-test/:class_id?/:unit_id?/:chapter_id?/:teacher_id?/:school_id?', upload.array('files', 10), checkAuth, Web.CreateTest)
    
     //principal
     .get('/view-principal/:id', checkAuth, Web.getPrincipal)

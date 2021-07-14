@@ -5,6 +5,12 @@ const TeacherAssignmentTestSchema = new mongoose.Schema({
     class_id: {
         type: String,
     },
+    school_id: {
+        type: String,
+    },
+    teacher_id: {
+        type: String,
+    },
     unit_id: {
         type: String,
     },
