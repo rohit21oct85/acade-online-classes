@@ -74,8 +74,8 @@ export default function AllStudents({update, Delete}) {
                         {/* <th scope="col">School Name</th> */}
                         <th scope="col">Name</th>
                         <th scope="col">Class</th>
-                        <th scope="col" className="hidden_col">Sec.</th>
-                        <th scope="col" className="hidden_col">Roll</th>
+                        <th scope="col">Sec.</th>
+                        <th scope="col">Roll</th>
                         <th scope="col" className="hidden_col">Mobile</th>
                         <th scope="col">Email</th>
                         <th scope="col" className="hidden_col">Action</th>
@@ -91,8 +91,8 @@ export default function AllStudents({update, Delete}) {
                                 
                                 <td>{item.name}</td>
                                 <td>{item.class}</td>
-                                <td className="hidden_col">{item.section}</td>
-                                <td className="hidden_col">{item.roll_no}</td>
+                                <td>{item.section}</td>
+                                <td>{item.roll_no}</td>
                                 <td className="hidden_col">{item.mobile}</td>
                                 <td>{item?.username.toLowerCase()}</td>
                                 <td className="flex hidden_col">

@@ -37,6 +37,18 @@ const AssignTestSchema = new mongoose.Schema({
       subject_id: {
             type: String,
       },
+      chapter_id: {
+            type: String,
+      },
+      unit_id: {
+            type: String,
+      },
+      answers: {
+            type: Array,
+      },
+      extension: {
+            type: String,
+        },
       subject_name: {
             type: String,
       },
@@ -53,6 +65,9 @@ const AssignTestSchema = new mongoose.Schema({
             type: Number,
       },
       test_subjects: {
+            type: Array,
+      },
+      questionDocs: {
             type: Array,
       },
       test_type: {
