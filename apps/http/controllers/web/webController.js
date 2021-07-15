@@ -496,7 +496,27 @@ const assignTestToStudent = async (req, res) =>{
 
 const attemptTestByStudent = async (req, res) =>{
     try {
-        if(req.body.test_type == "mock-test"){
+        console.log(req.body)
+        let result = [];
+        if(req.body.test_type == "upload-test"){
+            const assignTest = await AssignTest.findOne({_id:req.body.assign_test_id},{__v: 0})
+            const attempt = new AttemptTest({
+                school_id: req.body.school_id,
+                class_id: req.body.class_id,
+                // subject_id: req.body.subject_id,
+                student_id: req.body.user_id,
+                test_id: assignTest._id,
+                student_name: req.body.name,
+                questions: assignTest.questionDocs,
+                test_subjects: assignTest.test_subjects,
+                test_name: assignTest.test_name,
+                test_type: assignTest.test_type,
+                section: req.body.section,
+                extension: assignTest.extension,
+                questionLength: assignTest.answers.length
+            });   
+            result = await attempt.save();
+        }else if(req.body.test_type == "mock-test"){
             const mockQuestions = await MockTestQuestions.find({question_for:"student"},{answer:0});
             const newData1 = await AssignTest.findOne(
                 {
@@ -513,6 +533,7 @@ const attemptTestByStudent = async (req, res) =>{
                 questions: mockQuestions,
                 test_subjects:newData1.test_subjects,
                 test_name:newData1.test_name,
+                test_type:newData1.test_type,
                 section:req.body.section,
             });   
             await attempt.save();
@@ -547,8 +568,8 @@ const attemptTestByStudent = async (req, res) =>{
         })
         return res.status(200).json({
             message: "AttemptTest created sucessfully",
+            data: result
         });
-
     } catch (error) {
         res.status(502).json({
             message: error.message,
@@ -613,7 +634,6 @@ const saveAnswer = async (req,res) => {
                     item['correct_answer'] = un.answer
                 }
             })
-            console.log(data.questions)
             const assigntests = await AttemptTest.findOneAndUpdate(filter, {$set: {"questions": data.questions,"time_taken":req.body.time_taken,"completion_status":req.body.completion_status}})
             if(assigntests){
                 return res.status(200).json({ 
@@ -738,7 +758,8 @@ const getLastScore = async (req,res) => {
             _id:result?._id,
             questions:result?.questions,
             time_taken:result?.time_taken,
-            test_id:result?.test_id
+            test_id:result?.test_id,
+            test_type:result?.test_type
         }
         if(!result){
             data = null
@@ -1270,24 +1291,63 @@ const ViewAllChapters = async (req, res) => {
 
 const CreateTest = async ( req, res ) => {
     try {
-        let filenames = [];
-        let myObject = JSON.parse(req.body.correctAnswers);
-        for(let i = 0; i<req.files.length;i++){
-            filenames.push(req.files[i].filename)
+        // console.log(req.params,req.body)       
+        const assignTest = await AssignTest.findOne({class_id: req.params.class_id, school_id:req.params.school_id, assigned: true},{start_date:1,test_window:1}).limit(1).sort({$natural:-1})
+        console.log(assignTest)
+        let timeAlTest = new Date(assignTest?.start_date)
+        timeAlTest.setMinutes( timeAlTest.getMinutes() + assignTest?.test_window );
+        
+        let timeNwTest = new Date(req.body.start_date)
+        
+        if(assignTest != null && timeNwTest > timeAlTest){
+            let filenames = [];
+            let myObject = JSON.parse(req.body.correctAnswers);
+            for(let i = 0; i<req.files.length;i++){
+                filenames.push(req.files[i].filename)
+            }
+            const body =  req.body;
+            body.answers = myObject;
+            body.class_id = req.params.class_id;
+            body.unit_id = req.params.unit_id;
+            body.chapter_id = req.params.chapter_id;
+            body.school_id = req.params.school_id;
+            body.teacher_id = req.params.teacher_id;
+            body.questionDocs = filenames;
+            body.test_subjects = JSON.parse(req.body.test_subjects);
+            body.test_type = "upload-test";
+            body.assigned = true;
+            const newTest = new AssignTest(body);
+            await newTest.save();
+            return res.status(200).json({ 
+                message: "Test created sucessfully"
+            });
+        }else if(assignTest == null){
+            let filenames = [];
+            let myObject = JSON.parse(req.body.correctAnswers);
+            for(let i = 0; i<req.files.length;i++){
+                filenames.push(req.files[i].filename)
+            }
+            const body =  req.body;
+            body.answers = myObject;
+            body.class_id = req.params.class_id;
+            body.unit_id = req.params.unit_id;
+            body.chapter_id = req.params.chapter_id;
+            body.school_id = req.params.school_id;
+            body.teacher_id = req.params.teacher_id;
+            body.questionDocs = filenames;
+            body.test_subjects = JSON.parse(req.body.test_subjects);
+            body.test_type = "upload-test";
+            body.assigned = true;
+            const newTest = new AssignTest(body);
+            await newTest.save();
+            return res.status(200).json({ 
+                message: "Test created sucessfully"
+            });
+        }else{
+            return res.status(405).json({
+                message: "Test Cant be assigned, a test is already assigned for this time"
+            })
         }
-        const body =  req.body;
-        body.answers = myObject;
-        body.class_id = req.params.class_id;
-        body.unit_id = req.params.unit_id;
-        body.chapter_id = req.params.chapter_id;
-        body.school_id = req.params.school_id;
-        body.teacher_id = req.params.teacher_id;
-        body.questionDocs = filenames;
-        const newTest = new TeacherAssignmentTest(body);
-        await newTest.save();
-        return res.status(200).json({ 
-            message: "Teacher created sucessfully"
-        });
     } catch (error) {
         res.status(502).json({
             message : error.message
@@ -1326,11 +1386,57 @@ const getMockTest = async ( req, res ) => {
     }
 }
 
+const getUploadTest = async ( req, res ) => {
+    try {
+        let date = new Date();
+        date.setMinutes( date.getMinutes() + 20 );
+        // const test = await AssignTest.findOne({school_id:req.params.school_id, assigned:true, test_type:"upload-test", class_id:req.params.class_id})
+        const AssignedTests = await AssignTest.find(
+            {
+                school_id:req.params.school_id,
+                class_id:req.params.class_id,
+                assigned: true,
+                test_type:"upload-test",
+                attemptedStudentIds:{
+                    $nin:[req.params.student_id]
+                },
+                // $and: [
+                //         {
+                //             "start_date": { 
+                //                 $gte: date.toISOString()
+                //             }
+                //         }
+                //     ]
+            },{__v: 0});
+        return res.status(200).json({ 
+            data: AssignedTests
+        });
+    } catch (error) {
+        res.status(502).json({
+            message : error.message
+        })
+    }
+}
+
 const getMockTestQuestions = async ( req, res ) => {
     try {
         const mockQuestions = await MockTestQuestions.find();
         return res.status(200).json({ 
             data: mockQuestions
+        });
+    } catch (error) {
+        res.status(502).json({
+            message : error.message
+        })
+    }
+}
+
+const getUploadTestPaper = async ( req, res ) => {
+    try {
+        console.log(req.params)
+        const attempTest = await AttemptTest.find({_id:req.params.attempt_id});
+        return res.status(200).json({ 
+            data: attempTest
         });
     } catch (error) {
         res.status(502).json({
@@ -1379,5 +1485,7 @@ module.exports = {
     ViewAllChapters,
     CreateTest,
     getMockTest,
-    getMockTestQuestions
+    getMockTestQuestions,
+    getUploadTest,
+    getUploadTestPaper
 }

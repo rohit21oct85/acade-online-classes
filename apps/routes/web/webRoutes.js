@@ -34,6 +34,8 @@ router
     .post('/get-cumulative-score/:subject_id?', checkAuth, Web.getCumulativeScore)
     .get('/get-mock-test/:school_id?/:student_id?', checkAuth, Web.getMockTest)
     .get('/get-mock-test-questions/', checkAuth, Web.getMockTestQuestions)
+    .get('/get-upload-test/:school_id?/:student_id?/:class_id?', checkAuth, Web.getUploadTest)
+    .get('/get-uploaded-test-paper/:attempt_id?/:test_type?', checkAuth, Web.getUploadTestPaper)
 
     .get('/view-student/:id?', checkAuth, Web.getStudent)
     .patch('/update-student/:id?', checkAuth, Web.updateStudent)
