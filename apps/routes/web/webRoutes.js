@@ -28,7 +28,7 @@ router
     .post('/attempt-test/:school_id?/:class_id?/:user_id?', checkAuth, Web.attemptTestByStudent)
     .post('/get-question/:test_id?/:test_type?', checkAuth, Web.getQuestions)
     .patch('/save-answer/:test_id?/:test_type?', checkAuth, Web.saveAnswer)
-    .get('/get-result/:attempt_id?', checkAuth, Web.getResult)
+    .get('/get-result/:attempt_id?/:test_type?', checkAuth, Web.getResult)
     .post('/get-all-questions/:test_id?/:test_type?', checkAuth, Web.getAllQuestions)
     .post('/get-last-score', checkAuth, Web.getLastScore)
     .post('/get-cumulative-score/:subject_id?', checkAuth, Web.getCumulativeScore)
