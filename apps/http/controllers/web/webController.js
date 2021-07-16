@@ -520,7 +520,7 @@ const attemptTestByStudent = async (req, res) =>{
                 test_duration: assignTest.test_duration,
                 student_roll_no: student.roll_no,
                 student_emp_id: student.EmpId,
-                class: student.class
+                student_class_name: student.class
             });   
             result = await attempt.save();
         }else if(req.body.test_type == "mock-test"){
@@ -548,7 +548,7 @@ const attemptTestByStudent = async (req, res) =>{
                 section:req.body.section,
                 student_roll_no: student.roll_no,
                 student_emp_id: student.EmpId,
-                class: student.class
+                student_class_name: student.class
             });   
             await attempt.save();
         }else{
@@ -578,7 +578,7 @@ const attemptTestByStudent = async (req, res) =>{
                 section:req.body.section,
                 student_roll_no: student.roll_no,
                 student_emp_id: student.EmpId,
-                class: student.class,
+                student_class_name: student.class
             });    
             await attempt.save();
         }
