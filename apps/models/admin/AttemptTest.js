@@ -58,6 +58,12 @@ const AttemptTestSchema = new mongoose.Schema({
     test_name:{
         type:String,
     },
+    test_type:{
+        type:String,
+    },
+    questionLength:{
+        type:String,
+    },
     section:{
         type:String,
     },

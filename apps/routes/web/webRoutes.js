@@ -4,6 +4,21 @@ const checkAuth =  require("../../http/middleware/check-auth");
 // const adminAuth =  require("../../http/middleware/admin-auth");
 const router = express.Router();
 
+var multer = require('multer')
+var storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, 'apps/uploads/')
+    },
+    fileFilter: function(req, file, cb) {
+        console.log(file.mimetype, "dadasd")
+    },
+    filename: function(req, file, cb) {
+        cb(null, file.originalname)
+    },
+})
+var upload = multer({ storage: storage })
+
+
 router
     //student
     .get('/get-subjects/:class_id?', checkAuth, Web.getSubjects)
@@ -11,12 +26,16 @@ router
     .get('/get-test-questions/:test_id?', checkAuth, Web.getTestQuestions)
     .get('/get-a-test-question/:test_id?', checkAuth, Web.getASingleQuestions)
     .post('/attempt-test/:school_id?/:class_id?/:user_id?', checkAuth, Web.attemptTestByStudent)
-    .post('/get-question/:test_id?', checkAuth, Web.getQuestions)
-    .patch('/save-answer/:test_id?', checkAuth, Web.saveAnswer)
+    .post('/get-question/:test_id?/:test_type?', checkAuth, Web.getQuestions)
+    .patch('/save-answer/:test_id?/:test_type?', checkAuth, Web.saveAnswer)
     .get('/get-result/:attempt_id?', checkAuth, Web.getResult)
-    .post('/get-all-questions/:test_id?', checkAuth, Web.getAllQuestions)
+    .post('/get-all-questions/:test_id?/:test_type?', checkAuth, Web.getAllQuestions)
     .post('/get-last-score', checkAuth, Web.getLastScore)
     .post('/get-cumulative-score/:subject_id?', checkAuth, Web.getCumulativeScore)
+    .get('/get-mock-test/:school_id?/:student_id?', checkAuth, Web.getMockTest)
+    .get('/get-mock-test-questions/', checkAuth, Web.getMockTestQuestions)
+    .get('/get-upload-test/:school_id?/:student_id?/:class_id?', checkAuth, Web.getUploadTest)
+    .get('/get-uploaded-test-paper/:attempt_id?/:test_type?', checkAuth, Web.getUploadTestPaper)
 
     .get('/view-student/:id?', checkAuth, Web.getStudent)
     .patch('/update-student/:id?', checkAuth, Web.updateStudent)
@@ -36,6 +55,7 @@ router
     .get('/classes-with-student-no/:school_id?/:teacher_id', checkAuth, Web.getClassesWithStudents)
     .get('/view-all-units/:class_id?/:subject_id?', checkAuth, Web.ViewAllUnit)
     .get('/view-all-chapters/:class_id?/:subject_id?/:unit_id?', checkAuth, Web.ViewAllChapters)
+    .post('/create-test/:class_id?/:unit_id?/:chapter_id?/:teacher_id?/:school_id?', upload.array('files', 10), checkAuth, Web.CreateTest)
    
     //principal
     .get('/view-principal/:id', checkAuth, Web.getPrincipal)
