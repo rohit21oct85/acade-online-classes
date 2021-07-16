@@ -500,6 +500,7 @@ const attemptTestByStudent = async (req, res) =>{
         let result = [];
         if(req.body.test_type == "upload-test"){
             const assignTest = await AssignTest.findOne({_id:req.body.assign_test_id},{__v: 0})
+            const student = await Student.findOne({_id:req.body.user_id},{roll_no:1,class:1,EmpId:1})
             const attempt = new AttemptTest({
                 school_id: req.body.school_id,
                 class_id: req.body.class_id,
@@ -517,10 +518,14 @@ const attemptTestByStudent = async (req, res) =>{
                 start_date: assignTest.start_date,
                 test_window: assignTest.test_window,
                 test_duration: assignTest.test_duration,
+                student_roll_no: student.roll_no,
+                student_emp_id: student.EmpId,
+                class: student.class
             });   
             result = await attempt.save();
         }else if(req.body.test_type == "mock-test"){
             const mockQuestions = await MockTestQuestions.find({question_for:"student"},{answer:0});
+            const student = await Student.findOne({_id:req.body.user_id},{roll_no:1,class:1,EmpId:1})
             const newData1 = await AssignTest.findOne(
                 {
                     test_id: req.body.id,
@@ -541,9 +546,13 @@ const attemptTestByStudent = async (req, res) =>{
                 test_window: newData1.test_window,
                 test_duration: newData1.test_duration,
                 section:req.body.section,
+                student_roll_no: student.roll_no,
+                student_emp_id: student.EmpId,
+                class: student.class
             });   
             await attempt.save();
         }else{
+            const student = await Student.findOne({_id:req.body.user_id},{roll_no:1,class:1,EmpId:1})
             const newData = await UnitTest.findOne(
                 {
                     _id: req.body.id,
@@ -567,6 +576,9 @@ const attemptTestByStudent = async (req, res) =>{
                 test_duration: newData1.test_duration,
                 test_name:newData1.test_name,
                 section:req.body.section,
+                student_roll_no: student.roll_no,
+                student_emp_id: student.EmpId,
+                class: student.class,
             });    
             await attempt.save();
         }
@@ -1418,7 +1430,7 @@ const getMockTest = async ( req, res ) => {
     try {
         let date = new Date();
         date.setMinutes( date.getMinutes() + 20 );
-        const AssignedTests = await AssignTest.findOne(
+        const MockTests = await AssignTest.findOne(
             {
                 school_id:req.params.school_id,
                 // class_id:req.params.class_id,
@@ -1436,7 +1448,7 @@ const getMockTest = async ( req, res ) => {
                 //     ]
             },{__v: 0});
         return res.status(200).json({ 
-            data: AssignedTests
+            data: MockTests
         });
     } catch (error) {
         res.status(502).json({

@@ -19,6 +19,9 @@ const AttemptTestSchema = new mongoose.Schema({
     class_id: {
             type: String,
     },
+    class: {
+            type: String,
+    },
     subject_name: {
             type: String,
     },
