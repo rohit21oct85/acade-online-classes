@@ -29,6 +29,9 @@ const AttemptTestSchema = new mongoose.Schema({
     class_id: {
         type: String,
     },
+    class: {
+            type: String,
+    },
     subject_name: {
         type: String,
     },
@@ -69,9 +72,18 @@ const AttemptTestSchema = new mongoose.Schema({
     section:{
         type:String,
     },
+    test_window:{
+        type:String,
+    },
+    test_duration:{
+        type:String,
+    },
     status:{
         type: Boolean,
         default: false
+    },
+    start_date: {
+        type: Date,
     },
     create_at: {
         type: Date,

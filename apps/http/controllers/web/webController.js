@@ -500,6 +500,7 @@ const attemptTestByStudent = async (req, res) =>{
         let result = [];
         if(req.body.test_type == "upload-test"){
             const assignTest = await AssignTest.findOne({_id:req.body.assign_test_id},{__v: 0})
+            const student = await Student.findOne({_id:req.body.user_id},{roll_no:1,class:1,EmpId:1})
             const attempt = new AttemptTest({
                 school_id: req.body.school_id,
                 class_id: req.body.class_id,
@@ -513,11 +514,18 @@ const attemptTestByStudent = async (req, res) =>{
                 test_type: assignTest.test_type,
                 section: req.body.section,
                 extension: assignTest.extension,
-                questionLength: assignTest.answers.length
+                questionLength: assignTest.answers.length,
+                start_date: assignTest.start_date,
+                test_window: assignTest.test_window,
+                test_duration: assignTest.test_duration,
+                student_roll_no: student.roll_no,
+                student_emp_id: student.EmpId,
+                class: student.class
             });   
             result = await attempt.save();
         }else if(req.body.test_type == "mock-test"){
             const mockQuestions = await MockTestQuestions.find({question_for:"student"},{answer:0});
+            const student = await Student.findOne({_id:req.body.user_id},{roll_no:1,class:1,EmpId:1})
             const newData1 = await AssignTest.findOne(
                 {
                     test_id: req.body.id,
@@ -534,10 +542,17 @@ const attemptTestByStudent = async (req, res) =>{
                 test_subjects:newData1.test_subjects,
                 test_name:newData1.test_name,
                 test_type:newData1.test_type,
+                start_date: newData1.start_date,
+                test_window: newData1.test_window,
+                test_duration: newData1.test_duration,
                 section:req.body.section,
+                student_roll_no: student.roll_no,
+                student_emp_id: student.EmpId,
+                class: student.class
             });   
             await attempt.save();
         }else{
+            const student = await Student.findOne({_id:req.body.user_id},{roll_no:1,class:1,EmpId:1})
             const newData = await UnitTest.findOne(
                 {
                     _id: req.body.id,
@@ -556,8 +571,14 @@ const attemptTestByStudent = async (req, res) =>{
                 student_name: req.body.name,
                 questions: newData.test_question,
                 test_subjects:newData1.test_subjects,
+                start_date: newData1.start_date,
+                test_window: newData1.test_window,
+                test_duration: newData1.test_duration,
                 test_name:newData1.test_name,
                 section:req.body.section,
+                student_roll_no: student.roll_no,
+                student_emp_id: student.EmpId,
+                class: student.class,
             });    
             await attempt.save();
         }
@@ -740,6 +761,27 @@ const getLastScore = async (req,res) => {
         let correctAnswers = 0;
         let wrongAnswers = 0;
         let totalQuestions = result?.questions?.length;
+        if(result.test_type == "mock-test"){
+            result?.questions?.map((item,key)=>{
+                if(item.answer != undefined ){
+                    if((item.answer === 'yes' ? 'a' : 'b') === item?.correct_answer){
+                        correctAnswers = correctAnswers + 1;
+                    }else{
+                        wrongAnswers = wrongAnswers + 1;
+                    }
+                }
+            })
+        }else{
+            result?.questions?.map((item,key)=>{
+                if(item.answer != undefined ){
+                    if(item.option == item['correct_option']){
+                        correctAnswers = correctAnswers + 1;
+                    }else{
+                        wrongAnswers = wrongAnswers + 1;
+                    }
+                }
+            })
+        }
         result?.questions?.map((item,key)=>{
             if(item.answer != undefined ){
                 if(item.option == item['correct_option']){
@@ -849,6 +891,8 @@ const getResult = async (req,res) => {
             let correctAnswers = 0;
             let wrongAnswers = 0;
             let totalQuestions = result?.questions?.length;
+            let timeEndTest = new Date(result?.start_date)
+            timeEndTest.setMinutes( timeEndTest.getMinutes() + result?.test_window );
             result?.questions?.map((item,key)=>{
                 if(item.answer != undefined ){
                     if(item.option == item['correct_option']){
@@ -863,12 +907,15 @@ const getResult = async (req,res) => {
                 correctAnswers : correctAnswers,
                 wrongAnswers : wrongAnswers,
                 attemptedQuestions: correctAnswers + wrongAnswers,
+                end_time: timeEndTest,
             }
         }else{
             const result = await AttemptTest.findOne({_id: req?.params?.attempt_id});
             let correctAnswers = 0;
             let wrongAnswers = 0;
             let totalQuestions = result?.questions?.length;
+            let timeEndTest = new Date(result?.start_date)
+            timeEndTest.setMinutes( timeEndTest.getMinutes() + result?.test_window );
             result?.questions?.map((item,key)=>{
                 if(item.answer != undefined ){
                     if((item.answer === 'yes' ? 'a' : 'b') === item?.correct_answer){
@@ -884,10 +931,9 @@ const getResult = async (req,res) => {
                 correctAnswers : correctAnswers,
                 wrongAnswers : wrongAnswers,
                 attemptedQuestions: correctAnswers + wrongAnswers,
+                end_time: timeEndTest,
             }
         }
-        
-
         return res.status(200).json({ 
             data: data, 
         }); 
@@ -1384,7 +1430,7 @@ const getMockTest = async ( req, res ) => {
     try {
         let date = new Date();
         date.setMinutes( date.getMinutes() + 20 );
-        const AssignedTests = await AssignTest.findOne(
+        const MockTests = await AssignTest.findOne(
             {
                 school_id:req.params.school_id,
                 // class_id:req.params.class_id,
@@ -1402,7 +1448,7 @@ const getMockTest = async ( req, res ) => {
                 //     ]
             },{__v: 0});
         return res.status(200).json({ 
-            data: AssignedTests
+            data: MockTests
         });
     } catch (error) {
         res.status(502).json({
