@@ -3,12 +3,14 @@ import {useQuery} from 'react-query';
 import axios from 'axios';
 import {AuthContext} from '../../../../context/AuthContext.jsx';
 import API_URL from '../../../../helper/APIHelper'
+import { useParams } from 'react-router-dom';
 
-export default function useAttemptTestList() {
+export default function useAttemptedStudents() {
     const {state } = useContext(AuthContext);
-    return useQuery('schools', async () => {
-        if(state.access_token){
-            const result = await axios.get(`${API_URL}v1/school/view-all`,{
+    const params = useParams();
+    return useQuery(`attempted_studetns-${params?.test_id}`, async () => {
+        if(state.access_token && params?.test_id && params?.test_type){
+            const result = await axios.get(`${API_URL}v1/test-report/view-student/${params?.test_id}/${params?.school_id}/${params?.class_id}/${params?.test_type}`,{
                 headers: {
                     'Content-Type': 'Application/json',
                     'Authorization':'Bearer '+state.access_token

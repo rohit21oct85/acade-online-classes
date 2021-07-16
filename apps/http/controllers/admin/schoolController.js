@@ -1,5 +1,6 @@
 const School = require('../../../models/admin/School');
 const AssignTest = require('../../../models/admin/AssignTest');
+const MockTestQuestion = require('../../../models/admin/MockTestQuestion');
 const csv = require('csv-parser')
 const fs = require('fs')
 const bcrypt = require('bcryptjs');
@@ -230,17 +231,36 @@ const searchSchool = async (req, res) => {
 }
 const schoolReport = async (req, res) => {
     try {
-        const data = await AssignTest.find({
-            school_id: req?.params?.school_id,
-            class_id: req?.params?.class_id
-        });
+        let test_type = req.params.test_type;
+        let totalQuestion = await MockTestQuestion.countDocuments({question_for: 'student'});
+        let filter = {};
+        if(test_type === 'mock-test'){
+            filter = {
+                school_id: req?.params?.school_id,
+                test_type: req?.params?.test_type,
+                assigned: true
+            }
+        }else if(test_type === 'single-test' || test_type === 'upload-test'){
+            filter = {
+                school_id: req?.params?.school_id,
+                class_id: req?.params?.class_id,
+                test_type: req?.params?.test_type,
+                assigned: true
+            }
+        }
+        let data = await AssignTest.find(filter);
+        if(test_type === 'mock-test'){
+            data?.map(d => {
+                d.total_question = totalQuestion
+            })
+        }
         res.status(201).json({
             data: data
         })
     } catch (error) {
         res.json({
             status: 500,
-            message: err.message
+            message: error.message
         })
     }
 }

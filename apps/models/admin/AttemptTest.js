@@ -11,25 +11,37 @@ const AttemptTestSchema = new mongoose.Schema({
             type: String,
     },
     student_name: {
-            type: String,
+        type: String,
     },
+    
+    roll_no: {
+        type: String,
+    },
+    emp_id: {
+        type: String,
+    },
+
     subject_id: {
-            type: String,
+        type: String,
     },
     class_id: {
-            type: String,
+        type: String,
     },
     subject_name: {
-            type: String,
-    },
-    student_roll_no: {
-            type: String,
-    },
-    student_emp_id: {
-            type: String,
+        type: String,
     },
     questions:{
         type: Array,
+    },
+
+    test_duration:{
+        type: Number,
+    },
+    start_date:{
+        type: Date,
+    },
+    test_window:{
+        type: Number,
     },
     time_taken:{
         type: Number,

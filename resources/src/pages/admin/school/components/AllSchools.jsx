@@ -19,31 +19,33 @@ export default function AllSchools({update}) {
                   return (
                   <div 
                         key={school?._id}
-                        className="card mb-2 pl-3 pr-2 col-md-6 no-gutter" 
+                        className="card mb-2 pl-3 pr-2 col-md-4 no-gutter" 
                         
                   >
 
                         <div className="row">
-                        <div className="col-md-12 btn btn-sm dark">
+                        <div className="col-md-12 text-left btn btn-sm">
                               <a 
                               style={{
                                     fontSize: '1.2rem',
                                     textDecoration: 'none',
-                                    color: 'white',
+                                    color: 'black',
+                                    borderBottom: '1px solid black'
                               }}
                               href={`https://${school?.sub_domain}.acadelearn.com`}
                               target="_blank"
                               >
                               {`http://${school?.sub_domain?.toLowerCase()}.acadelearn.com`}
                               </a>
-                              </div>
+                        </div>
                               <div className="col-md-2 pl-2 pt-3">
                                     <img 
-                                          src={`https://drive.google.com/uc?export=view&id=${school?.school_logo}`} style={{ height:'100px'}}
+                                          src={`https://drive.google.com/uc?export=view&id=${school?.school_logo}`} 
+                                          style={{ width: '60px'}}
                                           className="img-responsive"
                                     />  
                               </div>
-                              <div className="col-md-9 pr-3 ml-4 pt-3">   
+                              <div className="col-md-9 pr-1 ml-2 pt-3">   
                                     <div className="flex">
                                           <div className="name-label">
                                                       School Name: 

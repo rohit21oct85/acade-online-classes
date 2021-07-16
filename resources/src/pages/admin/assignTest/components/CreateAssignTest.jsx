@@ -242,7 +242,7 @@ export default function CreateAssignTest() {
                         Processing...</>
                         :
                         <><span className="bi bi-save mr-2"></span>
-                        Save Question</>      
+                        Save Assign Test</>      
                         }
                               
                         </button>

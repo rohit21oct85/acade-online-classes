@@ -10,23 +10,24 @@ p{
 
 /* width */
 ::-webkit-scrollbar {
-    width: 10px;
+    width: 8px;
+    height: 8px;
   }
   
   /* Track */
   ::-webkit-scrollbar-track {
-    background: #f1f1f100; 
+    background: #beb2b200; 
   }
    
   /* Handle */
   ::-webkit-scrollbar-thumb {
-    background: #2f3348;
-    border-radius: 10px;
+    background: #fa7649;
+    border-radius: 5px;
   }
   
   /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
-    background: #555; 
+    background: rgb(95, 2, 2); 
   }
 /* loged in css */
 

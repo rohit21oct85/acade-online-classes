@@ -64,7 +64,7 @@ export default function UnitsList() {
                                         history.push(`/admin/manage-units/upload`)
                                     }
                                 }}>
-                                    <span className="fa fa-upload mr-2"></span>Upload teachers 
+                                    <span className="fa fa-upload mr-2"></span>Upload Units 
                                 </button>
                             )}
                             

@@ -154,6 +154,7 @@ export default function AllQuestions({update, Delete}) {
                                 }
                                 <div className="pl-3 pr-3"  dangerouslySetInnerHTML={{ __html: q?.option_d }}/>
                             </div>
+                           
                             </>
                             )}
                         </div>

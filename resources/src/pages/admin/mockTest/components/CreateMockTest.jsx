@@ -33,6 +33,7 @@ export default function CreateMockTest() {
     } else {
       formData["test_for"] = params?.question_for;
       formData["test_type"] = "mock-test";
+      formData["assign"] = "false";
       await createMutation.mutate(formData);
     }
   }

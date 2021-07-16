@@ -5,13 +5,16 @@ import useModule from '../../../hooks/useModule';
 import useAccess from '../../../hooks/useAccess';
 import useSchoolLists from './hooks/useSchoolLists';
 import useClassList from '../class/hooks/useClassList';
-import useClassSubjectList from '../../../hooks/classSubjectMapping/useClassSubjectList';
-import useSchoolAssignedTests from './hooks/useSchoolAssignedTests';
+
+import StudentList from './Reports/StudentList';
+import SingleTestList from './Reports/SingleTestList';
+import { useToasts } from 'react-toast-notifications';
 
 export default function SchoolReport() {
     const params = useParams();
     const history = useHistory();
     const accessUrl = useModule();
+    const { addToast } = useToasts();
     useEffect(checkPageAccessControl,[accessUrl]);
     function checkPageAccessControl(){
         if(accessUrl === false){
@@ -32,16 +35,23 @@ export default function SchoolReport() {
 
     const {data: schools} = useSchoolLists();
     const {data: sClass} = useClassList();
-    const {data: reports } = useSchoolAssignedTests();
+    
     
     function handleSchoolChange(e){
-            history.push(`/admin/school-report/${e.target.value}`);
+      history.push(`/admin/school-report/${e.target.value}`);
+      document.getElementById("rclass").selectedIndex = '0'
     }
-    function handleSubjectChange(e){
-            history.push(`/admin/school-report/${params?.school_id}/${params?.class_id}/${e.target.value}`);
-    }
+    
     function handleClassChange(e){
+      if(params?.school_id == "undefined" || typeof params?.school_id !== 'string'){
+            addToast("please select school id", { appearance: 'error', autoDismiss: true });
+            document.getElementById("rclass").selectedIndex = '0'
+            return;
+        }else{
             history.push(`/admin/school-report/${params?.school_id}/${e.target.value}`);
+        }    
+      
+
     }
     return (
         <div className="col-lg-10 col-md-10 main_dash_area">
@@ -56,16 +66,18 @@ export default function SchoolReport() {
                               <span className="fa fa-dashboard"></span>
                         </button>
                         <select className="form-control col-md-2 ml-2"
+                        id="rschool"
                         value={params?.school_id}
                         onChange={handleSchoolChange}>
                               <option  value="">Select School</option>
                               {schools?.map(school => {
                                     return(
-                                          <option value={school?._id}>{school?.school_name}</option>
+                                          <option value={school?._id} key={school?._id}>{school?.school_name}</option>
                                     )
                               })}
                         </select>       
                         <select className="form-control col-md-2 ml-2"
+                        id="rclass"
                         value={params?.class_id}
                         onChange={handleClassChange}>
                               <option value="">Select Class</option>
@@ -74,46 +86,45 @@ export default function SchoolReport() {
                                           <option value={sc?._id}>{sc?.class_name}Th </option>
                                     )
                               })}
-                        </select>      
-                        
+                        </select>   
+                        {params?.school_id && params?.class_id && (
+                              <>
+                              <button className="dark ml-2"
+                                    onClick={() => {
+                                          history.push(`/admin/school-report/${params?.school_id}/${params?.class_id}/single-test`)
+                                    }}
+                              >
+                                    Assign Tests Report
+                              </button>  
+                              
+                              <button className="dark ml-2"
+                                    onClick={() => {
+                                          history.push(`/admin/school-report/${params?.school_id}/${params?.class_id}/mock-test`)
+                                    }}
+                              >
+                              Mock Test Report
+                              </button>  
+                              <button className="dark ml-2"
+                                    onClick={() => {
+                                          history.push(`/admin/school-report/${params?.school_id}/${params?.class_id}/upload-test`)
+                                    }}
+                              >
+                              Teacher Upload Test Report
+                              </button>  
+                              </>
+                        )}            
                   </div>
                   </div>
                   <div className="clearfix"></div>
                   <div className="dash-cont-start">
-                  <div className="row col-md-12">
-                       
-                        {!params?.test_id && reports?.map(rep => {
-                              let tsubjects = Array.prototype.map.call(rep?.test_subjects, function(items) { return items.subject_name}).join(', ');
-                              let test_window = new Date(rep?.start_date)
-                              test_window.setMinutes( test_window.getMinutes() + rep?.test_window );
-                              if(rep?.assigned === true)
-                              return(
-                              <div className="col-md-4 card p-3">
-                                    <div className="flex"><strong>Test Name:</strong> {rep?.test_name}</div>  
-                                    <div className="flex"><strong>Test Type:</strong>{rep?.test_type}</div>  
-                                    <div className="flex"><strong>Test Subjects:</strong>{tsubjects}</div>  
-                                    <div className="flex"><strong>Test Attemted:</strong>{rep.attemptedStudentIds?.length}</div>  
-                                    <div className="flex"><strong>Test Window:</strong> {rep?.test_window}</div>  
-                                    <div className="flex"><strong>Test Duration:</strong>{rep?.test_duration}</div>  
-                                    <div className="flex"><strong>Total Question:</strong>{rep?.total_question}</div>  
-                                    <div className="flex"><strong>Test Starts:</strong>{new Date(rep?.start_date).toLocaleString()}</div>  
-                                    <div className="flex"><strong>Test Ends:</strong> {test_window.toLocaleString()}</div>  
-                                    <hr />
-                                    <button className="dark bg-success btn btn-sm"
-                                    onClick={() => {
-                                          history.push(`/admin/school-report/${params?.school_id}/${params?.class_id}/${rep?.test_id}`)
-                                    }}>
-                                          View Results
-                                    </button>
-                              </div>      
-                              )
-                        })}
-
-                        {params?.test_id && (
-                              <h2>Test result: </h2>
+                        {(params?.test_type === 'single-test' || params?.test_type === 'mock-test' || params?.test_type === 'upload-test') && (
+                              <SingleTestList />
                         )}
                         
-                  </div>
+                        {params?.test_id && (params?.test_type === 'single-test' || params?.test_type === 'mock-test' || params?.test_type === 'upload-test') && (
+                              <StudentList />
+                        )}
+                        
                   </div>    
                 </div>
             </div>

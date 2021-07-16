@@ -79,6 +79,8 @@ export default function AssignTests() {
                         value={params?.school_id}
                         onChange={e => {
                             history.push(`/admin/assign-test/${params?.page_type}/${e.target.value}`)
+                            document.getElementById("testType").selectedIndex = '0'
+                            
                         }}>
                         <option value="">Select School</option>      
                         {schools?.map(school => 
@@ -88,10 +90,13 @@ export default function AssignTests() {
                         </div>
                         <div className="col-md-3">
                                 <select className="form-control"
+                                id="testType"
                                 value={params?.test_type}
                                 onChange={e => {
-                                    if(params?.school_id == "undefined"){
+                                    if(params?.school_id == "undefined" || typeof params?.school_id !== 'string'){
                                         addToast("please select school id", { appearance: 'error', autoDismiss: true });
+                                        document.getElementById("testType").selectedIndex = '0'
+                                        return;
                                     }else{
                                         history.push(`/admin/assign-test/${params?.page_type}/${params?.school_id}/${e.target.value}`)
                                     }
@@ -105,6 +110,7 @@ export default function AssignTests() {
                         {params?.test_type == 'mock-test' && (
                             <div className="form-group col-md-2">
                             <select className="form-control "
+                            id="testFor"
                             value={localStorage.getItem('mock_test_for')}
                             onChange={(e) => {
                                 localStorage.setItem('mock_test_for', e.target.value)
@@ -120,6 +126,7 @@ export default function AssignTests() {
                         {params?.test_type !== 'mock-test' && (
                             <div className="col-md-2">
                             <select className="form-control"
+                                id="tclass"
                                 value={params?.class_id}
                                 onChange={e => {
                                         history.push(`/admin/assign-test/${params?.page_type}/${params?.school_id}/${params?.test_type}/${e.target.value}`)

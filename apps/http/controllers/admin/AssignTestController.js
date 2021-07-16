@@ -3,29 +3,52 @@ const MockTestQuestion = require("../../../models/admin/MockTestQuestion");
 
 const CreateAssignTest = async (req, res) => {
   try {
-    let data = req.body
+    let data = req.body;
+    // console.log(data); return;
     const testWindow = req.body.test_window;
-    const assignTest = await AssignTest.findOne({
-      class_id: data.class_id,
-      school_id:  req.body.school_id,
-      assigned: false},{start_date:1,test_window:1
+    let filter;
+    let assignTest;
+    if(data.test_type === 'mock-test'){
+      filter =   {
+        school_id:  req.body.school_id,
+        test_type: 'mock-test',
+        assigned: false
+      }
+    }else{
+      filter = {
+        class_id: data.class_id,
+        school_id:  req.body.school_id,
+        assigned: false
+      }
+    }
+    assignTest = await AssignTest.findOne(filter,{start_date:1,test_window:1
     }).limit(1).sort({$natural:-1})
     
-    console.log(assignTest);
+    
+    // console.log(assignTest);return
 
     let timeAlTest = new Date(assignTest?.start_date)
     timeAlTest.setMinutes( timeAlTest.getMinutes() + assignTest?.test_window );
     
     let timeNwTest = new Date(data.start_date)
-    // timeNwTest.setMinutes(timeNwTest.getMinutes() + testWindow );
-    
+    // console.log(timeAlTest, timeNwTest);return
+
     if(assignTest === null){
       var options = { upsert: true, new: true, setDefaultsOnInsert: true };  
-      await AssignTest.findOneAndUpdate({
-                school_id: data?.school_id,
-                class_id: data?.class_id,
-                test_id: data?.test_id,
-            },{$set: {
+      if(data.test_type === 'mock-test'){
+        filter =   {
+          school_id:  req.body.school_id,
+          test_type: 'mock-test',
+          test_id: data?.test_id,
+        }
+      }else{
+        filter = {
+          class_id: data.class_id,
+          school_id:  req.body.school_id,
+          test_id: data?.test_id,
+        }
+      }
+      await AssignTest.findOneAndUpdate(filter,{$set: {
               school_id: data?.school_id,
               school_name: data?.school_name,
               class_id: data?.class_id,
@@ -40,6 +63,7 @@ const CreateAssignTest = async (req, res) => {
               test_duration: data?.test_duration,
               test_window: data?.test_window,
               total_question: data?.total_question,
+              assigned: false
             }}, options, async (err, result) => {
                 if(err){
                     return res.status(409).json({
@@ -54,11 +78,20 @@ const CreateAssignTest = async (req, res) => {
     }
     else if(timeNwTest > timeAlTest){
       var options = { upsert: true, new: true, setDefaultsOnInsert: true };  
-      await AssignTest.findOneAndUpdate({
-                school_id: data?.school_id,
-                class_id: data?.class_id,
-                test_id: data?.test_id,
-            },{$set: {
+      if(data.test_type === 'mock-test'){
+        filter =   {
+          school_id:  req.body.school_id,
+          test_type: 'mock-test',
+          test_id: data?.test_id,
+        }
+      }else{
+        filter = {
+          class_id: data.class_id,
+          school_id:  req.body.school_id,
+          test_id: data?.test_id,
+        }
+      }
+      await AssignTest.findOneAndUpdate(filter,{$set: {
               school_id: data?.school_id,
               school_name: data?.school_name,
               class_id: data?.class_id,
@@ -75,6 +108,7 @@ const CreateAssignTest = async (req, res) => {
               test_duration: data?.test_duration,
               test_window: data?.test_window,
               total_question: data?.total_question,
+
             }}, options, async (err, result) => {
                 if(err){
                     return res.status(409).json({

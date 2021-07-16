@@ -135,6 +135,7 @@ export default function CreateQuestionBank() {
                 setBtnDisbaled(true);
                 addToast('Only .docx files are allowed', { appearance: 'error', autoDismiss: true });
             }
+            	
       }
       
       async function handleFileUpload(e){
