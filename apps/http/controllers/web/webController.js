@@ -843,25 +843,50 @@ const getCumulativeScore = async (req,res) => {
 
 const getResult = async (req,res) => {
     try{
-        const result = await AttemptTest.findOne({_id: req?.params?.attempt_id});
-        let correctAnswers = 0;
-        let wrongAnswers = 0;
-        let totalQuestions = result?.questions?.length;
-        result?.questions?.map((item,key)=>{
-            if(item.answer != undefined ){
-                if(item.option == item['correct_option']){
-                    correctAnswers = correctAnswers + 1;
-                }else{
-                    wrongAnswers = wrongAnswers + 1;
+        let data = {};
+        if(req.params.test_type != "mock-test"){
+            const result = await AttemptTest.findOne({_id: req?.params?.attempt_id});
+            let correctAnswers = 0;
+            let wrongAnswers = 0;
+            let totalQuestions = result?.questions?.length;
+            result?.questions?.map((item,key)=>{
+                if(item.answer != undefined ){
+                    if(item.option == item['correct_option']){
+                        correctAnswers = correctAnswers + 1;
+                    }else{
+                        wrongAnswers = wrongAnswers + 1;
+                    }
                 }
+            })
+            data = {
+                totalQuestions : totalQuestions,
+                correctAnswers : correctAnswers,
+                wrongAnswers : wrongAnswers,
+                attemptedQuestions: correctAnswers + wrongAnswers,
             }
-        })
-        let data = {
-            totalQuestions : totalQuestions,
-            correctAnswers : correctAnswers,
-            wrongAnswers : wrongAnswers,
-            attemptedQuestions: correctAnswers + wrongAnswers,
+        }else{
+            const result = await AttemptTest.findOne({_id: req?.params?.attempt_id});
+            let correctAnswers = 0;
+            let wrongAnswers = 0;
+            let totalQuestions = result?.questions?.length;
+            result?.questions?.map((item,key)=>{
+                if(item.answer != undefined ){
+                    if((item.answer === 'yes' ? 'a' : 'b') === item?.correct_answer){
+                    // if(item.answer == item['correct_answer']){
+                        correctAnswers = correctAnswers + 1;
+                    }else{
+                        wrongAnswers = wrongAnswers + 1;
+                    }
+                }
+            })
+            data = {
+                totalQuestions : totalQuestions,
+                correctAnswers : correctAnswers,
+                wrongAnswers : wrongAnswers,
+                attemptedQuestions: correctAnswers + wrongAnswers,
+            }
         }
+        
 
         return res.status(200).json({ 
             data: data, 
