@@ -87,6 +87,9 @@ const AssignTestSchema = new mongoose.Schema({
       attemptedStudentIds:{
             type: Array
       },
+      attemptedStudents:{
+            type: Number
+      },
       create_at: {
         type: Date,
         default: Date.now

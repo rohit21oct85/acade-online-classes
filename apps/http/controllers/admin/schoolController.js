@@ -4,6 +4,7 @@ const MockTestQuestion = require('../../../models/admin/MockTestQuestion');
 const csv = require('csv-parser')
 const fs = require('fs')
 const bcrypt = require('bcryptjs');
+const AttemptTest = require('../../../models/admin/AttemptTest');
 
 const CreateSchool = async (req, res) => {
     const body = req.body;
@@ -233,6 +234,12 @@ const schoolReport = async (req, res) => {
     try {
         let test_type = req.params.test_type;
         let totalQuestion = await MockTestQuestion.countDocuments({question_for: 'student'});
+        let attemptedStudents = await AttemptTest.countDocuments({
+            class_id: req?.params?.class_id,
+            school_id: req?.params?.school_id,
+            test_type: req?.params?.test_type
+        });
+        // console.log(attemptedStudents); return;
         let filter = {};
         if(test_type === 'mock-test'){
             filter = {
@@ -252,6 +259,7 @@ const schoolReport = async (req, res) => {
         if(test_type === 'mock-test'){
             data?.map(d => {
                 d.total_question = totalQuestion
+                d.attemptedStudents = attemptedStudents
             })
         }
         res.status(201).json({

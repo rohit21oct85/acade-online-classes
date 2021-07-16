@@ -13,7 +13,10 @@ const ViewStudentReport = async (req, res) => {
                   filter = {test_id: req?.params?.test_id}
             }
             const ATest = await AssignTest.findOne(filter)
-            const AttemptTestResult = await AttemptTest.find({test_id: req?.params?.test_id},{__v:0});
+            const AttemptTestResult = await AttemptTest.find({
+                  test_id: req?.params?.test_id,
+                  class_id: req?.params?.class_id
+            },{__v:0});
             const Stud = await Student.find({school_id: req?.params?.school_id});
             // console.log(Stud); return;
             await AttemptTestResult.map(async (test) => {

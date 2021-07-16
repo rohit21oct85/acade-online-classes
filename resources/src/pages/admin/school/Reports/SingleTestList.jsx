@@ -4,7 +4,7 @@ import useSchoolAssignedTests from '../hooks/useSchoolAssignedTests';
 
 export default function SingleTestList() {
       const {data: reports} = useSchoolAssignedTests();
-      console.log("Reports ",reports);
+      console.log("reports: ", reports)
       const params = useParams();
       const history = useHistory();
       let test_type = params?.test_type;
@@ -84,7 +84,7 @@ export default function SingleTestList() {
                                     <div className="border col-md-3">{rep?.test_name}</div>  
                                     <div className="border col-md-3">{rep?.test_type}</div>  
                                     <div className="border col-md-3">{tsubjects}</div>  
-                                    <div className="border col-md-2">{rep.attemptedStudentIds?.length}</div>  
+                                    <div className="border col-md-2">{rep.attemptedStudents}</div>  
                                     <div className="border col-md-2">{rep?.test_window}</div>  
                                     <div className="border col-md-2">{rep?.test_duration}</div>  
                                     <div className="border col-md-2">{rep?.total_question}</div>  
