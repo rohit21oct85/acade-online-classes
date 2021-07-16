@@ -38,7 +38,6 @@ const CreateAssignTest = async (req, res) => {
       if(data.test_type === 'mock-test'){
         filter =   {
           school_id:  req.body.school_id,
-          test_type: 'mock-test',
           test_id: data?.test_id,
         }
       }else{

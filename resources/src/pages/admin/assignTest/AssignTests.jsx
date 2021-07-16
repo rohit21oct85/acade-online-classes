@@ -58,6 +58,8 @@ export default function AssignTests() {
                                 Assign New Test
                             </button>
                             <button className="btn btn-sm dark ml-2" onClick={e => { 
+                                document.getElementById("testType").selectedIndex = '0'
+                                document.getElementById("aschool").selectedIndex = '0'
                                 if(params?.school_id && params?.test_type && params?.class_id){
                                     history.push(`/admin/assign-test/view/${params?.school_id}/${params?.test_type}/${params?.class_id}`)
                                 }else{
@@ -76,6 +78,7 @@ export default function AssignTests() {
                         <div className="col-md-12 row pl-0">
                         <div className="col-md-2">
                         <select className="form-control"
+                        id="aschool"
                         value={params?.school_id}
                         onChange={e => {
                             history.push(`/admin/assign-test/${params?.page_type}/${e.target.value}`)
@@ -96,6 +99,7 @@ export default function AssignTests() {
                                     if(params?.school_id == "undefined" || typeof params?.school_id !== 'string'){
                                         addToast("please select school id", { appearance: 'error', autoDismiss: true });
                                         document.getElementById("testType").selectedIndex = '0'
+                                        document.getElementById("aschool").selectedIndex = '0'
                                         return;
                                     }else{
                                         history.push(`/admin/assign-test/${params?.page_type}/${params?.school_id}/${e.target.value}`)

@@ -16,6 +16,7 @@ router
     .get('/view/:id', checkAuth, MockTest.ViewMockTest)
     .get('/view-all/:test_for?/:status?', checkAuth, MockTest.ViewAllMockTest)
     .post('/delete', checkAuth, MockTest.DeleteMockTest)
+    .post('/delete-all', checkAuth, MockTest.DeleteAllMockTest)
 ;
 
 module.exports = router;

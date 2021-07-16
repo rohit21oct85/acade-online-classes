@@ -1,5 +1,5 @@
 
-import {useContext}  from 'react'
+import {useContext, useState}  from 'react'
 import {useQuery} from 'react-query';
 import axios from 'axios';
 import {AuthContext} from '../../../../context/AuthContext.jsx';
@@ -10,6 +10,7 @@ export default function useAssignedMockTestList() {
     const {state } = useContext(AuthContext);
     const params = useParams();
     const school_id = params?.school_id
+    const [intervalMs, setIntervalMs] = useState(1000)
     let key = '';
     let url = '';
     let mock_test_for = localStorage.getItem('mock_test_for')
@@ -24,6 +25,10 @@ export default function useAssignedMockTestList() {
                 'Content-Type': 'Application/json',
                 'Authorization':'Bearer '+ state.access_token
             }
+        },
+        {
+          // Refetch the data every second
+          refetchInterval: intervalMs,
         });
         return result.data.data; 
     });

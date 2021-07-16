@@ -9,6 +9,8 @@ import useClassList from '../class/hooks/useClassList';
 import StudentList from './Reports/StudentList';
 import SingleTestList from './Reports/SingleTestList';
 import { useToasts } from 'react-toast-notifications';
+import useDeleteSchoolMockTest from './hooks/useDeleteSchoolMockTest';
+
 
 export default function SchoolReport() {
     const params = useParams();
@@ -50,8 +52,13 @@ export default function SchoolReport() {
         }else{
             history.push(`/admin/school-report/${params?.school_id}/${e.target.value}`);
         }    
-      
+    }
+    const deleteMutation = useDeleteSchoolMockTest();
+    async function DeleteAllMockTest(){
 
+      await deleteMutation.mutate({
+            school_id: params?.school_id
+      })
     }
     return (
         <div className="col-lg-10 col-md-10 main_dash_area">
@@ -111,7 +118,17 @@ export default function SchoolReport() {
                               >
                               Teacher Upload Test Report
                               </button>  
+                              {params?.test_type === 'mock-test' && (
+                                    <button className="dark ml-2"
+                                    onClick={() => DeleteAllMockTest()}>
+                                    <span className="fa fa-trash mr-2"></span>
+                                    Delete Mock Test
+                              </button>      
+                              )}      
+
                               </>
+
+
                         )}            
                   </div>
                   </div>

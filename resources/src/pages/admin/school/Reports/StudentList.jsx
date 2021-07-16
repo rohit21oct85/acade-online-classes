@@ -25,16 +25,18 @@ export default function StudentList() {
                         
                               <div className="flex col-md-12 pl-0 pr-0">
                                     <div className="border col-md-2">#ID</div>
-                                    <div className="border col-md-2">Student</div>
+                                    <div className="border col-md-3">Student</div>
+                                    <div className="border col-md-1">Class</div>
+                                    <div className="border col-md-1">Roll</div>
+                                    <div className="border col-md-1">Section</div>
                                     <div className="border col-md-2">Test Name</div>
                                     <div className="border col-md-1">Marks</div>
                                     <div className="border col-md-2">Percentage(%)</div>
                                     <div className="border col-md-2">Time Taken</div>
-                                    <div className="border col-md-2">Duration</div>
-                                    <div className="border col-md-2">Window</div>
-                                    
-                                    <div className="border col-md-3">Start Date</div>
-                                    <div className="border col-md-3">End Date</div>
+                                    <div className="border col-md-1">Duration</div>
+                                    <div className="border col-md-1">Window</div>
+                                    <div className="border col-md-3">Test Start Date</div>
+                                    <div className="border col-md-3">Test End Date</div>
                               </div>
                          
                         {attemtedStudetns?.map(student => {
@@ -66,15 +68,17 @@ export default function StudentList() {
                               let seconds = total_time - minute * 60
                               return(
                                     <div className="flex col-md-12 pl-0 pr-0" key={student?._id}>
-                                          <div className="border col-md-2">{student?.emp_id}</div>
-                                          <div className="border col-md-2">{student?.student_name}</div>
+                                          <div className="border col-md-2">{student?.student_emp_id}</div>
+                                          <div className="border col-md-3">{student?.student_name}</div>
+                                          <div className="border col-md-1">{student?.student_class_name}</div>
+                                          <div className="border col-md-1">{student?.student_roll_no}</div>
+                                          <div className="border col-md-1">{student?.section}</div>
                                           <div className="border col-md-2">{student?.test_name}</div>
                                           <div className="border col-md-1">{correct_answer.reduce((a,b) => a+b)}/{total_question}</div>
                                           <div className="border col-md-2">{Math.round(correct_answer.reduce((a,b) => a+b)*100/total_question)}%</div>
                                           <div className="border col-md-2">{minute} Min {seconds} Sec</div>
-                                          <div className="border col-md-2">{student?.test_duration} Min</div>
-                                          <div className="border col-md-2">{student?.test_window} Min</div>
-                                          
+                                          <div className="border col-md-1">{student?.test_duration} Min</div>
+                                          <div className="border col-md-1">{student?.test_window} Min</div>
                                           <div className="border col-md-3">{new Date(student?.start_date).toLocaleString()}</div>
                                           <div className="border col-md-3">{end_window.toLocaleString()}</div>
 

@@ -1,4 +1,6 @@
 const { now } = require("mongoose");
+const AssignTest = require("../../../models/admin/AssignTest");
+const AttemptTest = require("../../../models/admin/AttemptTest");
 const MockTest = require("../../../models/admin/MockTest");
 const MockTestQuestion = require("../../../models/admin/MockTestQuestion");
 
@@ -173,6 +175,17 @@ const DeleteMockTest = async (req, res) => {
     res.status(409).json({ message: error.message });
   }
 };
+const DeleteAllMockTest = async (req, res) => {
+  try {
+    const school_id = req.body.school_id;
+    await AssignTest.deleteOne({school_id: school_id, test_type: 'mock-test'});
+    await AttemptTest.deleteMany({school_id: school_id, test_type: 'mock-test'});
+    res.status(201).json({ message: "deleted" });
+  } catch (error) {
+    res.status(409).json({ message: error.message });
+  }
+};
+
 const DeleteMockTestQuestion = async (req, res) => {
   try {
     const mqid = req.body.test_id;
@@ -182,6 +195,8 @@ const DeleteMockTestQuestion = async (req, res) => {
     res.status(409).json({ message: error.message });
   }
 };
+
+
 
 module.exports = {
   AddMockTestQuestion,
@@ -193,5 +208,6 @@ module.exports = {
   UpdateMockTest,
   ViewMockTest,
   ViewAllMockTest,
-  DeleteMockTest
+  DeleteMockTest,
+  DeleteAllMockTest
 }

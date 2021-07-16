@@ -13,11 +13,13 @@ const AttemptTestSchema = new mongoose.Schema({
     student_name: {
         type: String,
     },
-    
-    roll_no: {
+    student_roll_no: {
         type: String,
     },
-    emp_id: {
+    student_emp_id: {
+        type: String,
+    },
+    student_class_name: {
         type: String,
     },
 
