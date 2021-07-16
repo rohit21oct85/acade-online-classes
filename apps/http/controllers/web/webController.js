@@ -513,7 +513,10 @@ const attemptTestByStudent = async (req, res) =>{
                 test_type: assignTest.test_type,
                 section: req.body.section,
                 extension: assignTest.extension,
-                questionLength: assignTest.answers.length
+                questionLength: assignTest.answers.length,
+                start_date: assignTest.start_date,
+                test_window: assignTest.test_window,
+                test_duration: assignTest.test_duration,
             });   
             result = await attempt.save();
         }else if(req.body.test_type == "mock-test"){
@@ -534,6 +537,9 @@ const attemptTestByStudent = async (req, res) =>{
                 test_subjects:newData1.test_subjects,
                 test_name:newData1.test_name,
                 test_type:newData1.test_type,
+                start_date: newData1.start_date,
+                test_window: newData1.test_window,
+                test_duration: newData1.test_duration,
                 section:req.body.section,
             });   
             await attempt.save();
@@ -556,6 +562,9 @@ const attemptTestByStudent = async (req, res) =>{
                 student_name: req.body.name,
                 questions: newData.test_question,
                 test_subjects:newData1.test_subjects,
+                start_date: newData1.start_date,
+                test_window: newData1.test_window,
+                test_duration: newData1.test_duration,
                 test_name:newData1.test_name,
                 section:req.body.section,
             });    
@@ -740,6 +749,27 @@ const getLastScore = async (req,res) => {
         let correctAnswers = 0;
         let wrongAnswers = 0;
         let totalQuestions = result?.questions?.length;
+        if(result.test_type == "mock-test"){
+            result?.questions?.map((item,key)=>{
+                if(item.answer != undefined ){
+                    if((item.answer === 'yes' ? 'a' : 'b') === item?.correct_answer){
+                        correctAnswers = correctAnswers + 1;
+                    }else{
+                        wrongAnswers = wrongAnswers + 1;
+                    }
+                }
+            })
+        }else{
+            result?.questions?.map((item,key)=>{
+                if(item.answer != undefined ){
+                    if(item.option == item['correct_option']){
+                        correctAnswers = correctAnswers + 1;
+                    }else{
+                        wrongAnswers = wrongAnswers + 1;
+                    }
+                }
+            })
+        }
         result?.questions?.map((item,key)=>{
             if(item.answer != undefined ){
                 if(item.option == item['correct_option']){
@@ -849,6 +879,8 @@ const getResult = async (req,res) => {
             let correctAnswers = 0;
             let wrongAnswers = 0;
             let totalQuestions = result?.questions?.length;
+            let timeEndTest = new Date(result?.start_date)
+            timeEndTest.setMinutes( timeEndTest.getMinutes() + result?.test_window );
             result?.questions?.map((item,key)=>{
                 if(item.answer != undefined ){
                     if(item.option == item['correct_option']){
@@ -863,12 +895,15 @@ const getResult = async (req,res) => {
                 correctAnswers : correctAnswers,
                 wrongAnswers : wrongAnswers,
                 attemptedQuestions: correctAnswers + wrongAnswers,
+                end_time: timeEndTest,
             }
         }else{
             const result = await AttemptTest.findOne({_id: req?.params?.attempt_id});
             let correctAnswers = 0;
             let wrongAnswers = 0;
             let totalQuestions = result?.questions?.length;
+            let timeEndTest = new Date(result?.start_date)
+            timeEndTest.setMinutes( timeEndTest.getMinutes() + result?.test_window );
             result?.questions?.map((item,key)=>{
                 if(item.answer != undefined ){
                     if((item.answer === 'yes' ? 'a' : 'b') === item?.correct_answer){
@@ -884,10 +919,9 @@ const getResult = async (req,res) => {
                 correctAnswers : correctAnswers,
                 wrongAnswers : wrongAnswers,
                 attemptedQuestions: correctAnswers + wrongAnswers,
+                end_time: timeEndTest,
             }
         }
-        
-
         return res.status(200).json({ 
             data: data, 
         }); 

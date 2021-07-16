@@ -55,9 +55,18 @@ const AttemptTestSchema = new mongoose.Schema({
     section:{
         type:String,
     },
+    test_window:{
+        type:String,
+    },
+    test_duration:{
+        type:String,
+    },
     status:{
         type: Boolean,
         default: false
+    },
+    start_date: {
+        type: Date,
     },
     create_at: {
         type: Date,
