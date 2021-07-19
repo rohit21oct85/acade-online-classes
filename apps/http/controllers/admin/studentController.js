@@ -1,6 +1,7 @@
 const Student = require('../../../models/admin/Student');
 const School = require('../../../models/admin/School');
 const Class  = require('../../../models/admin/Class')
+const UserLog  = require('../../../models/admin/UserLog')
 const csv = require('csv-parser')
 const fs = require('fs')
 const jwt = require('jsonwebtoken');
@@ -214,7 +215,13 @@ const Login = async (req, res) => {
         }
         await Student.findOne({username: req.body.email, school_id: school._id},{__v: 0}).then( student => {
             if(student){
-                bcrypt.compare(req.body.password, student.password, function(err,response){
+                if(student.isActive == false){
+                    return res.status(403).json({ 
+                        status: 403,
+                        message: "Student Account not Active"
+                    })
+                }
+                bcrypt.compare(req.body.password, student.password, async function (err,response){
                     if(err){
                         res.status(203).json({ 
                             message: "Password does not match"
@@ -225,7 +232,9 @@ const Login = async (req, res) => {
                             const accessToken = generateAccessToken(student);
                             const refreshToken = generateRefreshToken(student);
                             refreshTokens.push(refreshToken);
-                            
+                            const user = await Student.findOneAndUpdate({username: req.body.email, school_id: school._id}, { $set: { isLoggedIn: true } })
+                            // const user_log = new UserLog({user_type: "student",user_id : user._id, email_id :req.body.email,school_id : user.school_id });
+                            // await UserLog.save();
                             res.status(200).json({ 
                                 accessToken, 
                                 refreshToken,
@@ -296,9 +305,10 @@ const Logout = async (req, res) => {
         const decode = await jwt.verify(accessToken, accessTokenSecret);
         const UserData = {id: decode.id, role: decode.role};
         let newAccessToken = await jwt.sign(UserData, 'sasdasd', {expiresIn: '0s'});
-        return res.status(402).json({
-            message: "successfully loggedout",
-            accessToken: newAccessToken
+        await Student.findOneAndUpdate({_id: req.body.user_id}, { $set: { isLoggedIn: false } })
+        return res.status(200).json({
+            message: "successfully logged out",
+            // accessToken: newAccessToken
         });    
     }
 }

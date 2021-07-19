@@ -145,9 +145,15 @@ const Login = async (req, res) => {
                 message: "No Such School Found"
             })
         }
-        await Principal.findOne({email: req.body.email, school_id: school._id},{__v: 0}).then( Principal => {
-            if(Principal){
-                bcrypt.compare(req.body.password, Principal.password, function(err,response){
+        await Principal.findOne({email: req.body.email, school_id: school._id},{__v: 0}).then( principal => {
+            if(principal){
+                if(principal.isActive == false){
+                    return res.status(403).json({ 
+                        status: 403,
+                        message: "Principal Account not Active"
+                    })
+                }
+                bcrypt.compare(req.body.password, principal.password, async function(err,response){
                     if(err){
                         res.status(203).json({ 
                             message: "Password does not match"
@@ -155,14 +161,15 @@ const Login = async (req, res) => {
                     }
                     else{
                         if(response){
-                            const accessToken = generateAccessToken(Principal);
-                            const refreshToken = generateRefreshToken(Principal);
+                            const accessToken = generateAccessToken(principal);
+                            const refreshToken = generateRefreshToken(principal);
                             refreshTokens.push(refreshToken);
-                            
+                            console.log(school._id)
+                            await Principal.findOneAndUpdate({email: req.body.email, school_id: school._id}, { $set: { isLoggedIn: true } })
                             res.status(200).json({ 
                                 accessToken, 
                                 refreshToken,
-                                Principal
+                                principal
                             });
                         } else {
                             res.status(203).json({ 
@@ -252,4 +259,5 @@ module.exports = {
     DeletePrincipal,
     uploadPrincipal,
     Login,
+    Logout
 }

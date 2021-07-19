@@ -77,6 +77,7 @@ const ViewTeacher = async (req, res) => {
         });
     }
 }
+
 const ViewTeacherClass = async (req, res) => {
     try{
         const TeacherData = await Teacher.findOne({
@@ -283,9 +284,15 @@ const Login = async (req, res) => {
                 message: "No Such School Found"
             })
         }
-        await Teacher.findOne({username: req.body.email, school_id: school._id},{__v: 0}).then( Teacher => {
-            if(Teacher){
-                bcrypt.compare(req.body.password, Teacher.password, function(err,response){
+        await Teacher.findOne({username: req.body.email, school_id: school._id},{__v: 0}).then( teacher => {
+            if(teacher){
+                if(teacher.isActive == false){
+                    return res.status(403).json({ 
+                        status: 403,
+                        message: "Teacher Account not Active"
+                    })
+                }
+                bcrypt.compare(req.body.password, teacher.password, async function(err,response){
                     if(err){
                         res.status(203).json({ 
                             message: "Password does not match"
@@ -293,14 +300,14 @@ const Login = async (req, res) => {
                     }
                     else{
                         if(response){
-                            const accessToken = generateAccessToken(Teacher);
-                            const refreshToken = generateRefreshToken(Teacher);
+                            const accessToken = generateAccessToken(teacher);
+                            const refreshToken = generateRefreshToken(teacher);
                             refreshTokens.push(refreshToken);
-                            
+                            await Teacher.findOneAndUpdate({username: req.body.email, school_id: school._id}, { $set: { isLoggedIn: true } })
                             res.status(200).json({ 
                                 accessToken, 
                                 refreshToken,
-                                Teacher
+                                teacher
                             });
                         } else {
                             res.status(203).json({ 
@@ -380,6 +387,7 @@ const updateAllTeacher = async (req, res) => {
         res.status(502).json({message: "Somethign went wrong!"})
     }
 }
+
 module.exports = {
     ViewTeacherClass,
     CreateTeacher,
@@ -391,4 +399,5 @@ module.exports = {
     getTeacherBySchoolId,
     uploadTeacher,
     Login,
+    Logout
 }
