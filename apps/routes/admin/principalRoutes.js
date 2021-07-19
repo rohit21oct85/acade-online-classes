@@ -24,6 +24,7 @@ var upload = multer({ storage: storage })
 router
     .post('/login', Principal.Login)
     .post('/create',checkAuth, Principal.CreatePrincipal)
+    .post('/logout', checkAuth, Principal.Logout)
     .patch('/update/:id',checkAuth, Principal.UpdatePrincipal)
     .get('/view/:id',checkAuth, Principal.ViewPrincipal)
     .get('/view-all/:school_id?',checkAuth, Principal.ViewAllPrincipal)

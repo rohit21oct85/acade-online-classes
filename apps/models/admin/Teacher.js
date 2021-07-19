@@ -11,9 +11,11 @@ const TeacherSchema = new mongoose.Schema({
     },
     isLoggedIn:{
         type: Boolean,
+        default: false,
     },
     isActive: {
         type:Boolean,
+        default: true,
     },
     subject_id: {
         type: String,
