@@ -227,7 +227,6 @@ const RefreshToken = async (req,res) => {
         });
     })
 }
-
 const updateAllPrincipal = async (req, res) => {
     try {
                 await Principal.updateMany({},{
@@ -250,6 +249,21 @@ const updateAllPrincipal = async (req, res) => {
     }
 }
 
+const Logout = async (req, res) => {
+    const accessTokenSecret = 'ACADEONLINE2021';
+    const authorizationHeader = req.headers.authorization;
+    if (authorizationHeader){
+        const accessToken = req.headers.authorization.split(' ')[1];  
+        const decode = await jwt.verify(accessToken, accessTokenSecret);
+        const UserData = {id: decode.id, role: decode.role};
+        let newAccessToken = await jwt.sign(UserData, 'sasdasd', {expiresIn: '0s'});
+        await Principal.findOneAndUpdate({_id: req.body.user_id}, { $set: { isLoggedIn: false } })
+        return res.status(200).json({
+            message: "successfully logged out",
+            // accessToken: newAccessToken
+        });    
+    }
+}
 module.exports = {
     CreatePrincipal,
     UpdatePrincipal,

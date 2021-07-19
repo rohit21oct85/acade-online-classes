@@ -77,7 +77,6 @@ const ViewTeacher = async (req, res) => {
         });
     }
 }
-
 const ViewTeacherClass = async (req, res) => {
     try{
         const TeacherData = await Teacher.findOne({
@@ -385,6 +384,21 @@ const updateAllTeacher = async (req, res) => {
                 });
     } catch (error) {
         res.status(502).json({message: "Somethign went wrong!"})
+    }
+}
+const Logout = async (req, res) => {
+    const accessTokenSecret = 'ACADEONLINE2021';
+    const authorizationHeader = req.headers.authorization;
+    if (authorizationHeader){
+        const accessToken = req.headers.authorization.split(' ')[1];  
+        const decode = await jwt.verify(accessToken, accessTokenSecret);
+        const UserData = {id: decode.id, role: decode.role};
+        let newAccessToken = await jwt.sign(UserData, 'sasdasd', {expiresIn: '0s'});
+        await Teacher.findOneAndUpdate({_id: req.body.user_id}, { $set: { isLoggedIn: false } })
+        return res.status(200).json({
+            message: "successfully logged out",
+            // accessToken: newAccessToken
+        });    
     }
 }
 
