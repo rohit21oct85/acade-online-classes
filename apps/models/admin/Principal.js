@@ -13,9 +13,11 @@ const PrincipalSchema = new mongoose.Schema({
     },
     isLoggedIn : {
         type: Boolean,
+        default: false,
     },
     isActive: {
         type:Boolean,
+        default: true,
     },
     mobile: {
         type: String,

@@ -44,9 +44,11 @@ const StudentSchema = new mongoose.Schema({
     },
     isLoggedIn:{
         type: Boolean,
+        default: false,
     },
     isActive: {
         type:Boolean,
+        default: true,
     },
     city:{
         type: String,
