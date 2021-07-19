@@ -67,16 +67,16 @@ const AttemptTestSchema = new mongoose.Schema({
         type:String,
     },
     questionLength:{
-        type:String,
+        type:Number,
     },
     section:{
         type:String,
     },
     test_window:{
-        type:String,
+        type:Number,
     },
     test_duration:{
-        type:String,
+        type:Number,
     },
     status:{
         type: Boolean,

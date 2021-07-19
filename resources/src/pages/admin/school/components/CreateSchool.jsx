@@ -46,7 +46,7 @@ export default function CreateSchool() {
         formData['school_slug'] = slug;
         formData['short'] = helper.getFirstLetter(slug);
         
-        console.log(formData)
+        console.log(formData) 
         if(params?.school_id){
             SingleSchool['school_slug'] = slug
             SingleSchool['short'] = helper.getFirstLetter(slug)    

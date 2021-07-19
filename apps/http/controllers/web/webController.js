@@ -496,7 +496,6 @@ const assignTestToStudent = async (req, res) =>{
 
 const attemptTestByStudent = async (req, res) =>{
     try {
-        console.log(req.body)
         let result = [];
         if(req.body.test_type == "upload-test"){
             const assignTest = await AssignTest.findOne({_id:req.body.assign_test_id},{__v: 0})
@@ -514,7 +513,7 @@ const attemptTestByStudent = async (req, res) =>{
                 test_type: assignTest.test_type,
                 section: req.body.section,
                 extension: assignTest.extension,
-                questionLength: assignTest.answers.length,
+                questionLength: parseInt(assignTest.answers.length),
                 start_date: assignTest.start_date,
                 test_window: assignTest.test_window,
                 test_duration: assignTest.test_duration,
@@ -914,8 +913,8 @@ const getResult = async (req,res) => {
             let correctAnswers = 0;
             let wrongAnswers = 0;
             let totalQuestions = result?.questions?.length;
-            let timeEndTest = new Date(result?.start_date)
-            timeEndTest.setMinutes( timeEndTest.getMinutes() + result?.test_window );
+            let timeEndTest = new Date(result.start_date)
+            timeEndTest.setMinutes(timeEndTest.getMinutes() + result?.test_window );
             result?.questions?.map((item,key)=>{
                 if(item.answer != undefined ){
                     if((item.answer === 'yes' ? 'a' : 'b') === item?.correct_answer){
@@ -1362,9 +1361,7 @@ const ViewAllChapters = async (req, res) => {
 
 const CreateTest = async ( req, res ) => {
     try {
-        // console.log(req.params,req.body)       
         const assignTest = await AssignTest.findOne({class_id: req.params.class_id, school_id:req.params.school_id, assigned: true},{start_date:1,test_window:1}).limit(1).sort({$natural:-1})
-        console.log(assignTest)
         let timeAlTest = new Date(assignTest?.start_date)
         timeAlTest.setMinutes( timeAlTest.getMinutes() + assignTest?.test_window );
         
@@ -1460,7 +1457,7 @@ const getMockTest = async ( req, res ) => {
 const getUploadTest = async ( req, res ) => {
     try {
         let date = new Date();
-        date.setMinutes( date.getMinutes() + 20 );
+        date.setMinutes( date.getMinutes() - 24 * 60 );
         // const test = await AssignTest.findOne({school_id:req.params.school_id, assigned:true, test_type:"upload-test", class_id:req.params.class_id})
         const AssignedTests = await AssignTest.find(
             {
@@ -1471,13 +1468,13 @@ const getUploadTest = async ( req, res ) => {
                 attemptedStudentIds:{
                     $nin:[req.params.student_id]
                 },
-                // $and: [
-                //         {
-                //             "start_date": { 
-                //                 $gte: date.toISOString()
-                //             }
-                //         }
-                //     ]
+                $and: [
+                        {
+                            "start_date": { 
+                                $gte: date.toISOString()
+                            }
+                        }
+                    ]
             },{__v: 0});
         return res.status(200).json({ 
             data: AssignedTests
@@ -1504,8 +1501,7 @@ const getMockTestQuestions = async ( req, res ) => {
 
 const getUploadTestPaper = async ( req, res ) => {
     try {
-        console.log(req.params)
-        const attempTest = await AttemptTest.find({_id:req.params.attempt_id});
+        const attempTest = await AttemptTest.findOne({_id:req.params.attempt_id});
         return res.status(200).json({ 
             data: attempTest
         });
@@ -1515,6 +1511,50 @@ const getUploadTestPaper = async ( req, res ) => {
         })
     }
 }
+
+const changeDomainStudent = async ( req, res ) => {
+    try {
+        const xchool = await School.findOne({_id:req.params.school_id},{sub_domain:1,short:1,school_slug:1});
+        const student = await Student.find({school_id:req.params.school_id}).lean();
+        student.map((item,key)=>{
+            // console.log(item.username.split(item.name))
+            console.log(item.name,xchool.school_slug)
+            const removeName = item.username.split(item.name.toLowerCase())
+            const removeDomain = removeName[1].split('@')
+            const new_slug = getFirstLetter(xchool.school_slug);
+            console.log(new_slug)
+            const newUsername = new_slug + item.name.toLowerCase() + removeDomain[0] + '@' + xchool.sub_domain + '.com' 
+            console.log(newUsername)
+            console.log(item.EmpId.split('TS'))
+        })
+        // console.log(student)
+        res.status(200).json({
+            data : student
+        })
+    } catch (error) {
+        res.status(502).json({
+            message : error.message
+        })
+    }
+}
+
+function getFirstLetter(el){
+    let arr = '';
+    let name = '';
+    console.log(el)
+    if(el.match('-')){
+      arr = el.split('-');
+      let data = arr?.map(e => {
+        return name += e.charAt(0);
+      })
+      return data[data.length - 1];
+    }else{
+      return el.charAt(0)
+    }
+    
+    
+}
+
 
 module.exports = {
     getSubjects,
@@ -1558,5 +1598,6 @@ module.exports = {
     getMockTest,
     getMockTestQuestions,
     getUploadTest,
-    getUploadTestPaper
+    getUploadTestPaper,
+    changeDomainStudent
 }
