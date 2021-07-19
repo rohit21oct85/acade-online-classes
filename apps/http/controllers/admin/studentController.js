@@ -233,8 +233,15 @@ const Login = async (req, res) => {
                             const refreshToken = generateRefreshToken(student);
                             refreshTokens.push(refreshToken);
                             const user = await Student.findOneAndUpdate({username: req.body.email, school_id: school._id}, { $set: { isLoggedIn: true } })
-                            // const user_log = new UserLog({user_type: "student",user_id : user._id, email_id :req.body.email,school_id : user.school_id });
-                            // await UserLog.save();
+                            let device = "";
+                            if (req.header('user-agent').indexOf('Mobile') != -1) {
+                                device = "Mobile"
+                            } else {
+                                device = "Computer/Laptop"
+                            }
+                            const login_time = new Date();
+                            const user_log = new UserLog({user_type: "student",user_id : user._id, email_id :req.body.email,school_id : user.school_id, device_type:device, login_time:login_time, sessionInProgress: true });
+                            await user_log.save();
                             res.status(200).json({ 
                                 accessToken, 
                                 refreshToken,
@@ -306,6 +313,8 @@ const Logout = async (req, res) => {
         const UserData = {id: decode.id, role: decode.role};
         let newAccessToken = await jwt.sign(UserData, 'sasdasd', {expiresIn: '0s'});
         await Student.findOneAndUpdate({_id: req.body.user_id}, { $set: { isLoggedIn: false } })
+        const new_time = new Date();
+        await UserLog.findOneAndUpdate({user_id: req.body.user_id, sessionInProgress : true, user_type: "student"}, {$set : {logout_time : new_time,sessionInProgress : false}}).sort({$natural:-1})
         return res.status(200).json({
             message: "successfully logged out",
             // accessToken: newAccessToken

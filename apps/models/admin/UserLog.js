@@ -4,6 +4,9 @@ const UserLogSchema = new mongoose.Schema({
         login_time:{
             type: Date,
         },
+        logout_time:{
+            type: Date,
+        },
         user_type:{
             type:String,
         },
@@ -15,6 +18,12 @@ const UserLogSchema = new mongoose.Schema({
         },
         school_id:{
             type:String,
+        },
+        device_type:{
+            type:String,
+        },
+        sessionInProgress:{
+            type:Boolean,
         },
         status:{
                 type: Boolean,
