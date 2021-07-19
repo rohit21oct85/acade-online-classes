@@ -7,12 +7,12 @@ import API_URL from '../../../../helper/APIHelper'
 
 export default function useSingleAssignedTest() {
     const params = useParams();
-    const sample_id = params?.sample_id
+    const test_id = params?.test_id
     const {state } = useContext(AuthContext);
-    const key = params.sample_id ? `sample-${params.sample_id}` : `sample`
+    const key = params.test_id ? `sample-${params.test_id}` : `sample`
     return useQuery(`${key}`, async () => {
-        if(sample_id !== undefined){
-            const result = await axios.get(`${API_URL}v1/sample/view/${sample_id}`,{
+        if(test_id !== undefined){
+            const result = await axios.get(`${API_URL}v1/assign-test/view/${test_id}`,{
                 headers: {
                     'Content-Type': 'Application/json',
                     'Authorization':'Bearer '+state.access_token

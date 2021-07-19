@@ -23,6 +23,7 @@ export default function AssignTests() {
             history.push('/403');
         }
     }
+
     const create = useAccess('create');
     const update = useAccess('update');
     const upload = useAccess('upload');
@@ -34,6 +35,7 @@ export default function AssignTests() {
             history.push(`/admin/question-bank`)
         }
     }
+    
     return (
         <div className="col-lg-10 col-md-10 main_dash_area">
             <div className="main-area-all">
@@ -50,7 +52,15 @@ export default function AssignTests() {
                             <button className="btn btn-sm dark ml-2" onClick={e => { 
                                 if(params?.school_id && params?.test_type && params?.class_id){
                                     history.push(`/admin/assign-test/create/${params?.school_id}/${params?.test_type}/${params?.class_id}`)
-                                }else{
+                                }
+                                else if(params?.school_id && params?.test_type){
+                                    history.push(`/admin/assign-test/create/${params?.school_id}/${params?.test_type}`)
+                                }
+                                
+                                else if(params?.school_id){
+                                    history.push(`/admin/assign-test/create/${params?.school_id}`)
+                                }
+                                else{
                                     history.push(`/admin/assign-test/create/`)
                                 }
                             }}>
@@ -58,13 +68,20 @@ export default function AssignTests() {
                                 Assign New Test
                             </button>
                             <button className="btn btn-sm dark ml-2" onClick={e => { 
-                                document.getElementById("testType").selectedIndex = '0'
-                                document.getElementById("aschool").selectedIndex = '0'
                                 if(params?.school_id && params?.test_type && params?.class_id){
                                     history.push(`/admin/assign-test/view/${params?.school_id}/${params?.test_type}/${params?.class_id}`)
-                                }else{
+                                }
+                                else if(params?.school_id && params?.test_type){
+                                    history.push(`/admin/assign-test/view/${params?.school_id}/${params?.test_type}`)
+                                }
+                                
+                                else if(params?.school_id){
+                                    history.push(`/admin/assign-test/view/${params?.school_id}`)
+                                }
+                                else{
                                     history.push(`/admin/assign-test/view/`)
                                 }
+                        
                             }}>
                                 <span className="bi bi-assign"></span>
                                 View Assign Test
@@ -72,7 +89,7 @@ export default function AssignTests() {
 
                         </div>
                     </div>
-                    {(params?.page_type == 'create' || params?.page_type == 'view') && (
+                    {(params?.page_type == 'create' || params?.page_type === 'update' || params?.page_type == 'view') && (
                         <>
                         <div className="dash-con-heading">
                         <div className="col-md-12 row pl-0">

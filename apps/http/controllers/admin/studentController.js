@@ -77,7 +77,7 @@ const ViewStudent = async (req, res) => {
 }
 const ViewAllStudent = async (req, res) => {
     try{
-        const filter = {school_id: req.params.school_id, class_id: req.params.class_id}
+        const filter = {school_id: req.params.school_id, class_id: req.params.class_id, section: req.params.section}
         const AllStudents = await Student.find(filter,{__v: 0});
         return res.status(200).json({ 
             data: AllStudents 
@@ -313,14 +313,36 @@ const ForgotPassword = async (req, res) => {
             return res.status(402).json({message: "Email does not belongs to our Database"})    
         }
     } catch (error) {
-        return res.status(502).json({message: "Somethign went wrong!"})
+        res.status(502).json({message: "Somethign went wrong!"})
     }
 
+}
+const updateAllStudent = async (req, res) => {
+    try {
+                await Student.updateMany({},{
+                    isActive: true,
+                    isLoggedIn: false
+                })
+                .then(response => {
+                    return res.status(202).json({
+                        message: "Student, Updated successfully"
+                    })
+                })
+                .catch(error => {
+                    return res.status(500).json({
+                        message: "Error Found",
+                        errors: error.message
+                    })
+                });
+    } catch (error) {
+        res.status(502).json({message: "Somethign went wrong!"})
+    }
 }
 
 module.exports = {
     CreateStudent,
     UpdateStudent,
+    updateAllStudent,
     ViewStudent,
     ViewAllStudent,
     DeleteStudent,

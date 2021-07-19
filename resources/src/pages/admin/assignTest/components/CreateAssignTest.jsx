@@ -5,7 +5,6 @@ import { getFilteredData } from '../../../../utils/helper';
 import useCreateAssignTest from '../hooks/useCreateAssignTest';
 import * as helper from '../../../../utils/helper'
 
-import useClassSubjectList from '../../../../hooks/classSubjectMapping/useClassSubjectList';
 import useAssignedTestList from '../hooks/useAssignedTestList';
 import useUnitTestList from '../../unitTest/hooks/useUnitTestList';
 import useClassList from '../../class/hooks/useClassList';
@@ -15,6 +14,7 @@ import useSchoolLists from '../../school/hooks/useSchoolLists';
 import useSubjectList from '../../subject/hooks/useSubjectList';
 import { useToasts } from 'react-toast-notifications';
 import useMockTestList from '../../mockTest/hooks/useMockTestList';
+import useSingleAssignedTest from '../hooks/useSingleAssignedTest';
 
 export default function CreateAssignTest() {
       const params = useParams();
@@ -24,7 +24,6 @@ export default function CreateAssignTest() {
       const page_type = params?.page_type;
       const school_id = params?.school_id;
       const class_id = params?.class_id;
-      const startTimes = ["09:00 AM","10:00 AM","11:00 AM","12:00 PM","13:00 PM","14:00 PM","15:00 PM","16:00 PM","17:00 PM","18:00 PM"]
       
       const {data:SClass} = useClassList();
       const {data:schools} = useSchoolLists()
@@ -32,12 +31,17 @@ export default function CreateAssignTest() {
       const {data: unitTests}      = useUnitTestList();
       const {data: testLists, isLoading} = useAssignedTestList();
       const {data: mockTests} = useMockTestList();
+      const {data: singleTest} = useSingleAssignedTest();
+      console.log(singleTest);
       const timeWindows = [
+            {key:'1', value:'1 Hrs'},
             {key:'2', value:'2 Hrs'},
             {key:'3', value:'3 Hrs'},
             {key:'4', value:'4 Hrs'},
             {key:'5', value:'5 Hrs'},
-            {key:'6', value:'6 Hrs'}
+            {key:'6', value:'6 Hrs'},
+            {key:'7', value:'7 Hrs'},
+            {key:'8', value:'8 Hrs'},
       ]
       const [formData, setFormData] = useState({});
       const createMutation = useCreateAssignTest(formData);
@@ -85,8 +89,6 @@ export default function CreateAssignTest() {
                                     }
                               }
                         });
-
-                        
                   }else{
                         let class_name = getFilteredData(SClass,'_id' ,class_id, 'class_name');
                         let test_name = getFilteredData(unitTests,'_id' ,formData['test_id'], 'test_name');
@@ -127,13 +129,14 @@ export default function CreateAssignTest() {
             <span className="fa fa-plus-circle mr-2"></span>Assign New Test
             </p>
             <hr />
-            {params?.page_type === 'create' && (
+            {(params?.page_type === 'create' || params?.page_type === 'update') && (
                           
             <form>
                   <div className="row col-md-12 mb-2">
                         <div className="col-md-2 pl-0">
                         <DatePicker 
                               selected={startDate}
+                              value={new Date(singleTest?.start_date)}
                               onChange={(date) => setStartDate(date)}
                               isClearable showTimeSelect dateFormat="MM/d/yyyy h:mm aa"
                               minDate={new Date()}
@@ -143,7 +146,7 @@ export default function CreateAssignTest() {
                             
                         <div className="col-md-2 pl-0">
                               <select 
-                              value={testWindow}
+                              value={testWindow ?? Math.round(singleTest?.test_window/60)}
                               onChange={e => setTestWindow(e.target.value)}
                               >
                                     <option>Select Time Window</option>

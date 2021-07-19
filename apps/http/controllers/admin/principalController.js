@@ -221,9 +221,32 @@ const RefreshToken = async (req,res) => {
     })
 }
 
+const updateAllPrincipal = async (req, res) => {
+    try {
+                await Principal.updateMany({},{
+                    isActive: true,
+                    isLoggedIn: false
+                })
+                .then(response => {
+                    return res.status(202).json({
+                        message: "principal, Updated successfully"
+                    })
+                })
+                .catch(error => {
+                    return res.status(500).json({
+                        message: "Error Found",
+                        errors: error.message
+                    })
+                });
+    } catch (error) {
+        res.status(502).json({message: "Somethign went wrong!"})
+    }
+}
+
 module.exports = {
     CreatePrincipal,
     UpdatePrincipal,
+    updateAllPrincipal,
     ViewPrincipal,
     ViewAllPrincipal,
     DeletePrincipal,

@@ -9,6 +9,7 @@ import React, {useState, useContext} from 'react'
 import useDeleteTeacher from '../hooks/useDeleteTeacher';
 import useSubjectList from '../../subject/hooks/useSubjectList';
 import { MakeSlug } from '../../../../utils/utils'
+import useUpdateTeacher from '../hooks/useUpdateTeacher';
 
 export default function AllTeachers({update, Delete}) {
 
@@ -26,7 +27,7 @@ export default function AllTeachers({update, Delete}) {
     const {data:schools, schoolIsLoading} = useSchoolLists();
     const {data: subjects} = useSubjectList();
     const school = schools?.filter( school => school?._id == params?.school_id)
-
+    const updateMutation = useUpdateTeacher();
     const options = {
         headers: {
             'Content-Type': 'Application/json',
@@ -48,7 +49,16 @@ export default function AllTeachers({update, Delete}) {
             return '';
         }
     }
-
+    async function handleActiveInactive(status,subject_name, id){
+        // alert(status); return;
+        history.push(`/admin/teachers-management/view/${params?.school_id}/${params?.subject_id}/${MakeSlug(subject_name)}/${id}`)
+        setTimeout(async () => {
+            await updateMutation.mutate({
+                isActive: (status === undefined || status === false) ? true: false
+            })
+        }, 1000);
+    
+    }
     return (
         <>
         <p className="form-heading">
@@ -90,17 +100,23 @@ export default function AllTeachers({update, Delete}) {
         </div>
         </div>
         
-        <div className="col-md-12 row no-gutter data-container-category">
-        <table className="table table-hover">
+        <div className="row col-md-12 pb-3 no-gutter table-responsive"
+                style={{ 
+                        overflow: 'scroll scroll',
+                        height: '400px',
+                        marginRight: '120px',
+                        paddingBottom: '250px'
+                }}>
+        <table className="table table-hover col-md-12 mb-2" style={{ width: '1500px'}}>
                     <thead>
                         <tr>
-                        <th scope="col">#EmpID</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Subject</th>
-                        <th scope="col" className="hidden_col">Class</th>
-                        <th scope="col" className="hidden_col">Mobile</th>
-                        <th scope="col">Email</th>
-                        <th scope="col" className="hidden_col">Action</th>
+                        <th className="col-md-2">#EmpID</th>
+                        <th className="col-md-3">Name</th>
+                        <th className="col-md-2">Subject</th>
+                        <th className="col-md-3">Class</th>
+                        <th className="hidden_col">Mobile</th>
+                        <th className="col-md-6">Email</th>
+                        <th className="hidden_col">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -111,15 +127,22 @@ export default function AllTeachers({update, Delete}) {
                             tclass = Array.prototype.map.call(item?.classess, function(items) { if(items.checked === true){return items.class_name+', '} });
                             
                             return (
-                                <tr key={item?._id}>
-                                <th scope="row">{item.EmpID}</th>
-                                <td>{item.name}</td>
-                                <td>{item.subject_name}</td>
-                                <td className="hidden_col">{tclass}</td>
+                            <tr key={item?._id}>
+                                <th scope="row" className="col-md-2">{item.EmpID}</th>
+                                <td className="col-md-3">{item.name}</td>
+                                <td className="col-md-2">{item.subject_name}</td>
+                                <td className="col-md-3">{tclass}</td>
                                 <td className="hidden_col">{item.mobile}</td>
-                                <td>{item.username}</td>
-                                <td className="hidden_col">
+                                <td className="col-md-6">{item.username}</td>
+                                <td className="hidden_col flex col-md-3">
                                     {update && (
+                                        <>
+                                        <button className={`btn dark ${item?.isActive ? 'bg-success': 'bg-danger'} text-white btn-sm mr-2`} 
+                                            onClick={() => handleActiveInactive(item?.isActive, item?.subject_name, item?._id)}>
+                                            {item?.isActive ? <span className="fa fa-check" title="Make Inactive"></span> : <span className="fa fa-times" title="Make Inactive"></span>}
+                                            
+
+                                        </button>
                                         <button className="btn bg-primary text-white btn-sm mr-2" 
                                             onClick={
                                                 e => {
@@ -132,11 +155,14 @@ export default function AllTeachers({update, Delete}) {
                                             }>
                                             <span className="fa fa-edit"></span>
                                         </button>
+                                        </>
                                     )}
+                                    {Delete && (
                                     <button className="btn bg-danger text-white btn-sm"
                                         onClick={() => deleteTeacher(item?._id)}>
                                         <span className="fa fa-trash"></span>
                                     </button>
+                                    )}
                                 </td>
                                 </tr>
                             )

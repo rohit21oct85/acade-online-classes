@@ -22,13 +22,14 @@ export default function useUpdateTeacher(formData) {
             }
       }      
       const { addToast } = useToasts();
+      const key = `teachers-${params.school_id}-${params.subject_id}`
       return useMutation((formData) => {
             let teacher_id =  params?.teacher_id;
             return axios.patch(`${API_URL}v1/teacher/update/${teacher_id}`, formData, options)
         },{
             onSuccess: () => {
                 let school_id =  params?.school_id;
-                queryClient.invalidateQueries(`teachers-${school_id}`)
+                queryClient.invalidateQueries(`${key}`)
                 history.push(`/admin/teachers-management/view/${params?.school_id}/${params?.subject_id}/${params?.subject_name}/${params?.teacher_id}`);
                 addToast('Teacher Updated successfully', { appearance: 'success',autoDismiss: true });
             }

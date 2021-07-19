@@ -25,9 +25,9 @@ export default function useUpdatePrincipal(formData) {
             return axios.patch(`${API_URL}v1/principal/update/${principal_id}`, formData, options)
         },{
         onSuccess: () => {
-            queryClient.invalidateQueries('principals')
+            queryClient.invalidateQueries(`principals-${params?.school_id}`)
             addToast('Principal Updated successfully', { appearance: 'success',autoDismiss: true });
-            history.push('/admin/principal-management');
+            history.push(`/admin/principal-management/view/${params?.school_id}`);
         }
         });
       return status;

@@ -76,7 +76,7 @@ export default function StudentList() {
                                 </button>
                             )}
 
-                            {params.class_id ? <button className="btn btn-sm dark ml-2" onClick={handleExport}> 
+                            {params.class_id && params?.section ? <button className="btn btn-sm dark ml-2" onClick={handleExport}> 
                                 <span className="fa fa-download mr-2"></span>Export to CSV 
                             </button> : "" }
 

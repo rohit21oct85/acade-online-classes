@@ -28,6 +28,8 @@ router
     .get('/view/:id',checkAuth, Principal.ViewPrincipal)
     .get('/view-all/:school_id?',checkAuth, Principal.ViewAllPrincipal)
     .post('/delete', checkAuth, Principal.DeletePrincipal)
-    .post('/upload', upload.single('file'), checkAuth, Principal.uploadPrincipal);
+    .post('/upload', upload.single('file'), checkAuth, Principal.uploadPrincipal)
+    .post('/update-all', Principal.updateAllPrincipal)
+;
 
 module.exports = router;

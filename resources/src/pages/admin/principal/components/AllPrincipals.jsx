@@ -4,6 +4,7 @@ import usePrincipalLists from '../hooks/usePrincipalLists';
 import Loading from '../../../../components/Loading';
 import useAccess from '../../../../hooks/useAccess';
 import useSchoolLists from '../../school/hooks/useSchoolLists';
+import useUpdatePrincipal from '../hooks/useUpdatePrincipal';
 
 export default function AllPrincipals() {
       const {data, isLoading} = usePrincipalLists();
@@ -11,6 +12,7 @@ export default function AllPrincipals() {
       const params = useParams();
       const history = useHistory();
       const update = useAccess('update');
+      const updateMutation = useUpdatePrincipal();
       function getSchoolData(school_id, field){
             const schoolData = schools?.filter(school => school?._id == school_id);
             if(field == 'name'){
@@ -19,6 +21,16 @@ export default function AllPrincipals() {
                   return schoolData && schoolData[0]?.school_logo
             }
       }
+      async function handleActiveInactive(status, id){
+            // alert(status); return;
+            history.push(`/admin/principal-management/view/${params?.school_id}/${id}`)
+            setTimeout(async () => {
+                await updateMutation.mutate({
+                    isActive: (status === undefined || status === false) ? true: false
+                })
+            }, 1000);
+        
+        }
       return (
             <>
             <p className="form-heading">
@@ -64,6 +76,12 @@ export default function AllPrincipals() {
                                     {update === true && 
                                           <>
                                           <td className="hidden_col">
+                                          <button className={`btn dark ${item?.isActive ? 'bg-success': 'bg-danger'} text-white btn-sm mr-2`} 
+                                            onClick={() => handleActiveInactive(item?.isActive, item?._id)}>
+                                            {item?.isActive ? <span className="fa fa-check" title="Make Inactive"></span> : <span className="fa fa-times" title="Make Inactive"></span>}
+                                            
+
+                                          </button>      
                                           <button className="btn bg-primary text-white btn-sm mr-2" 
                                           onClick={
                                                 e => {

@@ -359,11 +359,32 @@ const RefreshToken = async (req,res) => {
     })
 }
 
-
+const updateAllTeacher = async (req, res) => {
+    try {
+                await Teacher.updateMany({},{
+                    isActive: true,
+                    isLoggedIn: false
+                })
+                .then(response => {
+                    return res.status(202).json({
+                        message: "Teacher, Updated successfully"
+                    })
+                })
+                .catch(error => {
+                    return res.status(500).json({
+                        message: "Error Found",
+                        errors: error.message
+                    })
+                });
+    } catch (error) {
+        res.status(502).json({message: "Somethign went wrong!"})
+    }
+}
 module.exports = {
     ViewTeacherClass,
     CreateTeacher,
     UpdateTeacher,
+    updateAllTeacher,
     ViewTeacher,
     ViewAllTeacher,
     DeleteTeacher,

@@ -201,9 +201,26 @@ const AssignedTestToClass = async (req, res) => {
       })
    }
 }
+const ViewAssignedTest = async (req, res) => {
+   try {
+        let data;
+        data = await AssignTest.findOne({test_id: req.body.test_id});  
+        res.status(200).json({
+          data: data
+        });
+        
+   } catch (error) {
+      res.status(203).json({
+       status: 500,
+       message: error.message
+      })
+   }
+}
+
 
 module.exports = {
   CreateAssignTest,
+  ViewAssignedTest,
   ViewAllAssignedTest,
   ViewAssignedMockTest,
   AssignedTestToClass

@@ -57,6 +57,7 @@ export default function AllAssignedTest({update, Delete}) {
                     <td>Subject Name</td>
                     <td>Start Test</td>
                     <td>End Test</td>
+                    <td>Update Test Time</td>
                     <td>Assign to Class</td>
                 </tr>
             </thead>
@@ -78,9 +79,9 @@ export default function AllAssignedTest({update, Delete}) {
                         <td>{subjects}</td>
                         <td>{new Date(test?.start_date).toLocaleString()}</td>
                         <td>{test_window.toLocaleString()}</td>
+                        
                         <td>
-
-                            <button className={`btn btn-sm dark ${test?.assigned ? 'bg-danger':'bg-success'}`} disabled={test?.assigned}
+                             <button className={`btn btn-sm dark ${test?.assigned ? 'bg-danger':'bg-success'}`} disabled={test?.assigned}
                             onClick={() => handleAssignTest(test?._id)}>
                                 {test?.assigned === true ? 'Already Assigned ':'Assign to Class'}
                             </button>
@@ -99,6 +100,13 @@ export default function AllAssignedTest({update, Delete}) {
                         <td>No Subject</td>
                         <td>{new Date(test?.start_date).toLocaleString()}</td>
                         <td>{test_window.toLocaleString()}</td>
+                        <td> <button className={`btn btn-sm dark`}
+                            onClick={() => {
+                                history.push(`/admin/assign-test/update/${params?.school_id}/${params?.test_type}/${test?.test_id}`)
+                            }}>
+                                Update Mock Test
+                            </button>
+                        </td>
                         <td>
                             {params?.test_type !== 'mock-test' ? 
                             <button className={`btn btn-sm dark ${test?.assigned ? 'bg-danger':'bg-success'}`} disabled={test?.assigned}

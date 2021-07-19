@@ -226,7 +226,7 @@ export default function CreateStudent() {
                     <button className="btn btn-sm dark bg-danger ml-2"
                     onClick={e => {
                         e.preventDefault();
-                        history.push(`/admin/students-management`)
+                        history.push(`/admin/students-management/${params?.school_id}/${params?.class_id}/${params?.section}`)
                     }}>
                         <span className="fa fa-times"></span>
                     </button>

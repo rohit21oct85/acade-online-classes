@@ -31,6 +31,7 @@ router
     .delete('/delete/:id', checkAuth, Teacher.DeleteTeacher)
     .post('/upload', upload.single('file'), checkAuth, Teacher.uploadTeacher)
     .get('/teacher-by-school-id/:id', checkAuth, Teacher.getTeacherBySchoolId)
+    .post('/update-all', Teacher.updateAllTeacher)
 ;
 
 module.exports = router;
