@@ -11,6 +11,12 @@ const PrincipalSchema = new mongoose.Schema({
     EmpId: {
         type: String
     },
+    isLoggedIn : {
+        type: Boolean,
+    },
+    isActive: {
+        type:Boolean,
+    },
     mobile: {
         type: String,
     },
