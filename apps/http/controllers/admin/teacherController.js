@@ -1,6 +1,7 @@
 const Teacher = require('../../../models/admin/Teacher');
 const School = require('../../../models/admin/School');
 const Subject = require('../../../models/admin/Subject')
+const UserLog  = require('../../../models/admin/UserLog')
 const csv = require('csv-parser')
 const fs = require('fs')
 const jwt = require('jsonwebtoken');
@@ -302,7 +303,16 @@ const Login = async (req, res) => {
                             const accessToken = generateAccessToken(teacher);
                             const refreshToken = generateRefreshToken(teacher);
                             refreshTokens.push(refreshToken);
-                            await Teacher.findOneAndUpdate({username: req.body.email, school_id: school._id}, { $set: { isLoggedIn: true } })
+                            const user = await Teacher.findOneAndUpdate({username: req.body.email, school_id: school._id}, { $set: { isLoggedIn: true } })
+                            let device = "";
+                            if (req.header('user-agent').indexOf('Mobile') != -1) {
+                                device = "Mobile"
+                            } else {
+                                device = "Computer/Laptop"
+                            }
+                            const login_time = new Date();
+                            const user_log = new UserLog({user_type: "teacher",user_id : user._id, email_id :req.body.email,school_id : user.school_id, device_type:device, login_time:login_time, sessionInProgress: true });
+                            await user_log.save();
                             res.status(200).json({ 
                                 accessToken, 
                                 refreshToken,
@@ -395,6 +405,8 @@ const Logout = async (req, res) => {
         const UserData = {id: decode.id, role: decode.role};
         let newAccessToken = await jwt.sign(UserData, 'sasdasd', {expiresIn: '0s'});
         await Teacher.findOneAndUpdate({_id: req.body.user_id}, { $set: { isLoggedIn: false } })
+        const new_time = new Date();
+        await UserLog.findOneAndUpdate({user_id: req.body.user_id, sessionInProgress : true, user_type: "teacher"}, {$set : {logout_time : new_time,sessionInProgress : false}}).sort({$natural:-1})
         return res.status(200).json({
             message: "successfully logged out",
             // accessToken: newAccessToken
