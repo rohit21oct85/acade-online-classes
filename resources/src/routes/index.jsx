@@ -23,6 +23,7 @@ import UnitsList from '../pages/admin/units/UnitsList'
 import UnitTests from '../pages/admin/unitTest/UnitTest'
 import ViewAllTest from '../pages/admin/unitTest/ViewAllTest'
 import SchoolReport from '../pages/admin/school/SchoolReport'
+import ActivityReport from '../pages/admin/school/ActivityReport'
 import AssignTests from '../pages/admin/assignTest/AssignTests'
 import SubjectChapterList from '../pages/admin/mappingSubjectChapter/SubjectChapterList'
 
@@ -103,7 +104,7 @@ export const privateRoutes = [
     },
 
     {
-        path: '/admin/assign-test/:page_type?/:school_id?/:test_type?/:test_id?',
+        path: '/admin/assign-test/:page_type?/:school_id?/:test_type?/:class_id?/:test_id?',
         component: AssignTests
     },
     {
@@ -149,6 +150,10 @@ export const adminRoutes = [
     {
         path: '/admin/school-report/:school_id?/:class_id?/:test_type?/:report_type?/:test_id?',
         component: SchoolReport
+    },
+    {
+        path: '/admin/activity-report/:school_id?/:user_type?/:report_type?/:report_id?',
+        component: ActivityReport
     },
 
 ]

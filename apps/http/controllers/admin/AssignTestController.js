@@ -11,21 +11,20 @@ const CreateAssignTest = async (req, res) => {
     if(data.test_type === 'mock-test'){
       filter =   {
         school_id:  req.body.school_id,
-        test_type: 'mock-test',
         assigned: false
       }
     }else{
       filter = {
-        class_id: data.class_id,
         school_id:  req.body.school_id,
         assigned: false
       }
     }
+    // console.log(filter);return
     assignTest = await AssignTest.findOne(filter,{start_date:1,test_window:1
     }).limit(1).sort({$natural:-1})
     
-    
     // console.log(assignTest);return
+    
 
     let timeAlTest = new Date(assignTest?.start_date)
     timeAlTest.setMinutes( timeAlTest.getMinutes() + assignTest?.test_window );
@@ -135,20 +134,26 @@ const CreateAssignTest = async (req, res) => {
 const ViewAllAssignedTest = async (req, res) => {
    try {
       let filter = '';
-      if(req?.params?.school_id && req?.params?.class_id ){
-        
-          filter = {
-            school_id: req?.params?.school_id,
-            test_type: req?.params?.test_type,
-            class_id: req?.params?.class_id,
-          }
-        
+      if(req?.params?.test_type === 'mock-test'){
+        filter =   {
+          school_id:  req.params.school_id,
+          test_type: req?.params?.test_type,
+          
+        }
+      }else{
+        filter = {
+          school_id:  req.params.school_id,
+          test_type: req?.params?.test_type,
+          class_id: req?.params?.class_id,
+          
+        }
       }
-     
-     const AssignTests = await AssignTest.find(filter);
-     res.status(201).json({
-       data: AssignTests
-     })
+      
+      const AssignTests = await AssignTest.find(filter);
+      // console.log(AssignTests);return
+      res.status(201).json({
+        data: AssignTests
+      })
    } catch (error) {
       res.status(502).json({
         message: error.message,

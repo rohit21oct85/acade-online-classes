@@ -47,14 +47,17 @@ export default function AllAssignedTest({update, Delete}) {
         <p className="form-heading">
         <span className="fa fa-plus-circle mr-2"></span>All Assigned Test</p>
         <hr className="mt-1"/>
+        {params?.test_type !== 'mock-test' && params?.class_id && (
         <Loading isLoading={isLoading} /> 
-        <table className="table table-bordered">
+        )}
+        <div className="table-responsive pl-0" style={{ width: '100%', overflow: 'scroll hidden'}}>
+        <table className="table table-responsive" style={{ width: '1350px'}}>
             <thead>
                 <tr>
                     <td>School Name</td>
                     <td>Test Name</td>
                     <td>Test Duration/Window</td>
-                    <td>Subject Name</td>
+                    {params?.test_type !== 'mock-test' && <td>Subject Name</td>}
                     <td>Start Test</td>
                     <td>End Test</td>
                     <td>Update Test Time</td>
@@ -62,7 +65,7 @@ export default function AllAssignedTest({update, Delete}) {
                 </tr>
             </thead>
             <tbody style={{ minHeight: '100px !important', height: 'auto',maxHeight: '350px', overflowY: 'scroll', overflowX: 'hidden'}}>
-            {testLists?.map( test => {
+            {(params?.test_type === 'single-test' || params?.test_type === 'combine-test') && testLists?.map( test => {
                 let subjects = '';
                 if(test?.test_type === 'combine-test'){
                     subjects = Array.prototype.map.call(test?.test_subjects, function(item) { return item.subject_name; }).join(",");
@@ -76,10 +79,16 @@ export default function AllAssignedTest({update, Delete}) {
                         <td>{test?.school_name}</td>
                         <td>{test?.test_name} ({(test?.total_question)} Qes)</td>
                         <td>{test?.test_duration} Min / {test?.test_window} Min</td>
-                        <td>{subjects}</td>
+                        {params?.test_type !== 'mock-test' && <td>{subjects}</td>}
                         <td>{new Date(test?.start_date).toLocaleString()}</td>
                         <td>{test_window.toLocaleString()}</td>
-                        
+                        <td> <button className={`btn btn-sm dark`}
+                            onClick={() => {
+                                history.push(`/admin/assign-test/update/${params?.school_id}/${params?.test_type}/${test?.test_id}`)
+                            }}>
+                                Update Mock Test
+                            </button>
+                        </td>
                         <td>
                              <button className={`btn btn-sm dark ${test?.assigned ? 'bg-danger':'bg-success'}`} disabled={test?.assigned}
                             onClick={() => handleAssignTest(test?._id)}>
@@ -89,7 +98,7 @@ export default function AllAssignedTest({update, Delete}) {
                     </tr>
                 )
             })}
-            {localStorage.getItem('mock_test_for') === 'student' && assignMockTests?.map(test => {
+            {params?.test_type === 'mock-test' && assignMockTests?.map(test => {
                 let test_window = new Date(test?.start_date)
                 test_window.setMinutes( test_window.getMinutes() + test?.test_window );
                 return(
@@ -97,7 +106,6 @@ export default function AllAssignedTest({update, Delete}) {
                         <td>{test?.school_name}</td>
                         <td>{test?.test_name}  ({(test?.total_question)} Qes)</td>
                         <td>{test?.test_duration} Min / {test?.test_window} Min</td>
-                        <td>No Subject</td>
                         <td>{new Date(test?.start_date).toLocaleString()}</td>
                         <td>{test_window.toLocaleString()}</td>
                         <td> <button className={`btn btn-sm dark`}
@@ -126,6 +134,7 @@ export default function AllAssignedTest({update, Delete}) {
             </tbody>
         
         </table>
+        </div>
     </>
     )
 }

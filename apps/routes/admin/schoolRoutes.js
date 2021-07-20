@@ -32,6 +32,7 @@ router
     .post('/delete', checkAuth,adminAuth, School.DeleteSchool)
     .post('/search-school', School.searchSchool)
     .get('/report/:school_id?/:class_id?/:test_type?',checkAuth,adminAuth, School.schoolReport)
+    .get('/activity-report/:school_id?/:user_type?',checkAuth,adminAuth, School.schoolActivityReport)
     .post('/upload', upload.single('file'), checkAuth,adminAuth, School.uploadSchool);
     
 module.exports = router;

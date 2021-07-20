@@ -32,7 +32,7 @@ export default function CreateAssignTest() {
       const {data: testLists, isLoading} = useAssignedTestList();
       const {data: mockTests} = useMockTestList();
       const {data: singleTest} = useSingleAssignedTest();
-      console.log(singleTest);
+      // console.log(unitTests);
       const timeWindows = [
             {key:'1', value:'1 Hrs'},
             {key:'2', value:'2 Hrs'},
@@ -184,9 +184,9 @@ export default function CreateAssignTest() {
                               }
                               
                         
-                  
+                        {/* {JSON.stringify(unitTests, "utf-8", 2)}       */}
                         <div className="pt-2 pr-0 no-gutter" style={{ height: '200px',maxHeight: '200px', overflowY: 'scroll', overflowX: 'hidden'}}>
-                              {unitTests?.map((tests, index) => {
+                              {params?.test_type === 'single-test' && unitTests?.map((tests, index) => {
                               let assigned = checkAssigned(tests?._id);      
                               let subjects = '';
                               if(tests?.test_type === 'combine-test'){
@@ -215,6 +215,7 @@ export default function CreateAssignTest() {
                                     <div style={{ width: '100px'}}><b>{assigned?.toString()}</b></div>
                               </div>
                               )})}
+
                               {params?.test_type === 'mock-test' && mockTests?.map(mtes => {
                                     return(
                                           <div className="flex" key={mtes?._id}>

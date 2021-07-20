@@ -5,6 +5,7 @@ const csv = require('csv-parser')
 const fs = require('fs')
 const bcrypt = require('bcryptjs');
 const AttemptTest = require('../../../models/admin/AttemptTest');
+const UserLog = require('../../../models/admin/UserLog');
 
 const CreateSchool = async (req, res) => {
     const body = req.body;
@@ -272,6 +273,46 @@ const schoolReport = async (req, res) => {
         })
     }
 }
+
+const schoolActivityReport = async (req, res) => {
+    try {
+        let currentDate = new Date();
+        let nextDate = new Date(currentDate);
+        nextDate.setDate(currentDate.getDate() + 1);
+        let filter = {
+            school_id: req.params?.school_id, 
+            user_type: req.params?.user_type
+        }
+        // console.log(filter); return;
+        let logData = await UserLog.aggregate([
+            {"$match": filter},
+            {"$group": {
+                "_id": {
+                    "school_id":"$school_id",
+                    "email_id":"$email_id",
+                    "user_type":"$user_type",
+                    "device_type":"$device_type",
+                    "login_time":"$login_time",
+                    "logout_time":"$logout_time",
+                    "sessionInProgress":"$sessionInProgress",
+                }
+            }},
+            {$sort: { _id: -1}}
+        ]);
+        // console.log(logData); return;
+        res.status(201).json({
+            data: logData
+        })
+
+        
+    } catch (error) {
+        res.json({
+            status: 500,
+            message: error.message
+        })
+    }
+}
+
 module.exports = {
     schoolReport,
     checkSubDomain,
@@ -283,4 +324,5 @@ module.exports = {
     DeleteSchool,
     uploadSchool,
     searchSchool,
+    schoolActivityReport,
 }

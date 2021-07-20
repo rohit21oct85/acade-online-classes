@@ -6,7 +6,19 @@ export default function StudentList() {
       const history = useHistory();
       const params = useParams();
       const {data:attemtedStudetns} = useAttemptedStudents();
-      console.log(attemtedStudetns)
+      const viewResult = async (id) => {
+            let btnText = document.getElementById(`btn-${id}`).value;
+            if(btnText === 'View'){
+                  document.getElementById(`btn-${id}`).value = "Hide"
+                  document.getElementById(`btn-${id}`).innerHTML = "Hide"
+                  document.getElementById(`result-${id}`).style.display = "block"
+            }else{
+                  document.getElementById(`btn-${id}`).value = "View"
+                  document.getElementById(`btn-${id}`).innerHTML = "View"
+                  document.getElementById(`result-${id}`).style.display = "none"
+            }
+            
+      }
       return (
             <div>
                  <div className="col-md-12 pl-0">
@@ -67,8 +79,20 @@ export default function StudentList() {
                               let minute = Math.floor(total_time/60);
                               let seconds = total_time - minute * 60
                               return(
+                                    <>
                                     <div className="flex col-md-12 pl-0 pr-0" key={student?._id}>
-                                          <div className="border col-md-2">{student?.student_emp_id}</div>
+                                          <div className="border col-md-2">
+                                                <span className="fa fa-eye pr-2" style={{
+                                                      display: 'inline-block',
+                                                      cursor: 'pointer'
+                                                }}
+                                                id={`btn-${student?.id}`}
+                                                value="View"
+                                                onClick={e => {
+                                                      viewResult(student?._id)
+                                                }}></span>
+                                                {student?.student_emp_id}
+                                          </div>
                                           <div className="border col-md-3">{student?.student_name}</div>
                                           <div className="border col-md-1">{student?.student_class_name}</div>
                                           <div className="border col-md-1">{student?.student_roll_no}</div>
@@ -81,8 +105,40 @@ export default function StudentList() {
                                           <div className="border col-md-1">{student?.test_window} Min</div>
                                           <div className="border col-md-3">{new Date(student?.start_date).toLocaleString()}</div>
                                           <div className="border col-md-3">{end_window.toLocaleString()}</div>
-
                                     </div>
+                                    <div className="border pl-2 pr-2 pb-2 pt-2" 
+                                    id={`result-${student?._id}`}
+                                    style={{
+                                          width: '1200px',
+                                          height: 'auto',
+                                          display: 'none'
+                                    }}>
+                                         {student?.questions?.map( (ques, indx) => {
+                                               return(
+                                                     <div className="border mb-2">
+                                                      <div className="col-md-12">
+                                                           {indx+1}. {ques?.question}
+                                                      </div>
+                                                      <hr className="mb-2 mt-2"/>
+                                                      <div className="flex col-md-12">
+                                                            <span>Option A: {ques?.option_a}</span>
+                                                           <span>Option B: {ques?.option_b}</span>
+                                                           <span>Correct Answer: {ques?.correct_answer}</span>
+                                                           <span>
+                                                           {(ques?.answer == "no" ? 'b': 'a') === ques?.correct_answer 
+                                                                  ? 
+                                                                  <span className="fa fa-check-circle pr-2 text-success"></span>
+                                                                  :
+                                                                  <span className="fa fa-times-circle pr-2 text-danger"></span>
+                                                            }
+                                                            User Answer: {ques?.answer}
+                                                            </span>
+                                                      </div>
+                                                      </div>
+                                               )
+                                         })}       
+                                    </div>      
+                                    </>
                               );
                         })}
                         </div>
