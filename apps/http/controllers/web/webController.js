@@ -46,6 +46,9 @@ const getAssignedTestsStudent = async (req, res) => {
                 school_id:req.params.school_id,
                 class_id:req.params.class_id,
                 assigned: true,
+                attemptedStudentIds:{
+                    $nin:[req.params.student_id]
+                },
                 // $and: [
                 //         {
                 //             "start_date": { 
@@ -661,7 +664,7 @@ const saveAnswer = async (req,res) => {
                     attemptId: data._id,
                 }); 
             }
-        }else{
+        }else if(req.params.test_type == "single-test"){
             let optionsDocx = [{key: 0,value: " A", option: "option_a",},{key: 1,value: " B", option: "option_b",},{key: 3,value: " C", option: "option_c",},{key: 4,value: " D", option: "option_d",}];
 
             const filter = {
@@ -845,6 +848,7 @@ const getCumulativeScore = async (req,res) => {
         let totalMarks = 0;
         let newArray = [];
         result?.map((item,key) => {
+            const test_type = item.test_type;
             let obj = {correctAnswers : 0,wrongAnswers : 0,marksScored : 0,totalMarks : 0,created_at:null,};
             obj.created_at = item.create_at;
             obj.time_taken = item.time_taken;
@@ -852,12 +856,22 @@ const getCumulativeScore = async (req,res) => {
             obj.test_name = item.test_name
             item?.questions?.map((it,key)=>{
                 if(it.answer != undefined ){
-                    if(it.option == it['correct_option']){
-                        obj.correctAnswers = obj.correctAnswers + 1;
-                        correctAnswers = correctAnswers + 1;
+                    if(test_type == "mock-test"){
+                        if((it.answer === 'yes' ? 'a' : 'b') === it?.correct_answer){
+                            obj.correctAnswers = obj.correctAnswers + 1;
+                            correctAnswers = correctAnswers + 1;
+                        }else{
+                            obj.wrongAnswers = obj.wrongAnswers + 1;
+                            wrongAnswers = wrongAnswers + 1;
+                        }
                     }else{
-                        obj.wrongAnswers = obj.wrongAnswers + 1;
-                        wrongAnswers = wrongAnswers + 1;
+                        if(it.option == it['correct_option']){
+                            obj.correctAnswers = obj.correctAnswers + 1;
+                            correctAnswers = correctAnswers + 1;
+                        }else{
+                            obj.wrongAnswers = obj.wrongAnswers + 1;
+                            wrongAnswers = wrongAnswers + 1;
+                        }
                     }
                 }
             })
@@ -885,7 +899,7 @@ const getCumulativeScore = async (req,res) => {
 const getResult = async (req,res) => {
     try{
         let data = {};
-        if(req.params.test_type != "mock-test"){
+        if(req.params.test_type == "single-test"){
             const result = await AttemptTest.findOne({_id: req?.params?.attempt_id});
             let correctAnswers = 0;
             let wrongAnswers = 0;
@@ -895,6 +909,30 @@ const getResult = async (req,res) => {
             result?.questions?.map((item,key)=>{
                 if(item.answer != undefined ){
                     if(item.option == item['correct_option']){
+                        correctAnswers = correctAnswers + 1;
+                    }else{
+                        wrongAnswers = wrongAnswers + 1;
+                    }
+                }
+            })
+            data = {
+                totalQuestions : totalQuestions,
+                correctAnswers : correctAnswers,
+                wrongAnswers : wrongAnswers,
+                attemptedQuestions: correctAnswers + wrongAnswers,
+                end_time: timeEndTest,
+            }
+        }else if(req.params.test_type == "mock-test"){
+            const result = await AttemptTest.findOne({_id: req?.params?.attempt_id});
+            let correctAnswers = 0;
+            let wrongAnswers = 0;
+            let totalQuestions = result?.questions?.length;
+            let timeEndTest = new Date(result.start_date)
+            timeEndTest.setMinutes(timeEndTest.getMinutes() + result?.test_window );
+            result?.questions?.map((item,key)=>{
+                if(item.answer != undefined ){
+                    if((item.answer === 'yes' ? 'a' : 'b') === item?.correct_answer){
+                    // if(item.answer == item['correct_answer']){
                         correctAnswers = correctAnswers + 1;
                     }else{
                         wrongAnswers = wrongAnswers + 1;
@@ -1512,12 +1550,47 @@ const getUploadTestPaper = async ( req, res ) => {
     }
 }
 
+const saveUploadAnswer = async ( req, res ) => {
+    try {
+        console.log(req.body, req.params)
+        const filter = {
+            _id :req.body.attempt_id,
+        }
+        const data = await AttemptTest.findOne(filter).lean()
+        const un = await AssignTest.findOne({_id:data.test_id})
+        // let questions = data.questions;
+        // data.questions.length = 0; 
+        un.answers.map(( item, key ) => {
+            // data.questions[`correctAnswers${key+1}`] = item[`ans${key+1}`]
+            // data.questions[`answer${key+1}`] = req.body.answers[`answer${key+1}`]
+            // data.questions[`option${key+1}`] = req.body.answers[`option${key+1}`]
+            // newArr.push({correct_answer:item[`ans${key+1}`], answer : req.body.answers[`answer${key}`], option: req.body.answers[`option${key}`]})
+            data.questions.unshift({correct_answer:item[`ans${key+1}`],correct_option:"unavailable", answer : req.body.answers[`answer${key+1}`], option: req.body.answers[`option${key+1}`],question_no: key+1})
+        })
+        await AssignTest.findOneAndUpdate({_id:data.test_id}, {
+            $addToSet: {
+                attemptedStudentIds: req.body.student_id
+            }
+        })
+        const assigntests = await AttemptTest.findOneAndUpdate(filter, {$set: {"questions": data.questions,"time_taken":req.body.time_taken,"completion_status":req.body.completion_status}})
+        if(assigntests){
+            return res.status(200).json({ 
+                msg: "answer submitted successfully",
+                attemptId: data._id,
+            }); 
+        }
+    } catch (error) {
+        res.status(502).json({
+            message : error.message
+        })
+    }
+}
+
 const changeDomainStudent = async ( req, res ) => {
     try {
         const xchool = await School.findOne({_id:req.params.school_id},{sub_domain:1,short:1,school_slug:1});
         const student = await Student.find({school_id:req.params.school_id}).lean();
         student.map((item,key)=>{
-            // console.log(item.username.split(item.name))
             console.log(item.name,xchool.school_slug)
             const removeName = item.username.split(item.name.toLowerCase())
             const removeDomain = removeName[1].split('@')
@@ -1550,9 +1623,7 @@ function getFirstLetter(el){
       return data[data.length - 1];
     }else{
       return el.charAt(0)
-    }
-    
-    
+    }    
 }
 
 
@@ -1599,5 +1670,6 @@ module.exports = {
     getMockTestQuestions,
     getUploadTest,
     getUploadTestPaper,
-    changeDomainStudent
+    changeDomainStudent,
+    saveUploadAnswer,
 }

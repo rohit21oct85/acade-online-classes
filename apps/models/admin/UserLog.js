@@ -25,6 +25,12 @@ const UserLogSchema = new mongoose.Schema({
         sessionInProgress:{
             type:Boolean,
         },
+        total_session:{
+            type:String,
+        },
+        otherInfo: {
+            type: Array
+        },
         status:{
                 type: Boolean,
                 default: true
