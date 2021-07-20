@@ -46,6 +46,7 @@ const getAssignedTestsStudent = async (req, res) => {
                 school_id:req.params.school_id,
                 class_id:req.params.class_id,
                 assigned: true,
+                test_type:"single-test",
                 attemptedStudentIds:{
                     $nin:[req.params.student_id]
                 },
@@ -57,13 +58,16 @@ const getAssignedTestsStudent = async (req, res) => {
                 //         }
                 //     ]
             },{__v: 0});
+            // console.log(AssignedTests)
         const attemptedTest = await AttemptTest.find(
             {
                 // subject_id:req.params.subject_id,
                 school_id:req.params.school_id,
                 class_id:req.params.class_id,
                 student_id:req.body.student_id,
+                test_type: "single-test",
             },{__v: 0});
+            // console.log(attemptedTest)
         if(attemptedTest.length != AssignedTests.length){
             if(attemptedTest.length > 0){
                 AssignedTests.forEach(item=>{
