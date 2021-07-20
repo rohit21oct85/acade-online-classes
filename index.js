@@ -122,6 +122,8 @@ app.use("/api/v1/mock-test", Routes.mockTestRoutes);
 app.use("/api/v1/test-report", Routes.testReportRoutes);
 app.use("/api/v1/web", Routes.webRoutes);
 
+const directory = path.join(__dirname, 'apps/uploads');
+app.use('/uploads', express.static(directory));
 
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static('views/build'));
