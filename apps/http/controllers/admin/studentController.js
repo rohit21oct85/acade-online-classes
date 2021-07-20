@@ -240,7 +240,10 @@ const Login = async (req, res) => {
                                 device = "Computer/Laptop"
                             }
                             const login_time = new Date();
-                            const user_log = new UserLog({user_type: "student",user_id : user._id, email_id :req.body.email,school_id : user.school_id, device_type:device, login_time:login_time, sessionInProgress: true });
+                            const ip = getClientIp(req)
+                            let otherInfo = [];
+                            otherInfo.push(ip)
+                            const user_log = new UserLog({user_type: "student",user_id : user._id, email_id :req.body.email,school_id : user.school_id, device_type:device, login_time:login_time, sessionInProgress: true,otherInfo:otherInfo });
                             await user_log.save();
                             res.status(200).json({ 
                                 accessToken, 
@@ -312,9 +315,12 @@ const Logout = async (req, res) => {
         const decode = await jwt.verify(accessToken, accessTokenSecret);
         const UserData = {id: decode.id, role: decode.role};
         let newAccessToken = await jwt.sign(UserData, 'sasdasd', {expiresIn: '0s'});
-        await Student.findOneAndUpdate({_id: req.body.user_id}, { $set: { isLoggedIn: false } })
+        const d = await UserLog.findOne({ user_id: req.body.user_id,sessionInProgress : true },{ login_time:1 }).sort({$natural:-1})
+        const loginTime = new Date(d?.login_time);
         const new_time = new Date();
-        await UserLog.findOneAndUpdate({user_id: req.body.user_id, sessionInProgress : true, user_type: "student"}, {$set : {logout_time : new_time,sessionInProgress : false}}).sort({$natural:-1})
+        const seconds = (new_time - loginTime) / 1000;
+        await UserLog.findOneAndUpdate({user_id: req.body.user_id, sessionInProgress : true, user_type: "student"}, { $set : { logout_time : new_time, sessionInProgress : false, total_session : seconds }}).sort({$natural:-1})
+        await Student.findOneAndUpdate({_id: req.body.user_id}, { $set: { isLoggedIn: false } })
         return res.status(200).json({
             message: "successfully logged out",
             // accessToken: newAccessToken
@@ -334,7 +340,6 @@ const ForgotPassword = async (req, res) => {
     } catch (error) {
         res.status(502).json({message: "Somethign went wrong!"})
     }
-
 }
 const updateAllStudent = async (req, res) => {
     try {
@@ -357,6 +362,24 @@ const updateAllStudent = async (req, res) => {
         res.status(502).json({message: "Somethign went wrong!"})
     }
 }
+
+function getClientIp(req) {
+    var ipAddress;
+    // The request may be forwarded from local web server.
+    var forwardedIpsStr = req.header('x-forwarded-for'); 
+    if (forwardedIpsStr) {
+        // 'x-forwarded-for' header may return multiple IP addresses in
+        // the format: "client IP, proxy 1 IP, proxy 2 IP" so take the
+        // the first one
+        var forwardedIps = forwardedIpsStr.split(',');
+        ipAddress = forwardedIps[0];
+    }
+    if (!ipAddress) {
+        // If request was not forwarded
+        ipAddress = req.connection.remoteAddress;
+    }
+    return ipAddress;
+};
 
 module.exports = {
     CreateStudent,
