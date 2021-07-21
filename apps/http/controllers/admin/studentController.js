@@ -243,7 +243,7 @@ const Login = async (req, res) => {
                             const ip = getClientIp(req)
                             let otherInfo = [];
                             otherInfo.push(ip)
-                            const user_log = new UserLog({user_type: "student",user_id : user._id, email_id :req.body.email,school_id : user.school_id, device_type:device, login_time:login_time, sessionInProgress: true,otherInfo:otherInfo });
+                            const user_log = new UserLog({user_type: "student",user_name : user.name,user_id : user._id, email_id :req.body.email,school_id : user.school_id, device_type:device, login_time:login_time, sessionInProgress: true,otherInfo:otherInfo });
                             await user_log.save();
                             res.status(200).json({ 
                                 accessToken, 

@@ -1,4 +1,7 @@
 const School = require('../../../models/admin/School');
+const Student = require('../../../models/admin/Student');
+const Teacher = require('../../../models/admin/Teacher');
+const Principal = require('../../../models/admin/Principal');
 const AssignTest = require('../../../models/admin/AssignTest');
 const MockTestQuestion = require('../../../models/admin/MockTestQuestion');
 const csv = require('csv-parser')
@@ -288,14 +291,20 @@ const schoolActivityReport = async (req, res) => {
             {"$match": filter},
             {"$group": {
                 "_id": {
-                    "school_id":"$school_id",
                     "email_id":"$email_id",
                     "user_id":"$user_id",
-                    "user_type":"$user_type",
+                    "user_name":"$user_name",
+                    "sessionInProgress":"$sessionInProgress"
+                    
+                },
+                "total_session": {
+                    $sum: "$total_session"
                 }
             }},
+           
             {$sort: { _id: -1}}
         ]);
+        
         // console.log(logData); return;
         res.status(201).json({
             data: logData
@@ -308,6 +317,10 @@ const schoolActivityReport = async (req, res) => {
             message: error.message
         })
     }
+}
+function getUserName(arr,id ,fieldname){
+    let data = arr.filter(el => el._id === id);
+    return data[0][fieldname]
 }
 const schoolActivityDetails = async (req, res) => {
     try {

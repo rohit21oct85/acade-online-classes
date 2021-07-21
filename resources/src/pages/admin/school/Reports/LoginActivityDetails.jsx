@@ -41,17 +41,15 @@ export default function LoginActivityDetails() {
                         <div className={`${params?.user_id ? 'pl-0 pb-3': ''}`} style={{ 
                               overflow: 'scroll scroll',
                               height: '390px',
-                              marginRight: '120px'
+                              marginRight: '50px'
                         }}>
                         {params?.user_id && (
 
                               <div className="flex col-md-12 pl-0">
-                                    <div className="border col-md-1">Status</div>
                                     <div className="border col-md-4">User Email</div>
-                                    <div className="border col-md-2">User Type</div>
                                     <div className="border col-md-3">Login Time</div>
                                     <div className="border col-md-3">Logout Time</div>
-                                    <div className="border col-md-3">Total Activity</div>
+                                    <div className="border col-md-2">Activity</div>
                                     
                               </div>   
                         )}
@@ -71,15 +69,13 @@ export default function LoginActivityDetails() {
                               return(
                               <div className="col-md-12 pl-0 flex"
                               style={{
-                                    marginRight: '120px'
+                                    marginRight: '70px'
                               }}
                                key={rep?.report_id}>
-                                     <div className="border col-md-1">{rep?.sessionInProgress == false ? <span className="fa fa-circle text-danger"></span>: <span className="fa fa-circle text-success"></span>}</div>  
                                     <div className="border col-md-4">{rep.email_id}</div>  
-                                    <div className="border col-md-2">{rep?.user_type}</div> 
                                     <div className="border col-md-3">{new Date(rep?.login_time).toLocaleString()}</div>  
                                     <div className="border col-md-3">{(rep?.logout_time !== undefined) ? new Date(rep?.logout_time).toLocaleString(): 'Not Logout'}</div>  
-                                    <div className="border col-md-3">{hourDifference}</div>  
+                                    <div className="border col-md-2">{hourDifference}</div>  
                               </div>      
                               )})}
                               </div>

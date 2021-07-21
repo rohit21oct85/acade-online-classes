@@ -7,18 +7,21 @@ export default function StudentList() {
       const params = useParams();
       const {data:attemtedStudetns} = useAttemptedStudents();
       const viewResult = async (id) => {
-            if(document.getElementById(`btn-${id}`).value === 'View'){
-                  document.getElementById(`result-${id}`).style.display = "block"
-                  document.getElementById(`btn-${id}`).value = "Hide"
-                  document.getElementById(`btn-${id}`).classList.remove('fa-eye')
-                  document.getElementById(`btn-${id}`).classList.add('fa-eye-slash')
-                  
-            }else{
-                  document.getElementById(`btn-${id}`).value = "View"
-                  document.getElementById(`btn-${id}`).classList.remove('fa-eye-slash')
-                  document.getElementById(`btn-${id}`).classList.add('fa-eye')
-                  document.getElementById(`result-${id}`).style.display = "none"
-            }
+            Array.from(document.querySelectorAll('.answerDiv')).map( data => {
+                  let divId = data?.id;
+                  let did = divId.split('-')[1]
+                  if(did === id && document.getElementById(`btn-${id}`).value === 'View'){
+                        document.getElementById(`result-${id}`).style.display = "block"
+                        document.getElementById(`btn-${id}`).value = "Hide"
+                        document.getElementById(`btn-${id}`).classList.remove('fa-eye')
+                        document.getElementById(`btn-${id}`).classList.add('fa-eye-slash')   
+                  }else{
+                        document.getElementById(`btn-${did}`).value = "View"
+                        document.getElementById(`btn-${did}`).classList.remove('fa-eye-slash')
+                        document.getElementById(`btn-${did}`).classList.add('fa-eye')
+                        document.getElementById(`result-${did}`).style.display = "none"
+                  }
+            })
             
       }
       useEffect(() => {
@@ -115,7 +118,7 @@ export default function StudentList() {
                                           <div className="border col-md-3">{new Date(student?.start_date).toLocaleString()}</div>
                                           <div className="border col-md-3">{end_window.toLocaleString()}</div>
                                     </div>
-                                    <div className="border pl-2 pr-2 pb-2 pt-2" 
+                                    <div className="border answerDiv pl-2 pr-2 pb-2 pt-2" 
                                     id={`result-${student?._id}`}
                                     style={{
                                           width: '1200px',

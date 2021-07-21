@@ -1,3 +1,4 @@
+const { Double } = require('mongodb');
 const mongoose = require('mongoose');
 
 const UserLogSchema = new mongoose.Schema({
@@ -8,6 +9,9 @@ const UserLogSchema = new mongoose.Schema({
             type: Date,
         },
         user_type:{
+            type:String,
+        },
+        user_name:{
             type:String,
         },
         user_id:{
@@ -26,7 +30,7 @@ const UserLogSchema = new mongoose.Schema({
             type:Boolean,
         },
         total_session:{
-            type:String,
+            type:Double,
         },
         otherInfo: {
             type: Array

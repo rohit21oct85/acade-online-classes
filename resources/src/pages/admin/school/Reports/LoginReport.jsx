@@ -37,23 +37,32 @@ export default function LoginReport() {
                         }}>
                         {!params?.user_id && (
 
-                              <div className="row col-md-12 pl-3">
+                              <div className="flex col-md-12 pl-3">
+                                    <div className="border col-md-1">status</div>
+                                    <div className="border col-md-3">userName</div>
                                     <div className="border col-md-4">User Email</div>
-                                    <div className="border col-md-2">User Type</div>
+                                    <div className="border col-md-2">Total Session</div>
                                     <div className="border col-md-2 pl-3">Action</div>
                               </div>   
                         )}
                         {!params?.user_id && (params?.report_type === 'login-report') && reports?.map(rep => {
+                              let seconds = Math.floor(rep?.total_session);
+                              let hour = Math.floor(seconds/3600) 
+                              let minute = Math.floor(seconds/60 - (hour * 60)) 
+                              let sec = Math.floor(seconds - (hour * 3600 + minute * 60))
+                              let hourDifference = `${hour} Hr ${minute} Min ${sec} Sec`
                               return(
-                              <div className="col-md-12 pl-3 row"
+                              <div className="col-md-12 pl-3 flex"
                               style={{
                                     marginRight: '120px'
                               }}
                                key={rep?.report_id}>
+                                    <div className="border col-md-1">{rep?._id?.sessionInProgress === false ? <span className="fa fa-circle text-danger"></span> : <span className="fa fa-circle text-success"></span>}</div>  
+                                    <div className="border col-md-3">{rep?._id?.user_name}</div>  
                                     <div className="border col-md-4">{rep?._id.email_id}</div>  
-                                    <div className="border col-md-2">{rep?._id?.user_type}</div>  
-                                    <div className="border col-md-2">
-                                    <button className="dark bg-success btn btn-sm"
+                                    <div className="border col-md-2">{hourDifference}</div>  
+                                    <div className="border col-md-2 p-0">
+                                    <button className="dark bg-success p-0 btn btn-sm"
                                     style={{
                                           width: '100%'
                                     }}

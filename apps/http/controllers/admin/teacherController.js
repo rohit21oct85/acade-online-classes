@@ -311,7 +311,7 @@ const Login = async (req, res) => {
                                 device = "Computer/Laptop"
                             }
                             const login_time = new Date();
-                            const user_log = new UserLog({user_type: "teacher",user_id : user._id, email_id :req.body.email,school_id : user.school_id, device_type:device, login_time:login_time, sessionInProgress: true });
+                            const user_log = new UserLog({user_type: "teacher",user_name : user.name,user_id : user._id, email_id :req.body.email,school_id : user.school_id, device_type:device, login_time:login_time, sessionInProgress: true });
                             await user_log.save();
                             res.status(200).json({ 
                                 accessToken, 
