@@ -28,6 +28,7 @@ router
     .patch('/update/:id', checkAuth, Student.UpdateStudent)
     .get('/view/:id', checkAuth, Student.ViewStudent)
     .get('/view-all/:school_id?/:class_id?/:section?', checkAuth, Student.ViewAllStudent)
+    .get('/roll-no/:school_id?/:class_id?/:section?', checkAuth, Student.getRollNo)
     .delete('/delete/:id', checkAuth, Student.DeleteStudent)
     .post('/upload', upload.single('file'), checkAuth, Student.uploadStudent)
     .get('/student-by-school-id/:sid', checkAuth, Student.getStudentBySchoolIdAndClassId)

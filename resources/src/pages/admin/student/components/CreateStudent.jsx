@@ -12,6 +12,7 @@ import useSchoolLists from '../../school/hooks/useSchoolLists';
 import useClassList from '../../class/hooks/useClassList';
 import useCreateStudent from '../hooks/useCreateStudent';
 import useUpdateStudent from '../hooks/useUpdateStudent';
+import useClassRollNo from '../hooks/useClassRollNo';
 
 export default function CreateStudent() {
     const history = useHistory();
@@ -46,15 +47,31 @@ export default function CreateStudent() {
     function setModule(){
         setSingleStudent(data)
     }
-
+    const {data:studentRoll} = useClassRollNo();
+    const [rollNo, setRollNo] = useState(null);
+    useEffect(() => {
+        let roll;
+        if(typeof studentRoll !== "undefined"){
+            if(studentRoll?.length === 0){
+                roll = 1;
+            }else{
+                roll = +studentRoll[0]?.roll_no + 1
+            }
+            setRollNo(roll)
+        }else{
+            setRollNo(1)
+        }
+    },[params?.section])
+    
     const createMutation = useCreateStudent(formData);
     const updateMutation = useUpdateStudent(SingleStudent);
-
+    const sections = [
+        {'value': 'A'},{'value':'B'},{'value':'C'},{'value':'D'},{'value':'E'},
+        {'value': 'F'},{'value':'G'},{'value':'H'},{'value':'I'},{'value':'J'}
+    ]
     const saveStudent = async (e) => {
         e.preventDefault();
         setLoading(true);
-        // const short = helper.getFilteredData(schools, '_id',params.school_id,'short');
-        // const domain = helper.getFilteredData(schools, '_id',params.school_id,'sub_domain');
         
         if(params?.student_id){
             await updateMutation.mutate(SingleStudent);
@@ -68,7 +85,13 @@ export default function CreateStudent() {
                 if(!pattern.test(formData.mobile)){
                     setLoading(false);
                     addToast('Please Enter a valid 10 digit phone no', { appearance: 'error',autoDismiss: true });
-                }else{        
+                }else{ 
+                    formData['school_id'] = params?.school_id
+                    formData['class_id'] = params?.class_id
+                    formData['class'] = helper.getFilteredData(classes,'_id',params?.class_id,'class_name') 
+                    formData['section'] = params?.section
+                    formData.roll_no = rollNo
+                    // console.log(formData); return;       
                     await createMutation.mutate(formData);
                 }
             }
@@ -113,9 +136,22 @@ export default function CreateStudent() {
                 }
         }
     }
+    async function handleChangeSection(e){
+            if(params?.student_id){
+                    setSingleStudent({...SingleStudent, [e.target.name]: e.target.value, ['class']:class_name })
+                    history.push(`/admin/students-management/update/${params?.school_id}/${e.target.value}/${params?.student_id}`)
+            }else{
+                setFormData({...formData, ['section']:e.target.value})
+                    params.school_id && params.class_id ?
+                    history.push(`/admin/students-management/create/${params?.school_id}/${params?.class_id}/${e.target.value}`)
+                    :
+                    history.push(`/admin/students-management/create/${e.target.value}`)
+            }
+        
+    }
 
-
-
+    
+    
     return (
         <>
             <p className="form-heading">
@@ -132,7 +168,44 @@ export default function CreateStudent() {
                         })}
                     </select>
                 </div>
-                
+                <div className="row">
+                    <div className="col-md-6 pr-0">
+                        <div className="form-group">
+                            <select className="form-control" aria-label="Default select example" name="class_id" onChange={handleChangeClass} value={params?.class_id}>
+                                <option value="999">Class</option>
+                                {!classesIsLoading && classes?.map(classs => {
+                                return (
+                                    <option value={classs._id} key={classs._id} data-class_name={classs.class_name}>{classs.class_name}Th</option>
+                                )
+                                })}
+                            </select>
+                        </div>
+                    </div> 
+                    <div className="col-md-6">
+                        <div className="form-group">
+                            <select class="form-control" name="section"
+                            onChange={handleChangeSection}
+                            value={params?.student_id ? SingleStudent?.section : params?.section}
+                            >
+                                <option>Section</option>
+                               {sections && sections?.map((sec, ind) => {
+                                   return(
+                                       <option value={sec?.value} key={`${ind}-${sec}`}>{sec?.value}</option>
+                                   )
+                               })} 
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div className="form-group">
+                    <input 
+                        type="text" 
+                        className="form-control" 
+                        name="roll_no"
+                        value={params?.student_id ? SingleStudent?.roll_no : rollNo}
+                        onChange={handleChange}
+                        placeholder="Roll No"/>
+                </div>
                 <div className="form-group">
                     <input 
                         type="text" 
@@ -142,32 +215,6 @@ export default function CreateStudent() {
                         onChange={handleChange}
                         placeholder="Name"/>
                 </div>
-                <div className="row">
-                    <div className="col-md-6">
-                        <div className="form-group">
-                            <select className="form-control" aria-label="Default select example" name="class_id" onChange={handleChangeClass} value={data?.class_id}>
-                                <option value="999">Select Class</option>
-                                {!classesIsLoading && classes?.map(classs => {
-                                return (
-                                    <option value={classs._id} key={classs._id} data-class_name={classs.class_name}>{classs.class_name}</option>
-                                )
-                                })}
-                            </select>
-                        </div>
-                    </div> 
-                    <div className="col-md-6">
-                        <div className="form-group">
-                            <input 
-                                type="text" 
-                                className="form-control" 
-                                name="section"
-                                value={params?.student_id ? SingleStudent?.section : formData?.section}
-                                onChange={handleChange}
-                                placeholder="Section"/>
-                        </div>
-                    </div>
-                </div>
-                 
                 <div className="form-group">
                     <input 
                         type="text" 
@@ -194,15 +241,7 @@ export default function CreateStudent() {
                         onChange={handleChange}
                         placeholder="Password"/>
                 </div>
-                <div className="form-group">
-                    <input 
-                        type="text" 
-                        className="form-control" 
-                        name="roll_no"
-                        value={params?.student_id ? SingleStudent?.roll_no : formData?.roll_no}
-                        onChange={handleChange}
-                        placeholder="Roll No"/>
-                </div>
+                
             
                 <div className="form-group flex">
                     <button className="btn btn-sm dark">

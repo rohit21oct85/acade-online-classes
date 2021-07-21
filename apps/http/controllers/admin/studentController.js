@@ -13,11 +13,10 @@ const CreateStudent = async (req, res) => {
     try {
         const school = await School.findOne({_id:req.body.school_id},{sub_domain:1,short:1})
         let body = req.body;
-        const empid = `${school.short.toLowerCase()}${req.body.name.trimStart().split(" ")[0].toLowerCase()}${req.body?.class?.trim()}${req.body?.section?.trim().toLowerCase()}${req.body?.roll_no?.trim()}`;
-        const username = `${school.short.toLowerCase()}${req.body.name.trimStart().split(" ")[0].toLowerCase()}${req.body?.class?.trim()}${req.body?.section?.trim().toLowerCase()}${req.body?.roll_no?.trim()}@${school?.sub_domain?.trim().toLowerCase()}.com`;
+        const empid = `${school.short.toLowerCase()}${req.body.name.trimStart().split(" ")[0].toLowerCase()}${req.body?.class?.trim()}${req.body?.section?.trim().toLowerCase()}${req?.body?.roll_no}`;
+        const username = `${school.short.toLowerCase()}${req.body.name.trimStart().split(" ")[0].toLowerCase()}${req.body?.class?.trim()}${req.body?.section?.trim().toLowerCase()}${req.body?.roll_no}@${school?.sub_domain?.trim().toLowerCase()}.com`;
         body.EmpId = empid.toUpperCase();
         body.username = username;
-        
         const newStudent = new Student(body);
         await newStudent.save();
         return res.status(200).json({ 
@@ -380,8 +379,32 @@ function getClientIp(req) {
     }
     return ipAddress;
 };
+const getRollNo = async (req, res) => {
+    try {
+        let rollNo = await Student.aggregate([
+            {"$match": 
+                {
+                    school_id: req.params?.school_id,
+                    class_id: req.params?.class_id,
+                    section: req.params?.section,
+            }},
+            {
+                "$group": {
+                    "_id": null,
+                    "roll_no": { "$max": "$roll_no" }
+                }
+            }
+        ]);
 
+        res.status(201).json({
+            data: rollNo
+        })
+    } catch (error) {
+        res.status(502).json({message: "Somethign went wrong!"})   
+    }
+}
 module.exports = {
+    getRollNo,
     CreateStudent,
     UpdateStudent,
     updateAllStudent,

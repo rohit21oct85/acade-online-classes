@@ -43,7 +43,7 @@ export default function AllStudents({update, Delete}) {
             <span className="dark bg-success br-15 pl-3 pr-3 ml-2">{school && school[0]?.school_name}</span>
         </p>
         
-        <div className="row col-md-12">
+        <div className="row col-md-12 mt-3">
         <div className="form-group col-md-3 pl-0">
             <select 
                 className="form-control " aria-label="Default select example" 
@@ -92,7 +92,7 @@ export default function AllStudents({update, Delete}) {
         </div>
 
         </div>
-        <div className="col-md-12 table-responsive row no-gutter data-container-category" style={{"overflowX":"scroll"}}>
+        <div className="col-md-12 mt-3 table-responsive row no-gutter data-container-category" style={{"overflowX":"scroll"}}>
         
         <table className="table table-hover">
                     <thead>

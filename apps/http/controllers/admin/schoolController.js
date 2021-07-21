@@ -301,7 +301,6 @@ const schoolActivityReport = async (req, res) => {
                     $sum: "$total_session"
                 }
             }},
-           
             {$sort: { _id: -1}}
         ]);
         
