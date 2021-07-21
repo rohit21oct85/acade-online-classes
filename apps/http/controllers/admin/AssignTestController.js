@@ -11,12 +11,12 @@ const CreateAssignTest = async (req, res) => {
     if(data.test_type === 'mock-test'){
       filter =   {
         school_id:  req.body.school_id,
-        assigned: false
+        assigned: true
       }
     }else{
       filter = {
         school_id:  req.body.school_id,
-        assigned: false
+        assigned: true
       }
     }
     // console.log(filter);return

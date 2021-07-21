@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import useAttemptedStudents from '../hooks/useAttemptedStudents';
 
@@ -21,6 +21,13 @@ export default function StudentList() {
             }
             
       }
+      useEffect(() => {
+            const script = document.createElement("script");
+            script.id = 'editor';
+            script.src = "https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image";
+            script.async = true;
+            document.body.appendChild(script);
+        },[])
       return (
             <div>
                  <div className="col-md-12 pl-0">
@@ -118,12 +125,17 @@ export default function StudentList() {
                                          {student?.questions?.map( (ques, indx) => {
                                                return(
                                                      <div className="border mb-2">
-                                                      <div className="col-md-12">
-                                                           {indx+1}. {ques?.question}
+                                                      <div className="col-md-12 flex" style={{
+                                                            
+                                                            justifyContent: 'flex-start'
+                                                      }}>
+                                                      Ques: {indx+1}
+                                                      <span className="question ml-2" dangerouslySetInnerHTML={{ __html: ques?.question  }}></span>
                                                       </div>
-                                                      <hr className="mb-2 mt-2"/>
+                                                      <hr className="mb-2 mt-1"/>
+                                                      {params?.test_type === 'mock-test' && (
                                                       <div className="flex col-md-12">
-                                                            <span>Option A: {ques?.option_a}</span>
+                                                           <span>Option A: {ques?.option_a}</span>
                                                            <span>Option B: {ques?.option_b}</span>
                                                            <span>Correct Answer: {ques?.correct_answer}</span>
                                                            <span>
@@ -136,6 +148,53 @@ export default function StudentList() {
                                                             User Answer: {ques?.answer}
                                                             </span>
                                                       </div>
+                                                      )}
+                                                      
+                                                      {params?.test_type === 'single-test' && (
+                                                      <div className="flex col-md-12"
+                                                      style={{
+                                                            flexWrap: 'wrap'
+                                                      }}>
+                                                           <div className="col-md-6 card mb-2">Option A: 
+                                                            <span className="question ml-2" dangerouslySetInnerHTML={{ __html: ques?.option_a  }}></span>
+                                                           </div>
+                                                           
+                                                           <div className="col-md-6 card mb-2">Option B: 
+                                                           <span className="question ml-2" dangerouslySetInnerHTML={{ __html: ques?.option_b  }}></span>
+                                                           </div>
+                                                           
+                                                           <div className="col-md-6 card mb-2">Option C: 
+                                                           <span className="question ml-2" dangerouslySetInnerHTML={{ __html: ques?.option_c  }}></span>
+                                                           </div>
+                                                           
+                                                           <div className="col-md-6 card mb-2">Option D: 
+                                                           <span className="question ml-2" dangerouslySetInnerHTML={{ __html: ques?.option_d  }}></span>
+                                                           </div>
+                                                           
+                                                           <div className="col-md-12 mb-2 mr-2" style={{
+                                                                 border: '1px solid #cdcdcd'
+                                                           }}>
+                                                            <span className="fa fa-check-circle pr-2 text-success"></span>
+                                                            Correct Answer: <b>{ques?.correct_option}</b>
+                                                           
+                                                           <span className="question ml-2" dangerouslySetInnerHTML={{ __html: ques?.correct_answer  }}></span>
+                                                           </div>
+
+                                                           <div className="col-md-12 mb-2 mr-2" style={{
+                                                                 border: '1px solid #cdcdcd'
+                                                           }}>
+                                                           {ques?.option === ques?.correct_option 
+                                                                  ? 
+                                                                  <span className="fa fa-check-circle pr-2 text-success"></span>
+                                                                  :
+                                                                  <span className="fa fa-times-circle pr-2 text-danger"></span>
+                                                            }
+                                                            User Answer: <b>{ques?.option}</b>
+                                                            <span className="question ml-2" dangerouslySetInnerHTML={{ __html: ques?.answer  }}></span>
+                                                            </div>
+                                                      </div>
+                                                      )}
+
                                                       </div>
                                                )
                                          })}       

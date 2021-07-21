@@ -917,3 +917,6 @@ figure > img {
     background: #29884ec9;
     color: white
 }
+p{
+    margin-bottom: 0px !important;
+}
