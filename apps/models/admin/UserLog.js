@@ -1,4 +1,3 @@
-const { Double } = require('mongodb');
 const mongoose = require('mongoose');
 
 const UserLogSchema = new mongoose.Schema({
@@ -30,7 +29,7 @@ const UserLogSchema = new mongoose.Schema({
             type:Boolean,
         },
         total_session:{
-            type:Double,
+            type:Number,
         },
         otherInfo: {
             type: Array
