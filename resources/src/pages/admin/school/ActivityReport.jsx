@@ -92,7 +92,7 @@ export default function SchoolReport() {
                         id="rclass"
                         value={params?.user_type}
                         onChange={handleUserTypeChange}>
-                              <option value="">Select Class</option>
+                              <option value="">Select User Type</option>
                               {userTypes?.map((types,ind) => {
                                     return(
                                           <option value={types?.key} key={`${types}-${ind}`}>{types?.value} </option>
