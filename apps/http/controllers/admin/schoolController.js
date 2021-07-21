@@ -317,7 +317,9 @@ const schoolActivityDetails = async (req, res) => {
             user_id: req.params?.user_id,
         }
         // console.log(filter); return;
-        let logData = await UserLog.find(filter);
+        let logData = await UserLog.find(filter).sort({
+            login_time: -1
+        });
         // console.log(logData); return;
         res.status(201).json({
             data: logData
