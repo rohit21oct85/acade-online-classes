@@ -121,14 +121,16 @@ export default function StudentList() {
                                     <div className="border answerDiv pl-2 pr-2 pb-2 pt-2" 
                                     id={`result-${student?._id}`}
                                     style={{
-                                          width: '1200px',
+                                          width: '1225px',
                                           height: 'auto',
                                           display: 'none'
                                     }}>
                                          {student?.questions?.map( (ques, indx) => {
                                                return(
-                                                     <div className="border mb-2">
-                                                      <div className="col-md-12 flex" style={{
+                                                     <div className="border col-md-12 mb-3 mt-2" style={{
+                                                            background: '#ededed'
+                                                     }}>
+                                                      <div className="col-md-12 flex p-2" style={{
                                                             
                                                             justifyContent: 'flex-start'
                                                       }}>
@@ -137,45 +139,67 @@ export default function StudentList() {
                                                       </div>
                                                       <hr className="mb-2 mt-1"/>
                                                       {params?.test_type === 'mock-test' && (
-                                                      <div className="flex col-md-12">
-                                                           <span>Option A: {ques?.option_a}</span>
-                                                           <span>Option B: {ques?.option_b}</span>
-                                                           <span>Correct Answer: {ques?.correct_answer}</span>
-                                                           <span>
+                                                      <div className="col-md-12 pl-0">
+                                                            <div className="flex">
+                                                            <div className="col-md-6 p-2 card mb-3 mr-2">Option A: 
+                                                                  <div className="question" dangerouslySetInnerHTML={{ __html: ques?.option_a  }}></div>
+                                                            </div>
+                                                            <div className="col-md-6 p-2 card mb-3">Option B: 
+                                                                  <div className="question" dangerouslySetInnerHTML={{ __html: ques?.option_b  }}></div>
+                                                            </div>
+                                                            </div>
+
+                                                            <div className="flex">
+                                                            <div className="col-md-6 p-2 mb-3 mr-2" style={{
+                                                                  border: '1px solid #cdcdcd',
+                                                                  background: '#fff'
+                                                            }}>
+                                                            <span className="fa fa-check-circle pr-2 text-success"></span>
+                                                            Correct Answer: <b>{(ques?.correct_option == 'b' ? 'option_b': 'option_a')}:</b>
+                                                           
+                                                            <span className="question ml-2" dangerouslySetInnerHTML={{ __html: (ques?.correct_answer == 'a' ? 'yes': 'no')  }}></span>
+                                                           </div>
+
+                                                           <div className="col-md-6 p-2 mb-3 mr-2" style={{
+                                                                 border: '1px solid #cdcdcd',
+                                                                 background: '#fff'
+                                                           }}>
                                                            {(ques?.answer == "no" ? 'b': 'a') === ques?.correct_answer 
                                                                   ? 
                                                                   <span className="fa fa-check-circle pr-2 text-success"></span>
                                                                   :
                                                                   <span className="fa fa-times-circle pr-2 text-danger"></span>
                                                             }
-                                                            User Answer: {ques?.answer}
-                                                            </span>
+                                                            User Answer: <b>{ques?.option}: </b>
+                                                            <span className="question ml-2" dangerouslySetInnerHTML={{ __html: ques?.answer  }}></span>
+                                                            </div>
+                                                           </div>
                                                       </div>
                                                       )}
                                                       
                                                       {params?.test_type === 'single-test' && (
                                                       <div className="flex col-md-12"
                                                       style={{
-                                                            flexWrap: 'wrap'
+                                                            flexWrap: 'wrap',
                                                       }}>
-                                                           <div className="col-md-6 card mb-2">Option A: 
-                                                            <span className="question ml-2" dangerouslySetInnerHTML={{ __html: ques?.option_a  }}></span>
+                                                            <div className="col-md-12 p-2 card mb-3">Option A: 
+                                                                  <div className="question" dangerouslySetInnerHTML={{ __html: ques?.option_a  }}></div>
+                                                            </div>
+                                                            
+                                                            <div className="col-md-12 p-2 card mb-3">Option B: 
+                                                                  <div className="question" dangerouslySetInnerHTML={{ __html: ques?.option_b  }}></div>
+                                                            </div>
+                                                           <div className="col-md-12 p-2 card mb-3">Option C: 
+                                                           <span className="question" dangerouslySetInnerHTML={{ __html: ques?.option_c  }}></span>
                                                            </div>
                                                            
-                                                           <div className="col-md-6 card mb-2">Option B: 
-                                                           <span className="question ml-2" dangerouslySetInnerHTML={{ __html: ques?.option_b  }}></span>
+                                                           <div className="col-md-12 p-2 card mb-3">Option D: 
+                                                           <span className="question" dangerouslySetInnerHTML={{ __html: ques?.option_d  }}></span>
                                                            </div>
-                                                           
-                                                           <div className="col-md-6 card mb-2">Option C: 
-                                                           <span className="question ml-2" dangerouslySetInnerHTML={{ __html: ques?.option_c  }}></span>
-                                                           </div>
-                                                           
-                                                           <div className="col-md-6 card mb-2">Option D: 
-                                                           <span className="question ml-2" dangerouslySetInnerHTML={{ __html: ques?.option_d  }}></span>
-                                                           </div>
-                                                           
-                                                           <div className="col-md-12 mb-2 mr-2" style={{
-                                                                 border: '1px solid #cdcdcd'
+                                                           <div className="flex">
+                                                           <div className="col-md-6 p-2 mb-3 mr-2" style={{
+                                                                 border: '1px solid #cdcdcd',
+                                                                 background: '#fff'
                                                            }}>
                                                             <span className="fa fa-check-circle pr-2 text-success"></span>
                                                             Correct Answer: <b>{ques?.correct_option}</b>
@@ -183,8 +207,9 @@ export default function StudentList() {
                                                            <span className="question ml-2" dangerouslySetInnerHTML={{ __html: ques?.correct_answer  }}></span>
                                                            </div>
 
-                                                           <div className="col-md-12 mb-2 mr-2" style={{
-                                                                 border: '1px solid #cdcdcd'
+                                                           <div className="col-md-6 p-2 mb-3 mr-2" style={{
+                                                                 border: '1px solid #cdcdcd',
+                                                                 background: '#fff'
                                                            }}>
                                                            {ques?.option === ques?.correct_option 
                                                                   ? 
@@ -195,6 +220,8 @@ export default function StudentList() {
                                                             User Answer: <b>{ques?.option}</b>
                                                             <span className="question ml-2" dangerouslySetInnerHTML={{ __html: ques?.answer  }}></span>
                                                             </div>
+                                                           </div>
+
                                                       </div>
                                                       )}
 
