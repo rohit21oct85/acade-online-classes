@@ -48,7 +48,7 @@ const getAssignedTestsStudent = async (req, res) => {
                 assigned: true,
                 test_type:"single-test",
                 attemptedStudentIds:{
-                    $nin:[req.params.student_id]
+                    $nin:[req.body.student_id]
                 },
                 // $and: [
                 //         {
@@ -58,7 +58,7 @@ const getAssignedTestsStudent = async (req, res) => {
                 //         }
                 //     ]
             },{__v: 0});
-            // console.log(AssignedTests)
+            console.log(AssignedTests)
         const attemptedTest = await AttemptTest.find(
             {
                 // subject_id:req.params.subject_id,
@@ -84,6 +84,7 @@ const getAssignedTestsStudent = async (req, res) => {
                                 subject_name:item.subject_name,
                                 start_date:item.start_date,
                                 test_window:item.test_window,
+                                test_type:item.test_type,
                             })
                         }
                     })
@@ -123,6 +124,7 @@ const getAssignedTestsStudent = async (req, res) => {
                             assign_table_id: item._id,
                             start_date:item.start_date,
                             test_window:item.test_window,
+                            test_type:item.test_type,
                         })
                     }
                 })
