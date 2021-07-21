@@ -138,14 +138,12 @@ const ViewAllAssignedTest = async (req, res) => {
         filter =   {
           school_id:  req.params.school_id,
           test_type: req?.params?.test_type,
-          
         }
       }else{
         filter = {
           school_id:  req.params.school_id,
           test_type: req?.params?.test_type,
           class_id: req?.params?.class_id,
-          
         }
       }
       
@@ -206,6 +204,28 @@ const AssignedTestToClass = async (req, res) => {
       })
    }
 }
+const UpdateAssignedTest = async (req, res) => {
+   try {
+        await AssignTest.updateOne({
+          test_id: req.body.test_id,
+          school_id: req.body.school_id
+        }, {
+          start_date: req.body.start_date,
+          test_window: req.body.test_window
+        });  
+        res.status(200).json({
+          message: "Start time update successfully",
+        });
+        
+   } catch (error) {
+      res.status(203).json({
+       status: 500,
+       message: error.message
+      })
+   }
+}
+
+
 const ViewAssignedTest = async (req, res) => {
    try {
         let data;
@@ -228,5 +248,6 @@ module.exports = {
   ViewAssignedTest,
   ViewAllAssignedTest,
   ViewAssignedMockTest,
+  UpdateAssignedTest,
   AssignedTestToClass
 }

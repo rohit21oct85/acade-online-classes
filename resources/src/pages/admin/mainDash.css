@@ -909,3 +909,11 @@ figure > img {
     position: relative;
     width: 328px;
 }
+.light{
+    color: #000;
+    background: #02f05dc9;
+}
+.light:hover{
+    background: #29884ec9;
+    color: white
+}

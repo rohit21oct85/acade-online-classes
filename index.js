@@ -16,7 +16,7 @@ app.use(responseTime())
 
 /* Cron Task */
 var job = new cronJob({
-    cronTime: '* * * * * *',
+    cronTime: '30 * * * * *',
     onTick: function() {
         cronTask()
    },
@@ -29,21 +29,6 @@ app.use(cors());
 app.use(bodyParser.json({limit: '500mb'}));
 app.use(bodyParser.urlencoded({ extended: true, limit: '500mb' }));
 
-// const bb_options = {
-//     upload: true,
-//     path: '/storage/admin',
-//     allowedPath: /./
-// }
-// bb_options.mimeTypeLimit = [
-//     'text/x-markdown',
-//     'application/javascript',
-//     'image/jpeg',
-//     'image/png'
-// ];
-// bb_options.allowedPath = function(url) {
-//     return url == '/storage/admin';
-// }
-// bb.extend(app, bb_options);
 
 const PORT = process.env.PORT || 8080;
 

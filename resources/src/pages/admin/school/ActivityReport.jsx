@@ -7,6 +7,7 @@ import useSchoolLists from './hooks/useSchoolLists';
 import useClassList from '../class/hooks/useClassList';
 
 import LoginReport from './Reports/LoginReport';
+import LoginActivityDetails from './Reports/LoginActivityDetails';
 import { useToasts } from 'react-toast-notifications';
 import useDeleteSchoolMockTest from './hooks/useDeleteSchoolMockTest';
 
@@ -106,7 +107,7 @@ export default function SchoolReport() {
                                           history.push(`/admin/activity-report/${params?.school_id}/${params?.user_type}/login-report`)
                                     }}
                               >
-                                    Activity Report
+                                    Login Report
                               </button>  
                               
                               </>
@@ -120,6 +121,10 @@ export default function SchoolReport() {
                         {(params?.report_type === 'login-report') && (
                               <LoginReport />
                         )}
+                        {(params?.report_type === 'activity-detail') && (
+                              <LoginActivityDetails />
+                        )}
+                        
                         
                   </div>    
                 </div>

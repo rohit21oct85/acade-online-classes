@@ -281,7 +281,7 @@ const schoolActivityReport = async (req, res) => {
         nextDate.setDate(currentDate.getDate() + 1);
         let filter = {
             school_id: req.params?.school_id, 
-            user_type: req.params?.user_type
+            user_type: req.params?.user_type,
         }
         // console.log(filter); return;
         let logData = await UserLog.aggregate([
@@ -290,15 +290,34 @@ const schoolActivityReport = async (req, res) => {
                 "_id": {
                     "school_id":"$school_id",
                     "email_id":"$email_id",
+                    "user_id":"$user_id",
                     "user_type":"$user_type",
-                    "device_type":"$device_type",
-                    "login_time":"$login_time",
-                    "logout_time":"$logout_time",
-                    "sessionInProgress":"$sessionInProgress",
                 }
             }},
             {$sort: { _id: -1}}
         ]);
+        // console.log(logData); return;
+        res.status(201).json({
+            data: logData
+        })
+
+        
+    } catch (error) {
+        res.json({
+            status: 500,
+            message: error.message
+        })
+    }
+}
+const schoolActivityDetails = async (req, res) => {
+    try {
+        let filter = {
+            school_id: req.params?.school_id, 
+            user_type: req.params?.user_type,
+            user_id: req.params?.user_id,
+        }
+        // console.log(filter); return;
+        let logData = await UserLog.find(filter);
         // console.log(logData); return;
         res.status(201).json({
             data: logData
@@ -325,4 +344,5 @@ module.exports = {
     uploadSchool,
     searchSchool,
     schoolActivityReport,
+    schoolActivityDetails
 }

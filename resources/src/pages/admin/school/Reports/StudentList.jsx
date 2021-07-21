@@ -7,14 +7,16 @@ export default function StudentList() {
       const params = useParams();
       const {data:attemtedStudetns} = useAttemptedStudents();
       const viewResult = async (id) => {
-            let btnText = document.getElementById(`btn-${id}`).value;
-            if(btnText === 'View'){
-                  document.getElementById(`btn-${id}`).value = "Hide"
-                  document.getElementById(`btn-${id}`).innerHTML = "Hide"
+            if(document.getElementById(`btn-${id}`).value === 'View'){
                   document.getElementById(`result-${id}`).style.display = "block"
+                  document.getElementById(`btn-${id}`).value = "Hide"
+                  document.getElementById(`btn-${id}`).classList.remove('fa-eye')
+                  document.getElementById(`btn-${id}`).classList.add('fa-eye-slash')
+                  
             }else{
                   document.getElementById(`btn-${id}`).value = "View"
-                  document.getElementById(`btn-${id}`).innerHTML = "View"
+                  document.getElementById(`btn-${id}`).classList.remove('fa-eye-slash')
+                  document.getElementById(`btn-${id}`).classList.add('fa-eye')
                   document.getElementById(`result-${id}`).style.display = "none"
             }
             
@@ -86,7 +88,7 @@ export default function StudentList() {
                                                       display: 'inline-block',
                                                       cursor: 'pointer'
                                                 }}
-                                                id={`btn-${student?.id}`}
+                                                id={`btn-${student?._id}`}
                                                 value="View"
                                                 onClick={e => {
                                                       viewResult(student?._id)

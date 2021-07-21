@@ -113,9 +113,9 @@ export default function AllTeachers({update, Delete}) {
                         <th className="col-md-2">#EmpID</th>
                         <th className="col-md-3">Name</th>
                         <th className="col-md-2">Subject</th>
-                        <th className="col-md-3">Class</th>
                         <th className="hidden_col">Mobile</th>
                         <th className="col-md-6">Email</th>
+                        <th className="col-md-3">Class</th>
                         <th className="hidden_col">Action</th>
                         </tr>
                     </thead>
@@ -131,9 +131,9 @@ export default function AllTeachers({update, Delete}) {
                                 <th scope="row" className="col-md-2">{item.EmpID}</th>
                                 <td className="col-md-3">{item.name}</td>
                                 <td className="col-md-2">{item.subject_name}</td>
-                                <td className="col-md-3">{tclass}</td>
                                 <td className="hidden_col">{item.mobile}</td>
                                 <td className="col-md-6">{item.username}</td>
+                                <td className="col-md-3">{tclass}</td>
                                 <td className="hidden_col flex col-md-3">
                                     {update && (
                                         <>

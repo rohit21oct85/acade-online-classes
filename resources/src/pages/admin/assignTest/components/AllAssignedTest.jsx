@@ -1,5 +1,7 @@
 import Loading from '../../../../components/Loading';
 import {useHistory, useParams} from 'react-router-dom'
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 import {AuthContext} from '../../../../context/AuthContext';
 import React, {useState, useContext} from 'react'
@@ -8,6 +10,7 @@ import useAssignedTestList from '../hooks/useAssignedTestList';
 
 import useAssignToClass from '../hooks/useAssignToClass';
 import useAssignedMockTestList from '../hooks/useAssignedMockTestList';
+import useUpdateAssignTest from '../hooks/useUpdateAssignTest';
 
 export default function AllAssignedTest({update, Delete}) {
 
@@ -20,7 +23,8 @@ export default function AllAssignedTest({update, Delete}) {
       
       const deleteMutation = useDeleteAssignedTest();
       const AssignMutation = useAssignToClass(formData);
-
+      const updateMutation = useUpdateAssignTest(formData);
+      const [startDate, setStartDate] = useState(new Date());
       const deleteAssignedTest = async (test_id) => {
             await deleteMutation.mutate(test_id)
       }
@@ -41,7 +45,24 @@ export default function AllAssignedTest({update, Delete}) {
                 }
             })
       }
-
+      const timeWindows = [
+        {key:'1', value:'1 Hrs'},
+        {key:'2', value:'2 Hrs'},
+        {key:'3', value:'3 Hrs'},
+        {key:'4', value:'4 Hrs'},
+        {key:'5', value:'5 Hrs'},
+        {key:'6', value:'6 Hrs'},
+        {key:'7', value:'7 Hrs'},
+        {key:'8', value:'8 Hrs'},
+    ]
+    const [testWindow, setTestWindow] = useState(null);
+      async function handleUpdateTest(){
+        formData['test_id'] = params?.test_id
+        formData['school_id'] = params?.school_id
+        formData['start_date'] = startDate
+        formData['test_window'] = testWindow*60
+        await updateMutation.mutate(formData);
+      }
     return (
         <>
         <p className="form-heading">
@@ -50,6 +71,46 @@ export default function AllAssignedTest({update, Delete}) {
         {params?.test_type !== 'mock-test' && params?.class_id && (
         <Loading isLoading={isLoading} /> 
         )}
+        {params?.test_id && 
+        <div className="col-md-6 pl-0 pb-2">
+            <form className="flex">
+                
+                <DatePicker 
+                        selected={startDate}
+                        onChange={(date) => setStartDate(date)}
+                        isClearable showTimeSelect dateFormat="MM/d/yyyy h:mm aa"
+                        minDate={new Date()}
+                />  
+                
+                    <select 
+                    value={testWindow}
+                    onChange={e => setTestWindow(e.target.value)}
+                    >
+                        <option>Select Time Window</option>
+                        {timeWindows?.map(times => {
+                                return(
+                                    <option value={times?.key}>{times?.value}</option>
+                                )
+                        })}
+                    </select>
+                
+                <div>
+                <button className="dark bg-success"
+                onClick={handleUpdateTest}>
+                    <span className="fa fa-save pr-2"></span>
+                    Update Test
+                </button>
+                
+                <button className="ml-1 dark bg-danger"
+                onClick={ () => { history.push(`/admin/assign-test/view/${params?.school_id}/${params?.test_type}/${params?.class_id}`)}}>
+                    <span className="fa fa-times pr-2"></span>
+                    Cancel
+                </button>
+                </div>
+                
+            </form>
+        </div>
+        }
         <div className="table-responsive pl-0" style={{ width: '100%', overflow: 'scroll hidden'}}>
         <table className="table table-responsive" style={{ width: '1350px'}}>
             <thead>
@@ -58,8 +119,11 @@ export default function AllAssignedTest({update, Delete}) {
                     <td>Test Name</td>
                     <td>Test Duration/Window</td>
                     {params?.test_type !== 'mock-test' && <td>Subject Name</td>}
-                    <td>Start Test</td>
-                    <td>End Test</td>
+                    {!params?.test_id && (<>
+                        <td>Start Test</td>
+                        <td>End Test</td>
+                    </>)}
+                    
                     <td>Update Test Time</td>
                     <td>Assign to Class</td>
                 </tr>
@@ -75,16 +139,19 @@ export default function AllAssignedTest({update, Delete}) {
                 let test_window = new Date(test?.start_date)
                 test_window.setMinutes( test_window.getMinutes() + test?.test_window );
                 return(
-                    <tr>
+                    <tr className={`${params?.test_id == test?.test_id ? 'light': ''}`}>
                         <td>{test?.school_name}</td>
                         <td>{test?.test_name} ({(test?.total_question)} Qes)</td>
                         <td>{test?.test_duration} Min / {test?.test_window} Min</td>
                         {params?.test_type !== 'mock-test' && <td>{subjects}</td>}
-                        <td>{new Date(test?.start_date).toLocaleString()}</td>
-                        <td>{test_window.toLocaleString()}</td>
+                        {!params?.test_id && (<>
+                            <td>{new Date(test?.start_date).toLocaleString()}</td>
+                            <td>{test_window.toLocaleString()}</td>
+                        </>)}
+                        
                         <td> <button className={`btn btn-sm dark`}
                             onClick={() => {
-                                history.push(`/admin/assign-test/update/${params?.school_id}/${params?.test_type}/${test?.test_id}`)
+                                history.push(`/admin/assign-test/view/${params?.school_id}/${params?.test_type}/${params?.class_id}/${test?.test_id}`)
                             }}>
                                 Update Mock Test
                             </button>
@@ -102,7 +169,7 @@ export default function AllAssignedTest({update, Delete}) {
                 let test_window = new Date(test?.start_date)
                 test_window.setMinutes( test_window.getMinutes() + test?.test_window );
                 return(
-                    <tr>
+                    <tr className={`${params?.test_id == test?.test_id ? 'light': ''}`}>
                         <td>{test?.school_name}</td>
                         <td>{test?.test_name}  ({(test?.total_question)} Qes)</td>
                         <td>{test?.test_duration} Min / {test?.test_window} Min</td>
@@ -110,7 +177,7 @@ export default function AllAssignedTest({update, Delete}) {
                         <td>{test_window.toLocaleString()}</td>
                         <td> <button className={`btn btn-sm dark`}
                             onClick={() => {
-                                history.push(`/admin/assign-test/update/${params?.school_id}/${params?.test_type}/${test?.test_id}`)
+                                history.push(`/admin/assign-test/view/${params?.school_id}/${params?.test_type}/all-class/${test?.test_id}`)
                             }}>
                                 Update Mock Test
                             </button>
