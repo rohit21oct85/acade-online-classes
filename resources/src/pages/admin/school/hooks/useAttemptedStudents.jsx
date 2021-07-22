@@ -8,7 +8,7 @@ import { useParams } from 'react-router-dom';
 export default function useAttemptedStudents() {
     const {state } = useContext(AuthContext);
     const params = useParams();
-    const [intervalMs, setIntervalMs] = useState(1000)
+    const [intervalMs, setIntervalMs] = useState(3600)
     return useQuery(`attempted_studetns-${params?.test_id}`, async () => {
         if(state.access_token && params?.test_id && params?.test_type){
             const result = await axios.get(`${API_URL}v1/test-report/view-student/${params?.test_id}/${params?.school_id}/${params?.class_id}/${params?.test_type}`,{
@@ -21,6 +21,8 @@ export default function useAttemptedStudents() {
             });
             return result.data.data; 
         }
+    },{
+        refetchInterval: intervalMs,
     });
     
 }

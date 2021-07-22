@@ -1,4 +1,4 @@
-import {useContext}  from 'react'
+import {useContext, useState}  from 'react'
 import {useQuery} from 'react-query';
 import axios from 'axios';
 import {AuthContext} from '../../../../context/AuthContext.jsx';
@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom';
 
 export default function useSchoolAssignedTests() {
     const {state } = useContext(AuthContext);
+    const [intervalMs, setIntervalMs] = useState(5000)
     const params = useParams();
     return useQuery(`reports-${params?.school_id}-${params?.class_id}-${params?.test_type}`, async () => {
         if(state.access_token){
@@ -18,6 +19,8 @@ export default function useSchoolAssignedTests() {
             });
             return result.data.data; 
         }
+    },{
+        refetchInterval: intervalMs,
     });
     
 }

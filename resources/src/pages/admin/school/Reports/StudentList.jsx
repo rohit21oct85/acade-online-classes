@@ -48,7 +48,6 @@ export default function StudentList() {
                         <div className={`col-md-12 pl-0 pb-3`} style={{ overflow: 'scroll hidden'}}>
                         
                               <div className="flex col-md-12 pl-0 pr-0">
-                                    <div className="border col-md-2">#ID</div>
                                     <div className="border col-md-3">Student</div>
                                     <div className="border col-md-1">Class</div>
                                     <div className="border col-md-1">Roll</div>
@@ -93,7 +92,7 @@ export default function StudentList() {
                               return(
                                     <>
                                     <div className="flex col-md-12 pl-0 pr-0" key={student?._id}>
-                                          <div className="border col-md-2">
+                                          <div className="border col-md-3">
                                                 <span className="fa fa-eye pr-2" style={{
                                                       display: 'inline-block',
                                                       cursor: 'pointer'
@@ -103,9 +102,9 @@ export default function StudentList() {
                                                 onClick={e => {
                                                       viewResult(student?._id)
                                                 }}></span>
-                                                {student?.student_emp_id}
+                                                {student?.student_name}
                                           </div>
-                                          <div className="border col-md-3">{student?.student_name}</div>
+                                          
                                           <div className="border col-md-1">{student?.student_class_name}</div>
                                           <div className="border col-md-1">{student?.student_roll_no}</div>
                                           <div className="border col-md-1">{student?.section}</div>

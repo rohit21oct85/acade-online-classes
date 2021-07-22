@@ -16,8 +16,6 @@ export default function useActivityDetails() {
                     'Content-Type': 'Application/json',
                     'Authorization':'Bearer '+state.access_token
                 }
-            },{
-                refetchInterval: intervalMs,
             });
             return result.data.data; 
         }
