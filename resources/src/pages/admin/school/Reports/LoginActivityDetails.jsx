@@ -1,13 +1,14 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { useHistory, useParams } from 'react-router-dom';
 import useActivityDetails from '../hooks/useActivityDetails';
+import useLogoutUser from '../hooks/useLogoutUser';
 
 export default function LoginActivityDetails() {
       const {data: reports} = useActivityDetails();
-      console.log(reports);
       const params = useParams();
       const history = useHistory();
       let report_type = params?.report_type;
+      const [formData, SetFormData] = useState({});
       let label;
       switch(report_type){
             case 'activity-detail':
@@ -18,7 +19,12 @@ export default function LoginActivityDetails() {
                   break;      
             
       }
-
+      const logoutMutation = useLogoutUser();
+      async function handleLogoutUser(){
+          formData['school_id'] = params?.school_id
+          formData['student_id'] = params?.user_id
+          await logoutMutation.mutate(formData);     
+      }
       return (
             <div>
                  <div className="col-md-12 pl-0">
@@ -31,8 +37,13 @@ export default function LoginActivityDetails() {
                               }}>
                                     Back
                               </button>
-                              {label}</h4>
-
+                              {label}
+                              
+                        <button className="btn btn-sm pull-right dark bg-danger"
+                        onClick={handleLogoutUser}>
+                              Logot User
+                        </button>
+                        </h4>
                         <hr />
                         </>
                   )}

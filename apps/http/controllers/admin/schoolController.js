@@ -9,6 +9,7 @@ const fs = require('fs')
 const bcrypt = require('bcryptjs');
 const AttemptTest = require('../../../models/admin/AttemptTest');
 const UserLog = require('../../../models/admin/UserLog');
+const UserLogs = require('../../../models/admin/UserLog');
 
 const CreateSchool = async (req, res) => {
     const body = req.body;
@@ -345,8 +346,53 @@ const schoolActivityDetails = async (req, res) => {
         })
     }
 }
+const LogoutUser = async (req, res) => {
+    try {
+        let currentDate = new Date();
+        let prevDate = new Date(currentDate);
+        prevDate.setDate(currentDate.getDate() - 1);
+
+        let LogsData = await UserLogs.find({
+            user_id: req?.body?.student_id, 
+            school_id: req?.body?.school_id,
+            sessionInProgress: true,
+            login_time: {
+                $lt: prevDate
+            }     
+        });
+        
+        // console.log(LogsData); return;
+        if(LogsData?.length > 0){
+            LogsData.map(async log => {
+                let loginTime = new Date(log?.login_time);
+                let new_time = new Date();
+                let seconds = (new_time - loginTime) / 1000;
+                // console.log(seconds);
+                await UserLogs.findByIdAndUpdate({_id: log?._id},{
+                    sessionInProgress: false,
+                    logout_time: currentDate,
+                    total_session: seconds
+                });     
+            });
+            res.status(201).json({
+                message: 'logout'
+            }) 
+        }else{
+            res.status(203).json({
+                message: 'today you can not logout from here.'
+            }) 
+        }
+
+    } catch (error) {
+        res.json({
+            status: 500,
+            message: error.message
+        })
+    }
+}
 
 module.exports = {
+    LogoutUser,
     schoolReport,
     checkSubDomain,
     addFields,
