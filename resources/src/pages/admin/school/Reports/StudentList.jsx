@@ -48,7 +48,7 @@ export default function StudentList() {
                         <div className={`col-md-12 pl-0 pb-3`} style={{ overflow: 'scroll hidden'}}>
                         
                               <div className="flex col-md-12 pl-0 pr-0">
-                                    <div className="border col-md-3">Student</div>
+                                    <div className="border col-md-4">Student</div>
                                     <div className="border col-md-1">Class</div>
                                     <div className="border col-md-1">Roll</div>
                                     <div className="border col-md-1">Section</div>
@@ -87,17 +87,22 @@ export default function StudentList() {
                               let end_window = new Date(student?.start_date)
                               end_window.setMinutes( end_window.getMinutes() + student?.test_window );
                               let total_time = student?.time_taken;
-                              
-                              let seconds = Math.floor(total_time);
-                              let hour = Math.floor(seconds/3600) 
-                              let minute = Math.floor(seconds/60 - (hour * 60)) 
-                              let sec = Math.floor(seconds - (hour * 3600 + minute * 60))
-                              let hourDifference = `${(hour === 'NaN') ? 0 : hour} Hr ${(minute === 'NaN') ? 0 : minute} Min ${(sec === 'NaN') ? 0 : sec} Sec`
+                              let hourDifference;
+                              if(total_time !== undefined){
+                                    let seconds = Math.floor(total_time);
+                                    let hour = Math.floor(seconds/3600) 
+                                    let minute = Math.floor(seconds/60 - (hour * 60)) 
+                                    let sec = Math.floor(seconds - (hour * 3600 + minute * 60))
+                                    hourDifference = `${(hour === 'NaN') ? 0 : hour} Hr ${(minute === 'NaN') ? 0 : minute} Min ${(sec === 'NaN') ? 0 : sec} Sec`
 
+                              }else{
+                                    hourDifference = `0 Hr 0 Min 0 Sec`
+                              }
+                              
                               return(
                                     <>
                                     <div className="flex col-md-12 pl-0 pr-0" key={student?._id}>
-                                          <div className="border col-md-3">
+                                          <div className="border col-md-4">
                                                 <span className="fa fa-eye pr-2" style={{
                                                       display: 'inline-block',
                                                       cursor: 'pointer'

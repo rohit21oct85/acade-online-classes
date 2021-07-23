@@ -30,7 +30,7 @@ export default function LoginReport() {
                   )}
                   </div> 
 
-                        <div className={`${!params?.report_id ? 'pl-0 pb-3': ''}`} style={{ 
+                        <div className={`col-md-12 ${!params?.report_id ? 'pl-0 pb-3': 'pr-3'}`} style={{ 
                               overflow: 'scroll scroll',
                               height: '390px',
                               marginRight: '120px'
@@ -38,10 +38,9 @@ export default function LoginReport() {
                         {!params?.user_id && (
 
                               <div className="flex col-md-12 pl-0">
-                                    <div className="border col-md-1">status</div>
-                                    <div className="border col-md-2">userName</div>
-                                    <div className="border col-md-4">User Email</div>
-                                    <div className="border col-md-3">Session</div>
+                                    <div className="border col-md-5">userName</div>
+                                    <div className="border col-md-3">User Email</div>
+                                    <div className="border col-md-2">Session</div>
                                     <div className="border col-md-2 pl-3">Action</div>
                               </div>   
                         )}
@@ -57,10 +56,14 @@ export default function LoginReport() {
                                     marginRight: '120px'
                               }}
                                key={rep?.report_id}>
-                                    <div className="border col-md-1">{rep?._id?.sessionInProgress === false ? <span className="fa fa-circle text-danger"></span> : <span className="fa fa-circle text-success"></span>}</div>  
-                                    <div className="border col-md-2">{rep?._id?.user_name}</div>  
-                                    <div className="border col-md-4">{rep?._id.email_id}</div>  
-                                    <div className="border col-md-3">{hourDifference}</div>  
+                                    <div className="border col-md-5 pl-2">
+                                    {rep?._id?.sessionInProgress === false 
+                                    ? <span className="fa fa-circle text-danger"></span> 
+                                    : <span className="fa fa-circle text-success"></span>}
+                                    <span className="ml-2">{rep?._id?.user_name}</span>
+                                    </div>  
+                                    <div className="border col-md-3">{rep?._id.email_id}</div>  
+                                    <div className="border col-md-2">{hourDifference}</div>  
                                     <div className="border col-md-2 p-0">
                                     <button className="dark bg-success p-0 btn btn-sm"
                                     style={{

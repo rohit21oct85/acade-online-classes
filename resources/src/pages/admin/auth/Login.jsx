@@ -120,7 +120,8 @@ export default function Login() {
                         <label> <span className="fa fa-lock mr-2"></span> Password</label>
                         <input className="form-control" type="password" autoComplete="Off" ref={passwordRef} placeholder="Password" />
                         <p className="text-muted mt-2">
-                            We'll never share your password with anyone else.
+                            We'll never share your password with anyone else
+
                         </p>
                     </div>
                     <hr />
