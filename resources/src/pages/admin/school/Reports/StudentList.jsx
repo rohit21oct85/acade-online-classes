@@ -87,8 +87,13 @@ export default function StudentList() {
                               let end_window = new Date(student?.start_date)
                               end_window.setMinutes( end_window.getMinutes() + student?.test_window );
                               let total_time = student?.time_taken;
-                              let minute = Math.floor(total_time/60);
-                              let seconds = total_time - minute * 60
+                              
+                              let seconds = Math.floor(total_time);
+                              let hour = Math.floor(seconds/3600) 
+                              let minute = Math.floor(seconds/60 - (hour * 60)) 
+                              let sec = Math.floor(seconds - (hour * 3600 + minute * 60))
+                              let hourDifference = `${(hour === 'NaN') ? 0 : hour} Hr ${(minute === 'NaN') ? 0 : minute} Min ${(sec === 'NaN') ? 0 : sec} Sec`
+
                               return(
                                     <>
                                     <div className="flex col-md-12 pl-0 pr-0" key={student?._id}>
@@ -111,7 +116,7 @@ export default function StudentList() {
                                           <div className="border col-md-2">{student?.test_name}</div>
                                           <div className="border col-md-1">{correct_answer.reduce((a,b) => a+b)}/{total_question}</div>
                                           <div className="border col-md-2">{Math.round(correct_answer.reduce((a,b) => a+b)*100/total_question)}%</div>
-                                          <div className="border col-md-2">{minute} Min {seconds} Sec</div>
+                                          <div className="border col-md-2">{hourDifference}</div>
                                           <div className="border col-md-1">{student?.test_duration} Min</div>
                                           <div className="border col-md-1">{student?.test_window} Min</div>
                                           <div className="border col-md-3">{new Date(student?.start_date).toLocaleString()}</div>
