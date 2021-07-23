@@ -14,6 +14,7 @@ const Unit = require('../../../models/admin/Unit');
 const Chapter = require('../../../models/admin/Chapter');
 const TeacherAssignmentTest = require('../../../models/admin/TeacherAssignmentTest');
 const MockTestQuestions = require('../../../models/admin/MockTestQuestion');
+const { Console } = require('console');
 
 const getSubjects = async (req, res) => {
     try{
@@ -505,6 +506,7 @@ const assignTestToStudent = async (req, res) =>{
 
 const attemptTestByStudent = async (req, res) =>{
     try {
+        console.log(req.body, req.params)
         let result = [];
         if(req.body.test_type == "upload-test"){
             const assignTest = await AssignTest.findOne({_id:req.body.assign_test_id},{__v: 0})
@@ -531,6 +533,11 @@ const attemptTestByStudent = async (req, res) =>{
                 student_class_name: student.class
             });   
             result = await attempt.save();
+            await AssignTest.findOneAndUpdate({test_id:req.body.id}, {
+                $addToSet: {
+                    attemptedStudentIds: req.body.user_id
+                }
+            })
         }else if(req.body.test_type == "mock-test"){
             const mockQuestions = await MockTestQuestions.find({question_for:"student"},{answer:0});
             const student = await Student.findOne({_id:req.body.user_id},{roll_no:1,class:1,EmpId:1})
@@ -559,6 +566,11 @@ const attemptTestByStudent = async (req, res) =>{
                 student_class_name: student.class
             });   
             await attempt.save();
+            await AssignTest.findOneAndUpdate({_id:req.body.mock_id}, {
+                $addToSet: {
+                    attemptedStudentIds: req.body.user_id
+                }
+            })
         }else{
             const student = await Student.findOne({_id:req.body.user_id},{roll_no:1,class:1,EmpId:1})
             const newData = await UnitTest.findOne(
@@ -589,12 +601,13 @@ const attemptTestByStudent = async (req, res) =>{
                 student_class_name: student.class
             });    
             await attempt.save();
+            await AssignTest.findOneAndUpdate({test_id:req.body.id}, {
+                $addToSet: {
+                    attemptedStudentIds: req.body.user_id
+                }
+            })
         }
-        await AssignTest.findOneAndUpdate({test_id:req.body.id}, {
-            $addToSet: {
-                attemptedStudentIds: req.body.user_id
-            }
-        })
+        
         return res.status(200).json({
             message: "AttemptTest created sucessfully",
             data: result
@@ -1564,14 +1577,14 @@ const saveUploadAnswer = async ( req, res ) => {
         }
         const data = await AttemptTest.findOne(filter).lean()
         const un = await AssignTest.findOne({_id:data.test_id})
-        // let questions = data.questions;
-        // data.questions.length = 0; 
+        let questions = data.questions;
+        data.questions.length = 0; 
         un.answers.map(( item, key ) => {
             // data.questions[`correctAnswers${key+1}`] = item[`ans${key+1}`]
             // data.questions[`answer${key+1}`] = req.body.answers[`answer${key+1}`]
             // data.questions[`option${key+1}`] = req.body.answers[`option${key+1}`]
             // newArr.push({correct_answer:item[`ans${key+1}`], answer : req.body.answers[`answer${key}`], option: req.body.answers[`option${key}`]})
-            data.questions.unshift({correct_answer:item[`ans${key+1}`],correct_option:"unavailable", answer : req.body.answers[`answer${key+1}`], option: req.body.answers[`option${key+1}`],question_no: key+1})
+            data.questions.unshift({correct_answer:item[`ans${key+1}`],correct_option:"unavailable", answer : req.body.answers[`answer${key+1}`], option: req.body.answers[`option${key+1}`],question_no: key+1, questions: questions})
         })
         await AssignTest.findOneAndUpdate({_id:data.test_id}, {
             $addToSet: {
