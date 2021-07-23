@@ -29,7 +29,7 @@ export default function useCreateStudent(formData) {
                 let school_id =  params?.school_id;
                 let class_id =  params?.class_id;
                 queryClient.invalidateQueries(`students-${school_id}-${class_id}`)
-                history.push(`/admin/students-management`);
+                history.push(`/admin/students-management/view/${params?.school_id}/${params?.class_id}/${params?.section}`);
                 addToast('Student added successfully', { appearance: 'success',autoDismiss: true });
             }
         });

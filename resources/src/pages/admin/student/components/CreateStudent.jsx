@@ -55,13 +55,13 @@ export default function CreateStudent() {
             if(studentRoll?.length === 0){
                 roll = 1;
             }else{
-                roll = +studentRoll[0]?.roll_no + 1
+                roll = +studentRoll + 1
             }
             setRollNo(roll)
         }else{
             setRollNo(1)
         }
-    },[params?.section])
+    },[params?.section, params?.page_type]);
     
     const createMutation = useCreateStudent(formData);
     const updateMutation = useUpdateStudent(SingleStudent);
@@ -81,19 +81,15 @@ export default function CreateStudent() {
                 setLoading(false);
                 addToast('Please Select a School', { appearance: 'error',autoDismiss: true });
             }else {
-                formData.password = "password"
-                if(!pattern.test(formData.mobile)){
-                    setLoading(false);
-                    addToast('Please Enter a valid 10 digit phone no', { appearance: 'error',autoDismiss: true });
-                }else{ 
-                    formData['school_id'] = params?.school_id
-                    formData['class_id'] = params?.class_id
-                    formData['class'] = helper.getFilteredData(classes,'_id',params?.class_id,'class_name') 
-                    formData['section'] = params?.section
-                    formData.roll_no = rollNo
-                    // console.log(formData); return;       
-                    await createMutation.mutate(formData);
-                }
+                formData.password = "password" 
+                formData['school_id'] = params?.school_id
+                formData['class_id'] = params?.class_id
+                formData['class'] = helper.getFilteredData(classes,'_id',params?.class_id,'class_name') 
+                formData['section'] = params?.section
+                formData.roll_no = rollNo
+                // console.log(formData); return;       
+                await createMutation.mutate(formData);
+            
             }
         }
     }
@@ -185,7 +181,7 @@ export default function CreateStudent() {
                         <div className="form-group">
                             <select class="form-control" name="section"
                             onChange={handleChangeSection}
-                            value={params?.student_id ? SingleStudent?.section : params?.section}
+                            value={params?.section}
                             >
                                 <option>Section</option>
                                {sections && sections?.map((sec, ind) => {

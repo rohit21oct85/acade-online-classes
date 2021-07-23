@@ -53,7 +53,7 @@ export default function StudentList() {
                             {create && (
                                 <button className="btn btn-sm dark mr-2" 
                                 onClick={ e => {
-                                    history.push(`/admin/students-management/create`)
+                                    history.push(`/admin/students-management/create/${params?.school_id}/${params?.class_id}/${params?.section}`)
                                 }}>
                                     <span className="fa fa-plus mr-2"></span>Create students 
                                 </button>
@@ -70,7 +70,7 @@ export default function StudentList() {
                             {view && (
                                 <button className="btn btn-sm dark ml-2" 
                                 onClick={ e => {
-                                    history.push(`/admin/students-management/view`)
+                                    history.push(`/admin/students-management/view/${params?.school_id}/${params?.class_id}/${params?.section}`)
                                 }}>
                                     <span className="fa fa-eye mr-2"></span>View Students 
                                 </button>

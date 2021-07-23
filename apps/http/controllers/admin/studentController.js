@@ -381,21 +381,12 @@ function getClientIp(req) {
 };
 const getRollNo = async (req, res) => {
     try {
-        let rollNo = await Student.aggregate([
-            {"$match": 
-                {
-                    school_id: req.params?.school_id,
-                    class_id: req.params?.class_id,
-                    section: req.params?.section,
-            }},
-            {
-                "$group": {
-                    "_id": null,
-                    "roll_no": { "$max": "$roll_no" }
-                }
-            }
-        ]);
-
+        let rollNo = await Student.countDocuments({
+            school_id: req.params?.school_id,
+            class_id: req.params?.class_id,
+            section: req.params?.section,
+        });
+        // console.log(rollNo); return;
         res.status(201).json({
             data: rollNo
         })
