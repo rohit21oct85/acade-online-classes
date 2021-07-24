@@ -55,10 +55,22 @@ export default function SchoolReport() {
     }
     const deleteMutation = useDeleteSchoolMockTest();
     async function DeleteAllMockTest(){
-
-      await deleteMutation.mutate({
-            school_id: params?.school_id
-      })
+       let ans = prompt("do you want to delte this mock test! please enter the password to delete the resource?");
+            if(ans === 'wrong-password'){
+                  let school_id = params?.school_id;
+                  if(school_id === '60d5a55aa116be10bc936137'){
+                        await deleteMutation.mutate({
+                              school_id: params?.school_id
+                        });
+                  }else{
+                        alert("you cannot delete this resource");
+                  }
+                  
+            }     
+            else{
+                  alert("your have entered a wrong password.")
+            }
+      
     }
     return (
         <div className="col-lg-10 col-md-10 main_dash_area">
