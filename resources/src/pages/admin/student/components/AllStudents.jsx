@@ -40,7 +40,8 @@ export default function AllStudents({update, Delete}) {
         <>
         <p>
             <span className="fa fa-plus-circle mr-2"></span> All Students
-            <span className="dark bg-success br-15 pl-3 pr-3 ml-2">{school && school[0]?.school_name}</span>
+            <span className="dark bg-success br-15 pl-3 pr-3 ml-2">School Name: {school && school[0]?.school_name}</span>
+            <span className="dark bg-success br-15 pl-3 pr-3 ml-2">Total Student: {data?.length}</span>
         </p>
         
         <div className="row col-md-12 mt-3">
@@ -52,7 +53,7 @@ export default function AllStudents({update, Delete}) {
                     history.push(`/admin/students-management/view/${e.target.value}`)
                 }} 
                 value={params.school_id ? params.school_id : 999}>
-                <option value="999">Select School</option>
+                <option value="999">Select School Name</option>
                 {schools?.map(school => {
                 return (
                     <option value={school._id} key={school._id}>{school.school_name}</option>
@@ -60,7 +61,7 @@ export default function AllStudents({update, Delete}) {
                 })}
             </select>
         </div>
-        <div className="form-group col-md-3 pl-0">
+        <div className="form-group col-md-2 pl-0">
             <select className="form-control " aria-label="Default select example" 
                     name="class_id" 
                     onChange={(e) => {
@@ -75,17 +76,17 @@ export default function AllStudents({update, Delete}) {
             </select>
         </div>
         
-        <div className="form-group col-md-3 pl-0">
+        <div className="form-group col-md-2 pl-0">
             <select className="form-control " 
                     name="section" 
                     value={params?.section}
                     onChange={(e) => {
                         history.push(`/admin/students-management/view/${params?.school_id}/${params?.class_id}/${e.target.value}`)
-                    }} value={params.class_id}>
+                    }}>
                     <option value="">Select Section</option>
                     {sections?.map((sec,ind) => {
                     return (
-                        <option value={sec} key={ind}>{sec}</option>
+                        <option value={sec}key={ind}>{sec}</option>
                     )
                     })}
             </select>
@@ -94,7 +95,7 @@ export default function AllStudents({update, Delete}) {
         </div>
         <div className="col-md-12 mt-3 table-responsive row no-gutter data-container-category" style={{"overflowX":"scroll"}}>
         
-        <table className="table table-hover">
+        <table className="table table-hover" style={{ width: '1800px'}}>
                     <thead>
                         <tr>
                         <th scope="col">#EmpId</th>
@@ -106,6 +107,7 @@ export default function AllStudents({update, Delete}) {
                         <th scope="col">Roll</th>
                         <th scope="col" className="hidden_col">Mobile</th>
                         <th scope="col">Email</th>
+                        <th scope="col">Login Email</th>
                         <th scope="col" className="hidden_col">Action</th>
                         </tr>
                     </thead>
@@ -119,9 +121,10 @@ export default function AllStudents({update, Delete}) {
                                 <td>{item.name}</td>
                                 <td>{item.class}</td>
                                 <td>{item.section}</td>
-                                <td>{item.school_section}</td>
+                                <td>{item.school_section ?? item.section}</td>
                                 <td>{item.roll_no}</td>
                                 <td className="hidden_col">{item.mobile}</td>
+                                <td>{item?.email.toLowerCase()}</td>
                                 <td>{item?.username.toLowerCase()}</td>
                                 <td className="flex hidden_col">
 
