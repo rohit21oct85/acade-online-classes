@@ -88,6 +88,7 @@ export default function SchoolReport() {
                         value={params?.class_id}
                         onChange={handleClassChange}>
                               <option value="">Select Class</option>
+                              <option value="all">All Class</option>
                               {sClass?.map(sc => {
                                     return(
                                           <option value={sc?._id}>{sc?.class_name}Th </option>

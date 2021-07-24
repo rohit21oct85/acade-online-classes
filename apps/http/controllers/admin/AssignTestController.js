@@ -1,4 +1,5 @@
 const AssignTest = require("../../../models/admin/AssignTest");
+const AttemptTest = require("../../../models/admin/AttemptTest");
 const MockTestQuestion = require("../../../models/admin/MockTestQuestion");
 
 const CreateAssignTest = async (req, res) => {
@@ -241,9 +242,23 @@ const ViewAssignedTest = async (req, res) => {
       })
    }
 }
-
+const UpdateTimeAssignTest =  async (req, res) => {
+  try {
+    await AttemptTest.updateMany({
+      school_id: req.body.school_id,
+      time_taken: {$lte: 90}
+    },{
+      time_taken: 120
+    })
+  } catch (error) {
+    res.json({
+      message: error.message
+    })
+  }
+}
 
 module.exports = {
+  UpdateTimeAssignTest,
   CreateAssignTest,
   ViewAssignedTest,
   ViewAllAssignedTest,

@@ -22,7 +22,6 @@ export default function LoginActivityDetails() {
       const logoutMutation = useLogoutUser();
       async function handleLogoutUser(){
           formData['school_id'] = params?.school_id
-          formData['student_id'] = params?.user_id
           await logoutMutation.mutate(formData);     
       }
       return (
@@ -41,7 +40,7 @@ export default function LoginActivityDetails() {
                               
                         <button className="btn btn-sm pull-right dark bg-danger"
                         onClick={handleLogoutUser}>
-                              Logot User
+                              Logoot All Previous Session
                         </button>
                         </h4>
                         <hr />

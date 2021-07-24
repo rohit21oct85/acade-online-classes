@@ -4,7 +4,6 @@ import useSchoolAssignedTests from '../hooks/useSchoolAssignedTests';
 
 export default function SingleTestList() {
       const {data: reports} = useSchoolAssignedTests();
-      console.log("reports: ", reports)
       const params = useParams();
       const history = useHistory();
       let test_type = params?.test_type;

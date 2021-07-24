@@ -239,11 +239,20 @@ const schoolReport = async (req, res) => {
     try {
         let test_type = req.params.test_type;
         let totalQuestion = await MockTestQuestion.countDocuments({question_for: 'student'});
-        let attemptedStudents = await AttemptTest.countDocuments({
-            class_id: req?.params?.class_id,
-            school_id: req?.params?.school_id,
-            test_type: req?.params?.test_type
-        });
+        let attemptedStudents;
+        if(req.params?.class_id === 'all'){
+            attemptedStudents = await AttemptTest.countDocuments({
+                school_id: req?.params?.school_id,
+                test_type: req?.params?.test_type
+            });
+        }else{
+            attemptedStudents = await AttemptTest.countDocuments({
+                class_id: req?.params?.class_id,
+                school_id: req?.params?.school_id,
+                test_type: req?.params?.test_type
+            });
+        }
+        
         // console.log(attemptedStudents); return;
         let filter = {};
         if(test_type === 'mock-test'){
@@ -296,7 +305,6 @@ const schoolActivityReport = async (req, res) => {
                     "user_id":"$user_id",
                     "user_name":"$user_name",
                     "sessionInProgress":"$sessionInProgress"
-                    
                 },
                 "total_session": {
                     $sum: "$total_session"
@@ -353,11 +361,10 @@ const LogoutUser = async (req, res) => {
         prevDate.setDate(currentDate.getDate() - 1);
 
         let LogsData = await UserLogs.find({
-            user_id: req?.body?.student_id, 
             school_id: req?.body?.school_id,
             sessionInProgress: true,
             login_time: {
-                $lt: prevDate
+                $lt: currentDate
             }     
         });
         
