@@ -52,7 +52,7 @@ export default function TeacherList() {
                             {create && (
                                 <button className="btn btn-sm dark mr-2" 
                                 onClick={ e => {
-                                    history.push(`/admin/teachers-management/create`)
+                                    history.push(`/admin/teachers-management/create/${params?.school_id}/${params?.subject_id}/${params?.subject_name}`)
                                 }}>
                                     <span className="fa fa-plus mr-2"></span>Create teachers 
                                 </button>
@@ -69,7 +69,7 @@ export default function TeacherList() {
                             {view && (
                                 <button className="btn btn-sm dark ml-2" 
                                 onClick={ e => {
-                                    history.push(`/admin/teachers-management/view`)
+                                    history.push(`/admin/teachers-management/view/${params?.school_id}/${params?.subject_id}/${params?.subject_name}`)
                                 }}>
                                     <span className="fa fa-upload mr-2"></span>View Teachers 
                                 </button>
