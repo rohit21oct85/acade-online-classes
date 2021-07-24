@@ -8,7 +8,7 @@ import { useToasts } from 'react-toast-notifications';
 import React, {useState, useContext} from 'react'
 import useDeleteTeacher from '../hooks/useDeleteTeacher';
 import useSubjectList from '../../subject/hooks/useSubjectList';
-import { MakeSlug } from '../../../../utils/utils'
+import * as utils from '../../../../utils/utils'
 import useUpdateTeacher from '../hooks/useUpdateTeacher';
 
 export default function AllTeachers({update, Delete}) {
@@ -51,7 +51,7 @@ export default function AllTeachers({update, Delete}) {
     }
     async function handleActiveInactive(status,subject_name, id){
         // alert(status); return;
-        history.push(`/admin/teachers-management/view/${params?.school_id}/${params?.subject_id}/${MakeSlug(subject_name)}/${id}`)
+        history.push(`/admin/teachers-management/view/${params?.school_id}/${params?.subject_id}/${utils.MakeSlug(subject_name)}/${id}`)
         setTimeout(async () => {
             await updateMutation.mutate({
                 isActive: (status === undefined || status === false) ? true: false
@@ -82,10 +82,11 @@ export default function AllTeachers({update, Delete}) {
         </div>
         <div className="form-group col-md-3 pl-0">
             <select className="form-control" aria-label="Default select example" 
-                name="school_id" 
+                name="subject" 
                 onChange={(e) => {
                     if(e.target.value != 999){
-                        history.push(`/admin/teachers-management/view/${params?.school_id}/${e.target.value}`)
+                        const subject_name = e.target.options[e.target.selectedIndex].dataset.subject_name
+                        history.push(`/admin/teachers-management/view/${params?.school_id}/${e.target.value}/${subject_name}`)
                     }
                 }} 
                 value={params.subject_id ? params.subject_id : 999}>
@@ -93,7 +94,11 @@ export default function AllTeachers({update, Delete}) {
                 <option value="all">All</option>
                 {!isLoading && subjects?.map(subject => {
                 return (
-                    <option value={subject._id} key={subject._id}>{subject.subject_name}</option>
+                    <option 
+                        value={subject._id} 
+                        key={subject._id}
+                        data-subject_name={utils.MakeSlug(subject?.subject_name)}
+                        >{subject.subject_name}</option>
                 )
                 })}
             </select>
