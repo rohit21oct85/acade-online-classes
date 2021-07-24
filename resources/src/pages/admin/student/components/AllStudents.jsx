@@ -36,6 +36,34 @@ export default function AllStudents({update, Delete}) {
         }, 1000);
     
     }
+    const filerDataByEmpID = () => {
+        const trs = document.querySelectorAll('#myTable tr:not(.header)');
+        const filter = document.querySelector('#empInput').value;
+        const regex = new RegExp(filter, 'i');
+        const isFoundInTds = (td) => regex.test(td.innerHTML);
+        const isFound = (childrenArr) => childrenArr.some(isFoundInTds);
+        const setTrStyleDisplay = ({ style, children }) => {
+          style.display = isFound([...children]) ? '' : 'none';
+        };
+        setTimeout(() => {
+            trs.forEach(setTrStyleDisplay);
+        }, 1000);
+      };
+      
+    const filerDataByEmpName = () => {
+        const trs = document.querySelectorAll('#myTable tr:not(.header)');
+        const filter = document.querySelector('#nameInput').value;
+        const regex = new RegExp(filter, 'i');
+        const isFoundInTds = (td) => regex.test(td.innerHTML);
+        const isFound = (childrenArr) => childrenArr.some(isFoundInTds);
+        const setTrStyleDisplay = ({ style, children }) => {
+          style.display = isFound([...children]) ? '' : 'none';
+        };
+        setTimeout(() => {
+            trs.forEach(setTrStyleDisplay);
+        }, 1000);
+      };
+
     return (
         <>
         <p>
@@ -91,24 +119,46 @@ export default function AllStudents({update, Delete}) {
                     })}
             </select>
         </div>
+        <div  className="form-group col-md-2 pl-0">
+        <input 
+            type="text" 
+            className="form-control"
+            id="empInput" 
+            onKeyUp={filerDataByEmpID} 
+            placeholder="Filter By Empid.." 
+            title="Type in a name" />
+        </div>
+        
+        <div  className="form-group col-md-2 pl-0">
+        <input 
+            type="text" 
+            className="form-control"
+            id="nameInput" 
+            onKeyUp={filerDataByEmpName} 
+            placeholder="Filter By name.." 
+            autoComplete="nope"
+            title="Type in a name" />
+        </div>
+
 
         </div>
         <div className="col-md-12 mt-3 table-responsive row no-gutter data-container-category" style={{"overflowX":"scroll"}}>
         
-        <table className="table table-hover" style={{ width: '1800px'}}>
+        <table className="table table-hover" id="myTable" style={{ width: '1800px'}}>
                     <thead>
-                        <tr>
-                        <th scope="col">#EmpId</th>
-                        {/* <th scope="col">School Name</th> */}
-                        <th scope="col">Name</th>
-                        <th scope="col">Class</th>
-                        <th scope="col">Sec.</th>
-                        <th scope="col">Division</th>
-                        <th scope="col">Roll</th>
-                        <th scope="col" className="hidden_col">Mobile</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Login Email</th>
-                        <th scope="col" className="hidden_col">Action</th>
+                    <tr class="header">
+                            <th scope="col">
+                             #EmpID
+                            </th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Class</th>
+                            <th scope="col">Sec.</th>
+                            <th scope="col">Division</th>
+                            <th scope="col">Roll</th>
+                            <th scope="col" className="hidden_col">Mobile</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Login Email</th>
+                            <th scope="col" className="hidden_col">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -117,7 +167,6 @@ export default function AllStudents({update, Delete}) {
                             return (
                                 <tr key={item?._id} >
                                 <th scope="row">{(item?.EmpId)}</th>
-                                
                                 <td>{item.name}</td>
                                 <td>{item.class}</td>
                                 <td>{item.section}</td>
