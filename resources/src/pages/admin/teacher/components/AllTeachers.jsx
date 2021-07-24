@@ -107,16 +107,17 @@ export default function AllTeachers({update, Delete}) {
                         marginRight: '120px',
                         paddingBottom: '250px'
                 }}>
-        <table className="table table-hover col-md-12 mb-2" style={{ width: '1500px'}}>
+        <table className="table table-hover mb-2" style={{ width: '1800px'}}>
                     <thead>
                         <tr>
-                        <th className="col-md-2">#EmpID</th>
-                        <th className="col-md-3">Name</th>
-                        <th className="col-md-2">Subject</th>
-                        <th className="hidden_col">Mobile</th>
-                        <th className="col-md-6">Email</th>
-                        <th className="col-md-3">Class</th>
-                        <th className="hidden_col">Action</th>
+                            <th>#EmpID</th>
+                            <th>Name</th>
+                            <th>Subject</th>
+                            <th className="hidden_col">Mobile</th>
+                            <th>Email</th>
+                            <th>Username</th>
+                            <th>Class</th>
+                            <th className="hidden_col">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -128,13 +129,14 @@ export default function AllTeachers({update, Delete}) {
                             
                             return (
                             <tr key={item?._id}>
-                                <th scope="row" className="col-md-2">{item.EmpID}</th>
-                                <td className="col-md-3">{item.name}</td>
-                                <td className="col-md-2">{item.subject_name}</td>
+                                <th scope="row" className="col-md-1">{item.EmpID}</th>
+                                <td>{item.name}</td>
+                                <td>{item.subject_name}</td>
                                 <td className="hidden_col">{item.mobile}</td>
-                                <td className="col-md-6">{item.username}</td>
-                                <td className="col-md-3">{tclass}</td>
-                                <td className="hidden_col flex col-md-3">
+                                <td>{item.email}</td>
+                                <td>{item.username}</td>
+                                <td>{tclass}</td>
+                                <td className="hidden_col flex">
                                     {update && (
                                         <>
                                         <button className={`btn dark ${item?.isActive ? 'bg-success': 'bg-danger'} text-white btn-sm mr-2`} 
