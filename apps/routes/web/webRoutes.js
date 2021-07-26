@@ -74,6 +74,7 @@ router
     .delete('/deleteall/:school_id?', Web.deleteStudents)
     .delete('/deleteall-teach/:school_id?', Web.deleteTeachers)
     .patch('/change-domain-and-empid/:school_id?', Web.changeDomainStudent)
+    .patch('/update-time/:school_id?', Web.changeTime);
     ;
 
 module.exports = router;
