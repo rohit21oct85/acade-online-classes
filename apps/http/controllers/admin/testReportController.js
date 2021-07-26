@@ -20,11 +20,7 @@ const ViewStudentReport = async (req, res) => {
                         test_id: req?.params?.test_id
                   },{__v:0}).sort({
                         student_class_name: 1,
-                        
-                  }).sort({
-                        student_roll_no: 1,
-                        
-                  }).sort({section: 1});
+                  });
             }else{
                   AttemptTestResult = await AttemptTest.find({
                         school_id: req?.params?.school_id,

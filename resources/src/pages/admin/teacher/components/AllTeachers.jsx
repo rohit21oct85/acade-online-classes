@@ -130,7 +130,7 @@ export default function AllTeachers({update, Delete}) {
                         {data?.map( (item,key) => {
                             let tclass = '';
                             
-                            tclass = Array.prototype.map.call(item?.classess, function(items) { if(items.checked === true){return items.class_name+', '} });
+                            tclass = Array.from(item?.classess, function(items) { if(items.checked === true){return items.class_name+'-'} });
                             
                             return (
                             <tr key={item?._id}>
