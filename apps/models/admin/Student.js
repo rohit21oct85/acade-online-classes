@@ -38,6 +38,9 @@ const StudentSchema = new mongoose.Schema({
     address:{
         type: String,
     },
+    gender:{
+        type: String,
+    },
     EmpId:{
         type: String,
         uppercase: true,

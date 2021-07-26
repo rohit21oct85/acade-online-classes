@@ -14,7 +14,6 @@ const Unit = require('../../../models/admin/Unit');
 const Chapter = require('../../../models/admin/Chapter');
 const TeacherAssignmentTest = require('../../../models/admin/TeacherAssignmentTest');
 const MockTestQuestions = require('../../../models/admin/MockTestQuestion');
-const { Console } = require('console');
 
 const getSubjects = async (req, res) => {
     try{
@@ -59,7 +58,7 @@ const getAssignedTestsStudent = async (req, res) => {
                 //         }
                 //     ]
             },{__v: 0});
-            console.log(AssignedTests)
+            // console.log(AssignedTests)
         const attemptedTest = await AttemptTest.find(
             {
                 // subject_id:req.params.subject_id,
@@ -506,7 +505,7 @@ const assignTestToStudent = async (req, res) =>{
 
 const attemptTestByStudent = async (req, res) =>{
     try {
-        console.log(req.body, req.params)
+        // console.log(req.body, req.params)
         let result = [];
         if(req.body.test_type == "upload-test"){
             const assignTest = await AssignTest.findOne({_id:req.body.assign_test_id},{__v: 0})
@@ -544,6 +543,7 @@ const attemptTestByStudent = async (req, res) =>{
             const newData1 = await AssignTest.findOne(
                 {
                     test_id: req.body.id,
+                    school_id: req.body.school_id,
                 },{__v: 0});
 
             const attempt = new AttemptTest({
@@ -803,15 +803,15 @@ const getLastScore = async (req,res) => {
                 }
             })
         }
-        result?.questions?.map((item,key)=>{
-            if(item.answer != undefined ){
-                if(item.option == item['correct_option']){
-                    correctAnswers = correctAnswers + 1;
-                }else{
-                    wrongAnswers = wrongAnswers + 1;
-                }
-            }
-        })
+        // result?.questions?.map((item,key)=>{
+        //     if(item.answer != undefined ){
+        //         if(item.option == item['correct_option']){
+        //             correctAnswers = correctAnswers + 1;
+        //         }else{
+        //             wrongAnswers = wrongAnswers + 1;
+        //         }
+        //     }
+        // })
         let data = {
             totalQuestions : totalQuestions,
             correctAnswers : correctAnswers,
@@ -974,7 +974,7 @@ const getResult = async (req,res) => {
             timeEndTest.setMinutes(timeEndTest.getMinutes() + result?.test_window );
             result?.questions?.map((item,key)=>{
                 if(item.answer != undefined ){
-                    if((item.answer === 'yes' ? 'a' : 'b') === item?.correct_answer){
+                    if(item.option == item['correct_option']){
                     // if(item.answer == item['correct_answer']){
                         correctAnswers = correctAnswers + 1;
                     }else{
@@ -1571,20 +1571,20 @@ const getUploadTestPaper = async ( req, res ) => {
 
 const saveUploadAnswer = async ( req, res ) => {
     try {
-        console.log(req.body, req.params)
+        // console.log(req.body, req.params)
         const filter = {
             _id :req.body.attempt_id,
         }
         const data = await AttemptTest.findOne(filter).lean()
         const un = await AssignTest.findOne({_id:data.test_id})
         let questions = data.questions;
-        data.questions.length = 0; 
+        data.questions = []; 
         un.answers.map(( item, key ) => {
             // data.questions[`correctAnswers${key+1}`] = item[`ans${key+1}`]
             // data.questions[`answer${key+1}`] = req.body.answers[`answer${key+1}`]
             // data.questions[`option${key+1}`] = req.body.answers[`option${key+1}`]
             // newArr.push({correct_answer:item[`ans${key+1}`], answer : req.body.answers[`answer${key}`], option: req.body.answers[`option${key}`]})
-            data.questions.unshift({correct_answer:item[`ans${key+1}`],correct_option:"unavailable", answer : req.body.answers[`answer${key+1}`], option: req.body.answers[`option${key+1}`],question_no: key+1, questions: questions})
+            data.questions.unshift({correct_answer:item[`ans${key+1}`],correct_option:"option_"+(item[`ans${key+1}`])?.toLowerCase(), answer : req.body?.answers[`answer${key+1}`], option: req.body?.answers[`option${key+1}`],question_no: key+1, questions: questions})
         })
         await AssignTest.findOneAndUpdate({_id:data.test_id}, {
             $addToSet: {
@@ -1610,14 +1610,14 @@ const changeDomainStudent = async ( req, res ) => {
         const xchool = await School.findOne({_id:req.params.school_id},{sub_domain:1,short:1,school_slug:1});
         const student = await Student.find({school_id:req.params.school_id}).lean();
         student.map((item,key)=>{
-            console.log(item.name,xchool.school_slug)
+            // console.log(item.name,xchool.school_slug)
             const removeName = item.username.split(item.name.toLowerCase())
             const removeDomain = removeName[1].split('@')
             const new_slug = getFirstLetter(xchool.school_slug);
-            console.log(new_slug)
+            // console.log(new_slug)
             const newUsername = new_slug + item.name.toLowerCase() + removeDomain[0] + '@' + xchool.sub_domain + '.com' 
-            console.log(newUsername)
-            console.log(item.EmpId.split('TS'))
+            // console.log(newUsername)
+            // console.log(item.EmpId.split('TS'))
         })
         // console.log(student)
         res.status(200).json({
@@ -1633,7 +1633,7 @@ const changeDomainStudent = async ( req, res ) => {
 function getFirstLetter(el){
     let arr = '';
     let name = '';
-    console.log(el)
+    // console.log(el)
     if(el.match('-')){
       arr = el.split('-');
       let data = arr?.map(e => {
@@ -1643,6 +1643,20 @@ function getFirstLetter(el){
     }else{
       return el.charAt(0)
     }    
+}
+
+const changeTime = async ( req, res ) => {
+    try {
+        const daa = await AssignTest.findOne({school_id:req.params.school_id});
+        const update = await AttemptTest.updateMany({school_id:req.params.school_id}, {"$set" :{ "start_date" : daa.start_date, test_window : "180"}},{multi: true });
+        res.status(200).json({
+            message : "updates" 
+        })
+    } catch (error) {
+        res.status(502).json({
+            message : error.message
+        })
+    }
 }
 
 
@@ -1691,4 +1705,5 @@ module.exports = {
     getUploadTestPaper,
     changeDomainStudent,
     saveUploadAnswer,
+    changeTime,
 }
