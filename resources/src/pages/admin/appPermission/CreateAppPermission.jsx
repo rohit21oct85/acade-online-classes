@@ -15,6 +15,7 @@ import useAppRoles from '../../../hooks/roles/useAppRoles';
 import useAppModule from '../../../hooks/modules/useAppModule';
 import useSubAdminByRole from '../../../hooks/subadmin/useSubAdminByRole';
 import {checkExists} from '../../../utils/helper'
+
 export default function CreateAppPermission() {
     const history = useHistory();
     const params  = useParams();
@@ -107,7 +108,7 @@ export default function CreateAppPermission() {
                 }
             })
             // console.log({module: ArrayModule, method: ArrayMethod});
-
+            
             await createMutation.mutate({module: ArrayModule, method: ArrayMethod});
         }
         clearFields();

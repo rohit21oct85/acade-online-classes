@@ -3,7 +3,6 @@ import useOtherModule from './modules/useOtherModule';
 
 export default function useModule() {
     const {data:modules} = useOtherModule();
-    
     const location = useLocation();
     const path = location?.pathname;
     const splitData = path.split('/')
