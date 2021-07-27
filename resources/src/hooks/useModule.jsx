@@ -7,5 +7,6 @@ export default function useModule() {
     const path = location?.pathname;
     const splitData = path.split('/')
     const urls = splitData[2];
-    return modules && modules?.some(module => module?.module_slug == urls); 
+    console.log(modules);
+    return modules && modules?.some(module => module?.module_slug === urls); 
 }

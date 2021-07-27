@@ -17,12 +17,13 @@ export default function SchoolReport() {
     const history = useHistory();
     const accessUrl = useModule();
     const { addToast } = useToasts();
-    useEffect(checkPageAccessControl,[accessUrl]);
-    function checkPageAccessControl(){
-        if(accessUrl === false){
-            history.push('/403');
-        }
-    }
+//     useEffect(checkPageAccessControl,[accessUrl]);
+//     function checkPageAccessControl(){
+//       //   console.log(accessUrl);  
+//         if(accessUrl === false){
+//             history.push('/403');
+//         }
+//     }
     const userTypes = [
           {key: 'student', value: 'Students'},
           {key: 'teacher', value: 'Teacher'},
@@ -33,12 +34,12 @@ export default function SchoolReport() {
     const upload = useAccess('upload');
     const Delete = useAccess('delete');
     
-    useEffect(manageAccess,[create, update, upload]);
-    function manageAccess(){
-        if(create === false || update === false || upload === false){
-            history.push(`/admin/activity-report`)
-        }
-    }
+//     useEffect(manageAccess,[create, update, upload]);
+//     function manageAccess(){
+//         if(create === false || update === false || upload === false){
+//             history.push(`/admin/activity-report`)
+//         }
+//     }
 
     const {data: schools} = useSchoolLists();
     const {data: sClass} = useClassList();
