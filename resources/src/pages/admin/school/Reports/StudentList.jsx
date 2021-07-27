@@ -73,13 +73,13 @@ export default function StudentList() {
                                     <th className="border col-md-1">Class</th>
                                     <th className="border col-md-1">Roll</th>
                                     <th className="border col-md-1">Section</th>
-                                    <th className="border col-md-2">Test Name</th>
+                                    <th className="border col-md-3">Test Name</th>
                                     <th className="border col-md-1">Marks</th>
                                     <th className="border col-md-1">Ques.</th>
                                     <th className="border col-md-2">Percentage(%)</th>
                                     <th className="border col-md-2">Time Taken</th>
                                     <th className="border col-md-2">Duration</th>
-                                    <th className="border col-md-1">Test Close</th>
+                                    <th className="border col-md-2">Test Close</th>
                                     <th className="border col-md-2">Window</th>
                                     <th className="border col-md-3">Test Start Date</th>
                                     <th className="border col-md-3">Test End Date</th>
@@ -141,13 +141,13 @@ export default function StudentList() {
                                           <td className="border col-md-1">{student?.student_class_name}</td>
                                           <td className="border col-md-1">{student?.student_roll_no}</td>
                                           <td className="border col-md-1">{student?.section}</td>
-                                          <td className="border col-md-2">{student?.test_name}</td>
+                                          <td className="border col-md-3">{student?.test_name}</td>
                                           <td className="border col-md-1">{correct_answer.reduce((a,b) => a+b)}</td>
                                           <td className="border col-md-1">{total_question}</td>
                                           <td className="border col-md-2">{Math.round(correct_answer.reduce((a,b) => a+b)*100/total_question)}%</td>
                                           <td className="border col-md-2">{hourDifference}</td>
                                           <td className="border col-md-2">{student?.test_duration} Min</td>
-                                          <td className="border col-md-1">{student?.completion_status}</td>
+                                          <td className="border col-md-2">{student?.completion_status}</td>
                                           <td className="border col-md-2">{student?.test_window} Min</td>
                                           <td className="border col-md-3">{new Date(student?.start_date).toLocaleString()}</td>
                                           <td className="border col-md-3">{end_window.toLocaleString()}</td>

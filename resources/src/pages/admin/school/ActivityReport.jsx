@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
 
 import useModule from '../../../hooks/useModule';
@@ -10,20 +10,21 @@ import LoginReport from './Reports/LoginReport';
 import LoginActivityDetails from './Reports/LoginActivityDetails';
 import { useToasts } from 'react-toast-notifications';
 import useDeleteSchoolMockTest from './hooks/useDeleteSchoolMockTest';
-
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export default function SchoolReport() {
     const params = useParams();
     const history = useHistory();
     const accessUrl = useModule();
     const { addToast } = useToasts();
-//     useEffect(checkPageAccessControl,[accessUrl]);
-//     function checkPageAccessControl(){
-//       //   console.log(accessUrl);  
-//         if(accessUrl === false){
-//             history.push('/403');
-//         }
-//     }
+    useEffect(checkPageAccessControl,[accessUrl]);
+    function checkPageAccessControl(){
+      //   console.log(accessUrl);  
+        if(accessUrl === false){
+            history.push('/403');
+        }
+    }
     const userTypes = [
           {key: 'student', value: 'Students'},
           {key: 'teacher', value: 'Teacher'},
@@ -34,30 +35,33 @@ export default function SchoolReport() {
     const upload = useAccess('upload');
     const Delete = useAccess('delete');
     
-//     useEffect(manageAccess,[create, update, upload]);
-//     function manageAccess(){
-//         if(create === false || update === false || upload === false){
-//             history.push(`/admin/activity-report`)
-//         }
-//     }
-
+    useEffect(manageAccess,[create, update, upload]);
+    function manageAccess(){
+        if(create === false || update === false || upload === false){
+            history.push(`/admin/activity-report`)
+        }
+    }
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date());
     const {data: schools} = useSchoolLists();
     const {data: sClass} = useClassList();
-    
+    function formatDate(date) {
+      var d = new Date(date),
+          month = '' + (d.getMonth() + 1),
+          day = '' + d.getDate(),
+          year = d.getFullYear();
+  
+      if (month.length < 2) 
+          month = '0' + month;
+      if (day.length < 2) 
+          day = '0' + day;
+  
+      return [year, month, day].join('-');
+  }
     
     function handleSchoolChange(e){
       history.push(`/admin/activity-report/${e.target.value}`);
-      document.getElementById("rclass").selectedIndex = '0'
-    }
-    
-    function handleUserTypeChange(e){
-      if(params?.school_id == "undefined" || typeof params?.school_id !== 'string'){
-            addToast("please select school id", { appearance: 'error', autoDismiss: true });
-            document.getElementById("rclass").selectedIndex = '0'
-            return;
-        }else{
-            history.push(`/admin/activity-report/${params?.school_id}/${e.target.value}`);
-        }    
+      
     }
     const deleteMutation = useDeleteSchoolMockTest();
     async function DeleteAllMockTest(){
@@ -89,31 +93,38 @@ export default function SchoolReport() {
                                     )
                               })}
                         </select>       
-                        <select className="form-control col-md-2 ml-2"
-                        id="rclass"
-                        value={params?.user_type}
-                        onChange={handleUserTypeChange}>
-                              <option value="">Select User Type</option>
-                              {userTypes?.map((types,ind) => {
-                                    return(
-                                          <option value={types?.key} key={`${types}-${ind}`}>{types?.value} </option>
-                                    )
-                              })}
-                        </select>   
+                        <div className="col-md-2 pl-0">
+                        <DatePicker 
+                              selected={startDate}
+                              value={startDate}
+                              onChange={(date) => setStartDate(date)}
+                              isClearable 
+                              showTimeSelect 
+                              dateFormat="MM/d/yyyy h:mm aa"
+                              maxDate={new Date()}
+                        />  
+                        </div>
+                        <div className="col-md-2 pl-0">
+                        <DatePicker 
+                              selected={endDate}
+                              value={endDate}
+                              onChange={(date) => setEndDate(date)}
+                              isClearable showTimeSelect dateFormat="MM/d/yyyy h:mm aa"
+                              maxDate={new Date()}
+                        />  
+                        </div>
 
-                        {params?.school_id && params?.user_type && (
+                        {params?.school_id && (
                               <>
                               <button className="dark ml-2"
                                     onClick={() => {
-                                          history.push(`/admin/activity-report/${params?.school_id}/${params?.user_type}/login-report`)
+                                          history.push(`/admin/activity-report/${params?.school_id}/${startDate.toISOString().split('T')[0]}/${endDate.toISOString().split('T')[0]}/login-report`)
                                     }}
                               >
                                     Login Report
                               </button>  
                               
                               </>
-
-
                         )}            
                   </div>
                   </div>

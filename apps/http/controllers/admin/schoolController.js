@@ -289,31 +289,20 @@ const schoolReport = async (req, res) => {
 
 const schoolActivityReport = async (req, res) => {
     try {
-        let currentDate = new Date();
-        let nextDate = new Date(currentDate);
-        nextDate.setDate(currentDate.getDate() + 1);
+        let start_time = new Date(req?.params?.login_time)
+        let end_time = new Date(req?.params?.logout_time);
+        end_time.setDate(end_time.getDate() + 1);
         let filter = {
-            school_id: req.params?.school_id, 
-            user_type: req.params?.user_type,
+            school_id: req.params?.school_id,
+            login_time: { 
+                $gte: start_time, 
+                $lt: end_time
+            }
         }
         // console.log(filter); return;
-        let logData = await UserLog.aggregate([
-            {"$match": filter},
-            {"$group": {
-                "_id": {
-                    "email_id":"$email_id",
-                    "user_id":"$user_id",
-                    "user_name":"$user_name",
-                    "sessionInProgress":"$sessionInProgress"
-                },
-                "total_session": {
-                    $sum: "$total_session"
-                }
-            }},
-            {$sort: { _id: -1}}
-        ]);
-        
+        let logData = await UserLog.find(filter).sort({sessionInProgress: -1});
         // console.log(logData); return;
+        
         res.status(201).json({
             data: logData
         })

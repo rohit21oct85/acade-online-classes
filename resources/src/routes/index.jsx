@@ -121,7 +121,7 @@ export const privateRoutes = [
         component: SchoolReport
     },
     {
-        path: '/admin/activity-report/:school_id?/:user_type?/:report_type?/:user_id?',
+        path: '/admin/activity-report/:school_id?/:startDate?/:endDate?/:report_type?/:user_id?',
         component: ActivityReport
     },
     {
