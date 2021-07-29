@@ -16,7 +16,7 @@ app.use(responseTime())
 
 /* Cron Task */
 var job = new cronJob({
-    cronTime: '30 * * * * *',
+    cronTime: '00 05 00 * * *',
     onTick: function() {
         cronTask()
    },

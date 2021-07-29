@@ -291,20 +291,48 @@ const schoolActivityReport = async (req, res) => {
     try {
         let start_time = new Date(req?.params?.login_time)
         let end_time = new Date(req?.params?.logout_time);
+        let school_id = req.params?.school_id
         end_time.setDate(end_time.getDate() + 1);
-        let filter = {
-            school_id: req.params?.school_id,
-            login_time: { 
-                $gte: start_time, 
-                $lt: end_time
-            }
-        }
-        // console.log(filter); return;
-        let logData = await UserLog.find(filter).sort({sessionInProgress: -1});
-        // console.log(logData); return;
         
+        let SData = await Student.find({school_id: school_id},{username: 1, EmpId: 1, isLoggedIn: 1}).lean();
+        let TData = await Teacher.find({school_id: school_id},{username: 1, EmpID: 1, isLoggedIn: 1}).lean();
+        let PData = await Principal.find({school_id: school_id},{email: 1, EmpId: 1, isLoggedIn: 1}).lean();
+        
+        await Promise.all(SData.map(sd => {
+            sd.user_type = 'student'
+        }))
+        await Promise.all(TData.map(td => {
+            td.user_type = 'teacher'
+        }))
+        await Promise.all(PData.map(pd => {
+            pd.user_type = 'principal'
+        }))
+
+        let FinalData = [...SData, ...TData, ...PData];
+        await Promise.all(FinalData.map(async data => {
+            let user_log = await UserLog.findOne({
+                user_id: data?._id, 
+                email_id: data?.username,
+                school_id: school_id,
+                login_time: { 
+                    $gte: start_time, 
+                    $lt: end_time
+                }
+            },{
+                user_type: 1,
+                user_name: 1,
+                device_type: 1,
+                sessionInProgress: 1,
+                login_time: 1,
+                logout_time: 1,
+                total_session: 1,
+            }).sort({$natural: -1}).limit(1);
+            data.user_log = user_log;
+        }))
+        // let logData = await UserLog.find(filter).sort({sessionInProgress: -1});
+        // console.log(FinalData); return;
         res.status(201).json({
-            data: logData
+            data: FinalData
         })
 
         
@@ -315,6 +343,7 @@ const schoolActivityReport = async (req, res) => {
         })
     }
 }
+
 function getUserName(arr,id ,fieldname){
     let data = arr.filter(el => el._id === id);
     return data[0][fieldname]

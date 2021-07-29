@@ -93,8 +93,9 @@ export default function SchoolReport() {
                                     )
                               })}
                         </select>       
-                        <div className="col-md-2 pl-0">
+                        <div className="ml-2 pl-2 pr-2">
                         <DatePicker 
+                              className="form-control" 
                               selected={startDate}
                               value={startDate}
                               onChange={(date) => setStartDate(date)}
@@ -104,8 +105,9 @@ export default function SchoolReport() {
                               maxDate={new Date()}
                         />  
                         </div>
-                        <div className="col-md-2 pl-0">
-                        <DatePicker 
+                        <div className="pl-2">
+                        <DatePicker
+                              className="form-control" 
                               selected={endDate}
                               value={endDate}
                               onChange={(date) => setEndDate(date)}

@@ -46,6 +46,9 @@ const PrincipalSchema = new mongoose.Schema({
     status: {
         type: String,
     },
+    total_logs:{
+        type: Number,
+    },
     create_at: {
         type: Date,
         default: Date.now
