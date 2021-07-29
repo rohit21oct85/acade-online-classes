@@ -394,7 +394,22 @@ const getRollNo = async (req, res) => {
         res.status(502).json({message: "Somethign went wrong!"})   
     }
 }
+const AllStudentCount = async (req, res) => {
+    try {
+        let totalStudetns = await Student.countDocuments({
+            school_id: req.params?.school_id
+        });
+        // console.log(totalStudetns); return;
+        res.status(201).json({
+            data: totalStudetns
+        })
+    } catch (error) {
+        res.status(502).json({message: "Somethign went wrong!"})   
+    }
+}
+
 module.exports = {
+    AllStudentCount,
     getRollNo,
     CreateStudent,
     UpdateStudent,

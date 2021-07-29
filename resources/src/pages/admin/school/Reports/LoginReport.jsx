@@ -62,7 +62,7 @@ export default function LoginReport() {
                         {!params?.user_id && (
                               <thead>
                                     <tr className="header flex pl-0">
-                                    <th className="col-md-3">Empid</th>
+                                    <th className="col-md-3">UniqueID</th>
                                     <th className="col-md-5">username</th>
                                     <th className="col-md-2">User Type</th>
                                     <th className="col-md-2">Status</th>

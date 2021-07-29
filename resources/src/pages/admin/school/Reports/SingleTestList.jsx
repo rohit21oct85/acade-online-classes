@@ -1,9 +1,11 @@
 import React from 'react'
 import { useHistory, useParams } from 'react-router-dom';
+import useAllStudents from '../../student/hooks/useAllStudents';
 import useSchoolAssignedTests from '../hooks/useSchoolAssignedTests';
 
 export default function SingleTestList() {
       const {data: reports} = useSchoolAssignedTests();
+      const {data:total_students} = useAllStudents();
       const params = useParams();
       const history = useHistory();
       let test_type = params?.test_type;
@@ -42,11 +44,13 @@ export default function SingleTestList() {
                   
                         {!params?.test_id && (
 
-                              <div className="flex col-md-12 pl-0">
+                              <div className="flex pl-0">
                                     <div className="border col-md-3">Test Name</div>
-                                    <div className="border col-md-3">Test Type</div>
+                                    <div className="border col-md-2">Test Type</div>
                                     <div className="border col-md-3">Test Subjects</div>
                                     <div className="border col-md-2">Attempted Students</div>
+                                    <div className="border col-md-2">Total Students</div>
+                                    <div className="border col-md-3">Unattempted Students</div>
                                     <div className="border col-md-2">Test Window</div>
                                     <div className="border col-md-2">Test Duration</div>
                                     <div className="border col-md-2">Total Question</div>
@@ -75,15 +79,13 @@ export default function SingleTestList() {
                               test_window.setMinutes( test_window.getMinutes() + rep?.test_window );
                               if(rep?.assigned === true)
                               return(
-                              <div className="col-md-12 pl-0 flex"
-                              style={{
-                                    marginRight: '120px'
-                              }}
-                               key={rep?.test_id}>
+                              <div className="pl-0 flex" key={rep?.test_id}>
                                     <div className="border col-md-3">{rep?.test_name}</div>  
-                                    <div className="border col-md-3">{rep?.test_type}</div>  
+                                    <div className="border col-md-2">{rep?.test_type}</div>  
                                     <div className="border col-md-3">{tsubjects}</div>  
                                     <div className="border col-md-2">{params?.test_type === 'mock-test' ? rep.attemptedStudents : rep?.attemptedStudentIds?.length}</div>  
+                                    <div className="border col-md-2">{total_students}</div>  
+                                    <div className="border col-md-3">{+total_students - (+params?.test_type === 'mock-test' ? rep.attemptedStudents : rep?.attemptedStudentIds?.length)}</div>  
                                     <div className="border col-md-2">{rep?.test_window}</div>  
                                     <div className="border col-md-2">{rep?.test_duration}</div>  
                                     <div className="border col-md-2">{rep?.total_question}</div>  

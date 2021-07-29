@@ -270,11 +270,11 @@ const schoolReport = async (req, res) => {
             }
         }
         let data = await AssignTest.find(filter);
-        if(test_type === 'mock-test'){
-            data?.map(d => {
+        if(test_type == 'mock-test'){
+            await Promise.all(data?.map(d => {
                 d.total_question = totalQuestion
                 d.attemptedStudents = attemptedStudents
-            })
+            }))
         }
         res.status(201).json({
             data: data
