@@ -45,7 +45,7 @@ export default function StudentList() {
                               <h4>Student List
                                     <button className="btn btn-sm dark pull-left mr-2"
                                     onClick={() => {
-                                          history.push(`/admin/school-report/${params?.school_id}/${params?.class_id}/single-test`)
+                                          history.push(`/admin/school-report/${params?.school_id}/${params?.class_id}/${params?.test_type}`)
                                     }}>
                                           Back
                                     </button>

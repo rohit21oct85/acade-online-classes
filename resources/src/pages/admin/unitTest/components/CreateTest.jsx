@@ -346,7 +346,7 @@ export default function CreateTest() {
                   }} 
                   >
                         <option value="_">{chapterLoading ? 'loading ...':'Chapters'}</option>
-                        {!qLoading && chapters?.map( chapter => {
+                        {chapters?.map( chapter => {
                               return(
                                     <option value={chapter?._id} key={chapter?._id}>{chapter?.chapter_no}-{chapter?.chapter_name}</option>
                               )

@@ -9,7 +9,7 @@ const CreateAssignTest = async (req, res) => {
     const testWindow = req.body.test_window;
     let filter;
     let assignTest;
-    if(data.test_type === 'mock-test'){
+    if(data.test_type == 'mock-test'){
       filter =   {
         school_id:  req.body.school_id,
         assigned: true
@@ -17,12 +17,13 @@ const CreateAssignTest = async (req, res) => {
     }else{
       filter = {
         school_id:  req.body.school_id,
+        class_id:  req.body.class_id,
         assigned: true
       }
     }
     // console.log(filter);return
     assignTest = await AssignTest.findOne(filter,{start_date:1,test_window:1
-    }).limit(1).sort({$natural:-1})
+    }).limit(1).sort({start_date:-1})
     
     // console.log(assignTest);return
     

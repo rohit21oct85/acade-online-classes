@@ -22,9 +22,9 @@ const Register = async (req, res) => {
 const Login = async (req, res) => {
     try {
          
-        await Admin.findOne({email: req.body.email},{__v: 0}).then( admin => {
+        await Admin.findOne({email: req.body.email},{__v: 0}).then(  admin => {
             if(admin){
-                bcrypt.compare(req.body.password, admin.password, function(err,response){
+                bcrypt.compare(req.body.password, admin.password, async function(err,response){
                     if(err){
                         res.status(203).json({ 
                             message: "Password does not match"
@@ -32,15 +32,29 @@ const Login = async (req, res) => {
                     }
                     else{
                         if(response){
-                            const accessToken = generateAccessToken(admin);
-                            const refreshToken = generateRefreshToken(admin);
-                            refreshTokens.push(refreshToken);
-                            
-                            res.status(200).json({ 
-                                accessToken, 
-                                refreshToken,
-                                admin
-                            });
+                            if(admin.isActive === false){
+                                await Admin.findByIdAndUpdate({
+                                    _id: admin?._id
+                                },{
+                                    isActive: true
+                                });
+                                let adminData = await Admin.findOne({
+                                    _id: admin?._id
+                                })
+                                const accessToken = generateAccessToken(adminData);
+                                const refreshToken = generateRefreshToken(adminData);
+                                refreshTokens.push(refreshToken);
+                                
+                                res.status(200).json({ 
+                                    accessToken, 
+                                    refreshToken,
+                                    admin: adminData
+                                });
+                            }else{
+                                res.status(203).json({ 
+                                    message: "your account is already loggedIn !!!"
+                                });
+                            }
                         } else {
                             res.status(203).json({ 
                                 status: 203,
@@ -64,7 +78,7 @@ const Login = async (req, res) => {
         })
         
     } catch (error) {
-        return res.status(401).json({
+        res.status(203).json({
             message: error.message
         });  
     }
@@ -106,8 +120,9 @@ const Logout = async (req, res) => {
         const accessToken = req.headers.authorization.split(' ')[1];  
         const decode = await jwt.verify(accessToken, accessTokenSecret);
         const UserData = {id: decode.id, role: decode.role};
+        await Admin.findByIdAndUpdate({_id: decode.id},{isActive: false});
         let newAccessToken = await jwt.sign(UserData, 'sasdasd', {expiresIn: '0s'});
-        return res.status(402).json({
+        return res.status(201).json({
             message: "successfully loggedout",
             accessToken: newAccessToken
         });    
@@ -200,8 +215,17 @@ const DeleteSubAdmin = async (req, res) => {
         });
     }
 }
-
+const AddField = async (req, res) => {
+    try {
+        let data = req.body;
+        await Admin.updateMany({},{$set: data});
+        res.status(201).json({message: "Updated"})
+    } catch (error) {
+        res.status(502).json({message: "Somethign went wrong!"})
+    }
+}
 module.exports = {
+    AddField,
     UpdateSubAdmin,
     ViewSubAdminByRole,
     ViewSubAdmin,

@@ -1,0 +1,5 @@
+
+### Update teacher All ### 
+POST http://localhost:5000/api/v1/teacher/update-all
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZDZkNTZkOTk3MjZjM2FjMDFmOGI0OSIsInJvbGUiOjEsImlhdCI6MTYyNTIwNDM3MiwiZXhwIjoxNjI3Nzk2MzcyfQ.tHwcRYllcGWbSS9Zdcg6ajPdkkS05aJ68Ysz-uQGukA

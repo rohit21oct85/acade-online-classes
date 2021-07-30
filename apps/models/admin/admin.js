@@ -31,6 +31,9 @@ const AdminSchema = new mongoose.Schema({
         required: true,
         default: true
     },
+    isActive:{
+        type: Boolean,
+    },
     created_at: {
         type: Date,
         default: Date.now

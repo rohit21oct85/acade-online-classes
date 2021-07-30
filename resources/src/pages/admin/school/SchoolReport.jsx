@@ -9,8 +9,6 @@ import useClassList from '../class/hooks/useClassList';
 import StudentList from './Reports/StudentList';
 import SingleTestList from './Reports/SingleTestList';
 import { useToasts } from 'react-toast-notifications';
-import useDeleteSchoolMockTest from './hooks/useDeleteSchoolMockTest';
-
 
 export default function SchoolReport() {
     const params = useParams();
@@ -53,25 +51,7 @@ export default function SchoolReport() {
             history.push(`/admin/school-report/${params?.school_id}/${e.target.value}`);
         }    
     }
-    const deleteMutation = useDeleteSchoolMockTest();
-    async function DeleteAllMockTest(){
-       let ans = prompt("do you want to delte this mock test! please enter the password to delete the resource?");
-            if(ans === 'wrong-password'){
-                  let school_id = params?.school_id;
-                  if(school_id === '60d5a55aa116be10bc936137'){
-                        await deleteMutation.mutate({
-                              school_id: params?.school_id
-                        });
-                  }else{
-                        alert("you cannot delete this resource");
-                  }
-                  
-            }     
-            else{
-                  alert("your have entered a wrong password.")
-            }
-      
-    }
+   
     return (
         <div className="col-lg-10 col-md-10 main_dash_area">
             <div className="main-area-all">
@@ -84,7 +64,7 @@ export default function SchoolReport() {
                         <button className="btn btn-sm dark mr-2" onClick={e => { history.push(`/admin/dashboard`)}}>
                               <span className="fa fa-dashboard"></span>
                         </button>
-                        <select className="form-control col-md-2 ml-2"
+                        <select className="form-control col-md-3 ml-2"
                         id="rschool"
                         value={params?.school_id}
                         onChange={handleSchoolChange}>
@@ -114,7 +94,7 @@ export default function SchoolReport() {
                                           history.push(`/admin/school-report/${params?.school_id}/${params?.class_id}/single-test`)
                                     }}
                               >
-                                    Assign Tests Report
+                                    Assign Tests
                               </button>  
                               
                               <button className="dark ml-2"
@@ -122,23 +102,16 @@ export default function SchoolReport() {
                                           history.push(`/admin/school-report/${params?.school_id}/${params?.class_id}/mock-test`)
                                     }}
                               >
-                              Mock Test Report
+                              Mock Test
                               </button>  
                               <button className="dark ml-2"
                                     onClick={() => {
                                           history.push(`/admin/school-report/${params?.school_id}/${params?.class_id}/upload-test`)
                                     }}
                               >
-                              Teacher Upload Test Report
+                              Teacher Led Test
                               </button>  
-                              {params?.test_type === 'mock-test' && (
-                                    <button className="dark ml-2"
-                                    onClick={() => DeleteAllMockTest()}>
-                                    <span className="fa fa-trash mr-2"></span>
-                                    Delete Mock Test
-                              </button>      
-                              )}      
-
+                              
                               </>
 
 

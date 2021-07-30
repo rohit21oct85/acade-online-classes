@@ -10,6 +10,7 @@ const bcrypt = require('bcryptjs');
 const AttemptTest = require('../../../models/admin/AttemptTest');
 const UserLog = require('../../../models/admin/UserLog');
 const UserLogs = require('../../../models/admin/UserLog');
+const Class = require('../../../models/admin/Class');
 
 const CreateSchool = async (req, res) => {
     const body = req.body;
@@ -237,19 +238,25 @@ const searchSchool = async (req, res) => {
 }
 const schoolReport = async (req, res) => {
     try {
+        // res.send(req.params); return;
         let test_type = req.params.test_type;
         let totalQuestion = await MockTestQuestion.countDocuments({question_for: 'student'});
         let attemptedStudents;
-        if(req.params?.class_id === 'all'){
+        let class_id = req?.params?.class_id;
+        let classData;
+        if(class_id == 'all'){
             attemptedStudents = await AttemptTest.countDocuments({
                 school_id: req?.params?.school_id,
                 test_type: req?.params?.test_type
             });
+            
         }else{
+            classData = await Class.findOne({_id: class_id});
             attemptedStudents = await AttemptTest.countDocuments({
-                class_id: req?.params?.class_id,
+                class_id: class_id,
                 school_id: req?.params?.school_id,
-                test_type: req?.params?.test_type
+                test_type: req?.params?.test_type,
+                student_class_name: classData?.class_name
             });
         }
         
@@ -261,7 +268,7 @@ const schoolReport = async (req, res) => {
                 test_type: req?.params?.test_type,
                 assigned: true
             }
-        }else if(test_type === 'single-test' || test_type === 'upload-test'){
+        }else if((test_type === 'single-test' || test_type === 'upload-test')){
             filter = {
                 school_id: req?.params?.school_id,
                 class_id: req?.params?.class_id,

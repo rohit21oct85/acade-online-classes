@@ -21,7 +21,7 @@ export default function useDeleteSchoolMockTest(formData) {
       }      
       const { addToast } = useToasts();
       const status =  useMutation((formData) => {
-            return axios.post(`${API_URL}v1/mock-test/delete-all`,formData, options)
+            return axios.post(`${API_URL}v1/mock-test/delete-all-test`,formData, options)
         },{
         onSuccess: () => {
             queryClient.invalidateQueries('schools')
