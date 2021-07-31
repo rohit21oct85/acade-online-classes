@@ -33,7 +33,7 @@ export default function Login() {
             
             const formData = {email: emailRef.current.value , password: passwordRef.current.value};
             const response = await axios.post(`${API_URL}v1/admin/login`, formData);
-            if(response?.data?.status === 203){
+            if(response?.status === 203){
                 addToast(`${response?.data?.message}`, { appearance: 'error',autoDismiss: true });
                 setLoading(false);
             }else{
