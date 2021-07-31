@@ -10,7 +10,7 @@ export default function useSchoolAssignedTests() {
     const [intervalMs, setIntervalMs] = useState(5000)
     const params = useParams();
     return useQuery(`reports-${params?.school_id}-${params?.class_id}-${params?.test_type}`, async () => {
-        if(state.access_token){
+        if(state.access_token && !params?.test_id){
             const result = await axios.get(`${API_URL}v1/school/report/${params?.school_id}/${params?.class_id}/${params?.test_type}`,{
                 headers: {
                     'Content-Type': 'Application/json',

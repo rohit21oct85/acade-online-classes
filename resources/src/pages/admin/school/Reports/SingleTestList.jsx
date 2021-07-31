@@ -72,7 +72,7 @@ export default function SingleTestList() {
                                     <th className="border col-md-2">Test Duration</th>
                                     <th className="border col-md-2">Total Question</th>
                                     <th className="border col-md-3">Start Date</th>
-                                    <th className="border col-md-3">End Date</th>
+                                    <th className="border col-md-4">End Date</th>
                                     <th className="border pl-3 hidden_col" style={{ 
                                           position: 'fixed', 
                                           width: '150px',
@@ -108,7 +108,7 @@ export default function SingleTestList() {
                                     <td className="border col-md-2">{rep?.test_duration}</td>  
                                     <td className="border col-md-2">{rep?.total_question}</td>  
                                     <td className="border col-md-3">{new Date(rep?.start_date).toLocaleString()}</td>  
-                                    <td className="border col-md-3">{test_window.toLocaleString()}</td>  
+                                    <td className="border col-md-4">{test_window.toLocaleString()}</td>  
                                     <td className="border hidden_col"
                                     style={{ 
                                           position: 'fixed', 

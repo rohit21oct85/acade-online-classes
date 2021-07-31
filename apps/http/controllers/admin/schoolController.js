@@ -244,6 +244,7 @@ const schoolReport = async (req, res) => {
         let attemptedStudents;
         let class_id = req?.params?.class_id;
         let classData;
+        // res.send(class_id); return;
         if(class_id == 'all'){
             attemptedStudents = await AttemptTest.countDocuments({
                 school_id: req?.params?.school_id,
@@ -251,7 +252,8 @@ const schoolReport = async (req, res) => {
             });
             
         }else{
-            classData = await Class.findOne({_id: class_id});
+            classData = await Class.findOne({_id: req?.params?.class_id});
+            // res.send(class_id); return;
             attemptedStudents = await AttemptTest.countDocuments({
                 class_id: class_id,
                 school_id: req?.params?.school_id,
@@ -276,6 +278,7 @@ const schoolReport = async (req, res) => {
                 assigned: true
             }
         }
+        // res.send(filter); return;
         let data = await AssignTest.find(filter);
         if(test_type == 'mock-test'){
             await Promise.all(data?.map(d => {

@@ -14,7 +14,7 @@ const ViewStudentReport = async (req, res) => {
             }
             const ATest = await AssignTest.findOne(filter)
             let AttemptTestResult;
-            if(req.params?.class_id === 'all'){
+            if(req.params?.class_id == 'all'){
                   AttemptTestResult = await AttemptTest.find({
                         school_id: req?.params?.school_id,
                         test_id: req?.params?.test_id
@@ -31,8 +31,6 @@ const ViewStudentReport = async (req, res) => {
             
             await AttemptTestResult.map(async (test) => {
                   test.test_duration = ATest.test_duration
-                  // test.test_window = ATest.test_window
-                  // test.start_date = ATest.start_date
             })
 
             res.status(201).json({

@@ -13,7 +13,7 @@ export default function useAllStudents() {
     let class_id = params?.class_id
     let key;
     let url;
-    if(school_id && class_id){
+    if(school_id && class_id && !params?.test_id){
       key = `students-${school_id}-${class_id}`
       url = `${API_URL}v1/student/all-students/${school_id}/${class_id}`
     }else if(school_id){
