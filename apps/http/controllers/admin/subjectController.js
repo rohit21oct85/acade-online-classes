@@ -17,6 +17,7 @@ const CreateSubject = async (req, res) => {
         })
     }
 }
+
 const UpdateSubject = async (req, res) =>{
     try {
         await Subject.findOneAndUpdate({_id: req.params.id},req.body)
