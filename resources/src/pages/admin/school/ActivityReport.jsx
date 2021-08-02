@@ -9,7 +9,6 @@ import useClassList from '../class/hooks/useClassList';
 import LoginReport from './Reports/LoginReport';
 import LoginActivityDetails from './Reports/LoginActivityDetails';
 import { useToasts } from 'react-toast-notifications';
-import useDeleteSchoolMockTest from './hooks/useDeleteSchoolMockTest';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -63,13 +62,7 @@ export default function SchoolReport() {
       history.push(`/admin/activity-report/${e.target.value}`);
       
     }
-    const deleteMutation = useDeleteSchoolMockTest();
-    async function DeleteAllMockTest(){
-
-      await deleteMutation.mutate({
-            school_id: params?.school_id
-      })
-    }
+    
     return (
         <div className="col-lg-10 col-md-10 main_dash_area">
             <div className="main-area-all">

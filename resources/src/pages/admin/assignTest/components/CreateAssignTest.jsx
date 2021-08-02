@@ -160,33 +160,35 @@ export default function CreateAssignTest() {
                         </div> 
 
                   </div>  
-                  <div className="row col-md-12 mt-3">
-                        <div className="table table-responsive table-borded">
+                        <div className="col-md-12 mt-3" style={{ overflowX: 'scroll', width: '1500px'}}>
+                        <table className="table table-responsive table-borded" style={{
+                              width: '1500px'
+                        }}>
+                              
                               {params?.test_type === 'mock-test' ? 
                               (
-                                    <div className="flex">
-                                          <div style={{ width: '220px'}}>Test Name</div> 
-                                          <div style={{ width: '110px'}}>Duration</div> 
-                                          <div style={{ width: '110px'}}>Test Type</div> 
-                                          <div style={{ width: '110px'}}>Published</div> 
-                                    </div>
+                                    <tr>
+                                          <th>Test Name</th> 
+                                          <th>Duration</th> 
+                                          <th>Test Type</th> 
+                                          <th>Published</th> 
+                                          <th>Create At</th> 
+                                    </tr>
                               )
                               :
                               (
-                                    <div className="flex">
-                                          <div style={{ width: '220px'}}>Test Name</div> 
-                                          <div style={{ width: '110px'}}>Duration</div> 
-                                          <div style={{ width: '110px'}}>Question</div> 
-                                          <div style={{ width: '110px'}}>Test Type</div> 
-                                          <div style={{ width: '110px'}}>Test Subjects</div> 
-                                          <div style={{ width: '110px'}}>Assigned</div> 
-                                    </div>
+                                    <tr>
+                                          <th>Test Name</th> 
+                                          <th>Duration</th> 
+                                          <th>Question</th> 
+                                          <th>Test Type</th> 
+                                          <th>Test Subjects</th> 
+                                          <th>Assigned</th> 
+                                    </tr>
                               )
                               }
                               
-                        
-                        {/* {JSON.stringify(unitTests, "utf-8", 2)}       */}
-                        <div className="pt-2 pr-0 no-gutter" style={{ height: '200px',maxHeight: '200px', overflowY: 'scroll', overflowX: 'hidden'}}>
+                        <tbody className="pt-2 pr-0 no-gutter" style={{ height: '200px',maxHeight: '200px', overflowY: 'scroll', overflowX: 'hidden'}}>
                               {(params?.test_type === 'single-test' || params?.test_type === 'combine-test') && unitTests?.map((tests, index) => {
                               let assigned = checkAssigned(tests?._id);      
                               let subjects = '';
@@ -197,45 +199,46 @@ export default function CreateAssignTest() {
                               }
                               if(!assigned)
                               return(
-                              <div className="flex" key={tests?._id}>
-                                    <div style={{ width: '220px'}}>
+                              <tr key={tests?._id}>
+                                    <td>
                                     <b>
                                     <label>
-                                          <input className="mr-2" type="radio" name={`test`}
+                                          <input type="radio" name={`test`}
                                           value={tests?._id}
                                           data-testName={tests?.test_name}
                                           onChange={e => setFormData({...formData, test_id: e.target.value})}
                                           />
                                           {tests?.test_name}</label>
                                     </b>
-                                    </div>
-                                    <div style={{ width: '120px'}}><b>{tests?.test_duration} Min</b></div>
-                                    <div style={{ width: '120px'}}><b>{tests?.total_question} Ques</b></div>
-                                    <div style={{ width: '110px'}}><b>{tests?.test_type === 'combine-test' ? 'combine-test': 'single-test'}</b></div>
-                                    <div style={{ width: '110px'}}><b>{subjects}</b></div>
-                                    <div style={{ width: '100px'}}><b>{assigned?.toString()}</b></div>
-                              </div>
+                                    </td>
+                                    <td><b>{tests?.test_duration} Min</b></td>
+                                    <td><b>{tests?.total_question} Ques</b></td>
+                                    <td><b>{tests?.test_type === 'combine-test' ? 'combine-test': 'single-test'}</b></td>
+                                    <td><b>{subjects}</b></td>
+                                    <td style={{ width: '100px'}}><b>{assigned?.toString()}</b></td>
+                              </tr>
                               )})}
                               
                               {params?.test_type === 'mock-test' && mockTests?.map(mtes => {
                                     return(
-                                          <div className="flex" key={mtes?._id}>
-                                               <div style={{ width: '220px'}}>
+                                          <tr key={mtes?._id}>
+                                               <td>
                                                       <label>
                                                       <input className="mr-2" type="radio" name={`test`}
                                                       value={mtes?._id}
                                                       onChange={e => setFormData({...formData, test_id: e.target.value})}
                                                       />
                                                       {mtes?.test_name}</label>
-                                                </div>
-                                                <div style={{ width: '120px'}}><b>{mtes?.test_duration} Min</b></div>
-                                                <div style={{ width: '110px'}}><b>{mtes?.test_type}</b></div>
-                                                <div style={{ width: '110px'}}><b>{mtes?.status?.toString()}</b></div>
-                                          </div>
+                                                </td>
+                                                <td><b>{mtes?.test_duration} Min</b></td>
+                                                <td><b>{mtes?.test_type}</b></td>
+                                                <td><b>{mtes?.status?.toString()}</b></td>
+                                                <td><b>{new Date(mtes?.create_at)?.toLocaleString()}</b></td>
+                                          </tr>
                                     )
                               })}
-                              </div>
-                  </div>  
+                              </tbody>
+                              </table>  
                         </div>                  
                   <div className="form-group mt-2">
                         <hr className="mb-2 mt-1"/>

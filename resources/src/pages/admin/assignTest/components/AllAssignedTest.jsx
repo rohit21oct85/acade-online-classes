@@ -10,7 +10,7 @@ import useAssignedTestList from '../hooks/useAssignedTestList';
 import useAssignToClass from '../hooks/useAssignToClass';
 import useAssignedMockTestList from '../hooks/useAssignedMockTestList';
 import useUpdateAssignTest from '../hooks/useUpdateAssignTest';
-import useDeleteTest from '../../school/hooks/useDeleteSchoolMockTest';
+import useDeleteTest from '../hooks/useDeleteSchoolMockTest';
 import useClassList from '../../class/hooks/useClassList';
 
 export default function AllAssignedTest({update, Delete}) {
@@ -132,7 +132,7 @@ export default function AllAssignedTest({update, Delete}) {
         </div>
         }
         <div className="table-responsive pl-0" style={{overflow: 'scroll hidden'}}>
-        <table className="table  table-responsive" style={{ width: `${params?.school_id === '60d5a55aa116be10bc936137' && params?.test_type === 'mock-test' ? '1280px':'1420px'}`}}>
+        <table className="table  table-responsive" style={{ width: `${params?.school_id === '60d5a55aa116be10bc936137' && params?.test_type === 'mock-test' ? '1280px':'1520px'}`}}>
             <thead>
                 <tr>
                     {params?.school_id === '60d5a55aa116be10bc936137' && (
@@ -214,10 +214,10 @@ export default function AllAssignedTest({update, Delete}) {
                         {params?.school_id === '60d5a55aa116be10bc936137' && (
                         <td> <button className={`btn btn-sm`}
                             onClick={() => {
-                                history.push(`/admin/assign-test/view/${params?.school_id}/${params?.test_type}/${params?.class_id}/${test?.test_id}`)
+                                DeleteAllMockTest(test?.test_id)
                             }}>
-                                <span className="fa fa-trash text-danger"
-                                style={{ fontSize: '1.5rem'}}></span>
+                               <span className="fa fa-trash text-danger"
+                               style={{ fontSize: '1.5rem'}}></span>
                             </button>
                         </td>
                         )}
