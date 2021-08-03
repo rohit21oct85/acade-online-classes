@@ -1,0 +1,46 @@
+
+### Add Mock Test Question ### 
+POST http://localhost:5000/api/v1/mock-test/add-question
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZDZkNTZkOTk3MjZjM2FjMDFmOGI0OSIsInJvbGUiOjEsImlhdCI6MTYyNTIwNDM3MiwiZXhwIjoxNjI3Nzk2MzcyfQ.tHwcRYllcGWbSS9Zdcg6ajPdkkS05aJ68Ysz-uQGukA
+
+{
+      "test_id":"60ebd601a5b22e8598412337",
+      "question_for":"student",
+      "question":"this is test question Updated",
+      "option_a": "yes",
+      "option_b": "no",
+      "answer": "b"
+}
+
+### Get All MockTest Question ### 
+GET http://localhost:5000/api/v1/mock-test/all-question/student
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZDZkNTZkOTk3MjZjM2FjMDFmOGI0OSIsInJvbGUiOjEsImlhdCI6MTYyNTIwNDM3MiwiZXhwIjoxNjI3Nzk2MzcyfQ.tHwcRYllcGWbSS9Zdcg6ajPdkkS05aJ68Ysz-uQGukA
+
+### Get Single MockTest Question ### 
+GET http://localhost:5000/api/v1/mock-test/single-question/60ebd601a5b22e8598412337
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZDZkNTZkOTk3MjZjM2FjMDFmOGI0OSIsInJvbGUiOjEsImlhdCI6MTYyNTIwNDM3MiwiZXhwIjoxNjI3Nzk2MzcyfQ.tHwcRYllcGWbSS9Zdcg6ajPdkkS05aJ68Ysz-uQGukA
+
+
+
+### Delete Mock test Question ### 
+POST http://localhost:5000/api/v1/mock-test/delete-question
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZDZkNTZkOTk3MjZjM2FjMDFmOGI0OSIsInJvbGUiOjEsImlhdCI6MTYyNTIwNDM3MiwiZXhwIjoxNjI3Nzk2MzcyfQ.tHwcRYllcGWbSS9Zdcg6ajPdkkS05aJ68Ysz-uQGukA
+
+{
+      "mqid":"60e97694a4c88f4508ef961d"
+}
+
+
+### Delete Mock test ### 
+POST http://localhost:5000/api/v1/mock-test/delete-all
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZDZkNTZkOTk3MjZjM2FjMDFmOGI0OSIsInJvbGUiOjEsImlhdCI6MTYyNTIwNDM3MiwiZXhwIjoxNjI3Nzk2MzcyfQ.tHwcRYllcGWbSS9Zdcg6ajPdkkS05aJ68Ysz-uQGukA
+
+{
+      "mqid":"60e97694a4c88f4508ef961d"
+}
+

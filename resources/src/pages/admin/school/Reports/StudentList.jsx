@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import useAttemptedStudents from '../hooks/useAttemptedStudents';
+import { export_table_to_csv } from '../../../../utils/helper'
 
 export default function StudentList() {
       const history = useHistory();
@@ -30,37 +31,59 @@ export default function StudentList() {
             script.src = "https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image";
             script.async = true;
             document.body.appendChild(script);
-        },[])
+        },[]);
+      const handleExport = (e) => {
+      e.preventDefault()      
+      var html = document.querySelector("table").outerHTML;
+      // console.log(html);      
+      export_table_to_csv(html, "table.csv");
+      }
+      
       return (
             <div>
                  <div className="col-md-12 pl-0">
                               <h4>Student List
                                     <button className="btn btn-sm dark pull-left mr-2"
                                     onClick={() => {
-                                          history.push(`/admin/school-report/${params?.school_id}/${params?.class_id}/single-test`)
+                                          history.push(`/admin/school-report/${params?.school_id}/${params?.class_id}/${params?.test_type}`)
                                     }}>
                                           Back
                                     </button>
+                                    
+                                    <button className="btn btn-sm dark pull-right mr-2"
+                                    onClick={handleExport}>
+                                          Export Report
+                                    </button>
+
                               </h4>
 
                               <hr />
                         </div> 
-                        <div className={`col-md-12 pl-0 pb-3`} style={{ overflow: 'scroll hidden'}}>
-                        
-                              <div className="flex col-md-12 pl-0 pr-0">
-                                    <div className="border col-md-4">Student</div>
-                                    <div className="border col-md-1">Class</div>
-                                    <div className="border col-md-1">Roll</div>
-                                    <div className="border col-md-1">Section</div>
-                                    <div className="border col-md-2">Test Name</div>
-                                    <div className="border col-md-1">Marks</div>
-                                    <div className="border col-md-2">Percentage(%)</div>
-                                    <div className="border col-md-2">Time Taken</div>
-                                    <div className="border col-md-1">Duration</div>
-                                    <div className="border col-md-1">Window</div>
-                                    <div className="border col-md-3">Test Start Date</div>
-                                    <div className="border col-md-3">Test End Date</div>
-                              </div>
+                        <div style={{ 
+                              overflow: 'scroll scroll',
+                              height: '450px',
+                              marginBottom: '50px',
+                              paddingBottom: '100px'
+                        }}
+                        className={`table table-responsive col-md-12 pl-0 pb-4 pr-3 mb-3`}
+                        >
+                             <table className="table table-bordered">
+                              <tr className="flex col-md-12 pl-0 pr-0">
+                                    <th className="border col-md-4">Student</th>
+                                    <th className="border col-md-1">Class</th>
+                                    <th className="border col-md-1">Roll</th>
+                                    <th className="border col-md-1">Section</th>
+                                    <th className="border col-md-3">Test Name</th>
+                                    <th className="border col-md-1">Marks</th>
+                                    <th className="border col-md-1">Ques.</th>
+                                    <th className="border col-md-2">Percentage(%)</th>
+                                    <th className="border col-md-2">Time Taken</th>
+                                    <th className="border col-md-2">Duration</th>
+                                    <th className="border col-md-2">Test Close</th>
+                                    <th className="border col-md-2">Window</th>
+                                    <th className="border col-md-3">Test Start Date</th>
+                                    <th className="border col-md-3">Test End Date</th>
+                              </tr>
                          
                         {attemtedStudetns?.map(student => {
                               let questions = student?.questions;
@@ -101,8 +124,8 @@ export default function StudentList() {
                               
                               return(
                                     <>
-                                    <div className="flex col-md-12 pl-0 pr-0" key={student?._id}>
-                                          <div className="border col-md-4">
+                                    <tr className="flex col-md-12 pl-0 pr-0" key={student?._id}>
+                                          <td className="border col-md-4">
                                                 <span className="fa fa-eye pr-2" style={{
                                                       display: 'inline-block',
                                                       cursor: 'pointer'
@@ -113,20 +136,22 @@ export default function StudentList() {
                                                       viewResult(student?._id)
                                                 }}></span>
                                                 {student?.student_name}
-                                          </div>
+                                          </td>
                                           
-                                          <div className="border col-md-1">{student?.student_class_name}</div>
-                                          <div className="border col-md-1">{student?.student_roll_no}</div>
-                                          <div className="border col-md-1">{student?.section}</div>
-                                          <div className="border col-md-2">{student?.test_name}</div>
-                                          <div className="border col-md-1">{correct_answer.reduce((a,b) => a+b)}/{total_question}</div>
-                                          <div className="border col-md-2">{Math.round(correct_answer.reduce((a,b) => a+b)*100/total_question)}%</div>
-                                          <div className="border col-md-2">{hourDifference}</div>
-                                          <div className="border col-md-1">{student?.test_duration} Min</div>
-                                          <div className="border col-md-1">{student?.test_window} Min</div>
-                                          <div className="border col-md-3">{new Date(student?.start_date).toLocaleString()}</div>
-                                          <div className="border col-md-3">{end_window.toLocaleString()}</div>
-                                    </div>
+                                          <td className="border col-md-1">{student?.student_class_name}</td>
+                                          <td className="border col-md-1">{student?.student_roll_no}</td>
+                                          <td className="border col-md-1">{student?.section}</td>
+                                          <td className="border col-md-3">{student?.test_name}</td>
+                                          <td className="border col-md-1">{correct_answer.reduce((a,b) => a+b)}</td>
+                                          <td className="border col-md-1">{total_question}</td>
+                                          <td className="border col-md-2">{Math.round(correct_answer.reduce((a,b) => a+b)*100/total_question)}%</td>
+                                          <td className="border col-md-2">{hourDifference}</td>
+                                          <td className="border col-md-2">{student?.test_duration} Min</td>
+                                          <td className="border col-md-2">{student?.completion_status}</td>
+                                          <td className="border col-md-2">{student?.test_window} Min</td>
+                                          <td className="border col-md-3">{new Date(student?.start_date).toLocaleString()}</td>
+                                          <td className="border col-md-3">{end_window.toLocaleString()}</td>
+                                    </tr>
                                     <div className="border answerDiv pl-2 pr-2 pb-2 pt-2" 
                                     id={`result-${student?._id}`}
                                     style={{
@@ -241,7 +266,9 @@ export default function StudentList() {
                                     </>
                               );
                         })}
+                        </table> 
                         </div>
+                        
             </div>
       )
 }

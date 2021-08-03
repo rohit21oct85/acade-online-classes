@@ -140,7 +140,8 @@ export default function CreateTeacher() {
             <span className="fa fa-plus-circle mr-2"></span>Add New Teacher</p>
             <hr className="mt-1"/>
             <form className="row col-md-12" onSubmit={saveTeacher}>
-                <div className="form-group col-md-2 pl-0">
+            <div className="col-md-6 row">
+                <div className="form-group col-md-6 pl-0">
                     <select className="form-control" aria-label="Default select example" name="school_id" onChange={handleChangeSchool} value={params.school_id ? params.school_id : 999}>
                         <option value="999">Select School</option>
                         {!isLoading && schools?.map(school => {
@@ -150,19 +151,7 @@ export default function CreateTeacher() {
                         })}
                     </select>
                 </div>
-                
-                
-
-                <div className="form-group col-md-2 pl-0">
-                    <input 
-                        type="text" 
-                        className="form-control" 
-                        name="name"
-                        value={formData?.name ?? SingleTeacher?.name}
-                        onChange={handleChange}
-                        placeholder="Name"/>
-                </div>
-                <div className="form-group col-md-2 pl-0">
+                <div className="form-group col-md-6 pl-0">
                     <select className="form-control" aria-label="Default select example" 
                         name="teacher_subject" 
                         onChange={handleChangeTeacher} 
@@ -179,14 +168,14 @@ export default function CreateTeacher() {
                         })}
                     </select>
                 </div>
-                <div className="form-group col-md-6 pl-0 pr-0">
+                <div className="form-group col-md-12 pl-0 pr-0">
                     <span>Choose Class: </span>
                     <div className="row col-md-12 pr-0">
                         {SClassess?.map(clas => {
                             let checkClass = SingleTeacher?.classess?.some(cls => (cls?.class_id === clas?._id && cls?.checked === true))
                             return(
                                 <>
-                                <label className="pl-0 pr-2 col-md-2">
+                                <label className="pl-0 pr-2 col-md-3">
                                     <input type="checkbox" className="teacherClass mr-1" 
                                     defaultValue={clas?._id} 
                                     data-class_name={clas?.class_name}
@@ -209,7 +198,18 @@ export default function CreateTeacher() {
                         })}
                     </div>    
                 </div>
-                <div className="form-group col-md-2 pl-0">
+            </div>
+            <div className="col-md-6 row">    
+                <div className="form-group col-md-6 pl-0">
+                    <input 
+                        type="text" 
+                        className="form-control" 
+                        name="name"
+                        value={formData?.name ?? SingleTeacher?.name}
+                        onChange={handleChange}
+                        placeholder="Name"/>
+                </div>
+                <div className="form-group col-md-6 pl-0">
                     <input 
                         type="text" 
                         className="form-control" 
@@ -218,7 +218,7 @@ export default function CreateTeacher() {
                         onChange={handleChange}
                         placeholder="Mobile"/>
                 </div>
-                <div className="form-group col-md-2 pl-0">
+                <div className="form-group col-md-6 pl-0">
                     <input 
                         type="email" 
                         className="form-control" 
@@ -227,7 +227,7 @@ export default function CreateTeacher() {
                         onChange={handleChange}
                         placeholder="Email"/>
                 </div>
-                <div className="form-group col-md-2 pl-0">
+                <div className="form-group col-md-6 pl-0">
                     <input 
                         type="password" 
                         className="form-control" 
@@ -236,7 +236,7 @@ export default function CreateTeacher() {
                         onChange={handleChange}
                         placeholder="Password"/>
                 </div>
-                <div className="form-group col-md-3 pl-0">
+                <div className="form-group col-md-12 pl-0">
                     <input 
                         type="text" 
                         className="form-control" 
@@ -247,7 +247,7 @@ export default function CreateTeacher() {
                         placeholder="Address"/>
                 </div>
                 
-                <div className="form-group col-md-3 pl-0">
+                <div className="form-group col-md-4 pl-0">
                     <input 
                         type="text" 
                         className="form-control" 
@@ -257,7 +257,7 @@ export default function CreateTeacher() {
                         autoComplete="no-password"
                         placeholder="City"/>
                 </div>
-                <div className="form-group col-md-3 pl-0">
+                <div className="form-group col-md-4 pl-0">
                     <input 
                         type="text" 
                         className="form-control" 
@@ -270,7 +270,7 @@ export default function CreateTeacher() {
                 </div>
             
                             
-                <div className="form-group col-md-3 pl-0">
+                <div className="form-group col-md-4 pl-0">
                     <input 
                         type="text" 
                         className="form-control" 
@@ -280,6 +280,7 @@ export default function CreateTeacher() {
                         onChange={handleChange}
                         autoComplete="no-password"
                         placeholder="Pincode"/>
+                </div>
                 </div>
                 <div className="col-md-12 pl-0">
                     <hr />

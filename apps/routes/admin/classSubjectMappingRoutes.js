@@ -7,6 +7,8 @@ const router = express.Router();
 router
     .post('/create',checkAuth,adminAuth, classSubjectMapping.CreateClassSubjectMapping)
     .get('/view-all/:class_id?',checkAuth,adminAuth, classSubjectMapping.ViewAllClassSubjectMapping)
-    .post('/delete',checkAuth,adminAuth, classSubjectMapping.DeleteClassSubjectMapping);
+    .post('/delete',checkAuth,adminAuth, classSubjectMapping.DeleteClassSubjectMapping)
+    .post('/update-subject-id',checkAuth, classSubjectMapping.UpdateSubjectId)
+;
     
 module.exports = router;

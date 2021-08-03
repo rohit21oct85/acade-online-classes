@@ -1,4 +1,5 @@
 const AssignTest = require("../../../models/admin/AssignTest");
+const AttemptTest = require("../../../models/admin/AttemptTest");
 const MockTestQuestion = require("../../../models/admin/MockTestQuestion");
 
 const CreateAssignTest = async (req, res) => {
@@ -8,7 +9,7 @@ const CreateAssignTest = async (req, res) => {
     const testWindow = req.body.test_window;
     let filter;
     let assignTest;
-    if(data.test_type === 'mock-test'){
+    if(data.test_type == 'mock-test'){
       filter =   {
         school_id:  req.body.school_id,
         assigned: true
@@ -16,12 +17,13 @@ const CreateAssignTest = async (req, res) => {
     }else{
       filter = {
         school_id:  req.body.school_id,
+        class_id:  req.body.class_id,
         assigned: true
       }
     }
     // console.log(filter);return
     assignTest = await AssignTest.findOne(filter,{start_date:1,test_window:1
-    }).limit(1).sort({$natural:-1})
+    }).limit(1).sort({start_date:-1})
     
     // console.log(assignTest);return
     
@@ -241,9 +243,23 @@ const ViewAssignedTest = async (req, res) => {
       })
    }
 }
-
+const UpdateTimeAssignTest =  async (req, res) => {
+  try {
+    await AttemptTest.updateMany({
+      school_id: req.body.school_id,
+      time_taken: {$lte: 90}
+    },{
+      time_taken: 120
+    })
+  } catch (error) {
+    res.json({
+      message: error.message
+    })
+  }
+}
 
 module.exports = {
+  UpdateTimeAssignTest,
   CreateAssignTest,
   ViewAssignedTest,
   ViewAllAssignedTest,

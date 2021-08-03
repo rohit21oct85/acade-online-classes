@@ -34,49 +34,6 @@ const CreateClassSubjectMapping = async (req, res) => {
     }
 }
 
-// const UpdateClassSubjectMapping = async (req, res) =>{
-//     try {
-//         const moduleData = req?.body?.modules;
-//         const school_id = req?.body?.school_id;
-//         const role_id = req?.body?.role_id;
-//         var options = { upsert: true, new: true, setDefaultsOnInsert: true };  
-//         const permissionCount = await Permission.countDocuments({school_id: school_id,role_id: role_id});
-        
-//         if(permissionCount > 0){
-//             await Permission.updateMany({school_id: school_id,role_id: role_id},{$set: moduleData},options);
-//             res.status(200).json({ 
-//                 message: "Permission Updated sucessfully"
-//             });
-//         }else{
-//             await Permission.insertMany(moduleData);
-//             res.status(200).json({ 
-//                 message: "Permission created sucessfully"
-//             });
-//         }
-
-//     } catch (error) {
-//         res.status(409).json({
-//             message: error.message
-//         });
-//     }
-// }
-
-// const ViewClassSubjectMapping = async (req, res) => {
-//     try{
-//         const PermissionData = await Permission.findOne({
-//             module_slug: req.params.module_slug,
-//             role_slug: req.params.role_slug,
-//         },{__v: 0});
-//         return res.status(200).json({ 
-//             data: PermissionData
-//         });    
-//     } catch(error){
-//         res.status(409).json({
-//             message: "Error occured",
-//             errors: error.message
-//         });
-//     }
-// }
 const ViewAllClassSubjectMapping = async (req, res) => {
     try{
         let filter = {}
@@ -112,27 +69,25 @@ const DeleteClassSubjectMapping = async (req, res) =>{
     }
 };
 
-// const OtherModules = async (req, res) => {
-//     try {
-//         const filter = {role_slug: req?.params?.role_slug}
-//         // res.status(201).json(filter)
-//         const AllModules = await RoleModule.find(filter,{__v: 0});
-//         return res.status(200).json({ 
-//             data: AllModules 
-//         });        
-//     } catch (error) {
-//         res.status(203).json({
-//             status: 203,
-//             message: error.message
-//         });
-//     }
-// }
+const UpdateSubjectId = async (req, res) => {
+    try {
+        let subject_name = req.body.subject_name
+        let new_subject_id = req.body.subject_id
+        await ClassSubject.updateMany({subject_name: subject_name}, {
+          subject_id: new_subject_id,
+        })
+        res.status(200).send('Unit Updated')
+      } catch (error) {
+        res.status(409).json({
+            message: "Error while updating Data",
+            errors: error.message
+        });
+      }
+}
 
 module.exports = {
-    // OtherModules,
+    UpdateSubjectId,
     CreateClassSubjectMapping,
-    // UpdateClassSubjectMapping,
-    // ViewClassSubjectMapping,
     ViewAllClassSubjectMapping,
     DeleteClassSubjectMapping
 }

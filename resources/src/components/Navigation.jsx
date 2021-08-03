@@ -6,6 +6,11 @@ import {AuthContext} from '../context/AuthContext';
 import useAppModule from '../hooks/modules/useAppModule';
 import Loading from './Loading';
 import useOtherModule from '../hooks/modules/useOtherModule';
+import axios from 'axios'
+import API_URL from '../helper/APIHelper';
+
+import { useToasts } from 'react-toast-notifications';
+
 
 export default function Navigation() {
     const history = useHistory();
@@ -15,11 +20,26 @@ export default function Navigation() {
     const { state, dispatch } = useContext(AuthContext);
     const {data, isLoading} = useAppModule();
     const {data:modules, isLoading: moduleIsLoading} = useOtherModule()
-    
-    function logout(){
-        dispatch({type: 'LOGOUT'})
-        history.push('/admin/login')
-        
+    const [formData, setFormData] = useState({})
+    const { addToast } = useToasts();
+    async function logout(){
+        formData.email = state.email
+        let response = await axios.delete(`${API_URL}v1/admin/logout`,{
+            headers: {
+                'Content-Type': 'Application/json',
+                'Authorization':'Bearer '+state.access_token
+            }
+        });
+        if(response.status === 201){
+            addToast(response.data.message, { 
+                appearance: 'error',
+                autoDismiss: true
+            });
+            setTimeout(()=> {
+                dispatch({type: 'LOGOUT'})
+                history.push('/')
+            },1000)
+        }
     }
 return (
 <>

@@ -1,10 +1,12 @@
 import React from 'react'
 import { useHistory, useParams } from 'react-router-dom';
+import useAllStudents from '../../student/hooks/useAllStudents';
 import useSchoolAssignedTests from '../hooks/useSchoolAssignedTests';
+import { export_table_to_csv } from '../../../../utils/helper'
 
 export default function SingleTestList() {
       const {data: reports} = useSchoolAssignedTests();
-      console.log("reports: ", reports)
+      const {data:total_students} = useAllStudents();
       const params = useParams();
       const history = useHistory();
       let test_type = params?.test_type;
@@ -25,41 +27,60 @@ export default function SingleTestList() {
                   break;      
             
       }
-
+      const handleExport = (e) => {
+            e.preventDefault()      
+            var html = document.querySelector("table").outerHTML;
+            // console.log(html);   
+            let testDate = new Date(reports[0].start_date).toISOString().split('T')[0];
+            let testName = reports[0].test_name;
+            export_table_to_csv(html, `${testName}-Report_${testDate}.csv`);
+      }
       return (
             <div>
                  <div className="col-md-12 pl-0">
                   {!params?.test_id && (
                         <>
-                        <h4>{label}</h4>
+                        <h4>{label}
+                        <button className="btn btn-sm dark pull-right mr-2"
+                        onClick={handleExport}>
+                              <span className="fa fa-download mr-2"></span>
+                              Export Report
+                        </button>
+                        </h4>
                         <hr />
                         </>
                   )}
                   </div> 
-                  <div className={`${!params?.test_id ? 'pl-0 pb-3': ''}`} style={{ 
+                  <div className={`${!params?.test_id ? 'pl-0 pb-3 table table-responsive': ''}`} style={{ 
                         overflow: 'scroll hidden',
                         marginRight: '120px'
                   }}>
-                  
+                        <table>
+                        
                         {!params?.test_id && (
 
-                              <div className="flex col-md-12 pl-0">
-                                    <div className="border col-md-3">Test Name</div>
-                                    <div className="border col-md-3">Test Type</div>
-                                    <div className="border col-md-3">Test Subjects</div>
-                                    <div className="border col-md-2">Attempted Students</div>
-                                    <div className="border col-md-2">Test Window</div>
-                                    <div className="border col-md-2">Test Duration</div>
-                                    <div className="border col-md-2">Total Question</div>
-                                    <div className="border col-md-3">Start Date</div>
-                                    <div className="border col-md-3">End Date</div>
-                                    <div className="border pl-3" style={{ 
+                              <thead>
+
+                              <tr className="flex header pl-0">
+                                    <th className="border col-md-3">Test Name</th>
+                                    <th className="border col-md-2">Test Type</th>
+                                    <th className="border col-md-3">Test Subjects</th>
+                                    <th className="border col-md-2">Attempted Students</th>
+                                    <th className="border col-md-2">Total Students</th>
+                                    <th className="border col-md-3">Unattempted Students</th>
+                                    <th className="border col-md-2">Test Window</th>
+                                    <th className="border col-md-2">Test Duration</th>
+                                    <th className="border col-md-2">Total Question</th>
+                                    <th className="border col-md-3">Start Date</th>
+                                    <th className="border col-md-4">End Date</th>
+                                    <th className="border pl-3 hidden_col" style={{ 
                                           position: 'fixed', 
                                           width: '150px',
                                           right: '25px',
                                           background: 'white'
-                                    }}>Action</div>
-                              </div>   
+                                    }}>Action</th>
+                              </tr> 
+                              </thead>  
                         )}
                         {!params?.test_id && (params?.test_type === 'single-test' || params?.test_type === 'mock-test' || params?.test_type === 'upload-test') && reports?.map(rep => {
                               let tsubjects;
@@ -76,21 +97,19 @@ export default function SingleTestList() {
                               test_window.setMinutes( test_window.getMinutes() + rep?.test_window );
                               if(rep?.assigned === true)
                               return(
-                              <div className="col-md-12 pl-0 flex"
-                              style={{
-                                    marginRight: '120px'
-                              }}
-                               key={rep?.test_id}>
-                                    <div className="border col-md-3">{rep?.test_name}</div>  
-                                    <div className="border col-md-3">{rep?.test_type}</div>  
-                                    <div className="border col-md-3">{tsubjects}</div>  
-                                    <div className="border col-md-2">{params?.test_type === 'mock-test' ? rep.attemptedStudents : rep?.attemptedStudentIds?.length}</div>  
-                                    <div className="border col-md-2">{rep?.test_window}</div>  
-                                    <div className="border col-md-2">{rep?.test_duration}</div>  
-                                    <div className="border col-md-2">{rep?.total_question}</div>  
-                                    <div className="border col-md-3">{new Date(rep?.start_date).toLocaleString()}</div>  
-                                    <div className="border col-md-3">{test_window.toLocaleString()}</div>  
-                                    <div className="border"
+                              <tr className="pl-0 flex" key={rep?.test_id}>
+                                    <td className="border col-md-3">{rep?.test_name}</td>  
+                                    <td className="border col-md-2">{rep?.test_type}</td>  
+                                    <td className="border col-md-3">{tsubjects}</td>  
+                                    <td className="border col-md-2">{params?.test_type === 'mock-test' ? rep.attemptedStudents : rep?.attemptedStudentIds?.length}</td>  
+                                    <td className="border col-md-2">{total_students}</td>  
+                                    <td className="border col-md-3">{total_students - (params?.test_type === 'mock-test' ? rep.attemptedStudents : rep?.attemptedStudentIds?.length)}</td>  
+                                    <td className="border col-md-2">{rep?.test_window}</td>  
+                                    <td className="border col-md-2">{rep?.test_duration}</td>  
+                                    <td className="border col-md-2">{rep?.total_question}</td>  
+                                    <td className="border col-md-3">{new Date(rep?.start_date).toLocaleString()}</td>  
+                                    <td className="border col-md-4">{test_window.toLocaleString()}</td>  
+                                    <td className="border hidden_col"
                                     style={{ 
                                           position: 'fixed', 
                                           width: '150px',
@@ -106,11 +125,12 @@ export default function SingleTestList() {
                                     }}>
                                           View Results
                                     </button>
-                                    </div>  
+                                    </td>  
                                     
-                              </div>      
+                              </tr>      
                               )
                         })}
+                        </table>
                         </div>
                         
             </div>

@@ -237,7 +237,7 @@ export default function CreateTest() {
                   </div>
                   <div className="col-md-2 pl-0 pr-0">
                               <input type="text" className="form-control"
-                              maxLength="2"
+                              maxLength="3"
                               value={localStorage.getItem('test_duration')} 
                               onChange={ e => {
                                     if(!isNaN(e.target.value)){
@@ -346,7 +346,7 @@ export default function CreateTest() {
                   }} 
                   >
                         <option value="_">{chapterLoading ? 'loading ...':'Chapters'}</option>
-                        {!qLoading && chapters?.map( chapter => {
+                        {chapters?.map( chapter => {
                               return(
                                     <option value={chapter?._id} key={chapter?._id}>{chapter?.chapter_no}-{chapter?.chapter_name}</option>
                               )

@@ -1,0 +1,18 @@
+### Admin Login ###
+POST http://localhost:5000/api/v1/admin/login
+Content-Type: application/json
+
+{
+      "email": "rohit21oct85@gmail.com",
+      "password":"password"
+}
+
+### Add Fields ###
+POST http://localhost:5000/api/v1/admin/add-fields
+Content-Type: application/json
+
+{
+      "isActive": "false"
+}
+
+

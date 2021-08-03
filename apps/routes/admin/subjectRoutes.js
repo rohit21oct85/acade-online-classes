@@ -28,7 +28,6 @@ router
     .get('/view-all', checkAuth, Subject.ViewAllSubject)
     .delete('/delete/:id', checkAuth, Subject.DeleteSubject)
     .post('/upload', upload.single('file'), checkAuth, Subject.uploadSubject)
-
     .get('/subject-by-school-id/:id', checkAuth, Subject.getSubjectBySchoolId)
     .get('/view-all-class/:subject_id?', checkAuth, Subject.getClassBySubjectId)
 ;

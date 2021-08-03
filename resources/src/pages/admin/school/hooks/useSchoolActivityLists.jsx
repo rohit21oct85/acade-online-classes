@@ -11,7 +11,7 @@ export default function useSchoolActivityLists() {
     const [intervalMs, setIntervalMs] = useState(3600)
     return useQuery(`reports-${params?.school_id}-${params?.user_type}`, async () => {
         if(state.access_token){
-            const result = await axios.get(`${API_URL}v1/school/activity-report/${params?.school_id}/${params?.user_type}`,{
+            const result = await axios.get(`${API_URL}v1/school/activity-report/${params?.school_id}/${params?.startDate}/${params?.endDate}`,{
                 headers: {
                     'Content-Type': 'Application/json',
                     'Authorization':'Bearer '+state.access_token

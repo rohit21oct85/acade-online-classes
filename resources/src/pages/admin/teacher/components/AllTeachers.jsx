@@ -8,7 +8,7 @@ import { useToasts } from 'react-toast-notifications';
 import React, {useState, useContext} from 'react'
 import useDeleteTeacher from '../hooks/useDeleteTeacher';
 import useSubjectList from '../../subject/hooks/useSubjectList';
-import { MakeSlug } from '../../../../utils/utils'
+import * as utils from '../../../../utils/utils'
 import useUpdateTeacher from '../hooks/useUpdateTeacher';
 
 export default function AllTeachers({update, Delete}) {
@@ -51,7 +51,7 @@ export default function AllTeachers({update, Delete}) {
     }
     async function handleActiveInactive(status,subject_name, id){
         // alert(status); return;
-        history.push(`/admin/teachers-management/view/${params?.school_id}/${params?.subject_id}/${MakeSlug(subject_name)}/${id}`)
+        history.push(`/admin/teachers-management/view/${params?.school_id}/${params?.subject_id}/${utils.MakeSlug(subject_name)}/${id}`)
         setTimeout(async () => {
             await updateMutation.mutate({
                 isActive: (status === undefined || status === false) ? true: false
@@ -82,10 +82,11 @@ export default function AllTeachers({update, Delete}) {
         </div>
         <div className="form-group col-md-3 pl-0">
             <select className="form-control" aria-label="Default select example" 
-                name="school_id" 
+                name="subject" 
                 onChange={(e) => {
                     if(e.target.value != 999){
-                        history.push(`/admin/teachers-management/view/${params?.school_id}/${e.target.value}`)
+                        const subject_name = e.target.options[e.target.selectedIndex].dataset.subject_name
+                        history.push(`/admin/teachers-management/view/${params?.school_id}/${e.target.value}/${subject_name}`)
                     }
                 }} 
                 value={params.subject_id ? params.subject_id : 999}>
@@ -93,7 +94,11 @@ export default function AllTeachers({update, Delete}) {
                 <option value="all">All</option>
                 {!isLoading && subjects?.map(subject => {
                 return (
-                    <option value={subject._id} key={subject._id}>{subject.subject_name}</option>
+                    <option 
+                        value={subject._id} 
+                        key={subject._id}
+                        data-subject_name={utils.MakeSlug(subject?.subject_name)}
+                        >{subject.subject_name}</option>
                 )
                 })}
             </select>
@@ -107,16 +112,17 @@ export default function AllTeachers({update, Delete}) {
                         marginRight: '120px',
                         paddingBottom: '250px'
                 }}>
-        <table className="table table-hover col-md-12 mb-2" style={{ width: '1500px'}}>
+        <table className="table table-hover mb-2" style={{ width: '1800px'}}>
                     <thead>
                         <tr>
-                        <th className="col-md-2">#EmpID</th>
-                        <th className="col-md-3">Name</th>
-                        <th className="col-md-2">Subject</th>
-                        <th className="hidden_col">Mobile</th>
-                        <th className="col-md-6">Email</th>
-                        <th className="col-md-3">Class</th>
-                        <th className="hidden_col">Action</th>
+                            <th>#EmpID</th>
+                            <th>Name</th>
+                            <th>Subject</th>
+                            <th className="hidden_col">Mobile</th>
+                            <th>Email</th>
+                            <th>Username</th>
+                            <th>Class</th>
+                            <th className="hidden_col">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -124,17 +130,18 @@ export default function AllTeachers({update, Delete}) {
                         {data?.map( (item,key) => {
                             let tclass = '';
                             
-                            tclass = Array.prototype.map.call(item?.classess, function(items) { if(items.checked === true){return items.class_name+', '} });
+                            tclass = Array.from(item?.classess, function(items) { if(items.checked === true){return items.class_name+'-'} });
                             
                             return (
                             <tr key={item?._id}>
-                                <th scope="row" className="col-md-2">{item.EmpID}</th>
-                                <td className="col-md-3">{item.name}</td>
-                                <td className="col-md-2">{item.subject_name}</td>
+                                <th scope="row" className="col-md-1">{item.EmpID}</th>
+                                <td>{item.name}</td>
+                                <td>{item.subject_name}</td>
                                 <td className="hidden_col">{item.mobile}</td>
-                                <td className="col-md-6">{item.username}</td>
-                                <td className="col-md-3">{tclass}</td>
-                                <td className="hidden_col flex col-md-3">
+                                <td>{item.email}</td>
+                                <td>{item.username}</td>
+                                <td>{tclass}</td>
+                                <td className="hidden_col flex">
                                     {update && (
                                         <>
                                         <button className={`btn dark ${item?.isActive ? 'bg-success': 'bg-danger'} text-white btn-sm mr-2`} 

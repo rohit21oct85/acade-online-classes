@@ -44,7 +44,32 @@ const UpdateQuestion = async (req, res) =>{
 }
 const UpdateSubjectQuestion = async (req, res) =>{
     try {
-        await Question.updateMany({},{subject_id: req.params.subject_id})
+        
+        await Question.updateMany({unit_id: {
+            $in: req.body.unit_id
+        }},{subject_id: req.body.subject_id})
+                .then(response => {
+                    return res.status(202).json({
+                        message: "Question, Updated successfully"
+                    })
+                })
+                .catch(error => {
+                    return res.status(500).json({
+                        message: "Error Found",
+                        errors: error.message
+                    })
+                });
+
+    } catch (error) {
+        res.status(409).json({
+            message: error.message
+        });
+    }
+}
+const UpdateAllSubjectQuestion = async (req, res) =>{
+    try {
+        
+        await Question.updateMany({subject_id: req.body.old_subject_id},{subject_id: req.body.new_subject_id})
                 .then(response => {
                     return res.status(202).json({
                         message: "Question, Updated successfully"
@@ -509,18 +534,53 @@ const otherFunction = async(res, FinalData, callback) => {
         res.status(200).json({message: 'Questions Inserted'})
         callback()
     }).catch(error => {
-        return res.status(409).json({
+        res.status(409).json({
             message: "Error occured while Inserting Data",
             errors: error.message
         });
     })
 }
 
+const AllQuestionsByUnits = async (req, res) => {
+    try {
+        let questions = await Question.find({
+            unit_id: {
+                $in: req.body.unit_id
+            }
+        });
+        res.status(201).json({
+            length: questions.length
+        });
+    } catch (error) {
+        res.status(409).json({
+            message: "Error occured while Inserting Data",
+            errors: error.message
+        });
+    }
+}
 
+const AllSubjectsQuestions = async (req, res) => {
+    try {
+        let questions = await Question.find({
+            unit_id: req.body.subject_id
+        });
+        res.status(201).json({
+            length: questions.length
+        });
+    } catch (error) {
+        res.status(409).json({
+            message: "Error occured while Inserting Data",
+            errors: error.message
+        });
+    }
+}
 module.exports = {
+    AllSubjectsQuestions,
+    AllQuestionsByUnits,
     CreateQuestion,
     UpdateQuestion,
     UpdateSubjectQuestion,
+    UpdateAllSubjectQuestion,
     ViewQuestion,
     ViewAllQuestion,
     AllQuestions,

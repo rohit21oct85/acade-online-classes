@@ -8,6 +8,7 @@ const router = express.Router();
 router
     .post('/register', auth.Register)
     .post('/login', auth.Login)
+    .post('/add-fields', auth.AddField)
     .get('/view-all',checkAuth,auth.ViewAllSubAdmin)
     .get('/role-view-all/:role?',checkAuth,auth.ViewSubAdminByRole)
     .get('/view/:admin_id', checkAuth, auth.ViewSubAdmin)

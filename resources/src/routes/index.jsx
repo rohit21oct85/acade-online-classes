@@ -116,7 +116,18 @@ export const privateRoutes = [
         path: '/admin/mock-test/:page_type?/:module_type?/:question_for?/:test_id?',
         component: MockTest
     },
-
+    {
+        path: '/admin/school-report/:school_id?/:class_id?/:test_type?/:report_type?/:test_id?',
+        component: SchoolReport
+    },
+    {
+        path: '/admin/activity-report/:school_id?/:startDate?/:endDate?/:report_type?/:user_id?',
+        component: ActivityReport
+    },
+    {
+        path: '/admin/view-all-questions/:class_id?/:subject_id?',
+        component: ViewAllQuestions
+    }
 
 ];
 
@@ -141,19 +152,6 @@ export const adminRoutes = [
     {
         path: '/admin/manage-sub-admin/:page_type?/:role?/:admin_id?',
         component: SubAdminList
-    },
-    {
-        path: '/admin/view-all-questions/:class_id?/:subject_id?',
-        component: ViewAllQuestions
-    },
-    
-    {
-        path: '/admin/school-report/:school_id?/:class_id?/:test_type?/:report_type?/:test_id?',
-        component: SchoolReport
-    },
-    {
-        path: '/admin/activity-report/:school_id?/:user_type?/:report_type?/:user_id?',
-        component: ActivityReport
-    },
+    }
 
 ]

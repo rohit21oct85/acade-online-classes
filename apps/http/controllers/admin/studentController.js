@@ -403,7 +403,31 @@ const getRollNo = async (req, res) => {
         res.status(502).json({message: "Somethign went wrong!"})   
     }
 }
+const AllStudentCount = async (req, res) => {
+    try {
+        let filter;
+        if(req?.params?.class_id == 'all'){
+            filter = {
+                school_id: req.params?.school_id
+            }
+        }else{
+            filter = {
+                school_id: req.params?.school_id,
+                class_id: req.params?.class_id,
+            }
+        }
+        let totalStudetns = await Student.countDocuments(filter);
+        // console.log(totalStudetns); return;
+        res.status(201).json({
+            data: totalStudetns
+        })
+    } catch (error) {
+        res.status(502).json({message: "Somethign went wrong!"})   
+    }
+}
+
 module.exports = {
+    AllStudentCount,
     getRollNo,
     CreateStudent,
     UpdateStudent,

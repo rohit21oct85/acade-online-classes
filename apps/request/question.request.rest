@@ -1,0 +1,48 @@
+### Update Question Subject ids based on unit id ### 
+POST http://localhost:5000/api/v1/question-bank/update-subject
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZDZkNTZkOTk3MjZjM2FjMDFmOGI0OSIsInJvbGUiOjEsImlhdCI6MTYyNTIwNDM3MiwiZXhwIjoxNjI3Nzk2MzcyfQ.tHwcRYllcGWbSS9Zdcg6ajPdkkS05aJ68Ysz-uQGukA
+
+{
+      "unit_id": [
+            "60cb3da6cc9b7012dcf94abe",
+            "60cb3da6cc9b7012dcf94abf",
+            "60d1a4a148a5bb000420a518",
+            "60d1a4a148a5bb000420a51c",
+            "60d1a4a148a5bb000420a51a"
+      ],
+      "subject_id":"60c85dc6de9a2670e560f1ea"
+}
+
+
+### Update Question Subject ids based on unit id ### 
+GET http://localhost:5000/api/v1/question-bank/questions
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZDZkNTZkOTk3MjZjM2FjMDFmOGI0OSIsInJvbGUiOjEsImlhdCI6MTYyNTIwNDM3MiwiZXhwIjoxNjI3Nzk2MzcyfQ.tHwcRYllcGWbSS9Zdcg6ajPdkkS05aJ68Ysz-uQGukA
+
+{
+      "unit_id": [
+            "60d1a4a148a5bb000420a519",
+            "60d1a4a148a5bb000420a51b",
+            "60d1a4a148a5bb000420a518",
+            "60d1a4a148a5bb000420a51c",
+            "60d1a4a148a5bb000420a51a"
+      ]
+}
+
+### Update Old Subjects ### 
+POST http://localhost:5000/api/v1/question-bank/update-all-subject
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZDZkNTZkOTk3MjZjM2FjMDFmOGI0OSIsInJvbGUiOjEsImlhdCI6MTYyNTIwNDM3MiwiZXhwIjoxNjI3Nzk2MzcyfQ.tHwcRYllcGWbSS9Zdcg6ajPdkkS05aJ68Ysz-uQGukA
+
+{
+      
+      "old_subject_id":"60b62b794b44826738114acd",
+      "new_subject_id":"60c85dd9de9a2670e560f1eb"
+}
+
+### Update Old Subjects ### 
+GET http://localhost:5000/api/v1/question-bank/subject-questions/60c85dd9de9a2670e560f1eb
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZDZkNTZkOTk3MjZjM2FjMDFmOGI0OSIsInJvbGUiOjEsImlhdCI6MTYyNTIwNDM3MiwiZXhwIjoxNjI3Nzk2MzcyfQ.tHwcRYllcGWbSS9Zdcg6ajPdkkS05aJ68Ysz-uQGukA
+

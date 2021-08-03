@@ -10,6 +10,7 @@ const bcrypt = require('bcryptjs');
 const AttemptTest = require('../../../models/admin/AttemptTest');
 const UserLog = require('../../../models/admin/UserLog');
 const UserLogs = require('../../../models/admin/UserLog');
+const Class = require('../../../models/admin/Class');
 
 const CreateSchool = async (req, res) => {
     const body = req.body;
@@ -237,13 +238,30 @@ const searchSchool = async (req, res) => {
 }
 const schoolReport = async (req, res) => {
     try {
+        // res.send(req.params); return;
         let test_type = req.params.test_type;
         let totalQuestion = await MockTestQuestion.countDocuments({question_for: 'student'});
-        let attemptedStudents = await AttemptTest.countDocuments({
-            class_id: req?.params?.class_id,
-            school_id: req?.params?.school_id,
-            test_type: req?.params?.test_type
-        });
+        let attemptedStudents;
+        let class_id = req?.params?.class_id;
+        let classData;
+        // res.send(class_id); return;
+        if(class_id == 'all'){
+            attemptedStudents = await AttemptTest.countDocuments({
+                school_id: req?.params?.school_id,
+                test_type: req?.params?.test_type
+            });
+            
+        }else{
+            classData = await Class.findOne({_id: req?.params?.class_id});
+            // res.send(class_id); return;
+            attemptedStudents = await AttemptTest.countDocuments({
+                class_id: class_id,
+                school_id: req?.params?.school_id,
+                test_type: req?.params?.test_type,
+                student_class_name: classData?.class_name
+            });
+        }
+        
         // console.log(attemptedStudents); return;
         let filter = {};
         if(test_type === 'mock-test'){
@@ -252,7 +270,7 @@ const schoolReport = async (req, res) => {
                 test_type: req?.params?.test_type,
                 assigned: true
             }
-        }else if(test_type === 'single-test' || test_type === 'upload-test'){
+        }else if((test_type === 'single-test' || test_type === 'upload-test')){
             filter = {
                 school_id: req?.params?.school_id,
                 class_id: req?.params?.class_id,
@@ -260,12 +278,13 @@ const schoolReport = async (req, res) => {
                 assigned: true
             }
         }
+        // res.send(filter); return;
         let data = await AssignTest.find(filter);
-        if(test_type === 'mock-test'){
-            data?.map(d => {
+        if(test_type == 'mock-test'){
+            await Promise.all(data?.map(d => {
                 d.total_question = totalQuestion
                 d.attemptedStudents = attemptedStudents
-            })
+            }))
         }
         res.status(201).json({
             data: data
@@ -280,34 +299,50 @@ const schoolReport = async (req, res) => {
 
 const schoolActivityReport = async (req, res) => {
     try {
-        let currentDate = new Date();
-        let nextDate = new Date(currentDate);
-        nextDate.setDate(currentDate.getDate() + 1);
-        let filter = {
-            school_id: req.params?.school_id, 
-            user_type: req.params?.user_type,
-        }
-        // console.log(filter); return;
-        let logData = await UserLog.aggregate([
-            {"$match": filter},
-            {"$group": {
-                "_id": {
-                    "email_id":"$email_id",
-                    "user_id":"$user_id",
-                    "user_name":"$user_name",
-                    "sessionInProgress":"$sessionInProgress"
-                    
-                },
-                "total_session": {
-                    $sum: "$total_session"
-                }
-            }},
-            {$sort: { _id: -1}}
-        ]);
+        let start_time = new Date(req?.params?.login_time)
+        let end_time = new Date(req?.params?.logout_time);
+        let school_id = req.params?.school_id
+        end_time.setDate(end_time.getDate() + 1);
         
-        // console.log(logData); return;
+        let SData = await Student.find({school_id: school_id},{username: 1, EmpId: 1, isLoggedIn: 1}).lean();
+        let TData = await Teacher.find({school_id: school_id},{username: 1, EmpID: 1, isLoggedIn: 1}).lean();
+        let PData = await Principal.find({school_id: school_id},{email: 1, EmpId: 1, isLoggedIn: 1}).lean();
+        
+        await Promise.all(SData.map(sd => {
+            sd.user_type = 'student'
+        }))
+        await Promise.all(TData.map(td => {
+            td.user_type = 'teacher'
+        }))
+        await Promise.all(PData.map(pd => {
+            pd.user_type = 'principal'
+        }))
+
+        let FinalData = [...SData, ...TData, ...PData];
+        await Promise.all(FinalData.map(async data => {
+            let user_log = await UserLog.findOne({
+                user_id: data?._id, 
+                email_id: data?.username,
+                school_id: school_id,
+                login_time: { 
+                    $gte: start_time, 
+                    $lt: end_time
+                }
+            },{
+                user_type: 1,
+                user_name: 1,
+                device_type: 1,
+                sessionInProgress: 1,
+                login_time: 1,
+                logout_time: 1,
+                total_session: 1,
+            }).sort({$natural: -1}).limit(1);
+            data.user_log = user_log;
+        }))
+        // let logData = await UserLog.find(filter).sort({sessionInProgress: -1});
+        // console.log(FinalData); return;
         res.status(201).json({
-            data: logData
+            data: FinalData
         })
 
         
@@ -318,6 +353,7 @@ const schoolActivityReport = async (req, res) => {
         })
     }
 }
+
 function getUserName(arr,id ,fieldname){
     let data = arr.filter(el => el._id === id);
     return data[0][fieldname]
@@ -353,11 +389,10 @@ const LogoutUser = async (req, res) => {
         prevDate.setDate(currentDate.getDate() - 1);
 
         let LogsData = await UserLogs.find({
-            user_id: req?.body?.student_id, 
             school_id: req?.body?.school_id,
             sessionInProgress: true,
             login_time: {
-                $lt: prevDate
+                $lt: currentDate
             }     
         });
         

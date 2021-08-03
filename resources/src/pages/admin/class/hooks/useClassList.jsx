@@ -20,16 +20,6 @@ export default function useClassList() {
                     }
                 });
                 return result.data.data; 
-            // }
-            // else{
-            //     const result = await axios.get(`${API_URL}v1/class/class-by-school-id/${params.school_id}`,{
-            //         headers: {
-            //             'Content-Type': 'Application/json',
-            //             'Authorization':'Bearer '+ state.access_token
-            //         }
-            //     });
-            //     return result.data.data; 
-            // }
         }
     });
 }

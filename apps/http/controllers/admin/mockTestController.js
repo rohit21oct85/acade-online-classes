@@ -178,8 +178,9 @@ const DeleteMockTest = async (req, res) => {
 const DeleteAllMockTest = async (req, res) => {
   try {
     const school_id = req.body.school_id;
-    await AssignTest.deleteOne({school_id: school_id, test_type: 'mock-test'});
-    await AttemptTest.deleteMany({school_id: school_id, test_type: 'mock-test'});
+    const test_id = req.body.test_id;
+    await AssignTest.deleteOne({school_id: school_id, test_id: test_id});
+    await AttemptTest.deleteMany({school_id: school_id, test_id: test_id});
     res.status(201).json({ message: "deleted" });
   } catch (error) {
     res.status(409).json({ message: error.message });
