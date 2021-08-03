@@ -242,6 +242,13 @@ const Login = async (req, res) => {
                             const ip = getClientIp(req)
                             let otherInfo = [];
                             otherInfo.push(ip)
+                            const new_time = new Date();
+                            const d = await UserLog.findOne({ user_id: req.body.user_id,sessionInProgress : true },{ login_time:1 }).sort({$natural:-1})
+                            if(d != null){
+                                const loginTime = new Date(d?.login_time);
+                                const seconds = (new_time - loginTime) / 1000;
+                                await UserLog.findOneAndUpdate({user_id: user._id, sessionInProgress : true, user_type: "student"}, { $set : { logout_time : new_time, sessionInProgress : false, total_session : seconds }}).sort({$natural:-1})    
+                            }
                             const user_log = new UserLog({user_type: "student",user_name : user.name,user_id : user._id, email_id :req.body.email,school_id : user.school_id, device_type:device, login_time:login_time, sessionInProgress: true,otherInfo:otherInfo });
                             await user_log.save();
                             res.status(200).json({ 
@@ -315,10 +322,12 @@ const Logout = async (req, res) => {
         const UserData = {id: decode.id, role: decode.role};
         let newAccessToken = await jwt.sign(UserData, 'sasdasd', {expiresIn: '0s'});
         const d = await UserLog.findOne({ user_id: req.body.user_id,sessionInProgress : true },{ login_time:1 }).sort({$natural:-1})
-        const loginTime = new Date(d?.login_time);
-        const new_time = new Date();
-        const seconds = (new_time - loginTime) / 1000;
-        await UserLog.findOneAndUpdate({user_id: req.body.user_id, sessionInProgress : true, user_type: "student"}, { $set : { logout_time : new_time, sessionInProgress : false, total_session : seconds }}).sort({$natural:-1})
+        if(d){
+            const loginTime = new Date(d?.login_time);
+            const new_time = new Date();
+            const seconds = (new_time - loginTime) / 1000;
+            await UserLog.findOneAndUpdate({user_id: req.body.user_id, sessionInProgress : true, user_type: "student"}, { $set : { logout_time : new_time, sessionInProgress : false, total_session : seconds }}).sort({$natural:-1})    
+        }
         await Student.findOneAndUpdate({_id: req.body.user_id}, { $set: { isLoggedIn: false } })
         return res.status(200).json({
             message: "successfully logged out",

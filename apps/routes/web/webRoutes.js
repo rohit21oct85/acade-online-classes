@@ -26,8 +26,10 @@ router
     .get('/get-test-questions/:test_id?', checkAuth, Web.getTestQuestions)
     .get('/get-a-test-question/:test_id?', checkAuth, Web.getASingleQuestions)
     .post('/attempt-test/:school_id?/:class_id?/:user_id?', checkAuth, Web.attemptTestByStudent)
+    .post('/attempt-test-offline/:school_id?/:class_id?/:user_id?', checkAuth, Web.attemptTestByStudentOffline)
     .post('/get-question/:test_id?/:test_type?', checkAuth, Web.getQuestions)
     .patch('/save-answer/:test_id?/:test_type?', checkAuth, Web.saveAnswer)
+    .patch('/save-answer-offline/:test_id?/:test_type?', checkAuth, Web.saveAnswerOffline)
     .patch('/save-answer-upload/:test_type?', checkAuth, Web.saveUploadAnswer)
     .get('/get-result/:attempt_id?/:test_type?', checkAuth, Web.getResult)
     .post('/get-all-questions/:test_id?/:test_type?', checkAuth, Web.getAllQuestions)
@@ -56,6 +58,7 @@ router
     .get('/classes-with-student-no/:school_id?/:teacher_id', checkAuth, Web.getClassesWithStudents)
     .get('/view-all-units/:class_id?/:subject_id?', checkAuth, Web.ViewAllUnit)
     .get('/view-all-chapters/:class_id?/:subject_id?/:unit_id?', checkAuth, Web.ViewAllChapters)
+    // .get('/view-all-chaps/:class_id?/:subject_id?', checkAuth, Web.ViewAllChaps)
     .post('/create-test/:class_id?/:unit_id?/:chapter_id?/:teacher_id?/:school_id?', upload.array('files', 10), checkAuth, Web.CreateTest)
    
     //principal
@@ -74,7 +77,8 @@ router
     .delete('/deleteall/:school_id?', Web.deleteStudents)
     .delete('/deleteall-teach/:school_id?', Web.deleteTeachers)
     .patch('/change-domain-and-empid/:school_id?', Web.changeDomainStudent)
-    .patch('/update-time/:school_id?', Web.changeTime);
+    .patch('/update-time/:school_id?', Web.changeTime)
+    .patch('/update-attempt-ids/:school_id?/:class_id?', Web.updateAttempt)
     ;
 
 module.exports = router;
