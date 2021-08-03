@@ -724,12 +724,21 @@ const attemptTestByStudentOffline = async (req, res) =>{
 
             await Promise.all(newData.test_question.map(async (item, key)=>{
                 singleQuestion = await Questions.findOne({_id: item.question_id},{answer:0,solution:0})
-                item.question = singleQuestion.question;
-                item.option_a = singleQuestion.option_a;
-                item.option_b = singleQuestion.option_b;
-                item.option_c = singleQuestion.option_c;
-                item.option_d = singleQuestion.option_d;
-                item._id = item.question_id;
+                if(singleQuestion.extension == "docx"){
+                    item.question = singleQuestion.question;
+                    item._id = item.question_id;
+                    item.option_a = singleQuestion.options[0];
+                    item.option_b = singleQuestion.options[1];
+                    item.option_c = singleQuestion.options[2];
+                    item.option_d = singleQuestion.options[3];
+                }else{
+                    item.question = singleQuestion.question;
+                    item.option_a = singleQuestion.option_a;
+                    item.option_b = singleQuestion.option_b;
+                    item.option_c = singleQuestion.option_c;
+                    item.option_d = singleQuestion.option_d;
+                    item._id = item.question_id;
+                }
             }))
             const newData1 = await AssignTest.findOne(
                 {
@@ -923,7 +932,7 @@ const saveAnswerOffline = async (req,res) => {
                     attemptId: data._id,
                 }); 
             }
-        }else if(req.params.test_type == "single-test"){
+        }else if(req.params.test_type == "single-test" || req.params.test_type == "combine-test"){
             let optionsDocx = [{key: 0,value: " A", option: "option_a",},{key: 1,value: " B", option: "option_b",},{key: 3,value: " C", option: "option_c",},{key: 4,value: " D", option: "option_d",}];
 
             const data = await AttemptTest.findOne({_id:req.body.data.attemptId}).lean()
