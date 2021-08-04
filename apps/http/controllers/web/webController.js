@@ -37,19 +37,25 @@ const getSubjects = async (req, res) => {
 
 const getAssignedTestsStudent = async (req, res) => {
     try{
-        let newArray = [];
+        // let newArray = [];
         let newArray1 = [];
-
-        const AssignedTests = await AssignTest.find(
+        let test_type = "";
+        const AssignedTests = await AssignTest.findOne(
             {
-                // subject_id:req.params.subject_id,
                 school_id:req.params.school_id,
                 class_id:req.params.class_id,
                 assigned: true,
-                test_type:"single-test",
                 attemptedStudentIds:{
                     $nin:[req.body.student_id]
                 },
+                $or : [
+                    {
+                        test_type:"single-test"
+                    },
+                    {
+                        test_type:"combine-test"
+                    }
+                ]
                 // $and: [
                 //         {
                 //             "start_date": { 
@@ -57,79 +63,103 @@ const getAssignedTestsStudent = async (req, res) => {
                 //             }
                 //         }
                 //     ]
-            },{__v: 0});
-            // console.log(AssignedTests)
-        const attemptedTest = await AttemptTest.find(
-            {
-                // subject_id:req.params.subject_id,
-                school_id:req.params.school_id,
-                class_id:req.params.class_id,
-                student_id:req.body.student_id,
-                test_type: "single-test",
-            },{__v: 0});
-            // console.log(attemptedTest)
-        if(attemptedTest.length != AssignedTests.length){
-            if(attemptedTest.length > 0){
-                AssignedTests.forEach(item=>{
-                    attemptedTest.forEach(it => {
-                        if(item.test_id != it.test_id && it.student_id == req.body.student_id){
-                            newArray.push({
-                                subject_id:item.subject_id,
-                                class_id:item.class_id,
-                                school_id:item.school_id,
-                                test_id:item.test_id,
-                                assigned:item.assigned,
-                                class_name:item.class_name,
-                                status:item.status,
-                                subject_name:item.subject_name,
-                                start_date:item.start_date,
-                                test_window:item.test_window,
-                                test_type:item.test_type,
-                            })
-                        }
-                    })
-                })
+            },{__v: 0}).limit(1).sort({start_date:-1});
+            // console.log(AssignedTests,"AssignedTests");
+            test_type= AssignedTests?.test_type
+        // const attemptedTest = await AttemptTest.find(
+        //     {
+        //         // subject_id:req.params.subject_id,
+        //         school_id:req.params.school_id,
+        //         class_id:req.params.class_id,
+        //         student_id:req.body.student_id,
+        //         $or : [
+        //             {
+        //                 test_type:"single-test"
+        //             },
+        //             {
+        //                 test_type:"combine-test"
+        //             }
+        //         ]
+        //     },{__v: 0});
+        //     // console.log(attemptedTest,"attemptedTest")
+        // if(attemptedTest.length != AssignedTests.length){
+        //     if(attemptedTest.length > 0){
+        //         AssignedTests.forEach(item=>{
+        //             attemptedTest.forEach(it => {
+        //                 test_type = item.test_type
+        //                 if(item.test_id != it.test_id && it.student_id == req.body.student_id){
+        //                     newArray.push({
+        //                         subject_id:item.subject_id,
+        //                         class_id:item.class_id,
+        //                         school_id:item.school_id,
+        //                         test_id:item.test_id,
+        //                         assigned:item.assigned,
+        //                         class_name:item.class_name,
+        //                         status:item.status,
+        //                         subject_name:item.subject_name,
+        //                         start_date:item.start_date,
+        //                         test_window:item.test_window,
+        //                         test_type:item.test_type,
+        //                     })
+        //                 }
+        //             })
+        //         })
+        //     }
+            
+        //     let newData = [];
+        //     if(newArray && newArray.length > 0){
+        //         newData = newArray;
+        //     }else{
+        //         newData = AssignedTests;
+        //     }
+
+            let check = {}
+            if(test_type == "single-test"){
+                check = { class_id : req.params.class_id, _id: AssignedTests.test_id }
+            }else if (test_type == "combine-test"){
+                check = { assign_class_id : req.params.class_id, _id: AssignedTests.test_id }
             }
 
-            const units = await UnitTest.find(
-                {
-                    class_id:req.params.class_id,
-                },{__v: 0});
-            
-            let newData = [];
-            if(newArray && newArray.length > 0){
-                newData = newArray;
-            }else{
-                newData = AssignedTests;
+            newArray1 = await UnitTest.findOne(check,{__v: 0}).lean();
+            // const newData = [...newArray1, ...AssignedTests]
+            newArray1.unit_id = newArray1._id;
+            newArray1.unit_table_id = newArray1._id;
+            newArray1.test_id = AssignedTests.test_id;
+            newArray1.assigned = AssignedTests.assigned;
+            newArray1.assign_table_id = AssignedTests._id;
+            newArray1.start_date = AssignedTests.start_date;
+            newArray1.test_window = AssignedTests.test_window;
+            if(test_type == "combine-test"){
+                newArray1.class_id = newArray1.assign_class_id;
+                newArray1.class_name = newArray1.assign_class_name;
             }
-            
-            newData.forEach(item=>{
-                units.forEach(it => {
-                    if(item.test_id == it._id){
-                        newArray1.push({
-                            test_name:it.test_name,
-                            test_duration:it.test_duration,
-                            unit_id:it.unit_id,
-                            unit_name:it.unit_name,
-                            test_slug:it.test_slug,
-                            total_question:it.total_question,
-                            unit_table_id:it._id,
-                            class_id: item.class_id,
-                            class_name: item.class_name,
-                            school_id: item.school_id,
-                            subject_id: item.subject_id,
-                            subject_name: item.subject_name,
-                            test_id: item.test_id,
-                            assigned: item.assigned,
-                            assign_table_id: item._id,
-                            start_date:item.start_date,
-                            test_window:item.test_window,
-                            test_type:item.test_type,
-                        })
-                    }
-                })
-            }) 
-        }
+            // AssignedTests.forEach(item=>{
+            //     units.forEach(it => {
+            //         if(item.test_id == it._id){
+            //             newArray1.push({
+            //                 test_name:it.test_name,
+            //                 test_duration:it.test_duration,
+            //                 unit_id:it.unit_id,
+            //                 unit_name:it.unit_name,
+            //                 test_slug:it.test_slug,
+            //                 total_question:it.total_question,
+            //                 unit_table_id:it._id,
+            //                 class_id: item.class_id,
+            //                 class_name: item.class_name,
+            //                 school_id: item.school_id,
+            //                 subject_id: item.subject_id,
+            //                 subject_name: item.subject_name,
+            //                 test_id: item.test_id,
+            //                 assigned: item.assigned,
+            //                 assign_table_id: item._id,
+            //                 start_date:item.start_date,
+            //                 test_window:item.test_window,
+            //                 test_type:item.test_type,
+            //             })
+            //         }
+            //     })
+            // }) 
+        // }
         return res.status(200).json({ 
             data: newArray1 
         });    
@@ -505,7 +535,6 @@ const assignTestToStudent = async (req, res) =>{
 
 const attemptTestByStudent = async (req, res) =>{
     try {
-        // console.log(req.body, req.params)
         let result = [];
         if(req.body.test_type == "upload-test"){
             const assignTest = await AssignTest.findOne({_id:req.body.assign_test_id},{__v: 0})
@@ -601,6 +630,131 @@ const attemptTestByStudent = async (req, res) =>{
                 student_class_name: student.class
             });    
             await attempt.save();
+            await AssignTest.findOneAndUpdate({test_id:req.body.id}, {
+                $addToSet: {
+                    attemptedStudentIds: req.body.user_id
+                }
+            })
+        }
+        
+        return res.status(200).json({
+            message: "AttemptTest created sucessfully",
+            data: result
+        });
+    } catch (error) {
+        res.status(502).json({
+            message: error.message,
+        });
+    }
+}
+
+const attemptTestByStudentOffline = async (req, res) =>{
+    try {
+        let result = [];
+        if(req.body.test_type == "upload-test"){
+            const assignTest = await AssignTest.findOne({_id:req.body.assign_test_id},{__v: 0})
+            const student = await Student.findOne({_id:req.body.user_id},{roll_no:1,class:1,EmpId:1})
+            const attempt = new AttemptTest({
+                school_id: req.body.school_id,
+                class_id: req.body.class_id,
+                // subject_id: req.body.subject_id,
+                student_id: req.body.user_id,
+                test_id: assignTest._id,
+                student_name: req.body.name,
+                questions: assignTest.questionDocs,
+                test_subjects: assignTest.test_subjects,
+                test_name: assignTest.test_name,
+                test_type: assignTest.test_type,
+                section: req.body.section,
+                extension: assignTest.extension,
+                questionLength: parseInt(assignTest.answers.length),
+                start_date: assignTest.start_date,
+                test_window: assignTest.test_window,
+                test_duration: assignTest.test_duration,
+                student_roll_no: student.roll_no,
+                student_emp_id: student.EmpId,
+                student_class_name: student.class
+            });   
+            result = await attempt.save();
+            await AssignTest.findOneAndUpdate({test_id:req.body.id}, {
+                $addToSet: {
+                    attemptedStudentIds: req.body.user_id
+                }
+            })
+        }else if(req.body.test_type == "mock-test"){
+            const mockQuestions = await MockTestQuestions.find({question_for:"student"},{answer:0});
+            const student = await Student.findOne({_id:req.body.user_id},{roll_no:1,class:1,EmpId:1})
+            const newData1 = await AssignTest.findOne(
+                {
+                    test_id: req.body.id,
+                    school_id: req.body.school_id,
+                },{__v: 0});
+
+            const attempt = new AttemptTest({
+                school_id: req.body.school_id,
+                class_id: req.body.class_id,
+                // subject_id: req.body.subject_id,
+                student_id: req.body.user_id,
+                test_id: req.body.id,
+                student_name: req.body.name,
+                questions: mockQuestions,
+                test_subjects:newData1.test_subjects,
+                test_name:newData1.test_name,
+                test_type:newData1.test_type,
+                start_date: newData1.start_date,
+                test_window: newData1.test_window,
+                test_duration: newData1.test_duration,
+                section:req.body.section,
+                student_roll_no: student.roll_no,
+                student_emp_id: student.EmpId,
+                student_class_name: student.class
+            });   
+            result = await attempt.save();
+            await AssignTest.findOneAndUpdate({_id:req.body.mock_id}, {
+                $addToSet: {
+                    attemptedStudentIds: req.body.user_id
+                }
+            })
+        }else{
+            const student = await Student.findOne({_id:req.body.user_id},{roll_no:1,class:1,EmpId:1})
+            const newData = await UnitTest.findOne(
+                {
+                    _id: req.body.id,
+                },{__v: 0});
+
+            await Promise.all(newData.test_question.map(async (item, key)=>{
+                singleQuestion = await Questions.findOne({_id: item.question_id},{answer:0,solution:0})
+                item.question = singleQuestion.question;
+                item.option_a = singleQuestion.option_a;
+                item.option_b = singleQuestion.option_b;
+                item.option_c = singleQuestion.option_c;
+                item.option_d = singleQuestion.option_d;
+                item._id = item.question_id;
+            }))
+            const newData1 = await AssignTest.findOne(
+                {
+                    test_id: req.body.id,
+                },{__v: 0});
+                
+            const attempt = new AttemptTest({
+                school_id: req.body.school_id,
+                class_id: req.body.class_id,
+                // subject_id: req.body.subject_id,
+                student_id: req.body.user_id,
+                test_id: req.body.id,
+                student_name: req.body.name,
+                questions: newData.test_question,
+                test_subjects:newData1.test_subjects,
+                start_date: newData1.start_date,
+                test_window: newData1.test_window,
+                test_duration: newData1.test_duration,
+                test_name:newData1.test_name,
+                section:req.body.section,
+                student_roll_no: student.roll_no,
+                student_emp_id: student.EmpId,
+                student_class_name: student.class
+            });    
+            result = await attempt.save();
             await AssignTest.findOneAndUpdate({test_id:req.body.id}, {
                 $addToSet: {
                     attemptedStudentIds: req.body.user_id
@@ -747,6 +901,87 @@ const saveAnswer = async (req,res) => {
     }
 }
 
+const saveAnswerOffline = async (req,res) => {
+    try{
+        const answeredQuestions = req.body.data.questions;
+        if(req.params.test_type == "mock-test"){
+            const data = await AttemptTest.findOne({_id:req.body.data.attemptId})
+            await Promise.all(data.questions.map(async( item, key)=>{
+                const un = await MockTestQuestions.findOne({_id:item._id})
+                const answered = answeredQuestions.filter(it => item._id == it.question_id)
+                if(item._id == answered._id){
+                    item['answer'] = answered.answer,
+                    item['option'] = answered.option,
+                    item['correct_option'] = un.answer,
+                    item['correct_answer'] = un.answer
+                }
+            }))
+            const assigntests = await AttemptTest.findOneAndUpdate({_id:req.body.data.attemptId}, {$set: {"questions": data.questions,"time_taken":req.body.time_taken,"completion_status":req.body.completion_status}})
+            if(assigntests){
+                return res.status(200).json({ 
+                    msg: "answer submitted successfully",
+                    attemptId: data._id,
+                }); 
+            }
+        }else if(req.params.test_type == "single-test"){
+            let optionsDocx = [{key: 0,value: " A", option: "option_a",},{key: 1,value: " B", option: "option_b",},{key: 3,value: " C", option: "option_c",},{key: 4,value: " D", option: "option_d",}];
+
+            const data = await AttemptTest.findOne({_id:req.body.data.attemptId}).lean()
+            await Promise.all(data.questions.map(async( item, key)=>{
+                const un = await Questions.findOne({_id:item.question_id})
+                const answered = answeredQuestions.filter(it => item.question_id == it.question_id)
+                if(un?.extension == "docx")
+                {
+                    var result  = optionsDocx.filter(function(o){return o.value == un.answer ;} );
+                    item['answer'] = answered[0].answer,
+                    item['option'] = answered[0].option,
+                    item['correct_option'] = result[0]?.option,
+                    item['correct_answer'] = un.answer,
+                    item['unit_name'] = un.unit_name,
+                    item['unit_no'] = un.unit_no,
+                    item['chapter_name'] = un.chapter_name,
+                    item['chapter_no'] = un.chapter_no,
+                    item['question'] = un.question,
+                    item['unit_id'] = un.unit_id,
+                    item['option_a'] = un?.options[0],
+                    item['option_b'] = un?.options[1],
+                    item['option_c'] = un?.options[2],
+                    item['option_d'] = un?.options[3],
+                    item['extension'] = "docx"
+                } else {
+                    item['answer'] = answered[0].answer,
+                    item['option'] = answered[0].option,
+                    item['correct_option'] = un.answer,
+                    item['correct_answer'] = un[`${un.answer}`],
+                    item['unit_name'] = un.unit_name,
+                    item['unit_no'] = un.unit_no,
+                    item['chapter_name'] = un.chapter_name,
+                    item['chapter_no'] = un.chapter_no,
+                    item['question'] = un.question,
+                    item['unit_id'] = un.unit_id,
+                    item['option_a'] = un.option_a,
+                    item['option_b'] = un.option_b,
+                    item['option_c'] = un.option_c,
+                    item['option_d'] = un.option_d
+                }
+            }))
+            const assigntests = await AttemptTest.findOneAndUpdate({_id:req.body.data.attemptId}, {$set: {"questions": data.questions,"time_taken":req.body.data.time_taken,"completion_status":req.body.data.completion_status}})
+            if(assigntests){
+                return res.status(200).json({ 
+                    msg: "answer submitted successfully",
+                    attemptId: data._id,
+                }); 
+            }
+        }
+    } catch(error){
+        res.status(500).json({
+            status: 500,
+            message: "Error occured",
+            errors: error.message
+        });
+    }
+}
+
 const getAllQuestions = async (req,res) => {
     try{
         const filter = {
@@ -822,7 +1057,8 @@ const getLastScore = async (req,res) => {
             questions:result?.questions,
             time_taken:result?.time_taken,
             test_id:result?.test_id,
-            test_type:result?.test_type
+            test_type:result?.test_type,
+            extension:result?.extension
         }
         if(!result){
             data = null
@@ -1060,8 +1296,8 @@ const getAssignedTestsTeacher = async(req, res) => {
         }
         const assignedTest = await AssignTest.find(filter).lean();
         await Promise.all(assignedTest.map(async (item) => {
-            const data = await UnitTest.findOne({_id:item.test_id},{test_name:1})
-            item.test_name = data.test_name;
+            const data = await UnitTest.findOne({_id: item.test_id},{test_name:1})
+            item.test_name = data?.test_name;
         }))
         return res.status(200).json({ 
             data: assignedTest, 
@@ -1571,7 +1807,6 @@ const getUploadTestPaper = async ( req, res ) => {
 
 const saveUploadAnswer = async ( req, res ) => {
     try {
-        // console.log(req.body, req.params)
         const filter = {
             _id :req.body.attempt_id,
         }
@@ -1610,16 +1845,11 @@ const changeDomainStudent = async ( req, res ) => {
         const xchool = await School.findOne({_id:req.params.school_id},{sub_domain:1,short:1,school_slug:1});
         const student = await Student.find({school_id:req.params.school_id}).lean();
         student.map((item,key)=>{
-            // console.log(item.name,xchool.school_slug)
             const removeName = item.username.split(item.name.toLowerCase())
             const removeDomain = removeName[1].split('@')
             const new_slug = getFirstLetter(xchool.school_slug);
-            // console.log(new_slug)
             const newUsername = new_slug + item.name.toLowerCase() + removeDomain[0] + '@' + xchool.sub_domain + '.com' 
-            // console.log(newUsername)
-            // console.log(item.EmpId.split('TS'))
         })
-        // console.log(student)
         res.status(200).json({
             data : student
         })
@@ -1633,7 +1863,6 @@ const changeDomainStudent = async ( req, res ) => {
 function getFirstLetter(el){
     let arr = '';
     let name = '';
-    // console.log(el)
     if(el.match('-')){
       arr = el.split('-');
       let data = arr?.map(e => {
@@ -1651,6 +1880,20 @@ const changeTime = async ( req, res ) => {
         const update = await AttemptTest.updateMany({school_id:req.params.school_id}, {"$set" :{ "start_date" : daa.start_date, test_window : "180"}},{multi: true });
         res.status(200).json({
             message : "updates" 
+        })
+    } catch (error) {
+        res.status(502).json({
+            message : error.message
+        })
+    }
+}
+
+const updateAttempt = async ( req, res ) => {
+    try {
+        const daa = await AttemptTest.find({school_id : req.params.school_id, class_id : req.params.class_id, student_class_name: '6'});
+        const update = await AttemptTest.updateMany({school_id : req.params.school_id, class_id : req.params.class_id, student_class_name: '6'}, {"$set" :{ "class_id":"60c05895e82abc693455109d"}},{multi: true });
+        res.status(200).json({
+            message : "updated" 
         })
     } catch (error) {
         res.status(502).json({
@@ -1706,4 +1949,7 @@ module.exports = {
     changeDomainStudent,
     saveUploadAnswer,
     changeTime,
+    updateAttempt,
+    attemptTestByStudentOffline,
+    saveAnswerOffline,
 }
