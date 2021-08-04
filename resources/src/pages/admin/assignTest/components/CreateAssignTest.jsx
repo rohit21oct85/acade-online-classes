@@ -160,9 +160,9 @@ export default function CreateAssignTest() {
                         </div> 
 
                   </div>  
-                        <div className="col-md-12 mt-3" style={{ overflowX: 'scroll', width: '1500px'}}>
+                        <div className="col-md-12 pl-0 mt-3" style={{ overflowX: 'scroll', width: '1200px'}}>
                         <table className="table table-responsive table-borded" style={{
-                              width: '1500px'
+                              width: '1200px'
                         }}>
                               
                               {params?.test_type === 'mock-test' ? 
@@ -170,9 +170,9 @@ export default function CreateAssignTest() {
                                     <tr>
                                           <th>Test Name</th> 
                                           <th>Duration</th> 
+                                          <th>Window</th> 
                                           <th>Test Type</th> 
                                           <th>Published</th> 
-                                          <th>Create At</th> 
                                     </tr>
                               )
                               :
@@ -180,10 +180,11 @@ export default function CreateAssignTest() {
                                     <tr>
                                           <th>Test Name</th> 
                                           <th>Duration</th> 
+                                          <th>Marks</th> 
                                           <th>Question</th> 
                                           <th>Test Type</th> 
                                           <th>Test Subjects</th> 
-                                          <th>Assigned</th> 
+                                          <th>Assigned</th>
                                     </tr>
                               )
                               }
@@ -207,15 +208,18 @@ export default function CreateAssignTest() {
                                           value={tests?._id}
                                           data-testName={tests?.test_name}
                                           onChange={e => setFormData({...formData, test_id: e.target.value})}
+                                          className="mr-2"
                                           />
                                           {tests?.test_name}</label>
                                     </b>
                                     </td>
                                     <td><b>{tests?.test_duration} Min</b></td>
+                                    <td><b>{tests?.total_marks}</b></td>
                                     <td><b>{tests?.total_question} Ques</b></td>
                                     <td><b>{tests?.test_type === 'combine-test' ? 'combine-test': 'single-test'}</b></td>
                                     <td><b>{subjects}</b></td>
-                                    <td style={{ width: '100px'}}><b>{assigned?.toString()}</b></td>
+                                    <td><b>{assigned?.toString()}</b></td>
+                                    
                               </tr>
                               )})}
                               
@@ -227,6 +231,7 @@ export default function CreateAssignTest() {
                                                       <input className="mr-2" type="radio" name={`test`}
                                                       value={mtes?._id}
                                                       onChange={e => setFormData({...formData, test_id: e.target.value})}
+                                                      className="mr-2"
                                                       />
                                                       {mtes?.test_name}</label>
                                                 </td>

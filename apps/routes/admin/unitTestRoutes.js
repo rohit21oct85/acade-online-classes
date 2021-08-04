@@ -6,6 +6,7 @@ const router = express.Router();
 
 router
     .post('/create', checkAuth, UnitTest.CreateUnitTest)
+    .post('/addFields', UnitTest.AddFields)
     .patch('/update/:id', checkAuth, UnitTest.UpdateUnitTest)
     .post('/update-subject/:subject_id?', checkAuth, UnitTest.UpdateSubjectUnitTest)
     .get('/view/:id', checkAuth, UnitTest.ViewUnitTest)

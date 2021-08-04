@@ -93,6 +93,7 @@ export default function CreateTest() {
                   let assign_class_id = localStorage.getItem('assignClass')
                   let test_name = localStorage.getItem('test_name')
                   let test_duration = localStorage.getItem('test_duration')
+                  let total_marks = localStorage.getItem('total_marks')
 
                   let class_name = getFilteredData(sClassess,'_id' ,class_id, 'class_name');
                   let assign_class_name;
@@ -129,6 +130,7 @@ export default function CreateTest() {
                   formData['assign_class_name'] = assign_class_name
                   formData['test_name'] = test_name
                   formData['test_duration'] = test_duration
+                  formData['total_marks'] = total_marks
                   
                   // console.log(formData); return;
                   
@@ -138,6 +140,7 @@ export default function CreateTest() {
                   localStorage.removeItem('assignClass')
                   localStorage.removeItem('test_name')
                   localStorage.removeItem('test_duration')
+                  localStorage.removeItem('total_marks')
                   setSelectedQuestions([]);
             }
 
@@ -249,6 +252,22 @@ export default function CreateTest() {
                               }}
                               placeholder="Test Duration in Minute"/>
                   </div>
+                  
+                  <div className="col-md-2 pr-0">
+                              <input type="text" className="form-control"
+                              maxLength="3"
+                              value={localStorage.getItem('total_marks')} 
+                              onChange={ e => {
+                                    if(!isNaN(e.target.value)){
+                                          setFormData({...formData, total_marks: e.target.value})
+                                          localStorage.setItem('total_marks', e.target.value)
+                                    }else{
+                                          addToast('please enter test duration in numbers', { appearance: 'error', autoDismiss: true });
+                                    }
+                              }}
+                              placeholder="Total Marks"/>
+                  </div>
+
                   <div className="form-group col-md-2">
                               <select className="form-control"
                               id="classdiv"
@@ -272,7 +291,7 @@ export default function CreateTest() {
                               </select>
                         </div>  
 
-                        <div className="col-md-2 pl-0">
+                        <div className="col-md-2">
                               <select className="form-control"
                               value={params?.subject_id}
                               onChange={e => {
@@ -315,7 +334,7 @@ export default function CreateTest() {
                   
                         
                         
-                        <div className="form-group col-md-2">
+                        <div className="form-group col-md-2 pl-0">
                         <select className="form-control"
                         value={params?.unit_id}
                         onChange={e => {
@@ -334,7 +353,7 @@ export default function CreateTest() {
                               })}
                         </select>
                   </div>
-                  <div className="form-group col-md-2">
+                  <div className="form-group col-md-2 pl-0">
                   <select className="form-control"
                   value={params?.chapter_id}
                   onChange={e => {

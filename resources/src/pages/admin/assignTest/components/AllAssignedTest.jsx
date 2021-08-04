@@ -143,6 +143,7 @@ export default function AllAssignedTest({update, Delete}) {
                     <td>School Name</td>
                     <td>Test Name</td>
                     <td>Test Duration/Window</td>
+                    <td>Test marks</td>
                     {params?.test_type !== 'mock-test' && <td>Subject Name</td>}
                     {params?.test_type !== 'mock-test' && <td>Class Name</td>}
                     {!params?.test_id && (<>
@@ -195,6 +196,7 @@ export default function AllAssignedTest({update, Delete}) {
                         <td>{test?.school_name}</td>
                         <td>{test?.test_name} ({(test?.total_question)} Qes)</td>
                         <td>{test?.test_duration} Min / {test?.test_window} Min</td>
+                        <td>{test?.total_marks}</td>
                         {params?.test_type !== 'mock-test' && <td>{subjects}</td>}
                         {params?.test_type !== 'mock-test' && <td>{getClassName(test?.class_id)} th </td>}
                         {!params?.test_id && (<>
