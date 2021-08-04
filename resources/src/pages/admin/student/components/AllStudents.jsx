@@ -144,7 +144,7 @@ export default function AllStudents({update, Delete}) {
         </div>
         <div className="col-md-12 mt-3 table-responsive row no-gutter data-container-category" style={{"overflowX":"scroll"}}>
         
-        <table className="table table-hover" id="myTable" style={{ width: '1500px'}}>
+        <table className="table table-hover" id="myTable" style={{ width: '1800px'}}>
                     <thead>
                     <tr class="header">
                             <th>
@@ -167,7 +167,16 @@ export default function AllStudents({update, Delete}) {
                             return (
                                 <tr key={item?._id} >
                                 <th scope="row">{(item?.EmpId)}</th>
-                                <td>{item?.username.toLowerCase()}</td>
+                                <td>
+                                    
+                                    {item.username.toLowerCase()}
+                                    <a 
+                                        href={`https://${school[0]?.sub_domain}.acadelearn.com/student/login`}
+                                        target="__blank"
+                                    >
+                                    <span className="fa fa-link hidden_col pull-right"></span>
+                                    </a>
+                                    </td>
                                 <td>{item.name}</td>
                                 <td>{item.class}</td>
                                 <td>{item.section}</td>

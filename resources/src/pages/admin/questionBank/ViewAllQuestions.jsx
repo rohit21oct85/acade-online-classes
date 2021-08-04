@@ -100,28 +100,35 @@ export default function ViewAllQuestions() {
                                       )
                                 })}
                               </select>
-                              
                         </div>
                     </div>
                     <div className="clearfix"></div>
                     <div className="dash-cont-start">
                         <div className="row">
-                            <div className="col-md-12" style={{ 
-                                height: '500px', overflow: 'hidden scroll'
+                            <div className="col-md-12 flex" 
+                            id="printDiv"
+                            style={{ 
+                                height: '500px', overflow: 'hidden scroll',
+                                flexWrap: 'wrap'
                             }}>
                                 {questions?.length > 0 && units?.map(unit => {
-                                    let ULists = questions?.filter(que => que?._id?.unit_id === unit?._id);
+                                    let ULists = questions?.filter(que => que?.unit_id === unit?._id);
                                     return (
                                         <>
-                                        <div className="col-md-6 mt-2 mb-2 pl-0"><b>{unit?.unit_name}</b></div>
+                                        <div className="col-md-8 ml-2 mt-2 mb-1 pl-2 bg-success text-white">
+                                        {unit?.unit_name}
+                                        </div>
                                         {ULists?.map( q => {
                                             return(
-                                                <div className="row ml-2 mr-2 pt-1 table-bordered">
-                                                    <div className="col-md-4">
-                                                        {q?._id?.chapter_name}
+                                                <div className="row col-md-8 ml-2 mb-2 mr-2 pt-1 table-bordered">
+                                                    <div className="col-md-1">
+                                                        {q?.chapter_no}
                                                     </div>
-                                                    <div className="col-md-4">
-                                                        {q?.count}
+                                                    <div className="col-md-9">
+                                                        {q?.chapter_name}
+                                                    </div>
+                                                    <div className="col-md-2">
+                                                        {q?.total_question}
                                                     </div>
                                                 
                                                 </div>

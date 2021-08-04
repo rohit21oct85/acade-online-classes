@@ -103,9 +103,23 @@ export default function CreateTeacher() {
 
     async function handleChange(e){
         if(params?.teacher_id){
-            setFormData({...setFormData, [e.target.name]: e.target.value})
+            setFormData({...formData, [e.target.name]: e.target.value})
         }else{
+            if(e.target.name === 'name'){
+                setFormData({
+                    ...formData, 
+                    'name': e.target.value,
+                    'email': e.target.value.trim()+'@gmail.com',
+                    'mobile': '1234567890',
+                    'password': 'password',
+                    'address': 'same as office address',
+                    'city': 'same as office city',
+                    'state': 'same as office state',
+                    'pincode': '234567'
+                })
+            }else{
                 setFormData({...formData, [e.target.name]: e.target.value})
+            }
         }
     }
 
@@ -133,7 +147,16 @@ export default function CreateTeacher() {
             }
         }
     }
-
+    function handleSelectMethods(e){
+        let classChecked = document.getElementById("allClass").checked;
+        Array.from(document.querySelectorAll('.teacherClass')).map( module => {
+            if(classChecked){
+                module.checked = true;    
+            }else{
+                module.checked = false;
+            }
+        })
+    }
     return (
         <>
             <p className="form-heading">
@@ -169,7 +192,12 @@ export default function CreateTeacher() {
                     </select>
                 </div>
                 <div className="form-group col-md-12 pl-0 pr-0">
-                    <span>Choose Class: </span>
+                    <span>Choose Class: 
+                        <label className="ml-2"> 
+                            <input type="checkbox" id="allClass" value="all" className="form-group mr-2" 
+                            onChange={handleSelectMethods}/>
+                            All Calss</label>
+                    </span>
                     <div className="row col-md-12 pr-0">
                         {SClassess?.map(clas => {
                             let checkClass = SingleTeacher?.classess?.some(cls => (cls?.class_id === clas?._id && cls?.checked === true))

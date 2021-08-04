@@ -59,6 +59,7 @@ export default function AllTeachers({update, Delete}) {
         }, 1000);
     
     }
+    
     return (
         <>
         <p className="form-heading">
@@ -112,16 +113,15 @@ export default function AllTeachers({update, Delete}) {
                         marginRight: '120px',
                         paddingBottom: '250px'
                 }}>
-        <table className="table table-hover mb-2" style={{ width: '1800px'}}>
+        <table className="table table-hover mb-2" style={{ width: '1500px'}}>
                     <thead>
                         <tr>
-                            <th>#EmpID</th>
+                            <th>#UniqueID</th>
+                            <th>Login Email</th>
                             <th>Name</th>
                             <th>Subject</th>
-                            <th className="hidden_col">Mobile</th>
-                            <th>Email</th>
-                            <th>Username</th>
                             <th>Class</th>
+                            <th>Email</th>
                             <th className="hidden_col">Action</th>
                         </tr>
                     </thead>
@@ -135,12 +135,19 @@ export default function AllTeachers({update, Delete}) {
                             return (
                             <tr key={item?._id}>
                                 <th scope="row" className="col-md-1">{item.EmpID}</th>
+                                <td>
+                                    {item.username}
+                                    <a 
+                                        href={`https://${school[0].sub_domain}.acadelearn.com/teacher/login`}
+                                        target="__blank"
+                                    >
+                                    <span className="fa fa-link hidden_col pull-right"></span>
+                                    </a>
+                                    </td>
                                 <td>{item.name}</td>
                                 <td>{item.subject_name}</td>
-                                <td className="hidden_col">{item.mobile}</td>
-                                <td>{item.email}</td>
-                                <td>{item.username}</td>
                                 <td>{tclass}</td>
+                                <td>{item.email}</td>
                                 <td className="hidden_col flex">
                                     {update && (
                                         <>
@@ -154,9 +161,9 @@ export default function AllTeachers({update, Delete}) {
                                             onClick={
                                                 e => {
                                                     if(params.school_id){
-                                                        history.push(`/admin/teachers-management/update/${params?.school_id}/${params?.subject_id}/${MakeSlug(item.subject_name)}/${item?._id}`)
+                                                        history.push(`/admin/teachers-management/update/${params?.school_id}/${params?.subject_id}/${utils.MakeSlug(item.subject_name)}/${item?._id}`)
                                                     }else{
-                                                        history.push(`/admin/teachers-management/update/${item.school_id}/${item?.subject_id}/${MakeSlug(item.subject_name)}/${item?._id}`)
+                                                        history.push(`/admin/teachers-management/update/${item.school_id}/${item?.subject_id}/${utils.MakeSlug(item.subject_name)}/${item?._id}`)
                                                     }
                                                 }
                                             }>
