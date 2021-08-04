@@ -49,19 +49,6 @@ export default function CreateStudent() {
     }
     const {data:studentRoll} = useClassRollNo();
     const [rollNo, setRollNo] = useState(null);
-    useEffect(() => {
-        let roll;
-        if(typeof studentRoll !== "undefined"){
-            if(studentRoll?.length === 0){
-                roll = 1;
-            }else{
-                roll = +studentRoll + 1
-            }
-            setRollNo(roll)
-        }else{
-            setRollNo(1)
-        }
-    },[params?.section, params?.page_type]);
     
     const createMutation = useCreateStudent(formData);
     const updateMutation = useUpdateStudent(SingleStudent);
@@ -86,7 +73,7 @@ export default function CreateStudent() {
                 formData['class_id'] = params?.class_id
                 formData['class'] = helper.getFilteredData(classes,'_id',params?.class_id,'class_name') 
                 formData['section'] = params?.section
-                formData.roll_no = rollNo
+                formData['roll_no'] = studentRoll
                 // console.log(formData); return;       
                 await createMutation.mutate(formData);
             
@@ -198,8 +185,9 @@ export default function CreateStudent() {
                         type="text" 
                         className="form-control" 
                         name="roll_no"
-                        value={params?.student_id ? SingleStudent?.roll_no : rollNo}
+                        value={params?.student_id ? SingleStudent?.roll_no : studentRoll}
                         onChange={handleChange}
+                        readOnly
                         placeholder="Roll No"/>
                 </div>
                 <div className="form-group">
@@ -210,6 +198,15 @@ export default function CreateStudent() {
                         value={params?.student_id ? SingleStudent?.name : formData?.name}
                         onChange={handleChange}
                         placeholder="Name"/>
+                </div>
+                <div className="form-group">
+                    <input 
+                        type="text" 
+                        className="form-control" 
+                        name="password"
+                        value="password"
+                        onChange={handleChange}
+                        placeholder="Password"/>
                 </div>
                 <div className="form-group">
                     <input 
@@ -229,14 +226,7 @@ export default function CreateStudent() {
                         onChange={handleChange}
                         placeholder="Email"/>
                 </div>
-                <div className="form-group">
-                    <input 
-                        type="text" 
-                        className="form-control" 
-                        name="password"
-                        onChange={handleChange}
-                        placeholder="Password"/>
-                </div>
+                
                 
             
                 <div className="form-group flex">

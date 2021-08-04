@@ -144,21 +144,21 @@ export default function AllStudents({update, Delete}) {
         </div>
         <div className="col-md-12 mt-3 table-responsive row no-gutter data-container-category" style={{"overflowX":"scroll"}}>
         
-        <table className="table table-hover" id="myTable" style={{ width: '1800px'}}>
+        <table className="table table-hover" id="myTable" style={{ width: '1500px'}}>
                     <thead>
                     <tr class="header">
-                            <th scope="col">
+                            <th>
                              #EmpID
                             </th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Class</th>
-                            <th scope="col">Sec.</th>
-                            <th scope="col">Division</th>
-                            <th scope="col">Roll</th>
-                            <th scope="col" className="hidden_col">Mobile</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Login Email</th>
-                            <th scope="col" className="hidden_col">Action</th>
+                            <th>Login Email</th>
+                            <th>Name</th>
+                            <th>Class</th>
+                            <th>Sec.</th>
+                            <th>Division</th>
+                            <th>Roll</th>
+                            <th className="hidden_col">Mobile</th>
+                            <th>Email</th>
+                            <th className="hidden_col">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -167,6 +167,7 @@ export default function AllStudents({update, Delete}) {
                             return (
                                 <tr key={item?._id} >
                                 <th scope="row">{(item?.EmpId)}</th>
+                                <td>{item?.username.toLowerCase()}</td>
                                 <td>{item.name}</td>
                                 <td>{item.class}</td>
                                 <td>{item.section}</td>
@@ -174,7 +175,6 @@ export default function AllStudents({update, Delete}) {
                                 <td>{item.roll_no}</td>
                                 <td className="hidden_col">{item.mobile}</td>
                                 <td>{item?.email.toLowerCase()}</td>
-                                <td>{item?.username.toLowerCase()}</td>
                                 <td className="flex hidden_col">
 
                                     {update === true && (
