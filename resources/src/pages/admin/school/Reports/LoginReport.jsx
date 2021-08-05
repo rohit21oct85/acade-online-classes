@@ -85,7 +85,27 @@ export default function LoginReport() {
                                     sec = Math.floor(seconds - (hour * 3600 + minute * 60))
                                     hourDifference = `${hour} Hr ${minute} Min ${sec} Sec`
                               }else{
-                                    hourDifference = `0 Hr 0 Min 0 Sec`
+                                    if(rep?.user_log?.logout_time){
+                                          let login_time = new Date(rep?.user_log?.login_time)
+                                          let logout_time = new Date(rep?.user_log?.logout_time)
+                                          let diffTime = Math.round(logout_time - login_time);
+                                          hour = Math.floor(diffTime/1000/3600)
+                                          minute = Math.floor(diffTime/1000/60 - (hour*60))
+                                          sec = Math.floor(diffTime/1000)
+                                          hourDifference =`${hour} hr ${minute} min ${sec} sec` 
+                                    }else{
+                                          if(rep.isLoggedIn){
+                                                let login_time = new Date(rep?.user_log?.login_time)
+                                                let logout_time = new Date();
+                                                let diffTime = Math.round(logout_time - login_time);
+                                                hour = Math.floor(diffTime/1000/3600)
+                                                minute = Math.floor(diffTime/1000/60 - (hour * 60))
+                                                sec = Math.floor(diffTime/1000 - (hour * 3600 + minute * 60))
+                                                hourDifference =`${hour} hr ${minute} min ${sec} sec` 
+                                          }else{
+                                                hourDifference = `0 Hr 0 Min 0 Sec`
+                                          }
+                                    }
                               }
                               
                               let empid;
@@ -114,7 +134,8 @@ export default function LoginReport() {
                                     <td className="col-md-2">{JSON.stringify(rep?.user_log) == "null" ? 'Not Logged In' : 'Logged In'}</td>  
                                     <td className="col-md-2">{hourDifference}</td>  
                                     <td className="col-md-3">{JSON.stringify(rep?.user_log) !== "null" ? new Date(rep?.user_log?.login_time).toLocaleString(): JSON.stringify(rep?.user_log)}</td>  
-                                    <td className="col-md-3">{JSON.stringify(rep?.user_log) !== "null" ? new Date(rep?.user_log?.logout_time).toLocaleString(): JSON.stringify(rep?.user_log)}</td>  
+                                    <td className="col-md-3">{JSON.stringify(rep?.user_log) !== "null" ? (rep?.user_log?.logout_time) ?? new Date().toLocaleString() : JSON.stringify(rep?.user_log)}</td>  
+                                    
                               </tr>      
                               )})}
                               </table>      

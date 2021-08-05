@@ -132,7 +132,7 @@ export default function AllAssignedTest({update, Delete}) {
         </div>
         }
         <div className="table-responsive pl-0" style={{overflow: 'scroll hidden'}}>
-        <table className="table  table-responsive" style={{ width: `${params?.school_id === '60d5a55aa116be10bc936137' && params?.test_type === 'mock-test' ? '1280px':'1520px'}`}}>
+        <table className="table  table-responsive" style={{ width: `${params?.school_id === '60d5a55aa116be10bc936137' && params?.test_type === 'mock-test' ? '1280px':'2060px'}`}}>
             <thead>
                 <tr>
                     {params?.school_id === '60d5a55aa116be10bc936137' && (

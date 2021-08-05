@@ -113,7 +113,7 @@ export default function AllTeachers({update, Delete}) {
                         marginRight: '120px',
                         paddingBottom: '250px'
                 }}>
-        <table className="table table-hover mb-2" style={{ width: '1500px'}}>
+        <table className="table table-hover mb-2" style={{ width: '1900px'}}>
                     <thead>
                         <tr>
                             <th>#UniqueID</th>

@@ -9,20 +9,23 @@ const CreateAssignTest = async (req, res) => {
     const testWindow = req.body.test_window;
     let filter;
     let assignTest;
-    if(data.test_type == 'mock-test'){
+    if(data.test_type === 'mock-test'){
       filter =   {
         school_id:  req.body.school_id,
-        assigned: true
+        assigned: false
       }
     }else{
       filter = {
         school_id:  req.body.school_id,
         class_id:  req.body.class_id,
-        assigned: true
+        assigned: false
       }
     }
     // console.log(filter);return
-    assignTest = await AssignTest.findOne(filter,{start_date:1,test_window:1
+    assignTest = await AssignTest.findOne(filter,{
+      start_date:1,
+      test_window:1,
+      test_name:1
     }).limit(1).sort({start_date:-1})
     
     // console.log(assignTest);return
@@ -63,6 +66,7 @@ const CreateAssignTest = async (req, res) => {
               test_duration: data?.test_duration,
               test_window: data?.test_window,
               total_question: data?.total_question,
+              total_marks: data?.total_marks,
               assigned: false
             }}, options, async (err, result) => {
                 if(err){
@@ -108,7 +112,7 @@ const CreateAssignTest = async (req, res) => {
               test_duration: data?.test_duration,
               test_window: data?.test_window,
               total_question: data?.total_question,
-
+              total_marks: data?.total_marks
             }}, options, async (err, result) => {
                 if(err){
                     return res.status(409).json({
@@ -122,6 +126,7 @@ const CreateAssignTest = async (req, res) => {
         });
     }else{
       res.status(405).json({
+        data: assignTest,
         message: "Test Cant be assigned, a test is already assigned for this time"
       })
     }
@@ -251,6 +256,26 @@ const UpdateTimeAssignTest =  async (req, res) => {
     },{
       time_taken: 120
     })
+    res.json({
+      message: "updated successfully"
+    })
+  } catch (error) {
+    res.json({
+      message: error.message
+    })
+  }
+}
+const UpdateAllTestMarks =  async (req, res) => {
+  try {
+    await AttemptTest.updateMany({},{
+      total_marks: 200
+    })
+    await AssignTest.updateMany({},{
+      total_marks: 200
+    })
+    res.json({
+      message: "update successfully"
+    })
   } catch (error) {
     res.json({
       message: error.message
@@ -259,6 +284,7 @@ const UpdateTimeAssignTest =  async (req, res) => {
 }
 
 module.exports = {
+  UpdateAllTestMarks,
   UpdateTimeAssignTest,
   CreateAssignTest,
   ViewAssignedTest,

@@ -78,6 +78,9 @@ const AttemptTestSchema = new mongoose.Schema({
     test_duration:{
         type:Number,
     },
+    total_marks:{
+        type: Number,
+    },
     status:{
         type: Boolean,
         default: false

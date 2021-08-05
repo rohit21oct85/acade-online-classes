@@ -64,6 +64,9 @@ const AssignTestSchema = new mongoose.Schema({
       total_question:{
             type: Number,
       },
+      total_marks:{
+            type: Number,
+      },
       test_subjects: {
             type: Array,
       },

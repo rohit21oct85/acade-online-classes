@@ -14,7 +14,9 @@ export default function useCreateAssignTest(formData) {
       const location = useLocation();
       const path = location.pathname;
       const history = useHistory();
-      
+      const class_id = params?.class_id
+      const school_id = params?.school_id
+      const test_type = params?.test_type
       const options = {
             headers: {
                   'Content-Type': 'Application/json',
@@ -29,7 +31,7 @@ export default function useCreateAssignTest(formData) {
         },{
             onSuccess: () => {
                 queryClient.invalidateQueries(`${key}`)
-                history.push(`${path}`);
+                history.push(`/admin/assign-test/view/${school_id}/${test_type}/${class_id}`);
                 addToast('test assigned successfully', { appearance: 'success', autoDismiss: true });
             }
         });

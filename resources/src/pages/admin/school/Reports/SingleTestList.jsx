@@ -53,7 +53,7 @@ export default function SingleTestList() {
                   </div> 
                   <div className={`${!params?.test_id ? 'pl-0 pb-3 table table-responsive': ''}`} style={{ 
                         overflow: 'scroll hidden',
-                        marginRight: '120px'
+                        marginRight: '100px'
                   }}>
                         <table>
                         
@@ -75,7 +75,7 @@ export default function SingleTestList() {
                                     <th className="border col-md-4">End Date</th>
                                     <th className="border pl-3 hidden_col" style={{ 
                                           position: 'fixed', 
-                                          width: '150px',
+                                          width: '190px',
                                           right: '25px',
                                           background: 'white'
                                     }}>Action</th>
@@ -112,11 +112,11 @@ export default function SingleTestList() {
                                     <td className="border hidden_col"
                                     style={{ 
                                           position: 'fixed', 
-                                          width: '150px',
+                                          width: '190px',
                                           right: '25px',
                                           background: 'white'
                                     }}>
-                                    <button className="dark bg-success btn btn-sm"
+                                    <button className="dark bg-success btn btn-block btn-sm"
                                     style={{
                                           width: '100%'
                                     }}

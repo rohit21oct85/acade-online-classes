@@ -13,6 +13,9 @@ export default function useDeleteSchoolMockTest(formData) {
       const history = useHistory();
       const queryClient = useQueryClient()
       const {state} = useContext(AuthContext);
+      const class_id = params?.class_id
+      const school_id = params?.school_id
+      let key;
       const options = {
             headers: {
                   'Content-Type': 'Application/json',
@@ -20,11 +23,17 @@ export default function useDeleteSchoolMockTest(formData) {
             }
       }      
       const { addToast } = useToasts();
+      if(state.access_token && school_id && params?.test_type !== 'mock-test' && class_id ){
+            key = `assign-tests-${school_id}-${params?.test_type}-${class_id}`;
+        }else if(state.access_token && school_id && params?.test_type === 'mock-test'){
+            key = `assign-tests-${school_id}-${params?.test_type}`;
+        }
+    
       const status =  useMutation((formData) => {
             return axios.post(`${API_URL}v1/mock-test/delete-all-test`,formData, options)
         },{
         onSuccess: () => {
-            queryClient.invalidateQueries(`assign-tests-${params?.school_id}-${params?.test_type}`)
+            queryClient.invalidateQueries(`${key}`)
             history.push(path);
             addToast('Schools deleted successfully', { appearance: 'success',autoDismiss: true });
         }

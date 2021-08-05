@@ -35,14 +35,15 @@ export default function CreateAssignTest() {
       const {data: singleTest} = useSingleAssignedTest();
       // console.log(unitTests);
       const timeWindows = [
-            {key:'1', value:'1 Hrs'},
-            {key:'2', value:'2 Hrs'},
-            {key:'3', value:'3 Hrs'},
-            {key:'4', value:'4 Hrs'},
-            {key:'5', value:'5 Hrs'},
-            {key:'6', value:'6 Hrs'},
-            {key:'7', value:'7 Hrs'},
-            {key:'8', value:'8 Hrs'},
+            {key:'60', value:'1 Hrs'},
+            {key:'120', value:'2 Hrs'},
+            {key:'180', value:'3 Hrs'},
+            {key:'240', value:'4 Hrs'},
+            {key:'300', value:'5 Hrs'},
+            {key:'360', value:'6 Hrs'},
+            {key:'420', value:'7 Hrs'},
+            {key:'480', value:'8 Hrs'},
+            {key:'540', value:'9 Hrs'},
       ]
       const [formData, setFormData] = useState({});
       const createMutation = useCreateAssignTest(formData);
@@ -75,46 +76,67 @@ export default function CreateAssignTest() {
                   formData['school_name'] = school_name
                   formData['school_id'] = school_id
                   if(params?.test_type === 'mock-test'){
+                        
                         let testData = helper.getCollectionData(mockTests, '_id', formData['test_id']);
-                        formData['test_name'] = testData?.test_name
-                        formData['test_window'] = +testWindow*60
-                        formData['test_type'] = testData?.test_type
-                        formData['test_duration'] = testData?.test_duration
-                        formData['start_date'] = startDate
-                        formData['attemptedStudentIds'] = []
-                        await createMutation.mutate(formData, {
-                              onError: (error) => {
-                                    if(error.response.status == 405){
-                                          let message = 'Test cant be assigned at this time\n Some test with the same timing already assigned.\n Change test timing and assign again';
-                                          addToast(message, { appearance: 'error', autoDismiss: true });
+                        if(+testWindow < +testData?.test_duration){
+                              let message = `test window: ${testWindow} Min should geater than selected \n test duration: ${testData?.test_duration} Min`;
+                              addToast(message, { appearance: 'error', autoDismiss: true, autoDismissTimeout: 5000});
+                        }else{
+                              formData['test_name'] = testData?.test_name
+                              formData['test_window'] = testWindow
+                              formData['test_type'] = testData?.test_type
+                              formData['test_duration'] = testData?.test_duration
+                              formData['start_date'] = startDate
+                              formData['attemptedStudentIds'] = []
+                              await createMutation.mutate(formData, {
+                                    onError: (error) => {
+                                          let test_name = error.response.data.data.test_name
+                                          let start_date = new Date(error.response.data.data.start_date)
+                                          let test_window = error.response.data.data.test_window
+                                          start_date = start_date.setMinutes( start_date.getMinutes() + test_window );
+                                          if(error.response.status == 405){
+                                                let message = `This test cant be assigned at this time. Because \n Test Name: ${test_name} \n is scheduled at start Time: ${new Date(error.response.data.data.start_date).toLocaleString()} \n End Time: ${new Date(start_date).toLocaleString()}`;
+                                                addToast(message, { appearance: 'error', autoDismiss: true, autoDismissTimeout: 5000});
+                                          }
                                     }
-                              }
-                        });
+                              });
+                        }
                   }else{
                         let class_name = getFilteredData(SClass,'_id' ,class_id, 'class_name');
                         let test_name = getFilteredData(unitTests,'_id' ,formData['test_id'], 'test_name');
                         let testData = helper.getCollectionData(unitTests, '_id', formData['test_id']);
                         let subject = helper.getCollectionData(subjects,'subject_name',testData?.subject_name,'_id')
-                        formData['class_id'] = class_id
-                        formData['class_name'] = class_name
-                        formData['test_name'] = test_name
-                        formData['test_window'] = +testWindow*60
-                        formData['test_type'] = testData?.test_type
-                        formData['test_subjects'] = testData?.test_subjects
-                        formData['subject_id'] = subject?._id
-                        formData['subject_name'] = testData?.subject_name
-                        formData['test_duration'] = testData?.test_duration
-                        formData['total_question'] = testData?.total_question
-                        formData['start_date'] = startDate
-                        // console.log(formData); return;
-                        await createMutation.mutate(formData, {
-                              onError: (error) => {
-                                    if(error.response.status == 405){
-                                          let message = 'Test cant be assigned at this time\n Some test with the same timing already assigned.\n Change test timing and assign again';
-                                          addToast(message, { appearance: 'error', autoDismiss: true });
+                        if(+testWindow < +testData?.test_duration){
+                              let message = `test window: ${testWindow} Min should geater than selected \n test duration: ${testData?.test_duration} Min`;
+                              addToast(message, { appearance: 'error', autoDismiss: true, autoDismissTimeout: 5000});
+                        }else{
+                              formData['class_id'] = class_id
+                              formData['class_name'] = class_name
+                              formData['test_name'] = test_name
+                              formData['test_window'] = testWindow
+                              formData['test_type'] = testData?.test_type
+                              formData['test_subjects'] = testData?.test_subjects
+                              formData['subject_id'] = subject?._id
+                              formData['subject_name'] = testData?.subject_name
+                              formData['test_duration'] = testData?.test_duration
+                              formData['total_question'] = testData?.total_question
+                              formData['total_marks'] = testData?.total_marks
+                              formData['start_date'] = startDate
+                              // console.log(formData); return;
+                              await createMutation.mutate(formData, {
+                                    onError: (error) => {
+                                          let test_name = error.response.data.data.test_name
+                                          let start_date = new Date(error.response.data.data.start_date)
+                                          let test_window = error.response.data.data.test_window
+                                          start_date = start_date.setMinutes( start_date.getMinutes() + test_window );
+                                          if(error.response.status == 405){
+                                                let message = `This test cant be assigned at this time. Because \n Test Name: ${test_name} \n is scheduled @ \n\n start Time: ${new Date(error.response.data.data.start_date).toLocaleString()} and End Time: ${new Date(start_date).toLocaleString()}`;
+                                                addToast(message, { appearance: 'error', autoDismiss: true, autoDismissTimeout: 5000});
+                                          }
                                     }
-                              }
-                        });
+                              });
+                        }
+                        
                   }
       
                   
@@ -189,7 +211,7 @@ export default function CreateAssignTest() {
                               )
                               }
                               
-                        <tbody className="pt-2 pr-0 no-gutter" style={{ height: '200px',maxHeight: '200px', overflowY: 'scroll', overflowX: 'hidden'}}>
+                        <tbody className="pt-2 pr-0 no-gutter" style={{ height: 'auto',maxHeight: '300px', overflowY: 'scroll', overflowX: 'hidden'}}>
                               {(params?.test_type === 'single-test' || params?.test_type === 'combine-test') && unitTests?.map((tests, index) => {
                               let assigned = checkAssigned(tests?._id);      
                               let subjects = '';
