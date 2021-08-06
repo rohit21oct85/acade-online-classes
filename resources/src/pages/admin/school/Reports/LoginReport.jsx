@@ -80,9 +80,9 @@ export default function LoginReport() {
                               let hourDifference;
                               if(rep?.user_log?.total_session){
                                     seconds = Math.floor(rep?.user_log?.total_session);
-                                    hour = Math.floor(seconds/3600) 
-                                    minute = Math.floor(seconds/60 - (hour * 60)) 
-                                    sec = Math.floor(seconds - (hour * 3600 + minute * 60))
+                                    hour = Math.floor(seconds/1000/3600) 
+                                    minute = Math.floor(seconds/1000/60 - (hour * 60)) 
+                                    sec = Math.floor(seconds/1000 - (hour * 3600 + minute * 60))
                                     hourDifference = `${hour} Hr ${minute} Min ${sec} Sec`
                               }else{
                                     if(rep?.user_log?.logout_time){
@@ -91,7 +91,7 @@ export default function LoginReport() {
                                           let diffTime = Math.round(logout_time - login_time);
                                           hour = Math.floor(diffTime/1000/3600)
                                           minute = Math.floor(diffTime/1000/60 - (hour*60))
-                                          sec = Math.floor(diffTime/1000)
+                                          sec = Math.floor(diffTime/1000 - (hour * 3600 + minute * 60))
                                           hourDifference =`${hour} hr ${minute} min ${sec} sec` 
                                     }else{
                                           if(rep.isLoggedIn){

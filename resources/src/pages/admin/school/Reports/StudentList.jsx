@@ -115,9 +115,9 @@ export default function StudentList() {
                               let hourDifference;
                               if(total_time !== undefined){
                                     let seconds = Math.floor(total_time);
-                                    let hour = Math.floor(seconds/3600) 
-                                    let minute = Math.floor(seconds/60 - (hour * 60)) 
-                                    let sec = Math.floor(seconds - (hour * 3600 + minute * 60))
+                                    let hour = Math.floor(seconds/1000/3600) 
+                                    let minute = Math.floor(seconds/1000/60 - (hour * 60)) 
+                                    let sec = Math.floor(seconds/1000 - (hour * 3600 + minute * 60))
                                     hourDifference = `${(hour === 'NaN') ? 0 : hour} Hr ${(minute === 'NaN') ? 0 : minute} Min ${(sec === 'NaN') ? 0 : sec} Sec`
 
                               }else{

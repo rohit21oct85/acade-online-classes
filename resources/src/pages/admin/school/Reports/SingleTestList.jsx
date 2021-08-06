@@ -15,6 +15,9 @@ export default function SingleTestList() {
             case 'mock-test':
                   label = 'Mock Test List';
                   break;
+            case 'combine-test':
+                  label = 'Rivision Test List';
+                  break;
             case 'single-test':
                   label = 'Assign Test List'
                   break;
@@ -82,7 +85,7 @@ export default function SingleTestList() {
                               </tr> 
                               </thead>  
                         )}
-                        {!params?.test_id && (params?.test_type === 'single-test' || params?.test_type === 'mock-test' || params?.test_type === 'upload-test') && reports?.map(rep => {
+                        {!params?.test_id && (params?.test_type === 'single-test' || params?.test_type === 'mock-test' || params?.test_type === 'upload-test' || params?.test_type === 'combine-test') && reports?.map(rep => {
                               let tsubjects;
                               if(rep?.test_subjects !== null){
                                     if(rep?.test_subjects?.length > 0){

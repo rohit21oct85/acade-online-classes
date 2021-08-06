@@ -270,7 +270,7 @@ const schoolReport = async (req, res) => {
                 test_type: req?.params?.test_type,
                 assigned: true
             }
-        }else if((test_type === 'single-test' || test_type === 'upload-test')){
+        }else if((test_type === 'single-test' || test_type === 'upload-test' || test_type === 'combine-test')){
             filter = {
                 school_id: req?.params?.school_id,
                 class_id: req?.params?.class_id,
