@@ -214,7 +214,9 @@ export default function StudentList() {
                                                       </div>
                                                       )}
                                                       
-                                                      {params?.test_type === 'single-test' && (
+                                                      {(params?.test_type === 'single-test' ||
+                                                      params?.test_type === 'combine-test' || 
+                                                      params?.test_type === 'upload-test') && (
                                                       <div className="flex col-md-12"
                                                       style={{
                                                             flexWrap: 'wrap',
