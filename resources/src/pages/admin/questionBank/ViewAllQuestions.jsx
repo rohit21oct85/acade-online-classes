@@ -133,10 +133,10 @@ export default function ViewAllQuestions() {
                                     return (
                                         <>
                                         <tr className="flex col-md-12 ml-2 mr-2 pt-1 table-bordered">
-                                            <td className="col-md-1">#</td> 
-                                            <td className="col-md-10">{unit?.unit_name}</td>
+                                            <td className="col-md-1 pl-0"><b>#</b></td> 
+                                            <td className="col-md-10"><b>{unit?.unit_name}</b></td>
                                             <td className="col-md-2">
-                                                {total_questions}
+                                                <b>{total_questions}</b>
                                             </td>
                                         </tr>
                                         {ULists?.map( q => {
