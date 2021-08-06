@@ -64,7 +64,6 @@ const getAssignedTestsStudent = async (req, res) => {
                 //         }
                 //     ]
             },{__v: 0}).limit(1).sort({start_date:-1});
-            // console.log(AssignedTests,"AssignedTests");
             test_type= AssignedTests?.test_type
         // const attemptedTest = await AttemptTest.find(
         //     {
@@ -81,7 +80,6 @@ const getAssignedTestsStudent = async (req, res) => {
         //             }
         //         ]
         //     },{__v: 0});
-        //     // console.log(attemptedTest,"attemptedTest")
         // if(attemptedTest.length != AssignedTests.length){
         //     if(attemptedTest.length > 0){
         //         AssignedTests.forEach(item=>{
@@ -243,62 +241,103 @@ const getTeacherSubject = async (req, res) => {
 
 const getAllAssignedTestsClassBased = async (req, res) => {
     try{
-        const AssignedTests = await AssignTest.find(
+        const AssignedTests = await AssignTest.findOne(
             {
                 // subject_id:req.params.subject_id,
                 school_id:req.params.school_id,
                 class_id:req.params.class_id,
                 assigned:false,
-                test_type: "single-test",
+                test_type: {$not : {$eq : "mock-test"}},
                 "test_subjects.subject_id": {
                     $eq : req.params.subject_id
                 },
-                $and: [
-                    {
-                        "start_date": { 
-                            $gte: new Date().toISOString()
-                        }
-                    }
-                ]
-            },{__v: 0});
-            
-        const newData = await UnitTest.find(
-            {
-                // subject_id:req.params.subject_id,
-                class_id:req.params.class_id,
-                "test_subjects.subject_id": {
-                    $eq : req.params.subject_id
-                },
-            },{__v: 0});
-
+                // $and: [
+                //     {
+                //         "start_date": { 
+                //             $gte: new Date().toISOString()
+                //         }
+                //     }
+                // ]
+            },{__v: 0}).limit(1).sort({start_date:-1});
+            let filter = {}
             let newArray = [];
-        AssignedTests.forEach(item=>{
-            newData.forEach(it => {
-                if(item.test_id == it._id){
-                    newArray.push({
-                        // test_question: it.test_question,
-                        test_name:it.test_name,
-                        test_duration_unit:it.test_duration,
-                        unit_id:it.unit_id,
-                        unit_name:it.unit_name,
-                        test_slug:it.test_slug,
-                        total_question:it.total_question,
-                        unit_table_id:it._id,
-                        class_id: item.class_id,
-                        class_name: item.class_name,
-                        school_id: item.school_id,
-                        test_id: item.test_id,
-                        assigned: item.assigned,
-                        assign_table_id: item._id,
-                        test_window: item.test_window,
-                        start_date: item.start_date,
-                        test_subjects: item.test_subjects,
-                        test_duration:item.test_duration,
-
-                    })
+            if(AssignedTests != null){
+                if(AssignedTests.test_type == "single-test"){
+                    filter = {
+                        _id:  AssignedTests.test_id,
+                        // class_id:req.params.class_id,
+                        // "test_subjects.subject_id": {
+                        //     $eq : req.params.subject_id
+                        // },
+                    }
+                }else{
+                    filter = {
+                        _id:  AssignedTests.test_id,
+                        // assign_class_id:req.params.class_id,
+                        // "test_subjects.subject_id": {
+                        //     $eq : req.params.subject_id
+                        // },
+                    }
                 }
-            })
-        })
+                newArray  = await UnitTest.find(filter,{__v: 0}).lean();
+                if(newArray.length > 0){
+                    newArray[0].test_name=newArray[0].test_name;
+                    newArray[0].test_duration_unit=newArray[0].test_duration;
+                    newArray[0].unit_id=newArray[0].unit_id;
+                    newArray[0].unit_name=newArray[0].unit_name;
+                    newArray[0].test_slug=newArray[0].test_slug;
+                    newArray[0].total_question=newArray[0].total_question;
+                    newArray[0].unit_table_id=newArray[0]._id;
+                    newArray[0].class_id= AssignedTests.class_id;
+                    newArray[0].class_name= AssignedTests.class_name;
+                    newArray[0].school_id= AssignedTests.school_id;
+                    newArray[0].test_id= AssignedTests.test_id;
+                    newArray[0].assigned= AssignedTests.assigned;
+                    newArray[0].assign_table_id= AssignedTests._id;
+                    newArray[0].test_window= AssignedTests.test_window;
+                    newArray[0].start_date= AssignedTests.start_date;
+                    newArray[0].test_subjects= AssignedTests.test_subjects;
+                    newArray[0].test_duration=AssignedTests.test_duration;
+                    newArray[0].total_marks=AssignedTests.total_marks;
+                }
+            }
+        
+        // const newData = await UnitTest.find(
+        //     {
+        //         // subject_id:req.params.subject_id,
+        //         class_id:req.params.class_id,
+        //         "test_subjects.subject_id": {
+        //             $eq : req.params.subject_id
+        //         },
+        //     },{__v: 0});
+        //     let newArray = [];
+        // AssignedTests.forEach(item=>{
+        //     newData.forEach(it => {
+        //         if(item.test_id == it._id){
+        //             newArray.push({
+        //                 // test_question: it.test_question,
+        //                 test_name:it.test_name,
+        //                 test_duration_unit:it.test_duration,
+        //                 unit_id:it.unit_id,
+        //                 unit_name:it.unit_name,
+        //                 test_slug:it.test_slug,
+        //                 total_question:it.total_question,
+        //                 unit_table_id:it._id,
+        //                 class_id: item.class_id,
+        //                 class_name: item.class_name,
+        //                 school_id: item.school_id,
+        //                 test_id: item.test_id,
+        //                 assigned: item.assigned,
+        //                 assign_table_id: item._id,
+        //                 test_window: item.test_window,
+        //                 start_date: item.start_date,
+        //                 test_subjects: item.test_subjects,
+        //                 test_duration:item.test_duration,
+
+        //             })
+        //         }
+        //     })
+        // })
         return res.status(200).json({ 
             data: newArray 
         });    
@@ -357,7 +396,8 @@ const getAllAssignedTests = async (req, res) => {
                         test_window: item.test_window,
                         start_date: item.start_date,
                         test_subjects:item.test_subjects,
-                        test_duration:item.test_duration
+                        test_duration:item.test_duration,
+                        total_marks:item.total_marks,
                     })
                 }
             })
@@ -556,6 +596,7 @@ const attemptTestByStudent = async (req, res) =>{
                 start_date: assignTest.start_date,
                 test_window: assignTest.test_window,
                 test_duration: assignTest.test_duration,
+                total_marks: assignTest.total_marks,
                 student_roll_no: student.roll_no,
                 student_emp_id: student.EmpId,
                 student_class_name: student.class
@@ -589,6 +630,7 @@ const attemptTestByStudent = async (req, res) =>{
                 start_date: newData1.start_date,
                 test_window: newData1.test_window,
                 test_duration: newData1.test_duration,
+                total_marks: newData1.total_marks,
                 section:req.body.section,
                 student_roll_no: student.roll_no,
                 student_emp_id: student.EmpId,
@@ -624,6 +666,7 @@ const attemptTestByStudent = async (req, res) =>{
                 test_window: newData1.test_window,
                 test_duration: newData1.test_duration,
                 test_name:newData1.test_name,
+                total_marks:newData1.total_marks,
                 section:req.body.section,
                 student_roll_no: student.roll_no,
                 student_emp_id: student.EmpId,
@@ -652,7 +695,7 @@ const attemptTestByStudentOffline = async (req, res) =>{
     try {
         let result = [];
         if(req.body.test_type == "upload-test"){
-            const assignTest = await AssignTest.findOne({_id:req.body.assign_test_id},{__v: 0})
+            const assignTest = await AssignTest.findOne({_id:req.body.assign_test_id},{__v: 0}).lean()
             const student = await Student.findOne({_id:req.body.user_id},{roll_no:1,class:1,EmpId:1})
             const attempt = new AttemptTest({
                 school_id: req.body.school_id,
@@ -671,12 +714,13 @@ const attemptTestByStudentOffline = async (req, res) =>{
                 start_date: assignTest.start_date,
                 test_window: assignTest.test_window,
                 test_duration: assignTest.test_duration,
+                total_marks: assignTest.total_marks,
                 student_roll_no: student.roll_no,
                 student_emp_id: student.EmpId,
                 student_class_name: student.class
             });   
             result = await attempt.save();
-            await AssignTest.findOneAndUpdate({test_id:req.body.id}, {
+            await AssignTest.findOneAndUpdate({_id:req.body.assign_test_id}, {
                 $addToSet: {
                     attemptedStudentIds: req.body.user_id
                 }
@@ -688,7 +732,7 @@ const attemptTestByStudentOffline = async (req, res) =>{
                 {
                     test_id: req.body.id,
                     school_id: req.body.school_id,
-                },{__v: 0});
+                },{__v: 0}).lean();
 
             const attempt = new AttemptTest({
                 school_id: req.body.school_id,
@@ -704,6 +748,7 @@ const attemptTestByStudentOffline = async (req, res) =>{
                 start_date: newData1.start_date,
                 test_window: newData1.test_window,
                 test_duration: newData1.test_duration,
+                total_marks: newData1.total_marks,
                 section:req.body.section,
                 student_roll_no: student.roll_no,
                 student_emp_id: student.EmpId,
@@ -724,18 +769,26 @@ const attemptTestByStudentOffline = async (req, res) =>{
 
             await Promise.all(newData.test_question.map(async (item, key)=>{
                 singleQuestion = await Questions.findOne({_id: item.question_id},{answer:0,solution:0})
-                item.question = singleQuestion.question;
-                item.option_a = singleQuestion.option_a;
-                item.option_b = singleQuestion.option_b;
-                item.option_c = singleQuestion.option_c;
-                item.option_d = singleQuestion.option_d;
-                item._id = item.question_id;
+                if(singleQuestion.extension == "docx"){
+                    item.question = singleQuestion.question;
+                    item._id = item.question_id;
+                    item.option_a = singleQuestion.options[0];
+                    item.option_b = singleQuestion.options[1];
+                    item.option_c = singleQuestion.options[2];
+                    item.option_d = singleQuestion.options[3];
+                }else{
+                    item.question = singleQuestion.question;
+                    item.option_a = singleQuestion.option_a;
+                    item.option_b = singleQuestion.option_b;
+                    item.option_c = singleQuestion.option_c;
+                    item.option_d = singleQuestion.option_d;
+                    item._id = item.question_id;
+                }
             }))
             const newData1 = await AssignTest.findOne(
                 {
                     test_id: req.body.id,
-                },{__v: 0});
-                
+                },{__v: 0}).lean();
             const attempt = new AttemptTest({
                 school_id: req.body.school_id,
                 class_id: req.body.class_id,
@@ -748,7 +801,8 @@ const attemptTestByStudentOffline = async (req, res) =>{
                 start_date: newData1.start_date,
                 test_window: newData1.test_window,
                 test_duration: newData1.test_duration,
-                test_name:newData1.test_name,
+                test_name: newData1.test_name,
+                total_marks: newData1.total_marks,
                 section:req.body.section,
                 student_roll_no: student.roll_no,
                 student_emp_id: student.EmpId,
@@ -761,7 +815,6 @@ const attemptTestByStudentOffline = async (req, res) =>{
                 }
             })
         }
-        
         return res.status(200).json({
             message: "AttemptTest created sucessfully",
             data: result
@@ -923,7 +976,7 @@ const saveAnswerOffline = async (req,res) => {
                     attemptId: data._id,
                 }); 
             }
-        }else if(req.params.test_type == "single-test"){
+        }else if(req.params.test_type == "single-test" || req.params.test_type == "combine-test"){
             let optionsDocx = [{key: 0,value: " A", option: "option_a",},{key: 1,value: " B", option: "option_b",},{key: 3,value: " C", option: "option_c",},{key: 4,value: " D", option: "option_d",}];
 
             const data = await AttemptTest.findOne({_id:req.body.data.attemptId}).lean()
@@ -1017,6 +1070,7 @@ const getLastScore = async (req,res) => {
         let correctAnswers = 0;
         let wrongAnswers = 0;
         let totalQuestions = result?.questions?.length;
+        let marksPerQuestion = (result.total_marks / totalQuestions).toFixed(2);
         if(result.test_type == "mock-test"){
             result?.questions?.map((item,key)=>{
                 if(item.answer != undefined ){
@@ -1052,13 +1106,15 @@ const getLastScore = async (req,res) => {
             correctAnswers : correctAnswers,
             wrongAnswers : wrongAnswers,
             attemptedQuestions: correctAnswers + wrongAnswers,
+            marksPerQuestion : marksPerQuestion,
             create_at:result?.create_at,
             _id:result?._id,
             questions:result?.questions,
             time_taken:result?.time_taken,
             test_id:result?.test_id,
             test_type:result?.test_type,
-            extension:result?.extension
+            extension:result?.extension,
+            total_marks:result?.total_marks
         }
         if(!result){
             data = null
@@ -1104,11 +1160,13 @@ const getCumulativeScore = async (req,res) => {
         let newArray = [];
         result?.map((item,key) => {
             const test_type = item.test_type;
-            let obj = {correctAnswers : 0,wrongAnswers : 0,marksScored : 0,totalMarks : 0,created_at:null,};
+            let obj = {correctAnswers : 0,wrongAnswers : 0,marksScored : 0,totalMarks : 0,created_at:null,marksPerQuestion : 0};
             obj.created_at = item.create_at;
             obj.time_taken = item.time_taken;
             obj.student_name = item.student_name;
             obj.test_name = item.test_name
+            obj.marksPerQuestion = (item.total_marks / item?.questions.length).toFixed(2);
+            obj.totalMarks = item.total_marks;
             item?.questions?.map((it,key)=>{
                 if(it.answer != undefined ){
                     if(test_type == "mock-test"){
@@ -1130,8 +1188,8 @@ const getCumulativeScore = async (req,res) => {
                     }
                 }
             })
-            obj.marksScored = obj.correctAnswers;
-            obj.totalMarks = obj.correctAnswers +obj.wrongAnswers;
+            obj.marksScored = obj.correctAnswers * obj.marksPerQuestion;
+            // obj.totalMarks = obj.correctAnswers +obj.wrongAnswers;
             marksScored = correctAnswers;
             totalMarks = correctAnswers + wrongAnswers;
             newArray.push(obj);
@@ -1160,6 +1218,7 @@ const getResult = async (req,res) => {
             let wrongAnswers = 0;
             let totalQuestions = result?.questions?.length;
             let timeEndTest = new Date(result?.start_date)
+            let marksPerQuestion = (result.total_marks / totalQuestions).toFixed(2);
             timeEndTest.setMinutes( timeEndTest.getMinutes() + result?.test_window );
             result?.questions?.map((item,key)=>{
                 if(item.answer != undefined ){
@@ -1176,6 +1235,8 @@ const getResult = async (req,res) => {
                 wrongAnswers : wrongAnswers,
                 attemptedQuestions: correctAnswers + wrongAnswers,
                 end_time: timeEndTest,
+                total_marks : result.total_marks,
+                marksPerQuestion : marksPerQuestion, 
             }
         }else if(req.params.test_type == "mock-test"){
             const result = await AttemptTest.findOne({_id: req?.params?.attempt_id});
@@ -1183,6 +1244,7 @@ const getResult = async (req,res) => {
             let wrongAnswers = 0;
             let totalQuestions = result?.questions?.length;
             let timeEndTest = new Date(result.start_date)
+            let marksPerQuestion = (result.total_marks / totalQuestions).toFixed(2)
             timeEndTest.setMinutes(timeEndTest.getMinutes() + result?.test_window );
             result?.questions?.map((item,key)=>{
                 if(item.answer != undefined ){
@@ -1200,6 +1262,8 @@ const getResult = async (req,res) => {
                 wrongAnswers : wrongAnswers,
                 attemptedQuestions: correctAnswers + wrongAnswers,
                 end_time: timeEndTest,
+                total_marks : result.total_marks,
+                marksPerQuestion : marksPerQuestion, 
             }
         }else{
             const result = await AttemptTest.findOne({_id: req?.params?.attempt_id});
@@ -1207,6 +1271,7 @@ const getResult = async (req,res) => {
             let wrongAnswers = 0;
             let totalQuestions = result?.questions?.length;
             let timeEndTest = new Date(result.start_date)
+            let marksPerQuestion = (result.total_marks / totalQuestions).toFixed(2)
             timeEndTest.setMinutes(timeEndTest.getMinutes() + result?.test_window );
             result?.questions?.map((item,key)=>{
                 if(item.answer != undefined ){
@@ -1224,6 +1289,8 @@ const getResult = async (req,res) => {
                 wrongAnswers : wrongAnswers,
                 attemptedQuestions: correctAnswers + wrongAnswers,
                 end_time: timeEndTest,
+                total_marks : result.total_marks,
+                marksPerQuestion : marksPerQuestion, 
             }
         }
         return res.status(200).json({ 
@@ -1253,9 +1320,11 @@ const getStudentWiseReport = async (req,res) => {
         let wrongAnswers = 0;
         let marksScored = 0;
         let totalMarks = 0;
+        let marksPerQuestion = 0;
         const TestsAttemptedByStudents = await AttemptTest.find(filter).lean();
         TestsAttemptedByStudents.map((item,key)=>{
-            totalMarks = item.questions.length;
+            marksPerQuestion = (item.total_marks / item.questions.length).toFixed(2);
+            totalMarks = item.total_marks;
             correctAnswers = 0;
             wrongAnswers = 0;
             item.questions.map((it,key)=>{
@@ -1268,9 +1337,10 @@ const getStudentWiseReport = async (req,res) => {
                 }
             })
             item.totalMarks = totalMarks;
-            item.correctAnswers = correctAnswers;
+            item.correctAnswers = correctAnswers * marksPerQuestion;
             item.wrongAnswers = wrongAnswers;
-            item.cScorePercentage = correctAnswers/totalMarks *100;
+            item.cScorePercentage = correctAnswers * marksPerQuestion / totalMarks * 100;
+            item.marksPerQuestion = marksPerQuestion;
         })
         return res.status(200).json({ 
             data: TestsAttemptedByStudents, 
@@ -1486,7 +1556,6 @@ const getClassSectionStudents = async (req, res) => {
             class_id: req.params.class_id,
             section: req.params.section
         }
-       
         await Promise.all(students.map(async(item, key)=>{
             const result = await AttemptTest.find({student_id:item._id,class_id:req.params.class_id,section:req.params.section, school_id:req.params.school_id})
             item.attemptedTests = result?.length;
@@ -1495,6 +1564,7 @@ const getClassSectionStudents = async (req, res) => {
                 let correctAnswers = 0;
                 let wrongAnswers = 0;
                 let totalQuestions = babe?.questions?.length;
+                let marksPerQuestion = (babe?.total_marks / totalQuestions).toFixed(2);
                 babe?.questions?.map((it,key)=>{
                     if(it.answer != undefined ){
                         if(it.option == it['correct_option']){
@@ -1504,12 +1574,12 @@ const getClassSectionStudents = async (req, res) => {
                         }
                     }
                 })
-                item.correctAnswers = correctAnswers
-                item.totalMarks = item.totalMarks + correctAnswers
-                item.totalQuestions = totalQuestions
-                item.wrongAnswers = wrongAnswers
-                item.percentage = ((item.totalMarks / totalQuestions) *100)?.toFixed(2)
-                item.average = item.totalMarks / item.attemptedTests
+                item.correctAnswers = correctAnswers * marksPerQuestion;
+                item.totalMarks = item.totalMarks + correctAnswers * marksPerQuestion
+                item.totalQuestions = totalQuestions;
+                item.wrongAnswers = wrongAnswers;
+                item.percentage = ((correctAnswers / totalQuestions) * 100)?.toFixed(2);
+                item.average = (item.totalMarks / item.attemptedTests)?.toFixed(2);
             })
         }))
         return res.status(200).json({ 

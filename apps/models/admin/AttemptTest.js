@@ -75,6 +75,9 @@ const AttemptTestSchema = new mongoose.Schema({
     test_window:{
         type:Number,
     },
+    total_marks:{
+        type:Number,
+    },
     test_duration:{
         type:Number,
     },
