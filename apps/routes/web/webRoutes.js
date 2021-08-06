@@ -39,7 +39,7 @@ router
     .get('/get-mock-test-questions/', checkAuth, Web.getMockTestQuestions)
     .get('/get-upload-test/:school_id?/:student_id?/:class_id?', checkAuth, Web.getUploadTest)
     .get('/get-uploaded-test-paper/:attempt_id?/:test_type?', checkAuth, Web.getUploadTestPaper)
-
+    .get('/test-internet',Web.testInternet)
     .get('/view-student/:id?', checkAuth, Web.getStudent)
     .patch('/update-student/:id?', checkAuth, Web.updateStudent)
 
