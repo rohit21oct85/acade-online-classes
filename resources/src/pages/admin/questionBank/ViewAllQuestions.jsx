@@ -9,7 +9,7 @@ import useClassSubjectList from '../../../hooks/classSubjectMapping/useClassSubj
 import useViewAllQuestions from './hooks/useViewAllQuestions';
 import useDeleteQuestion from './hooks/useDeleteQuestion';
 import useUnitList from '../units/hooks/useUnitList';
-
+import { export_table_to_csv } from '../../../utils/helper'
 
 export default function ViewAllQuestions() {
 
@@ -54,6 +54,11 @@ export default function ViewAllQuestions() {
         script.async = true;
         document.body.appendChild(script);
     },[])
+    const handleExport = () => {
+        var html = document.querySelector("table").outerHTML;
+        let file = `${label}_${start_date}_${end_date}`;
+        export_table_to_csv(html, `${file}.csv`);
+  }
     return (
         <div className="col-lg-10 col-md-10 main_dash_area">
             <div className="main-area-all">
@@ -100,38 +105,54 @@ export default function ViewAllQuestions() {
                                       )
                                 })}
                               </select>
+                              
                         </div>
                     </div>
                     <div className="clearfix"></div>
                     <div className="dash-cont-start">
                         <div className="row">
-                            <div className="col-md-12 flex" 
+                            <table className="col-md-12 flex" 
                             id="printDiv"
                             style={{ 
                                 height: '500px', overflow: 'hidden scroll',
                                 flexWrap: 'wrap'
                             }}>
-                                {questions?.length > 0 && units?.map(unit => {
+                                <tr className="flex col-md-12 ml-2 mr-2 pt-1 table-bordered">
+                                    <td className="col-md-1">Sr.</td> 
+                                    <td className="col-md-10">UnitName/Chapter Name</td>
+                                    <td className="col-md-2">
+                                        Total
+                                    </td>
+                                </tr>
+                                {questions?.length > 0 && units?.map((unit, ind) => {
                                     let ULists = questions?.filter(que => que?.unit_id === unit?._id);
+                                    let total = ULists.map(q => {
+                                        return q.total_question
+                                    })
+                                    let total_questions = total.reduce((a,b) => a+b)
                                     return (
                                         <>
-                                        <div className="col-md-8 ml-2 mt-2 mb-1 pl-2 bg-success text-white">
-                                        {unit?.unit_name}
-                                        </div>
+                                        <tr className="flex col-md-12 ml-2 mr-2 pt-1 table-bordered">
+                                            <td className="col-md-1">#</td> 
+                                            <td className="col-md-10">{unit?.unit_name}</td>
+                                            <td className="col-md-2">
+                                                {total_questions}
+                                            </td>
+                                        </tr>
                                         {ULists?.map( q => {
                                             return(
-                                                <div className="row col-md-8 ml-2 mb-2 mr-2 pt-1 table-bordered">
-                                                    <div className="col-md-1">
+                                                <tr className="flex col-md-12 ml-2 mr-2 pt-1 table-bordered" key={q?._id}>
+                                                    <td className="col-md-1 pl-2">
                                                         {q?.chapter_no}
-                                                    </div>
-                                                    <div className="col-md-9">
+                                                    </td>
+                                                    <td className="col-md-10">
                                                         {q?.chapter_name}
-                                                    </div>
-                                                    <div className="col-md-2">
+                                                    </td>
+                                                    <td className="col-md-2">
                                                         {q?.total_question}
-                                                    </div>
+                                                    </td>
                                                 
-                                                </div>
+                                                </tr>
         
                                             )
                                         })}
@@ -139,7 +160,7 @@ export default function ViewAllQuestions() {
                                     )
                                 })}
                                 
-                            </div>
+                            </table>
 
                         </div>
                     </div>    

@@ -336,7 +336,7 @@ const schoolActivityReport = async (req, res) => {
                 login_time: 1,
                 logout_time: 1,
                 total_session: 1,
-            }).sort({$natural: -1}).limit(1);
+            }).sort({isLoggedIn: -1}).limit(1);
             data.user_log = user_log;
         }))
         // let logData = await UserLog.find(filter).sort({sessionInProgress: -1});
