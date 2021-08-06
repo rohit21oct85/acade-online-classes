@@ -54,11 +54,15 @@ export default function ViewAllQuestions() {
         script.async = true;
         document.body.appendChild(script);
     },[])
+    let subData = subjects && subjects?.filter(sub => sub.subject_id === params?.subject_id);
+    let classData = sClasses && sClasses?.filter(cla => cla._id === params?.class_id);
+    console.log(subData);
     const handleExport = () => {
         var html = document.querySelector("table").outerHTML;
-        let file = `${label}_${start_date}_${end_date}`;
+        let file = `${classData && classData[0].class_name}_${subData && subData[0].subject_name}`;
         export_table_to_csv(html, `${file}.csv`);
-  }
+    }
+    let type = params?.type;
     return (
         <div className="col-lg-10 col-md-10 main_dash_area">
             <div className="main-area-all">
@@ -105,21 +109,34 @@ export default function ViewAllQuestions() {
                                       )
                                 })}
                               </select>
-                              
+                              <button className="btn btn-sm bg-success text-white ml-2"
+                              onClick={ () => {
+                                  
+                                  history.push(`/admin/view-all-questions/${params?.class_id}/${params?.subject_id}/${type === 'Units' ? 'Chapters': 'Units'}`)
+                              }}>{type === 'Units' ? 'Chapters': 'Units'} Wise Report</button>
+                              {type === 'Chapters' && (
+                                  <button className="ml-2 btn btn-sm bg-warning pull-right"
+                                  onClick={handleExport}>
+                                      <span className="bi bi-download mr-2"></span>
+                                      Download Chapters Report
+                                  </button>
+                              )}
                         </div>
                     </div>
                     <div className="clearfix"></div>
                     <div className="dash-cont-start">
                         <div className="row">
-                            <table className="col-md-12 flex" 
+
+                            <table className="table table-bordered col-md-12 flex" 
                             id="printDiv"
                             style={{ 
                                 height: '500px', overflow: 'hidden scroll',
                                 flexWrap: 'wrap'
                             }}>
-                                <tr className="flex col-md-12 ml-2 mr-2 pt-1 table-bordered">
+
+                                <tr className="header flex col-md-12 ml-2 mr-2 pt-1 table-bordered">
                                     <td className="col-md-1">Sr.</td> 
-                                    <td className="col-md-10">UnitName/Chapter Name</td>
+                                    <td className="col-md-10">{type === 'Units' ? 'UnitName/Chapter': 'Chapters'} Name</td>
                                     <td className="col-md-2">
                                         Total
                                     </td>
@@ -132,6 +149,7 @@ export default function ViewAllQuestions() {
                                     let total_questions = total.reduce((a,b) => a+b)
                                     return (
                                         <>
+                                        {params?.type === 'Units' && (
                                         <tr className="flex col-md-12 ml-2 mr-2 pt-1 table-bordered">
                                             <td className="col-md-1 pl-0"><b>#</b></td> 
                                             <td className="col-md-10"><b>{unit?.unit_name}</b></td>
@@ -139,6 +157,7 @@ export default function ViewAllQuestions() {
                                                 <b>{total_questions}</b>
                                             </td>
                                         </tr>
+                                        )}
                                         {ULists?.map( q => {
                                             return(
                                                 <tr className="flex col-md-12 ml-2 mr-2 pt-1 table-bordered" key={q?._id}>
@@ -146,7 +165,7 @@ export default function ViewAllQuestions() {
                                                         {q?.chapter_no}
                                                     </td>
                                                     <td className="col-md-10">
-                                                        {q?.chapter_name}
+                                                        {q?.chapter_name?.replaceAll(',',' ')}
                                                     </td>
                                                     <td className="col-md-2">
                                                         {q?.total_question}
