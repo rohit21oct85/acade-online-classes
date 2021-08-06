@@ -109,16 +109,18 @@ export default function ViewAllQuestions() {
                                       )
                                 })}
                               </select>
-                              <button className="btn btn-sm bg-success text-white ml-2"
-                              onClick={ () => {
-                                  
-                                  history.push(`/admin/view-all-questions/${params?.class_id}/${params?.subject_id}/${type === 'Units' ? 'Chapters': 'Units'}`)
-                              }}>{type === 'Units' ? 'Chapters': 'Units'} Wise Report</button>
-                              {type === 'Chapters' && (
+                              {params?.subject_id && (
+                                <button className="btn btn-sm bg-success text-white ml-2"
+                                onClick={ () => {
+                                    
+                                    history.push(`/admin/view-all-questions/${params?.class_id}/${params?.subject_id}/${type === 'Units' ? 'Chapters': 'Units'}`)
+                                }}>{type === 'Units' ? 'Chapters': 'Units'} Wise Report</button>
+                              )}
+                              {params?.subject_id && (
                                   <button className="ml-2 btn btn-sm bg-warning pull-right"
                                   onClick={handleExport}>
                                       <span className="bi bi-download mr-2"></span>
-                                      Download Chapters Report
+                                      Download {type} Report
                                   </button>
                               )}
                         </div>
@@ -136,7 +138,7 @@ export default function ViewAllQuestions() {
 
                                 <tr className="header flex col-md-12 ml-2 mr-2 pt-1 table-bordered">
                                     <td className="col-md-1">Sr.</td> 
-                                    <td className="col-md-10">{type === 'Units' ? 'UnitName/Chapter': 'Chapters'} Name</td>
+                                    <td className="col-md-10">{type} Name</td>
                                     <td className="col-md-2">
                                         Total
                                     </td>
@@ -151,14 +153,14 @@ export default function ViewAllQuestions() {
                                         <>
                                         {params?.type === 'Units' && (
                                         <tr className="flex col-md-12 ml-2 mr-2 pt-1 table-bordered">
-                                            <td className="col-md-1 pl-0"><b>#</b></td> 
+                                            <td className="col-md-1 pl-0"><b>{ind+1}</b></td> 
                                             <td className="col-md-10"><b>{unit?.unit_name}</b></td>
                                             <td className="col-md-2">
                                                 <b>{total_questions}</b>
                                             </td>
                                         </tr>
                                         )}
-                                        {ULists?.map( q => {
+                                        {params?.type === 'Chapters' && ULists?.map( q => {
                                             return(
                                                 <tr className="flex col-md-12 ml-2 mr-2 pt-1 table-bordered" key={q?._id}>
                                                     <td className="col-md-1 pl-2">
