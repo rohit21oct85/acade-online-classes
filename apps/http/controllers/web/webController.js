@@ -956,7 +956,7 @@ const saveAnswer = async (req,res) => {
 
 const saveAnswerOffline = async (req,res) => {
     try{
-        const answeredQuestions = req.body.data.questions;
+        const answeredQuestions = req.body.data.questions;       
         if(req.params.test_type == "mock-test"){
             const data = await AttemptTest.findOne({_id:req.body.data.attemptId})
             await Promise.all(data.questions.map(async( item, key)=>{
@@ -980,7 +980,7 @@ const saveAnswerOffline = async (req,res) => {
             let optionsDocx = [{key: 0,value: " A", option: "option_a",},{key: 1,value: " B", option: "option_b",},{key: 3,value: " C", option: "option_c",},{key: 4,value: " D", option: "option_d",}];
 
             const data = await AttemptTest.findOne({_id:req.body.data.attemptId}).lean()
-            await Promise.all(data.questions.map(async( item, key)=>{
+            await Promise.all(data.questions?.map(async( item, key)=>{
                 const un = await Questions.findOne({_id:item.question_id})
                 const answered = answeredQuestions.filter(it => item.question_id == it.question_id)
                 if(un?.extension == "docx")
@@ -1067,54 +1067,48 @@ const getLastScore = async (req,res) => {
         }
         // const data = await AttemptTest.findOne(filter).sort({"created_at": -1}).limit(1)
         const result = await AttemptTest.findOne(filter).limit(1).sort({$natural:-1})
-        let correctAnswers = 0;
-        let wrongAnswers = 0;
-        let totalQuestions = result?.questions?.length;
-        let marksPerQuestion = (result.total_marks / totalQuestions).toFixed(2);
-        if(result.test_type == "mock-test"){
-            result?.questions?.map((item,key)=>{
-                if(item.answer != undefined ){
-                    if((item.answer === 'yes' ? 'a' : 'b') === item?.correct_answer){
-                        correctAnswers = correctAnswers + 1;
-                    }else{
-                        wrongAnswers = wrongAnswers + 1;
+        if(result!=null){
+            let correctAnswers = 0;
+            let wrongAnswers = 0;
+            let totalQuestions = result?.questions?.length;
+            let marksPerQuestion = (result.total_marks / totalQuestions).toFixed(2);
+            if(result.test_type == "mock-test"){
+                result?.questions?.map((item,key)=>{
+                    if(item.answer != undefined ){
+                        if((item.answer === 'yes' ? 'a' : 'b') === item?.correct_answer){
+                            correctAnswers = correctAnswers + 1;
+                        }else{
+                            wrongAnswers = wrongAnswers + 1;
+                        }
                     }
-                }
-            })
-        }else{
-            result?.questions?.map((item,key)=>{
-                if(item.answer != undefined ){
-                    if(item.option == item['correct_option']){
-                        correctAnswers = correctAnswers + 1;
-                    }else{
-                        wrongAnswers = wrongAnswers + 1;
+                })
+            }else{
+                result?.questions?.map((item,key)=>{
+                    if(item.answer != undefined ){
+                        if(item.option == item['correct_option']){
+                            correctAnswers = correctAnswers + 1;
+                        }else{
+                            wrongAnswers = wrongAnswers + 1;
+                        }
                     }
-                }
-            })
-        }
-        // result?.questions?.map((item,key)=>{
-        //     if(item.answer != undefined ){
-        //         if(item.option == item['correct_option']){
-        //             correctAnswers = correctAnswers + 1;
-        //         }else{
-        //             wrongAnswers = wrongAnswers + 1;
-        //         }
-        //     }
-        // })
-        let data = {
-            totalQuestions : totalQuestions,
-            correctAnswers : correctAnswers,
-            wrongAnswers : wrongAnswers,
-            attemptedQuestions: correctAnswers + wrongAnswers,
-            marksPerQuestion : marksPerQuestion,
-            create_at:result?.create_at,
-            _id:result?._id,
-            questions:result?.questions,
-            time_taken:result?.time_taken,
-            test_id:result?.test_id,
-            test_type:result?.test_type,
-            extension:result?.extension,
-            total_marks:result?.total_marks
+                })
+            }
+            
+            let data = {
+                totalQuestions : totalQuestions,
+                correctAnswers : correctAnswers,
+                wrongAnswers : wrongAnswers,
+                attemptedQuestions: correctAnswers + wrongAnswers,
+                marksPerQuestion : marksPerQuestion,
+                create_at:result?.create_at,
+                _id:result?._id,
+                questions:result?.questions,
+                time_taken:result?.time_taken,
+                test_id:result?.test_id,
+                test_type:result?.test_type,
+                extension:result?.extension,
+                total_marks:result?.total_marks
+            }
         }
         if(!result){
             data = null
@@ -1972,6 +1966,18 @@ const updateAttempt = async ( req, res ) => {
     }
 }
 
+const testInternet = async ( req, res ) => {
+    try {
+        res.status(200).json({
+            message : "internet connected" 
+        })
+    } catch (error) {
+        res.status(500).json({
+            message : error.message
+        })
+    }
+}
+
 
 module.exports = {
     getSubjects,
@@ -2022,4 +2028,5 @@ module.exports = {
     updateAttempt,
     attemptTestByStudentOffline,
     saveAnswerOffline,
+    testInternet
 }
