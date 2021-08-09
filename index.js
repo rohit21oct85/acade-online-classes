@@ -27,7 +27,7 @@ job.start();
 //     origin: ['https://*.acadelearn.com/','http://admin-acadelearn.herokuapp.com/'],
 //     optionsSuccessStatus: 200 // For legacy browser support
 // }
-// app.use(cors(corsOptions));
+app.use(cors());
 
 app.use(bodyParser.json({limit: '500mb'}));
 app.use(bodyParser.urlencoded({ extended: true, limit: '500mb' }));
@@ -40,7 +40,7 @@ let ALLOWED_ORIGINS = ['https://acade-demo-school.acadelearn.com/','http://admin
 app.use((req, res, next) => {
     let origin = req.headers.origin;
     let theOrigin = (ALLOWED_ORIGINS.indexOf(origin) >= 0) ? origin : ALLOWED_ORIGINS[0];
-    res.header("Access-Control-Allow-Origin", theOrigin);
+    res.header("Access-Control-Allow-Origin", "*");
     res.setHeader(
         'Access-Control-Allow-Headers',
         'Origin, X-Requested-With, Content-Type, Accept, Authorization'
