@@ -956,7 +956,7 @@ const saveAnswer = async (req,res) => {
 
 const saveAnswerOffline = async (req,res) => {
     try{
-        const answeredQuestions = req.body.data.questions;       
+        const answeredQuestions = req.body.data.questions; 
         if(req.params.test_type == "mock-test"){
             const data = await AttemptTest.findOne({_id:req.body.data.attemptId})
             await Promise.all(data.questions.map(async( item, key)=>{
@@ -1059,6 +1059,7 @@ const getAllQuestions = async (req,res) => {
 
 const getLastScore = async (req,res) => {
     try{
+        let data = {};
         const filter = {
             school_id :req.body.school_id,
             // subject_id:req.params.subject_id,
@@ -1094,7 +1095,7 @@ const getLastScore = async (req,res) => {
                 })
             }
             
-            let data = {
+            data = {
                 totalQuestions : totalQuestions,
                 correctAnswers : correctAnswers,
                 wrongAnswers : wrongAnswers,
