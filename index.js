@@ -13,7 +13,6 @@ const responseTime = require('response-time');
 
 const app = express();
 app.use(responseTime())
-
 /* Cron Task */
 var job = new cronJob({
     cronTime: '00 05 00 * * *',
@@ -25,7 +24,10 @@ var job = new cronJob({
   });
 job.start();
 
-app.use(cors());
+app.use(cors({
+    origin: 'https://*.acadelearn.com/'
+}));
+
 app.use(bodyParser.json({limit: '500mb'}));
 app.use(bodyParser.urlencoded({ extended: true, limit: '500mb' }));
 
