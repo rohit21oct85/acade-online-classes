@@ -36,7 +36,7 @@ app.use(bodyParser.urlencoded({ extended: true, limit: '500mb' }));
 const PORT = process.env.PORT || 8080;
 
 const flash = require('connect-flash')
-let ALLOWED_ORIGINS = ['https://*.acadelearn.com/','http://admin-acadelearn.herokuapp.com/'];
+let ALLOWED_ORIGINS = ['https://acade-demo-school.acadelearn.com/','http://admin-acadelearn.herokuapp.com/'];
 app.use((req, res, next) => {
     let origin = req.headers.origin;
     let theOrigin = (ALLOWED_ORIGINS.indexOf(origin) >= 0) ? origin : ALLOWED_ORIGINS[0];
