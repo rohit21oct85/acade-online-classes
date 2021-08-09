@@ -1,4 +1,5 @@
 const Question = require('../../../models/admin/Question');
+const Chapter = require('../../../models/admin/Chapter');
 const csv = require('csv-parser')
 const fs = require('fs')
 const docxParser = require('docx-parser');
@@ -132,27 +133,22 @@ const AllQuestions = async (req, res) => {
             subject_id: req.params?.subject_id
         }
 
-        // const AllQuestions = await Question.find(filter,{__v: 0});
-        let AllQuestions = await Question.aggregate([
-            {"$match": filter},
-            {"$group": {
-                "_id": {
-                    "unit_id":"$unit_id",
-                    "chapter_name":"$chapter_name",
-                },
-                "count":{
-                    "$sum": {
-                        $cond: [{
-                            $eq: ["$unit_name", "$unit_name"]
-                        },1,0]
-                    }
-                },
-            }},
-            {$sort: { _id: 1}}
-        ]);
-
-        return res.status(200).json({ 
-            data: AllQuestions 
+        let AllChapters = await Chapter.find(filter,{__v: 0},{
+            unit_no: 1,
+            unit_name: 1,
+            chapter_no: 1,
+            chapter_name: 1,
+        }).sort({
+            chapter_no: 1
+        });
+        await Promise.all(AllChapters.map(async chapter => {
+            var total_question = await Question.countDocuments({
+                chapter_id: chapter?._id
+            })
+            chapter.total_question = total_question
+        }))
+        res.status(200).json({ 
+            data: AllChapters 
         });    
     } catch(error){
         res.status(409).json({

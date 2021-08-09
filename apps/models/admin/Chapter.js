@@ -32,6 +32,9 @@ const ChapterSchema = new mongoose.Schema({
       chapter_name:{
             type: String
       },
+      total_question:{
+            type: Number
+      },
       status:{
             type: Boolean,
             default: true

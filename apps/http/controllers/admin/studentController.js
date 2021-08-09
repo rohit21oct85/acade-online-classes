@@ -395,9 +395,9 @@ const getRollNo = async (req, res) => {
             class_id: req.params?.class_id,
             section: req.params?.section,
         });
-        // console.log(rollNo); return;
+        let finalNo = rollNo + 1
         res.status(201).json({
-            data: rollNo
+            data: finalNo
         })
     } catch (error) {
         res.status(502).json({message: "Somethign went wrong!"})   

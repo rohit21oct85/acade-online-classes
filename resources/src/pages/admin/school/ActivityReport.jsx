@@ -7,7 +7,7 @@ import useSchoolLists from './hooks/useSchoolLists';
 import useClassList from '../class/hooks/useClassList';
 
 import LoginReport from './Reports/LoginReport';
-import LoginActivityDetails from './Reports/LoginActivityDetails';
+
 import { useToasts } from 'react-toast-notifications';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -128,11 +128,7 @@ export default function SchoolReport() {
                         {(params?.report_type === 'login-report') && (
                               <LoginReport />
                         )}
-                        {(params?.report_type === 'activity-detail') && (
-                              <LoginActivityDetails />
-                        )}
-                        
-                        
+                                                
                   </div>    
                 </div>
             </div>

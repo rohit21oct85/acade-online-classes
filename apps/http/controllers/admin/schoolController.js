@@ -270,7 +270,7 @@ const schoolReport = async (req, res) => {
                 test_type: req?.params?.test_type,
                 assigned: true
             }
-        }else if((test_type === 'single-test' || test_type === 'upload-test')){
+        }else if((test_type === 'single-test' || test_type === 'upload-test' || test_type === 'combine-test')){
             filter = {
                 school_id: req?.params?.school_id,
                 class_id: req?.params?.class_id,
@@ -336,7 +336,7 @@ const schoolActivityReport = async (req, res) => {
                 login_time: 1,
                 logout_time: 1,
                 total_session: 1,
-            }).sort({$natural: -1}).limit(1);
+            }).sort({isLoggedIn: -1}).limit(1);
             data.user_log = user_log;
         }))
         // let logData = await UserLog.find(filter).sort({sessionInProgress: -1});

@@ -97,6 +97,7 @@ const ViewAllUnitTest = async (req, res) => {
           test_window: 1,
           test_duration: 1,
           total_question: 1,
+          total_marks: 1,
           test_type: 1,
       },{__v:0,test_question: 0 });
 
@@ -130,6 +131,7 @@ const ViewUnitTestByClassSubjects = async (req, res) => {
           test_date: 1,
           test_duration: 1,
           total_question: 1,
+          total_marks: 1,
       },{__v:0,test_question: 0 });
     res.status(200).json({
       data: AllUnitTests,
@@ -151,8 +153,18 @@ const DeleteUnitTest = async (req, res) => {
     res.status(409).json({ message: error.message });
   }
 };
-
+const AddFields = async (req, res) => {
+  try {
+    await UnitTest.updateMany({},{
+      total_marks: 200
+    });
+    res.status(201).json({ message: "updated" });
+  } catch (error) {
+    res.status(409).json({ message: error.message });
+  }
+}
 module.exports = {
+  AddFields,
   ViewUnitTestByClassSubjects,
   CreateUnitTest,
   UpdateUnitTest,

@@ -34,6 +34,9 @@ const UnitTestSchema = new mongoose.Schema({
       test_question: {
             type: Array,
       },
+      total_marks: {
+            type: Number,
+      },
       test_subjects: {
             type: Array,
       },

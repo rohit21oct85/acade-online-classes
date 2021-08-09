@@ -91,6 +91,13 @@ export default function SchoolReport() {
                               <>
                               <button className="dark ml-2"
                                     onClick={() => {
+                                          history.push(`/admin/school-report/${params?.school_id}/${params?.class_id}/combine-test`)
+                                    }}
+                              >
+                                    Rivision Tests
+                              </button>  
+                              <button className="dark ml-2"
+                                    onClick={() => {
                                           history.push(`/admin/school-report/${params?.school_id}/${params?.class_id}/single-test`)
                                     }}
                               >
@@ -120,11 +127,11 @@ export default function SchoolReport() {
                   </div>
                   <div className="clearfix"></div>
                   <div className="dash-cont-start">
-                        {(params?.test_type === 'single-test' || params?.test_type === 'mock-test' || params?.test_type === 'upload-test') && (
+                        {(params?.test_type === 'combine-test' || params?.test_type === 'single-test' || params?.test_type === 'mock-test' || params?.test_type === 'upload-test') && (
                               <SingleTestList />
                         )}
                         
-                        {params?.test_id && (params?.test_type === 'single-test' || params?.test_type === 'mock-test' || params?.test_type === 'upload-test') && (
+                        {params?.test_id && (params?.test_type === 'combine-test' || params?.test_type === 'single-test' || params?.test_type === 'mock-test' || params?.test_type === 'upload-test') && (
                               <StudentList />
                         )}
                         

@@ -125,7 +125,7 @@ export const privateRoutes = [
         component: ActivityReport
     },
     {
-        path: '/admin/view-all-questions/:class_id?/:subject_id?',
+        path: '/admin/view-all-questions/:class_id?/:subject_id?/:type?',
         component: ViewAllQuestions
     }
 

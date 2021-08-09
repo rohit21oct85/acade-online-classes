@@ -31,6 +31,16 @@ export default function LoginReport() {
             formData['school_id'] = params?.school_id
             await logoutMutation.mutate(formData);     
         }
+      function totalSessionTime(diffTime){
+            let hour
+            let minute
+            let sec
+            let hourDifference;
+            hour = Math.floor(diffTime/1000/3600)
+            minute = Math.floor(diffTime/1000/60 - (hour*60))
+            sec = Math.floor(diffTime/1000 - (hour * 3600 + minute * 60))
+            return hourDifference =`${hour} hr ${minute} min ${sec} sec` 
+      }  
       return (
             <div>
                  <div className="col-md-12 pl-0">
@@ -74,18 +84,30 @@ export default function LoginReport() {
                         )}
                         {!params?.user_id && (params?.report_type === 'login-report') && reports?.map(rep => {
                               let seconds;
-                              let hour
-                              let minute
-                              let sec
+                              
                               let hourDifference;
                               if(rep?.user_log?.total_session){
                                     seconds = Math.floor(rep?.user_log?.total_session);
-                                    hour = Math.floor(seconds/3600) 
-                                    minute = Math.floor(seconds/60 - (hour * 60)) 
-                                    sec = Math.floor(seconds - (hour * 3600 + minute * 60))
-                                    hourDifference = `${hour} Hr ${minute} Min ${sec} Sec`
+                                    // hour = Math.floor(seconds/1000/3600) 
+                                    // minute = Math.floor(seconds/1000/60 - (hour * 60)) 
+                                    // sec = Math.floor(seconds/1000 - (hour * 3600 + minute * 60))
+                                    hourDifference = totalSessionTime(seconds)
                               }else{
-                                    hourDifference = `0 Hr 0 Min 0 Sec`
+                                    if(rep?.user_log?.logout_time){
+                                          let login_time = new Date(rep?.user_log?.login_time)
+                                          let logout_time = new Date(rep?.user_log?.logout_time)
+                                          let seconds = Math.round(logout_time - login_time);
+                                          hourDifference = totalSessionTime(seconds)
+                                    }else{
+                                          if(rep.isLoggedIn){
+                                                let login_time = new Date(rep?.user_log?.login_time)
+                                                let logout_time = new Date();
+                                                let seconds = Math.round(logout_time - login_time);
+                                                hourDifference = totalSessionTime(seconds)
+                                          }else{
+                                                hourDifference = `0 Hr 0 Min 0 Sec`
+                                          }
+                                    }
                               }
                               
                               let empid;
@@ -108,13 +130,14 @@ export default function LoginReport() {
 
                               return(
                               <tr className="pl-0 flex" key={rep?.report_id}>
-                                    <td className="col-md-3">{empid}</td>  
+                                    <td className="col-md-3">{rep?.isLoggedIn ? <span className="fa fa-circle text-success"></span>: <span className="fa fa-circle text-danger"></span>} {empid}</td>  
                                     <td className="col-md-5">{emailid}</td>  
                                     <td className="col-md-2">{rep?.user_type}</td>  
                                     <td className="col-md-2">{JSON.stringify(rep?.user_log) == "null" ? 'Not Logged In' : 'Logged In'}</td>  
                                     <td className="col-md-2">{hourDifference}</td>  
                                     <td className="col-md-3">{JSON.stringify(rep?.user_log) !== "null" ? new Date(rep?.user_log?.login_time).toLocaleString(): JSON.stringify(rep?.user_log)}</td>  
-                                    <td className="col-md-3">{JSON.stringify(rep?.user_log) !== "null" ? new Date(rep?.user_log?.logout_time).toLocaleString(): JSON.stringify(rep?.user_log)}</td>  
+                                    <td className="col-md-3">{JSON.stringify(rep?.user_log) !== "null" ? new Date().toLocaleString() ?? new Date(rep?.user_log?.logout_time).toLocaleString() : JSON.stringify(rep?.user_log)}</td>  
+                                    
                               </tr>      
                               )})}
                               </table>      

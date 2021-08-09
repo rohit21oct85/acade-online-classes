@@ -15,6 +15,9 @@ export default function SingleTestList() {
             case 'mock-test':
                   label = 'Mock Test List';
                   break;
+            case 'combine-test':
+                  label = 'Rivision Test List';
+                  break;
             case 'single-test':
                   label = 'Assign Test List'
                   break;
@@ -53,7 +56,7 @@ export default function SingleTestList() {
                   </div> 
                   <div className={`${!params?.test_id ? 'pl-0 pb-3 table table-responsive': ''}`} style={{ 
                         overflow: 'scroll hidden',
-                        marginRight: '120px'
+                        marginRight: '100px'
                   }}>
                         <table>
                         
@@ -75,14 +78,14 @@ export default function SingleTestList() {
                                     <th className="border col-md-4">End Date</th>
                                     <th className="border pl-3 hidden_col" style={{ 
                                           position: 'fixed', 
-                                          width: '150px',
+                                          width: '190px',
                                           right: '25px',
                                           background: 'white'
                                     }}>Action</th>
                               </tr> 
                               </thead>  
                         )}
-                        {!params?.test_id && (params?.test_type === 'single-test' || params?.test_type === 'mock-test' || params?.test_type === 'upload-test') && reports?.map(rep => {
+                        {!params?.test_id && (params?.test_type === 'single-test' || params?.test_type === 'mock-test' || params?.test_type === 'upload-test' || params?.test_type === 'combine-test') && reports?.map(rep => {
                               let tsubjects;
                               if(rep?.test_subjects !== null){
                                     if(rep?.test_subjects?.length > 0){
@@ -112,11 +115,11 @@ export default function SingleTestList() {
                                     <td className="border hidden_col"
                                     style={{ 
                                           position: 'fixed', 
-                                          width: '150px',
+                                          width: '190px',
                                           right: '25px',
                                           background: 'white'
                                     }}>
-                                    <button className="dark bg-success btn btn-sm"
+                                    <button className="dark bg-success btn btn-block btn-sm"
                                     style={{
                                           width: '100%'
                                     }}

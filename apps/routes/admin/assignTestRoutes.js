@@ -12,6 +12,7 @@ router
     .get('/view-assigned-mock-test/:school_id?/:test_type?/:question_for?', checkAuth, AssignTest.ViewAssignedMockTest)
     .post('/to-class', checkAuth, AssignTest.AssignedTestToClass)
     .post('/update-time', checkAuth, AssignTest.UpdateTimeAssignTest)
+    .post('/update-mark', AssignTest.UpdateAllTestMarks)
 ;
 
 module.exports = router;

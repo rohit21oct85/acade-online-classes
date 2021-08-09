@@ -9,7 +9,7 @@ import useClassSubjectList from '../../../hooks/classSubjectMapping/useClassSubj
 import useViewAllQuestions from './hooks/useViewAllQuestions';
 import useDeleteQuestion from './hooks/useDeleteQuestion';
 import useUnitList from '../units/hooks/useUnitList';
-
+import { export_table_to_csv } from '../../../utils/helper'
 
 export default function ViewAllQuestions() {
 
@@ -54,6 +54,15 @@ export default function ViewAllQuestions() {
         script.async = true;
         document.body.appendChild(script);
     },[])
+    let subData = subjects && subjects?.filter(sub => sub.subject_id === params?.subject_id);
+    let classData = sClasses && sClasses?.filter(cla => cla._id === params?.class_id);
+    console.log(subData);
+    const handleExport = () => {
+        var html = document.querySelector("table").outerHTML;
+        let file = `${classData && classData[0].class_name}_${subData && subData[0].subject_name}`;
+        export_table_to_csv(html, `${file}.csv`);
+    }
+    let type = params?.type;
     return (
         <div className="col-lg-10 col-md-10 main_dash_area">
             <div className="main-area-all">
@@ -100,31 +109,71 @@ export default function ViewAllQuestions() {
                                       )
                                 })}
                               </select>
-                              
+                              {params?.subject_id && (
+                                <button className="btn btn-sm bg-success text-white ml-2"
+                                onClick={ () => {
+                                    
+                                    history.push(`/admin/view-all-questions/${params?.class_id}/${params?.subject_id}/${type === 'Units' ? 'Chapters': 'Units'}`)
+                                }}>{type === 'Units' ? 'Chapters': 'Units'} Wise Report</button>
+                              )}
+                              {params?.subject_id && (
+                                  <button className="ml-2 btn btn-sm bg-warning pull-right"
+                                  onClick={handleExport}>
+                                      <span className="bi bi-download mr-2"></span>
+                                      Download {type} Report
+                                  </button>
+                              )}
                         </div>
                     </div>
                     <div className="clearfix"></div>
                     <div className="dash-cont-start">
                         <div className="row">
-                            <div className="col-md-12" style={{ 
-                                height: '500px', overflow: 'hidden scroll'
+
+                            <table className="table table-bordered col-md-12 flex" 
+                            id="printDiv"
+                            style={{ 
+                                height: '500px', overflow: 'hidden scroll',
+                                flexWrap: 'wrap'
                             }}>
-                                {questions?.length > 0 && units?.map(unit => {
-                                    let ULists = questions?.filter(que => que?._id?.unit_id === unit?._id);
+
+                                <tr className="header flex col-md-12 ml-2 mr-2 pt-1 table-bordered">
+                                    <td className="col-md-1">Sr.</td> 
+                                    <td className="col-md-10">{type} Name</td>
+                                    <td className="col-md-2">
+                                        Total
+                                    </td>
+                                </tr>
+                                {questions?.length > 0 && units?.map((unit, ind) => {
+                                    let ULists = questions?.filter(que => que?.unit_id === unit?._id);
+                                    let total = ULists.map(q => {
+                                        return q.total_question
+                                    })
+                                    let total_questions = total.reduce((a,b) => a+b)
                                     return (
                                         <>
-                                        <div className="col-md-6 mt-2 mb-2 pl-0"><b>{unit?.unit_name}</b></div>
-                                        {ULists?.map( q => {
+                                        {params?.type === 'Units' && (
+                                        <tr className="flex col-md-12 ml-2 mr-2 pt-1 table-bordered">
+                                            <td className="col-md-1 pl-0"><b>{ind+1}</b></td> 
+                                            <td className="col-md-10"><b>{unit?.unit_name}</b></td>
+                                            <td className="col-md-2">
+                                                <b>{total_questions}</b>
+                                            </td>
+                                        </tr>
+                                        )}
+                                        {params?.type === 'Chapters' && ULists?.map( q => {
                                             return(
-                                                <div className="row ml-2 mr-2 pt-1 table-bordered">
-                                                    <div className="col-md-4">
-                                                        {q?._id?.chapter_name}
-                                                    </div>
-                                                    <div className="col-md-4">
-                                                        {q?.count}
-                                                    </div>
+                                                <tr className="flex col-md-12 ml-2 mr-2 pt-1 table-bordered" key={q?._id}>
+                                                    <td className="col-md-1 pl-2">
+                                                        {q?.chapter_no}
+                                                    </td>
+                                                    <td className="col-md-10">
+                                                        {q?.chapter_name?.replaceAll(',',' ')}
+                                                    </td>
+                                                    <td className="col-md-2">
+                                                        {q?.total_question}
+                                                    </td>
                                                 
-                                                </div>
+                                                </tr>
         
                                             )
                                         })}
@@ -132,7 +181,7 @@ export default function ViewAllQuestions() {
                                     )
                                 })}
                                 
-                            </div>
+                            </table>
 
                         </div>
                     </div>    

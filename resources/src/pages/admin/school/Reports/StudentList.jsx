@@ -74,8 +74,9 @@ export default function StudentList() {
                                     <th className="border col-md-1">Roll</th>
                                     <th className="border col-md-1">Section</th>
                                     <th className="border col-md-3">Test Name</th>
-                                    <th className="border col-md-1">Marks</th>
+                                    <th className="border col-md-1">Obtain Marks</th>
                                     <th className="border col-md-1">Ques.</th>
+                                    <th className="border col-md-1">Total Marks</th>
                                     <th className="border col-md-2">Percentage(%)</th>
                                     <th className="border col-md-2">Time Taken</th>
                                     <th className="border col-md-2">Duration</th>
@@ -88,7 +89,8 @@ export default function StudentList() {
                         {attemtedStudetns?.map(student => {
                               let questions = student?.questions;
                               let total_question = questions.length;
-                              
+                              let total_marks = student.total_marks;
+                              let single_marks = Math.floor(+total_marks/+total_question)
                               let correct_answer = questions.map(que => {
                                     var total = 0;
                                     if(student.test_type === 'mock-test'){
@@ -113,15 +115,15 @@ export default function StudentList() {
                               let hourDifference;
                               if(total_time !== undefined){
                                     let seconds = Math.floor(total_time);
-                                    let hour = Math.floor(seconds/3600) 
-                                    let minute = Math.floor(seconds/60 - (hour * 60)) 
-                                    let sec = Math.floor(seconds - (hour * 3600 + minute * 60))
+                                    let hour = Math.floor(seconds/1000/3600) 
+                                    let minute = Math.floor(seconds/1000/60 - (hour * 60)) 
+                                    let sec = Math.floor(seconds/1000 - (hour * 3600 + minute * 60))
                                     hourDifference = `${(hour === 'NaN') ? 0 : hour} Hr ${(minute === 'NaN') ? 0 : minute} Min ${(sec === 'NaN') ? 0 : sec} Sec`
 
                               }else{
                                     hourDifference = `0 Hr 0 Min 0 Sec`
                               }
-                              
+                              let mark_obtain = correct_answer.reduce((a,b) => a+b)*single_marks
                               return(
                                     <>
                                     <tr className="flex col-md-12 pl-0 pr-0" key={student?._id}>
@@ -142,9 +144,10 @@ export default function StudentList() {
                                           <td className="border col-md-1">{student?.student_roll_no}</td>
                                           <td className="border col-md-1">{student?.section}</td>
                                           <td className="border col-md-3">{student?.test_name}</td>
-                                          <td className="border col-md-1">{correct_answer.reduce((a,b) => a+b)}</td>
+                                          <td className="border col-md-1">{mark_obtain}</td>
                                           <td className="border col-md-1">{total_question}</td>
-                                          <td className="border col-md-2">{Math.round(correct_answer.reduce((a,b) => a+b)*100/total_question)}%</td>
+                                          <td className="border col-md-1">{total_marks}</td>
+                                          <td className="border col-md-2">{Math.round(mark_obtain*100/total_marks)}%</td>
                                           <td className="border col-md-2">{hourDifference}</td>
                                           <td className="border col-md-2">{student?.test_duration} Min</td>
                                           <td className="border col-md-2">{student?.completion_status}</td>
@@ -211,7 +214,9 @@ export default function StudentList() {
                                                       </div>
                                                       )}
                                                       
-                                                      {params?.test_type === 'single-test' && (
+                                                      {(params?.test_type === 'single-test' ||
+                                                      params?.test_type === 'combine-test' || 
+                                                      params?.test_type === 'upload-test') && (
                                                       <div className="flex col-md-12"
                                                       style={{
                                                             flexWrap: 'wrap',

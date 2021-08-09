@@ -104,6 +104,7 @@ export function export_table_to_csv(html, filename) {
   download_csv(csv.join("\n"), filename);
 }
 
+
 export function download_csv(csv, filename) {
   var csvFile;
   var downloadLink;
