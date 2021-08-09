@@ -23,10 +23,11 @@ var job = new cronJob({
     timeZone: 'Asia/Kolkata'
   });
 job.start();
-
-app.use(cors({
-    origin: ['https://*.acadelearn.com/','http://admin-acadelearn.herokuapp.com/']
-}));
+var corsOptions = {
+    origin: ['https://*.acadelearn.com/','http://admin-acadelearn.herokuapp.com/'],
+    optionsSuccessStatus: 200 // For legacy browser support
+    }
+app.use(cors(corsOptions));
 
 app.use(bodyParser.json({limit: '500mb'}));
 app.use(bodyParser.urlencoded({ extended: true, limit: '500mb' }));
