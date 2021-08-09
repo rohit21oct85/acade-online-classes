@@ -25,7 +25,7 @@ var job = new cronJob({
 job.start();
 
 app.use(cors({
-    origin: 'https://*.acadelearn.com/'
+    origin: ['https://*.acadelearn.com/','http://admin-acadelearn.herokuapp.com/']
 }));
 
 app.use(bodyParser.json({limit: '500mb'}));
