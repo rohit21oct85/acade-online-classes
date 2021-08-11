@@ -21,8 +21,6 @@ export default function useAttemptedStudents() {
             });
             return result.data.data; 
         }
-    },{
-        refetchInterval: intervalMs,
     });
     
 }

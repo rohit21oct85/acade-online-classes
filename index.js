@@ -1,3 +1,7 @@
+const OS = require('os');
+const cluster = require('cluster');
+let numCPUs = OS.cpus().length*2
+
 const dotenv = require('dotenv').config();
 const express = require("express");
 // var bb = require('express-busboy');
@@ -75,15 +79,32 @@ const options = {
     useCreateIndex: true
 };
 // connecction MOngo DB
+
 (async() => {
     const MONGO_URI = process.env.MONGO_URI;
     await mongoose.connect(MONGO_URI, options)
     .then(() => console.log(`Mongo DB Connected`))
     .catch(err => console.log(err));
     mongoose.Promise = global.Promise;
-    app.listen(PORT, () => {
-        console.log(`App is running on PORT ${PORT}`);
-    })
+    if(cluster.isMaster) {
+        console.log('Master cluster setting up ' + numCPUs + ' workers...');
+        for (var i = 0; i < numCPUs; i++) {
+            cluster.fork();
+        }
+        cluster.on('online', function(worker) {
+            console.log('Worker ' + worker.process.pid + ' is online');
+        });
+        cluster.on('exit', function(worker, code, signal) {
+            console.log('Worker ' + worker.process.pid + ' died.');
+            console.log('Starting a new worker with new pid ' + worker.process.pid);
+            cluster.fork();
+        });
+    }else{
+        app.listen(PORT, () => {
+            console.log(`App is running pid ${process.pid} on PORT ${PORT}`);
+        })
+    }
+    
 })()
 
 

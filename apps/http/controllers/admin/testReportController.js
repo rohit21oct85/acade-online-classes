@@ -25,7 +25,8 @@ const ViewStudentReport = async (req, res) => {
                   AttemptTestResult = await AttemptTest.find({
                         school_id: req?.params?.school_id,
                         test_id: req?.params?.test_id,
-                        class_id: req?.params?.class_id
+                        class_id: req?.params?.class_id,
+                        
                   },{__v:0});
             }
             

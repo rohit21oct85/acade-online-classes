@@ -25,13 +25,13 @@ export default function StudentList() {
             })
             
       }
-      useEffect(() => {
-            const script = document.createElement("script");
-            script.id = 'editor';
-            script.src = "https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image";
-            script.async = true;
-            document.body.appendChild(script);
-        },[]);
+      // useEffect(() => {
+      //       const script = document.createElement("script");
+      //       script.id = 'editor';
+      //       script.src = "https://www.wiris.net/demo/plugins/app/WIRISplugins.js?viewer=image";
+      //       script.async = true;
+      //       document.body.appendChild(script);
+      //   },[]);
       const handleExport = (e) => {
       e.preventDefault()      
       var html = document.querySelector("table").outerHTML;
@@ -97,13 +97,17 @@ export default function StudentList() {
                                           if((que.answer === 'yes' ? 'a' : 'b') === que?.correct_answer){
                                                 total = +total + 1;
                                           }else{
-                                                total = +total + 0;
+                                                total = 0;
                                           }
                                     }else{
-                                          if(que?.option === que.correct_option){
-                                                total = +total + 1;
+                                          if(que?.option === undefined || que?.option === null){
+                                                total = 0;
                                           }else{
-                                                total = +total + 0;
+                                                if(que?.option === que.correct_option){
+                                                      total = +single_marks;
+                                                }else{
+                                                      total = 0;
+                                                }
                                           }
                                     }
                                     
@@ -123,12 +127,12 @@ export default function StudentList() {
                               }else{
                                     hourDifference = `0 Hr 0 Min 0 Sec`
                               }
-                              let mark_obtain = correct_answer.reduce((a,b) => a+b)*single_marks
+                              let mark_obtain = correct_answer.reduce((a,b) => a+b)
                               return(
                                     <>
                                     <tr className="flex col-md-12 pl-0 pr-0" key={student?._id}>
                                           <td className="border col-md-4">
-                                                <span className="fa fa-eye pr-2" style={{
+                                                {/* <span className="fa fa-eye pr-2" style={{
                                                       display: 'inline-block',
                                                       cursor: 'pointer'
                                                 }}
@@ -136,7 +140,7 @@ export default function StudentList() {
                                                 value="View"
                                                 onClick={e => {
                                                       viewResult(student?._id)
-                                                }}></span>
+                                                }}></span> */}
                                                 {student?.student_name}
                                           </td>
                                           
@@ -155,119 +159,7 @@ export default function StudentList() {
                                           <td className="border col-md-3">{new Date(student?.start_date).toLocaleString()}</td>
                                           <td className="border col-md-3">{end_window.toLocaleString()}</td>
                                     </tr>
-                                    <div className="border answerDiv pl-2 pr-2 pb-2 pt-2" 
-                                    id={`result-${student?._id}`}
-                                    style={{
-                                          width: '1225px',
-                                          height: 'auto',
-                                          display: 'none'
-                                    }}>
-                                         {student?.questions?.map( (ques, indx) => {
-                                               return(
-                                                     <div className="border col-md-12 mb-3 mt-2" style={{
-                                                            background: '#ededed'
-                                                     }}>
-                                                      <div className="col-md-12 flex p-2" style={{
-                                                            
-                                                            justifyContent: 'flex-start'
-                                                      }}>
-                                                      Ques: {indx+1}
-                                                      <span className="question ml-2" dangerouslySetInnerHTML={{ __html: ques?.question  }}></span>
-                                                      </div>
-                                                      <hr className="mb-2 mt-1"/>
-                                                      {params?.test_type === 'mock-test' && (
-                                                      <div className="col-md-12 pl-0">
-                                                            <div className="flex">
-                                                            <div className="col-md-6 p-2 card mb-3 mr-2">Option A: 
-                                                                  <div className="question" dangerouslySetInnerHTML={{ __html: ques?.option_a  }}></div>
-                                                            </div>
-                                                            <div className="col-md-6 p-2 card mb-3">Option B: 
-                                                                  <div className="question" dangerouslySetInnerHTML={{ __html: ques?.option_b  }}></div>
-                                                            </div>
-                                                            </div>
-
-                                                            <div className="flex">
-                                                            <div className="col-md-6 p-2 mb-3 mr-2" style={{
-                                                                  border: '1px solid #cdcdcd',
-                                                                  background: '#fff'
-                                                            }}>
-                                                            <span className="fa fa-check-circle pr-2 text-success"></span>
-                                                            Correct Answer: <b>{(ques?.correct_option == 'b' ? 'option_b': 'option_a')}:</b>
-                                                           
-                                                            <span className="question ml-2" dangerouslySetInnerHTML={{ __html: (ques?.correct_answer == 'a' ? 'yes': 'no')  }}></span>
-                                                           </div>
-
-                                                           <div className="col-md-6 p-2 mb-3 mr-2" style={{
-                                                                 border: '1px solid #cdcdcd',
-                                                                 background: '#fff'
-                                                           }}>
-                                                           {(ques?.answer == "no" ? 'b': 'a') === ques?.correct_answer 
-                                                                  ? 
-                                                                  <span className="fa fa-check-circle pr-2 text-success"></span>
-                                                                  :
-                                                                  <span className="fa fa-times-circle pr-2 text-danger"></span>
-                                                            }
-                                                            User Answer: <b>{ques?.option}: </b>
-                                                            <span className="question ml-2" dangerouslySetInnerHTML={{ __html: ques?.answer  }}></span>
-                                                            </div>
-                                                           </div>
-                                                      </div>
-                                                      )}
-                                                      
-                                                      {(params?.test_type === 'single-test' ||
-                                                      params?.test_type === 'combine-test' || 
-                                                      params?.test_type === 'upload-test') && (
-                                                      <div className="flex col-md-12"
-                                                      style={{
-                                                            flexWrap: 'wrap',
-                                                      }}>
-                                                            <div className="col-md-12 p-2 card mb-3">Option A: 
-                                                                  <div className="question" dangerouslySetInnerHTML={{ __html: ques?.option_a  }}></div>
-                                                            </div>
-                                                            
-                                                            <div className="col-md-12 p-2 card mb-3">Option B: 
-                                                                  <div className="question" dangerouslySetInnerHTML={{ __html: ques?.option_b  }}></div>
-                                                            </div>
-                                                           <div className="col-md-12 p-2 card mb-3">Option C: 
-                                                           <span className="question" dangerouslySetInnerHTML={{ __html: ques?.option_c  }}></span>
-                                                           </div>
-                                                           
-                                                           <div className="col-md-12 p-2 card mb-3">Option D: 
-                                                           <span className="question" dangerouslySetInnerHTML={{ __html: ques?.option_d  }}></span>
-                                                           </div>
-                                                           <div className="flex">
-                                                           <div className="col-md-6 p-2 mb-3 mr-2" style={{
-                                                                 border: '1px solid #cdcdcd',
-                                                                 background: '#fff'
-                                                           }}>
-                                                            <span className="fa fa-check-circle pr-2 text-success"></span>
-                                                            Correct Answer: <b>{ques?.correct_option}</b>
-                                                           
-                                                           <span className="question ml-2" dangerouslySetInnerHTML={{ __html: ques?.correct_answer  }}></span>
-                                                           </div>
-
-                                                           <div className="col-md-6 p-2 mb-3 mr-2" style={{
-                                                                 border: '1px solid #cdcdcd',
-                                                                 background: '#fff'
-                                                           }}>
-                                                           {ques?.option === ques?.correct_option 
-                                                                  ? 
-                                                                  <span className="fa fa-check-circle pr-2 text-success"></span>
-                                                                  :
-                                                                  <span className="fa fa-times-circle pr-2 text-danger"></span>
-                                                            }
-                                                            User Answer: <b>{ques?.option}</b>
-                                                            <span className="question ml-2" dangerouslySetInnerHTML={{ __html: ques?.answer  }}></span>
-                                                            </div>
-                                                           </div>
-
-                                                      </div>
-                                                      )}
-
-                                                      </div>
-                                               )
-                                         })}       
-                                    </div>      
+                                        
                                     </>
                               );
                         })}
