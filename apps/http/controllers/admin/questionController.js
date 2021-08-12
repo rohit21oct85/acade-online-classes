@@ -570,7 +570,24 @@ const AllSubjectsQuestions = async (req, res) => {
         });
     }
 }
+const AllChapterQuestions = async (req, res) => {
+    try {
+        let questions = await Question.find({
+            chapter_id: req.params.chapter_id
+        });
+        res.status(201).json({
+            length: questions.length
+        });
+    } catch (error) {
+        res.status(409).json({
+            message: "Error occured while Inserting Data",
+            errors: error.message
+        });
+    }
+}
+
 module.exports = {
+    AllChapterQuestions,
     AllSubjectsQuestions,
     AllQuestionsByUnits,
     CreateQuestion,

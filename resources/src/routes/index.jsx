@@ -127,8 +127,11 @@ export const privateRoutes = [
     {
         path: '/admin/view-all-questions/:class_id?/:subject_id?/:type?',
         component: ViewAllQuestions
+    },
+    {
+        path: '/admin/school-management/:page_type?/:school_id?',
+        component: SchoolList
     }
-
 ];
 
 export const adminRoutes = [
@@ -144,10 +147,6 @@ export const adminRoutes = [
     {
         path: '/admin/app-permissions/:role_id?/:role_slug?/:role?/:admin_email?',
         component: AppPermission
-    },
-    {
-        path: '/admin/school-management/:page_type?/:school_id?',
-        component: SchoolList
     },
     {
         path: '/admin/manage-sub-admin/:page_type?/:role?/:admin_id?',

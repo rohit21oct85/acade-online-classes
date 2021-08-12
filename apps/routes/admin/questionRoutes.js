@@ -29,6 +29,7 @@ router
     .get('/view/:id', checkAuth, Question.ViewQuestion)
     .get('/view-all/:class_id?/:subject_id?/:unit_id?/:chapter_id?', checkAuth, Question.ViewAllQuestion)
     .get('/all-questions/:class_id?/:subject_id?', checkAuth, Question.AllQuestions)
+    .get('/all-chapter-questions/:chapter_id?', checkAuth, Question.AllChapterQuestions)
     .get('/subjects-questions/:subject_id?', checkAuth, Question.AllSubjectsQuestions)
     .get('/questions', checkAuth, Question.AllQuestionsByUnits)
     .post('/delete', checkAuth, Question.DeleteQuestion)
