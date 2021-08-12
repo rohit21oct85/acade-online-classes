@@ -14,10 +14,11 @@ export default function useUnitList() {
     if(params?.class_id && params?.subject_id){
         key = `units-${params.class_id}-${params?.subject_id}`;
         url = `${API_URL}v1/unit/view-all/${params?.class_id}/${params?.subject_id}`;
-    }else if(params?.class_id){
-        key = `units-${params.class_id}`;
-        url = `${API_URL}v1/unit/view-all/${params?.class_id}`;
     }
+    // else if(params?.class_id){
+    //     key = `units-${params.class_id}`;
+    //     url = `${API_URL}v1/unit/view-all/${params?.class_id}`;
+    // }
     return useQuery(key, async () => {
         const result = await axios.get(`${url}`,{
             headers: {

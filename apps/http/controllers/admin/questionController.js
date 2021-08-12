@@ -134,12 +134,12 @@ const AllQuestions = async (req, res) => {
         }
 
         let AllChapters = await Chapter.find(filter,{__v: 0},{
-            unit_no: 1,
+            unit_no: {$int: 1},
             unit_name: 1,
             chapter_no: 1,
             chapter_name: 1,
         }).sort({
-            chapter_no: 1
+            unit_no: -1
         });
         await Promise.all(AllChapters.map(async chapter => {
             var total_question = await Question.countDocuments({
