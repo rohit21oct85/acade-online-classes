@@ -1,6 +1,7 @@
 const Chapter = require('../../../models/admin/Chapter');
 const csv = require('csv-parser')
-const fs = require('fs')
+const fs = require('fs');
+const { ObjectID } = require('mongodb');
 
 const Create = async (req, res) => {
     
@@ -174,6 +175,44 @@ const Upload = async(req, res) => {
     }
   }
 
+const UploadChap = async(req, res) => {
+    const data = req.body;
+    let FinalData = [];
+    try {
+        let results = [];
+        // console.log(req.file.path)
+        fs.createReadStream(req.file.path)
+            .pipe(csv())
+            .on('data', (data) => results.push(data))
+            .on('end', () => {
+                results.forEach(unit => {
+                    FinalData.push({
+                        _id:ObjectID(unit.chapter_id),
+                        // user_id: req?.body?.user_id, 
+                        class_id: unit.class_id, 
+                        class_name: unit.class_name, 
+                        subject_id: unit.subject_id, 
+                        subject_name: unit.subject_name, 
+                        unit_id: unit.unit_id, 
+                        unit_no: unit.unit_no, 
+                        unit_name: unit.unit_name, 
+                        chapter_no: unit.chapter_no, 
+                        chapter_name: unit.chapter_name, 
+                    })
+                })
+
+                otherFunction(res, FinalData, function() {
+                    fs.unlinkSync(req.file.path)
+                })
+            });
+    } catch (error) {
+        return res.status(409).json({
+            message: "External Error occured",
+            errors: error.message
+        });
+    }
+  }
+
 const otherFunction = async(res, FinalData, callback) => {
 //   res.send(FinalData); return;  
   await Chapter.insertMany(FinalData).then(() => {
@@ -228,4 +267,5 @@ module.exports = {
     View,
     ViewAll,
     Delete,
+    UploadChap
 }

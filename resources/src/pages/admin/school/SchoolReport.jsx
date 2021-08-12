@@ -71,7 +71,7 @@ export default function SchoolReport() {
                               <option  value="">Select School</option>
                               {schools?.map(school => {
                                     return(
-                                          <option value={school?._id} key={school?._id}>{school?.school_name}</option>
+                                          <option value={school?._id} key={school?._id} data-school={school?.school_name}>{school?.school_name}</option>
                                     )
                               })}
                         </select>       
@@ -83,7 +83,7 @@ export default function SchoolReport() {
                               <option value="all">All Class</option>
                               {sClass?.map(sc => {
                                     return(
-                                          <option value={sc?._id}>{sc?.class_name}Th </option>
+                                          <option value={sc?._id} data-class={sc?.class_name}>{sc?.class_name}Th </option>
                                     )
                               })}
                         </select>   

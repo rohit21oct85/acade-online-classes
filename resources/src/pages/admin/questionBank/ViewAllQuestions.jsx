@@ -56,7 +56,6 @@ export default function ViewAllQuestions() {
     },[])
     let subData = subjects && subjects?.filter(sub => sub.subject_id === params?.subject_id);
     let classData = sClasses && sClasses?.filter(cla => cla._id === params?.class_id);
-    console.log(subData);
     const handleExport = () => {
         var html = document.querySelector("table").outerHTML;
         let file = `${classData && classData[0].class_name}_${subData && subData[0].subject_name}`;
@@ -148,7 +147,7 @@ export default function ViewAllQuestions() {
                                     let total = ULists.map(q => {
                                         return q.total_question
                                     })
-                                    let total_questions = total.reduce((a,b) => a+b)
+                                    let total_questions = total.length > 0 && total.reduce((a,b) => a+b)
                                     return (
                                         <>
                                         {params?.type === 'Units' && (
