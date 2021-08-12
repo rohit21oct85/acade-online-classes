@@ -112,6 +112,7 @@ const options = {
 app.get(`/api/v1/test`, (req, res) => {
     res.send(`Test  Api running on Dev Environment`);
 })
+
 app.use("/api/v1/admin", Routes.adminAuth);
 app.use("/api/v1/role", Routes.roleRoutes);
 app.use("/api/v1/module", Routes.moduleRoutes);
@@ -133,6 +134,8 @@ app.use("/api/v1/class-subject-mapping", Routes.classSubjectMappingRoutes);
 app.use("/api/v1/mock-test", Routes.mockTestRoutes);
 app.use("/api/v1/test-report", Routes.testReportRoutes);
 app.use("/api/v1/web", Routes.webRoutes);
+
+
 
 const directory = path.join(__dirname, 'apps/uploads');
 app.use('/uploads', express.static(directory));

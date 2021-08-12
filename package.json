@@ -54,5 +54,8 @@
     "randombytes": "^2.1.0",
     "react-datepicker": "^4.1.1",
     "response-time": "^2.3.2"
+  },
+  "devDependencies": {
+    "loadtest": "^5.1.2"
   }
 }
