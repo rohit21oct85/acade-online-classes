@@ -1132,7 +1132,7 @@ const getCumulativeScore = async (req,res) => {
         if(req.params.subject_id != "undefined"){
             filter = {
                 school_id :req.body.school_id,
-                // subject_id:req.params.subject_id,
+                // subject_id:req.params.subject_id,    
                 student_id:req.body.student_id,
                 class_id: req.body.class_id,
                 "test_subjects.subject_id": {
@@ -1979,6 +1979,18 @@ const testInternet = async ( req, res ) => {
     }
 }
 
+const testStrengthServer = async ( req, res ) => {
+    try {
+        res.status(200).json({
+            message : "internet connected" 
+        })
+    } catch (error) {
+        res.status(500).json({
+            message : error.message
+        })
+    }
+}
+
 
 module.exports = {
     getSubjects,
@@ -2029,5 +2041,6 @@ module.exports = {
     updateAttempt,
     attemptTestByStudentOffline,
     saveAnswerOffline,
-    testInternet
+    testInternet,
+    testStrengthServer
 }

@@ -1,3 +1,6 @@
+import jsPDF from 'jspdf'
+import 'jspdf-autotable'
+
 export function getFilteredData(arrayData, match_field,field_value,field_name){
   if(typeof arrayData !== "undefined"){
    const filtereData = Array?.from(arrayData)?.filter(element => element[match_field] == field_value);
@@ -129,4 +132,25 @@ export function download_csv(csv, filename) {
 
   // Lanzamos
   downloadLink.click();
+}
+
+export const makePdf = (e, id, title, school) => {
+  e.preventDefault()
+  console.log(id, title, school)
+  const doc = new jsPDF('l', 'mm', 'a3');
+  let pageHeight = doc.internal.pageSize.height || doc.internal.pageSize.getHeight();
+  let pageWidth = doc.internal.pageSize.width || doc.internal.pageSize.getWidth();
+
+  doc.autoTable({startY:  24, html: id })
+  // doc.addImage(localStorage.getItem('schoolImageUrl'), "JPEG", 15, 40, 180, 180);
+  // doc.autoTable({ html: '#tableConvert'},{columns: ColumnDef[{header: 'ID', dataKey: 'id'}] })
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(24);
+  // doc.text(school, 105, 10, null, null, "center");
+  doc.text(school, pageWidth / 2, 10, {align: 'center'});
+  doc.setLineWidth(1.5);
+  doc.line(10, 13, 410, 13); 
+  doc.setFontSize(12);
+  doc.text(title, pageWidth / 2, 20, null, null, "center")
+  doc.save('table.pdf')
 }

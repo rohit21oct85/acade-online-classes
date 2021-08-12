@@ -3,7 +3,7 @@ import { useHistory, useParams } from 'react-router-dom';
 import useAllStudents from '../../student/hooks/useAllStudents';
 import useSchoolAssignedTests from '../hooks/useSchoolAssignedTests';
 import { export_table_to_csv } from '../../../../utils/helper'
-
+import { makePdf } from '../../../../utils/helper';
 export default function SingleTestList() {
       const {data: reports} = useSchoolAssignedTests();
       const {data:total_students} = useAllStudents();
@@ -21,7 +21,6 @@ export default function SingleTestList() {
             case 'single-test':
                   label = 'Assign Test List'
                   break;
-            
             case 'upload-test':
                   label = 'Teacher Assign Test List'
                   break;
@@ -38,6 +37,16 @@ export default function SingleTestList() {
             let testName = reports[0].test_name;
             export_table_to_csv(html, `${testName}-Report_${testDate}.csv`);
       }
+
+      const callPdf = (e) => {
+            let id = "#school-report";
+            let rclass = document?.getElementById("rclass");
+            let classname = rclass.options[rclass.selectedIndex].getAttribute('data-class')
+            let rschool = document?.getElementById("rschool");
+            let schoolname = rschool.options[rschool.selectedIndex].getAttribute('data-school')
+            makePdf(e, id, `${label} for class ${classname}`, schoolname)
+      }
+
       return (
             <div>
                  <div className="col-md-12 pl-0">
@@ -49,6 +58,11 @@ export default function SingleTestList() {
                               <span className="fa fa-download mr-2"></span>
                               Export Report
                         </button>
+                        {/* <button className="btn btn-sm dark pull-right mr-2"
+                        onClick={(e)=>{callPdf(e)}}>
+                              <span className="fa fa-download mr-2"></span>
+                              Export Pdf
+                        </button> */}
                         </h4>
                         <hr />
                         </>
@@ -58,12 +72,10 @@ export default function SingleTestList() {
                         overflow: 'scroll hidden',
                         marginRight: '100px'
                   }}>
-                        <table>
+                        <table id="school-report">
                         
                         {!params?.test_id && (
-
-                              <thead>
-
+                              // <thead>
                               <tr className="flex header pl-0">
                                     <th className="border col-md-3">Test Name</th>
                                     <th className="border col-md-2">Test Type</th>
@@ -83,7 +95,7 @@ export default function SingleTestList() {
                                           background: 'white'
                                     }}>Action</th>
                               </tr> 
-                              </thead>  
+                              // </thead>  
                         )}
                         {!params?.test_id && (params?.test_type === 'single-test' || params?.test_type === 'mock-test' || params?.test_type === 'upload-test' || params?.test_type === 'combine-test') && reports?.map(rep => {
                               let tsubjects;
@@ -129,7 +141,6 @@ export default function SingleTestList() {
                                           View Results
                                     </button>
                                     </td>  
-                                    
                               </tr>      
                               )
                         })}

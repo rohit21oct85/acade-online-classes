@@ -2,6 +2,7 @@ import React, {useEffect} from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import useAttemptedStudents from '../hooks/useAttemptedStudents';
 import { export_table_to_csv } from '../../../../utils/helper'
+import { makePdf } from '../../../../utils/helper';
 
 export default function StudentList() {
       const history = useHistory();
@@ -38,6 +39,15 @@ export default function StudentList() {
       // console.log(html);      
       export_table_to_csv(html, "table.csv");
       }
+
+      const callPdf = (e) => {
+            let id = "#specific-report";
+            let rclass = document?.getElementById("rclass");
+            let classname = rclass.options[rclass.selectedIndex].getAttribute('data-class')
+            let rschool = document?.getElementById("rschool");
+            let schoolname = rschool.options[rschool.selectedIndex].getAttribute('data-school')
+            makePdf(e, id, `Report for class ${classname}`, schoolname)
+      }
       
       return (
             <div>
@@ -54,7 +64,11 @@ export default function StudentList() {
                                     onClick={handleExport}>
                                           Export Report
                                     </button>
-
+                                    <button className="btn btn-sm dark pull-right mr-2"
+                                    onClick={(e)=>{callPdf(e)}}>
+                                          <span className="fa fa-download mr-2"></span>
+                                          Export Pdf
+                                    </button>
                               </h4>
 
                               <hr />
@@ -67,7 +81,7 @@ export default function StudentList() {
                         }}
                         className={`table table-responsive col-md-12 pl-0 pb-4 pr-3 mb-3`}
                         >
-                             <table className="table table-bordered">
+                             <table className="table table-bordered" id="specific-report">
                               <tr className="flex col-md-12 pl-0 pr-0">
                                     <th className="border col-md-4">Student</th>
                                     <th className="border col-md-1">Class</th>

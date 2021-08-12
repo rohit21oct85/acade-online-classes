@@ -79,6 +79,7 @@ router
     .patch('/change-domain-and-empid/:school_id?', Web.changeDomainStudent)
     .patch('/update-time/:school_id?', Web.changeTime)
     .patch('/update-attempt-ids/:school_id?/:class_id?', Web.updateAttempt)
+    // .get('/test?/:school_id?/:class_id?/:class_name?', checkAuth, Web.testStrengthServer)
     ;
 
 module.exports = router;
