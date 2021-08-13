@@ -12,6 +12,7 @@
     "bootstrap": "^4.6.0",
     "ckeditor5-classic-with-mathtype": "^1.0.0",
     "jspdf": "^2.3.1",
+    "jspdf-autotable": "^3.5.15",
     "react": "^17.0.2",
     "react-bootstrap": "^1.5.2",
     "react-bootstrap-time-picker": "^2.0.1",
