@@ -1,6 +1,7 @@
 const Unit = require("../../../models/admin/Unit");
 const csv = require('csv-parser')
-const fs = require('fs')
+const fs = require('fs');
+const Chapter = require("../../../models/admin/Chapter");
 
 const CreateUnit = async (req, res) => {
   const body = req.body;
@@ -99,7 +100,18 @@ const DeleteUnit = async (req, res) => {
   } catch (error) {
     res.status(409).json({ message: error.message });
   }
-};
+}
+const DeleteChaptersUnit = async (req, res) => {
+  try {
+    await Unit.findByIdAndDelete({_id: req.body.test_id});
+    await Chapter.deleteMany({test_id: req.body.test_id});
+    res.status(201).json({ message: "deleted" });
+  } catch (error) {
+    res.status(409).json({ message: error.message });
+  }
+}
+
+
 const UploadUnit = async(req, res) => {
   const data = req.body;
   let FinalData = [];
@@ -188,5 +200,6 @@ module.exports = {
   UpdateUnit,
   ViewUnit,
   ViewAllUnit,
-  DeleteUnit
+  DeleteUnit,
+  DeleteChaptersUnit
 }

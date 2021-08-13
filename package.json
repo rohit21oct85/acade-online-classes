@@ -8,8 +8,8 @@
     "client": "cd resources && npm run start",
     "backend": "nodemon index.js",
     "dev": "npm-run-all --parallel backend client",
-    "create:build": "cd views && rm -rf build && cd ../resources && npm run build",
-    "clear:build": "cd views && rm -rf build"
+    "create:build": "rm -rf build && cd resources && npm run build",
+    "clear:build": "rm -rf build"
   },
   "engines": {
     "node": "14.16.0",
