@@ -21,7 +21,8 @@ var upload = multer({ storage: storage })
 
 router
     .post('/create', checkAuth, Chapter.Create)
-    .post('/upload', upload.single('file'), checkAuth, Chapter.Upload)
+    .post('/upload', upload.single('file'), checkAuth, Chapter.UploadChap)
+    .post('/upload-chap', upload.single('file'), checkAuth, Chapter.UploadChap)
     .patch('/update/:id', checkAuth, Chapter.Update)
     .get('/view/:id', checkAuth, Chapter.View)
     .get('/view-all/:class_id?/:subject_id?/:unit_id?', checkAuth, Chapter.ViewAll)

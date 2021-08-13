@@ -1,0 +1,614 @@
+chapter_id,chapter_name,chapter_no,class_id,class_name,subject_id,subject_name,unit_id,unit_name,unit_no
+60c355630c1f455d506a550d,Polynomial,2,60bf71d1d38e530a98c857fd,10,60b62b974b44826738114ad0,Maths,60c3416d0c1f455d506a54ff,Algebra,2
+60c355630c1f455d506a550e,Pair of Linear Equations in Two Variables,3,60bf71d1d38e530a98c857fd,10,60b62b974b44826738114ad0,Maths,60c3416d0c1f455d506a54ff,Algebra,2
+60c355630c1f455d506a550f,Quadratic Equations,4,60bf71d1d38e530a98c857fd,10,60b62b974b44826738114ad0,Maths,60c3416d0c1f455d506a54ff,Algebra,2
+60c355630c1f455d506a5510,Arithmetic Progressions,5,60bf71d1d38e530a98c857fd,10,60b62b974b44826738114ad0,Maths,60c3416d0c1f455d506a54ff,Algebra,2
+60c357a50c1f455d506a551a,Areas Related to Circles,13,60bf71d1d38e530a98c857fd,10,60b62b974b44826738114ad0,Maths,60c3416d0c1f455d506a5503,Mensuration,6
+60c357a50c1f455d506a551b,Surface Areas and Volumes,14,60bf71d1d38e530a98c857fd,10,60b62b974b44826738114ad0,Maths,60c3416d0c1f455d506a5503,Mensuration,6
+60c3571d0c1f455d506a5516,Introduction to Trigonometry,10,60bf71d1d38e530a98c857fd,10,60b62b974b44826738114ad0,Maths,60c3416d0c1f455d506a5502,Trigonometry,5
+60c357ce0c1f455d506a551d,Probability,16,60bf71d1d38e530a98c857fd,10,60b62b974b44826738114ad0,Maths,60c3416d0c1f455d506a5504,Statistics and Probability,7
+60c357c10c1f455d506a551c,Statistics,15,60bf71d1d38e530a98c857fd,10,60b62b974b44826738114ad0,Maths,60c3416d0c1f455d506a5504,Statistics and Probability,7
+60c9f16f3d63a83918aea4c6,Heredity And Evolution,9,60bf71d1d38e530a98c857fd,10,60b62b5f4b44826738114acb,Science,60c9d9b3e7dd6959e8fb1b31,World of Living,2
+60c9f16f3d63a83918aea4c7,Light Reflection and Refraction,10,60bf71d1d38e530a98c857fd,10,60b62b5f4b44826738114acb,Science,60c9d9b3e7dd6959e8fb1b32,Natural Phenomena,3
+60c9f16f3d63a83918aea4c8,The Human Eye and Colorful World,11,60bf71d1d38e530a98c857fd,10,60b62b5f4b44826738114acb,Science,60c9d9b3e7dd6959e8fb1b32,Natural Phenomena,3
+60c9f16f3d63a83918aea4c9,Electricity,12,60bf71d1d38e530a98c857fd,10,60b62b5f4b44826738114acb,Science,60c9d9b3e7dd6959e8fb1b32,Natural Phenomena,3
+60c9f16f3d63a83918aea4c3,Life Process,6,60bf71d1d38e530a98c857fd,10,60b62b5f4b44826738114acb,Science,60c9d9b3e7dd6959e8fb1b31,World of Living,2
+60c9f16f3d63a83918aea4c4,Control and Coordination,7,60bf71d1d38e530a98c857fd,10,60b62b5f4b44826738114acb,Science,60c9d9b3e7dd6959e8fb1b31,World of Living,2
+60c9f16f3d63a83918aea4c5,How do Organisms Reproduce,8,60bf71d1d38e530a98c857fd,10,60b62b5f4b44826738114acb,Science,60c9d9b3e7dd6959e8fb1b31,World of Living,2
+60c9f16f3d63a83918aea4be,Chemical Reactions and Equations,1,60bf71d1d38e530a98c857fd,10,60b62b5f4b44826738114acb,Science,60c9d9b3e7dd6959e8fb1b30,Chemical Substances-Nature and Behaviour,1
+60c9f16f3d63a83918aea4bf,Acids Bases and Salt,2,60bf71d1d38e530a98c857fd,10,60b62b5f4b44826738114acb,Science,60c9d9b3e7dd6959e8fb1b30,Chemical Substances-Nature and Behaviour,1
+60c9f16f3d63a83918aea4c0,Metals and Non-Metals,3,60bf71d1d38e530a98c857fd,10,60b62b5f4b44826738114acb,Science,60c9d9b3e7dd6959e8fb1b30,Chemical Substances-Nature and Behaviour,1
+60c9f16f3d63a83918aea4ca,Magnetic Effects of Electric Current,13,60bf71d1d38e530a98c857fd,10,60b62b5f4b44826738114acb,Science,60c9d9b3e7dd6959e8fb1b33,Effects of Current,4
+60c9f16f3d63a83918aea4c1,Carbon and its Compounds,4,60bf71d1d38e530a98c857fd,10,60b62b5f4b44826738114acb,Science,60c9d9b3e7dd6959e8fb1b30,Chemical Substances-Nature and Behaviour,1
+60c9f16f3d63a83918aea4cc,Our Environment,15,60bf71d1d38e530a98c857fd,10,60b62b5f4b44826738114acb,Science,60c9d9b3e7dd6959e8fb1b34,Natural Resources,5
+60c9f16f3d63a83918aea4c2,Periodic Classification of Elements,5,60bf71d1d38e530a98c857fd,10,60b62b5f4b44826738114acb,Science,60c9d9b3e7dd6959e8fb1b30,Chemical Substances-Nature and Behaviour,1
+60cc3d4f9928ba60d0a71e3d,Sources of energy,14,60bf71d1d38e530a98c857fd,10,60b62b5f4b44826738114acb,Science,60c9d9b3e7dd6959e8fb1b33,Effects of Current,4
+60c356820c1f455d506a5512,Triangles,7,60bf71d1d38e530a98c857fd,10,60b62b974b44826738114ad0,Maths,60c3416d0c1f455d506a5501,Geometry,4
+60c356820c1f455d506a5513,Circles,8,60bf71d1d38e530a98c857fd,10,60b62b974b44826738114ad0,Maths,60c3416d0c1f455d506a5501,Geometry,4
+60c356820c1f455d506a5514,Constructions,9,60bf71d1d38e530a98c857fd,10,60b62b974b44826738114ad0,Maths,60c3416d0c1f455d506a5501,Geometry,4
+60c3571d0c1f455d506a5517,Trigonomatry Identities,11,60bf71d1d38e530a98c857fd,10,60b62b974b44826738114ad0,Maths,60c3416d0c1f455d506a5502,Trigonometry,5
+60c3571d0c1f455d506a5518,Height And Distance,12,60bf71d1d38e530a98c857fd,10,60b62b974b44826738114ad0,Maths,60c3416d0c1f455d506a5502,Trigonometry,5
+60c355ff0c1f455d506a5511,Lines,6,60bf71d1d38e530a98c857fd,10,60b62b974b44826738114ad0,Maths,60c3416d0c1f455d506a5500,Coordinate Geometry,3
+60c354d80c1f455d506a550c,Real Numbers,1,60bf71d1d38e530a98c857fd,10,60b62b974b44826738114ad0,Maths,60c3416d0c1f455d506a54fe,Number Systems,1
+60d5674b2f660300042ba409,Nature of matter,1,60bf71cad38e530a98c857fc,9,60b62b5f4b44826738114acb,Science,60cb3da6cc9b7012dcf94ab3,Matter & Its Nature and Behavior,1
+60cc72211fe47a055015db3f,Resource and Development,1,60bf71d1d38e530a98c857fd,10,60c85dd9de9a2670e560f1eb,Social Science,60caeeaf4b9d461ee039e1b2,Contemporary India - II,2
+60cc72211fe47a055015db42,Agriculture,4,60bf71d1d38e530a98c857fd,10,60c85dd9de9a2670e560f1eb,Social Science,60caeeaf4b9d461ee039e1b2,Contemporary India - II,2
+60cc72211fe47a055015db40,Forest and Wild life Resources,2,60bf71d1d38e530a98c857fd,10,60c85dd9de9a2670e560f1eb,Social Science,60caeeaf4b9d461ee039e1b2,Contemporary India - II,2
+60cc72211fe47a055015db45,Life lines of National Economy,7,60bf71d1d38e530a98c857fd,10,60c85dd9de9a2670e560f1eb,Social Science,60caeeaf4b9d461ee039e1b2,Contemporary India - II,2
+60cc72211fe47a055015db44,Manufacturing Industries,6,60bf71d1d38e530a98c857fd,10,60c85dd9de9a2670e560f1eb,Social Science,60caeeaf4b9d461ee039e1b2,Contemporary India - II,2
+60cc72211fe47a055015db43,Minerals and Energy Resources,5,60bf71d1d38e530a98c857fd,10,60c85dd9de9a2670e560f1eb,Social Science,60caeeaf4b9d461ee039e1b2,Contemporary India - II,2
+60cc72211fe47a055015db41,Water Resources,3,60bf71d1d38e530a98c857fd,10,60c85dd9de9a2670e560f1eb,Social Science,60caeeaf4b9d461ee039e1b2,Contemporary India - II,2
+60cc72f41fe47a055015db4d,Challenges of democracy,8,60bf71d1d38e530a98c857fd,10,60c85dd9de9a2670e560f1eb,Social Science,60caeeaf4b9d461ee039e1b3,Democratic Politics - II,3
+60d17a157849920004933cee,Do Liquids Conduct Electricity?,14.1,60bf184a4b91dc3983c12ae7,8,60b62b5f4b44826738114acb,Science,60d16f9e7849920004933c3f,Chemical Effects of Electric Current,14
+60d17a157849920004933cf0,Electroplating,14.3,60bf184a4b91dc3983c12ae7,8,60b62b5f4b44826738114acb,Science,60d16f9e7849920004933c3f,Chemical Effects of Electric Current,14
+60d1760a7849920004933ccf,Contact Forces,11.6,60bf184a4b91dc3983c12ae7,8,60b62b5f4b44826738114acb,Science,60d16f9e7849920004933c3c,Force and Pressure,11
+60cc72f41fe47a055015db46,Power Sharing,1,60bf71d1d38e530a98c857fd,10,60c85dd9de9a2670e560f1eb,Social Science,60caeeaf4b9d461ee039e1b3,Democratic Politics - II,3
+60cc72f41fe47a055015db48,Democracy and Diversity,3,60bf71d1d38e530a98c857fd,10,60c85dd9de9a2670e560f1eb,Social Science,60caeeaf4b9d461ee039e1b3,Democratic Politics - II,3
+60cc72f41fe47a055015db47,Federalism,2,60bf71d1d38e530a98c857fd,10,60c85dd9de9a2670e560f1eb,Social Science,60caeeaf4b9d461ee039e1b3,Democratic Politics - II,3
+60cc72f41fe47a055015db49,Gender Religion and Casts,4,60bf71d1d38e530a98c857fd,10,60c85dd9de9a2670e560f1eb,Social Science,60caeeaf4b9d461ee039e1b3,Democratic Politics - II,3
+60cc72f41fe47a055015db4a,Popular Struggles and Movements ,5,60bf71d1d38e530a98c857fd,10,60c85dd9de9a2670e560f1eb,Social Science,60caeeaf4b9d461ee039e1b3,Democratic Politics - II,3
+60cc70bb1fe47a055015db3b,Nationalism in India,2,60bf71d1d38e530a98c857fd,10,60c85dd9de9a2670e560f1eb,Social Science,60caeeaf4b9d461ee039e1b1,India and the Contemporary World - II,1
+60cc71291fe47a055015db3d,The Age of industrialisian,4,60bf71d1d38e530a98c857fd,10,60c85dd9de9a2670e560f1eb,Social Science,60caeeaf4b9d461ee039e1b1,India and the Contemporary World - II,1
+60cc70bb1fe47a055015db3c,The Making of global World,3,60bf71d1d38e530a98c857fd,10,60c85dd9de9a2670e560f1eb,Social Science,60caeeaf4b9d461ee039e1b1,India and the Contemporary World - II,1
+60cc6fe41fe47a055015db39,The Rise of nationalism in Europe,1,60bf71d1d38e530a98c857fd,10,60c85dd9de9a2670e560f1eb,Social Science,60caeeaf4b9d461ee039e1b1,India and the Contemporary World - II,1
+60cc76729fe4523598829a62,Consumer Rights,5,60bf71d1d38e530a98c857fd,10,60c85dd9de9a2670e560f1eb,Social Science,60caeeaf4b9d461ee039e1b4,Understanding Economic Development,4
+60cc732c1fe47a055015db4e,Development,1,60bf71d1d38e530a98c857fd,10,60c85dd9de9a2670e560f1eb,Social Science,60caeeaf4b9d461ee039e1b4,Understanding Economic Development,4
+60cc76239fe4523598829a60,Globalisation and the Indian  Economy,4,60bf71d1d38e530a98c857fd,10,60c85dd9de9a2670e560f1eb,Social Science,60caeeaf4b9d461ee039e1b4,Understanding Economic Development,4
+60cc736c1fe47a055015db4f,Sector of Indian economy,2,60bf71d1d38e530a98c857fd,10,60c85dd9de9a2670e560f1eb,Social Science,60caeeaf4b9d461ee039e1b4,Understanding Economic Development,4
+60cc75a19fe4523598829a5f,Money and Credit,3,60bf71d1d38e530a98c857fd,10,60c85dd9de9a2670e560f1eb,Social Science,60caeeaf4b9d461ee039e1b4,Understanding Economic Development,4
+60d1a53548a5bb000420a525,Biomolecules,3.2,60c0bcd4ebcff34e68fad7c9,11,60c85dc6de9a2670e560f1ea,Biology,60d1a4a148a5bb000420a51a,Cell Structure and Function,3
+60d1a53548a5bb000420a524,Cell-The Unit of Life,3.1,60c0bcd4ebcff34e68fad7c9,11,60c85dc6de9a2670e560f1ea,Biology,60d1a4a148a5bb000420a51a,Cell Structure and Function,3
+60d1a53548a5bb000420a526,Cell Cycle and Cell Division,3.3,60c0bcd4ebcff34e68fad7c9,11,60c85dc6de9a2670e560f1ea,Biology,60d1a4a148a5bb000420a51a,Cell Structure and Function,3
+60d1a4e348a5bb000420a51e,Biological Classification,1.2,60c0bcd4ebcff34e68fad7c9,11,60c85dc6de9a2670e560f1ea,Biology,60d1a4a148a5bb000420a518,Diversity of Living Organism,1
+60d1a4e348a5bb000420a51f, Plant Kingdom,1.3,60c0bcd4ebcff34e68fad7c9,11,60c85dc6de9a2670e560f1ea,Biology,60d1a4a148a5bb000420a518,Diversity of Living Organism,1
+60d1a4e348a5bb000420a51d,The Living World,1.1,60c0bcd4ebcff34e68fad7c9,11,60c85dc6de9a2670e560f1ea,Biology,60d1a4a148a5bb000420a518,Diversity of Living Organism,1
+60d1a5fa48a5bb000420a52e,Body Fluids and Circulation,5.3,60c0bcd4ebcff34e68fad7c9,11,60c85dc6de9a2670e560f1ea,Biology,60d1a4a148a5bb000420a51c,Human Physiology,5
+60d1a5fa48a5bb000420a52d,Breating and Exchange of Gases,5.2,60c0bcd4ebcff34e68fad7c9,11,60c85dc6de9a2670e560f1ea,Biology,60d1a4a148a5bb000420a51c,Human Physiology,5
+60d1a5fa48a5bb000420a532,Chemical Coordination and Integration,5.7,60c0bcd4ebcff34e68fad7c9,11,60c85dc6de9a2670e560f1ea,Biology,60d1a4a148a5bb000420a51c,Human Physiology,5
+60d1760a7849920004933cd1,Pressure,11.8,60bf184a4b91dc3983c12ae7,8,60b62b5f4b44826738114acb,Science,60d16f9e7849920004933c3c,Force and Pressure,11
+60d1a5fa48a5bb000420a52c,Digestion and Absorption,5.1,60c0bcd4ebcff34e68fad7c9,11,60c85dc6de9a2670e560f1ea,Biology,60d1a4a148a5bb000420a51c,Human Physiology,5
+60d176847849920004933cd5,Factors affecting Friction,12.2,60bf184a4b91dc3983c12ae7,8,60b62b5f4b44826738114acb,Science,60d16f9e7849920004933c3d,Friction,12
+60d1a5fa48a5bb000420a52f,Excretory Products and Their Elimination,5.4,60c0bcd4ebcff34e68fad7c9,11,60c85dc6de9a2670e560f1ea,Biology,60d1a4a148a5bb000420a51c,Human Physiology,5
+60d176847849920004933cd7,Increasing and Reducing Friction,12.4,60bf184a4b91dc3983c12ae7,8,60b62b5f4b44826738114acb,Science,60d16f9e7849920004933c3d,Friction,12
+60d17b157849920004933d00,What makes Things Visible,16.1,60bf184a4b91dc3983c12ae7,8,60b62b5f4b44826738114acb,Science,60d16f9e7849920004933c41,Light,16
+60d1a5fa48a5bb000420a530, Locomotion and Movement,5.5,60c0bcd4ebcff34e68fad7c9,11,60c85dc6de9a2670e560f1ea,Biology,60d1a4a148a5bb000420a51c,Human Physiology,5
+60d1a5fa48a5bb000420a531,Neural Control and Coordination,5.6,60c0bcd4ebcff34e68fad7c9,11,60c85dc6de9a2670e560f1ea,Biology,60d1a4a148a5bb000420a51c,Human Physiology,5
+60d17bcd7849920004933d0f,Air Pollution,18.1,60bf184a4b91dc3983c12ae7,8,60b62b5f4b44826738114acb,Science,60d16f9e7849920004933c43,Pollution of Air and Water,18
+60d17bcd7849920004933d14,Water Pollution,18.6,60bf184a4b91dc3983c12ae7,8,60b62b5f4b44826738114acb,Science,60d16f9e7849920004933c43,Pollution of Air and Water,18
+60d17a667849920004933cf7,Earthquakes,15.7,60bf184a4b91dc3983c12ae7,8,60b62b5f4b44826738114acb,Science,60d16f9e7849920004933c40,Some Natural Phenomena,15
+60d1a57648a5bb000420a529,Photosynthesis in Higher Plants,4.3,60c0bcd4ebcff34e68fad7c9,11,60c85dc6de9a2670e560f1ea,Biology,60d1a4a148a5bb000420a51b,Plant Physiology,4
+60d17a667849920004933cf6,Lightning Safety,15.6,60bf184a4b91dc3983c12ae7,8,60b62b5f4b44826738114acb,Science,60d16f9e7849920004933c40,Some Natural Phenomena,15
+60d17a667849920004933cf4,Transfer of Charge,15.4,60bf184a4b91dc3983c12ae7,8,60b62b5f4b44826738114acb,Science,60d16f9e7849920004933c40,Some Natural Phenomena,15
+60d176e37849920004933ce1,Sound is Produced by Vibrating Bodies,13.1,60bf184a4b91dc3983c12ae7,8,60b62b5f4b44826738114acb,Science,60d16f9e7849920004933c3e,Sound,13
+60d1a57648a5bb000420a52b,Plant - Growth and Development,4.5,60c0bcd4ebcff34e68fad7c9,11,60c85dc6de9a2670e560f1ea,Biology,60d1a4a148a5bb000420a51b,Plant Physiology,4
+60d176e37849920004933ce4,We Hear Sound through Our Ears,13.4,60bf184a4b91dc3983c12ae7,8,60b62b5f4b44826738114acb,Science,60d16f9e7849920004933c3e,Sound,13
+60d17b587849920004933d0a,The Moon,17.1,60bf184a4b91dc3983c12ae7,8,60b62b5f4b44826738114acb,Science,60d16f9e7849920004933c42,Stars and The Solar System,17
+60d1a57648a5bb000420a52a,Respiration in Plants,4.4,60c0bcd4ebcff34e68fad7c9,11,60c85dc6de9a2670e560f1ea,Biology,60d1a4a148a5bb000420a51b,Plant Physiology,4
+60d1a57648a5bb000420a527,Transport in Plants,4.1,60c0bcd4ebcff34e68fad7c9,11,60c85dc6de9a2670e560f1ea,Biology,60d1a4a148a5bb000420a51b,Plant Physiology,4
+60d1a50d48a5bb000420a522,Anatomy of Flowering Plants,2.2,60c0bcd4ebcff34e68fad7c9,11,60c85dc6de9a2670e560f1ea,Biology,60d1a4a148a5bb000420a519,Structural Organisation in Animals and Plants,2
+60d1a50d48a5bb000420a523,Structural Organisation in Animals,2.3,60c0bcd4ebcff34e68fad7c9,11,60c85dc6de9a2670e560f1ea,Biology,60d1a4a148a5bb000420a519,Structural Organisation in Animals and Plants,2
+60d097e57849920004933b8e,Fibre,3.2,60c05895e82abc693455109d,6,60b62b5f4b44826738114acb,Science,60d076627849920004933ab0,Fibre to Fabric,3
+60d097e57849920004933b8d,Variety in Fabrics,3.1,60c05895e82abc693455109d,6,60b62b5f4b44826738114acb,Science,60d076627849920004933ab0,Fibre to Fabric,3
+60d08fc87849920004933b6e,Is air present everywhere around us?,15.1,60c05895e82abc693455109d,6,60b62b5f4b44826738114acb,Science,60d0780b7849920004933ac1,Air Around us,15
+60d08fc87849920004933b6f,What is air made up of?,15.2,60c05895e82abc693455109d,6,60b62b5f4b44826738114acb,Science,60d0780b7849920004933ac1,Air Around us,15
+60d083c67849920004933b3a,Can all changes always be reversed?,6.1,60c05895e82abc693455109d,6,60b62b5f4b44826738114acb,Science,60d0770b7849920004933ab5,Changes Around us,6
+60d078ab7849920004933ad2,What do Various Nutrients do For Our Body?,2.2,60c05895e82abc693455109d,6,60b62b5f4b44826738114acb,Science,60d0764e7849920004933aae,Components of Food,2
+60d078ab7849920004933ad4,Deficiency Diseases,2.4,60c05895e82abc693455109d,6,60b62b5f4b44826738114acb,Science,60d0764e7849920004933aae,Components of Food,2
+60d08ead7849920004933b5a,A bulb connected to an electric cell,12.2,60c05895e82abc693455109d,6,60b62b5f4b44826738114acb,Science,60d0780b7849920004933abe,Electricity and Circuits,12
+60d08ead7849920004933b5b,An electric circuit,12.3,60c05895e82abc693455109d,6,60b62b5f4b44826738114acb,Science,60d0780b7849920004933abe,Electricity and Circuits,12
+60d08ead7849920004933b59,Electric cell,12.1,60c05895e82abc693455109d,6,60b62b5f4b44826738114acb,Science,60d0780b7849920004933abe,Electricity and Circuits,12
+60d097737849920004933b88,Food Variety,1.1,60c05895e82abc693455109d,6,60b62b5f4b44826738114acb,Science,60d0758b7849920004933aa7,Food- Where Does it Come From?,1
+60d097737849920004933b89,Food Materials and Sources,1.2,60c05895e82abc693455109d,6,60b62b5f4b44826738114acb,Science,60d0758b7849920004933aa7,Food- Where Does it Come From?,1
+60d08ee47849920004933b62,Attraction and repulsion between magnets,13.5,60c05895e82abc693455109d,6,60b62b5f4b44826738114acb,Science,60d0780b7849920004933abf,Fun with Magnets,13
+60d090127849920004933b73,Dealing with Garbage,16.1,60c05895e82abc693455109d,6,60b62b5f4b44826738114acb,Science,60d0780b7849920004933ac2,"Garbage in, Garbage out",16
+60d08d4c7849920004933b41,"Herbs, Shrubs and Trees",7.1,60c05895e82abc693455109d,6,60b62b5f4b44826738114acb,Science,60d077297849920004933ab6,Getting to Know Plants,7
+60d568662f660300042ba441,Plant and animal breeding and selection for quality improvement and management,1,60bf71cad38e530a98c857fc,9,60b62b5f4b44826738114acb,Science,60cb3da6cc9b7012dcf94ab7,"Food, Food Production",5
+60d08e5e7849920004933b55,"Transparent, opaque and translucent objects",11.1,60c05895e82abc693455109d,6,60b62b5f4b44826738114acb,Science,60d077887849920004933aba,"Light, Shadows and Reflections",11
+60d08db87849920004933b49,Habitat and adaption,9.2,60c05895e82abc693455109d,6,60b62b5f4b44826738114acb,Science,60d077887849920004933ab8,The Living Organisms Characteristics and Habitats,9
+60d08e1a7849920004933b50,Correct Measurement of Length,10.5,60c05895e82abc693455109d,6,60b62b5f4b44826738114acb,Science,60d077887849920004933ab9,Motion and Measurement of Distances,10
+60d08e1a7849920004933b4e,Some measurements,10.3,60c05895e82abc693455109d,6,60b62b5f4b44826738114acb,Science,60d077887849920004933ab9,Motion and Measurement of Distances,10
+60d08e1a7849920004933b53,Types of motion,10.8,60c05895e82abc693455109d,6,60b62b5f4b44826738114acb,Science,60d077887849920004933ab9,Motion and Measurement of Distances,10
+60d07bc97849920004933af4,Methods of separation,5.1,60c05895e82abc693455109d,6,60b62b5f4b44826738114acb,Science,60d076ee7849920004933ab4,Separation of substances,5
+60d0981e7849920004933b93,Objects around us,4.1,60c05895e82abc693455109d,6,60b62b5f4b44826738114acb,Science,60d076d07849920004933ab3,Sorting materials into groups,4
+60d0981e7849920004933b94,Properties of materials,4.2,60c05895e82abc693455109d,6,60b62b5f4b44826738114acb,Science,60d076d07849920004933ab3,Sorting materials into groups,4
+60d08f657849920004933b6a,How can we conserve water?,14.7,60c05895e82abc693455109d,6,60b62b5f4b44826738114acb,Science,60d0780b7849920004933ac0,Water,14
+60d5674b2f660300042ba40b,"Particle nature, basic units",2,60bf71cad38e530a98c857fc,9,60b62b5f4b44826738114acb,Science,60cb3da6cc9b7012dcf94ab3,Matter & Its Nature and Behavior,1
+60d5674b2f660300042ba40d,Structure of atoms,3,60bf71cad38e530a98c857fc,9,60b62b5f4b44826738114acb,Science,60cb3da6cc9b7012dcf94ab3,Matter & Its Nature and Behavior,1
+60d567782f660300042ba415,Biological Diversity,3,60bf71cad38e530a98c857fc,9,60b62b5f4b44826738114acb,Science,60cb3da6cc9b7012dcf94ab4,Organization in the Living World,2
+60d567782f660300042ba411,Cell - Basic Unit of life,1,60bf71cad38e530a98c857fc,9,60b62b5f4b44826738114acb,Science,60cb3da6cc9b7012dcf94ab4,Organization in the Living World,2
+60d567782f660300042ba413,"Tissues, Organs, Organ System, Organism",2,60bf71cad38e530a98c857fc,9,60b62b5f4b44826738114acb,Science,60cb3da6cc9b7012dcf94ab4,Organization in the Living World,2
+60d59a8a37321a00040eb156,Globe: Latitudes and Longitudes,3.2,60c05895e82abc693455109d,6,60c85dd9de9a2670e560f1eb,Social Science,60d5957237321a00040eb0e0,Geography – The Earth: Our Habitat,3
+60d59a8a37321a00040eb162,"India: Climate, Vegetation and Wildlife",3.8,60c05895e82abc693455109d,6,60c85dd9de9a2670e560f1eb,Social Science,60d5957237321a00040eb0e0,Geography – The Earth: Our Habitat,3
+60d567782f660300042ba417,Health and Diseases,4,60bf71cad38e530a98c857fc,9,60b62b5f4b44826738114acb,Science,60cb3da6cc9b7012dcf94ab4,Organization in the Living World,2
+60d59a8a37321a00040eb15c,Major Domains of the Earth,3.5,60c05895e82abc693455109d,6,60c85dd9de9a2670e560f1eb,Social Science,60d5957237321a00040eb0e0,Geography – The Earth: Our Habitat,3
+60d567e02f660300042ba431,Physical resources,1,60bf71cad38e530a98c857fc,9,60b62b5f4b44826738114acb,Science,60cb3da6cc9b7012dcf94ab6,Our Environment,4
+60d59a8a37321a00040eb15e,Major Landforms of the Earth,3.6,60c05895e82abc693455109d,6,60c85dd9de9a2670e560f1eb,Social Science,60d5957237321a00040eb0e0,Geography – The Earth: Our Habitat,3
+60d567e02f660300042ba433,Bio-geo chemical cycles in nature,2,60bf71cad38e530a98c857fc,9,60b62b5f4b44826738114acb,Science,60cb3da6cc9b7012dcf94ab6,Our Environment,4
+60d59a8a37321a00040eb15a,Maps,3.4,60c05895e82abc693455109d,6,60c85dd9de9a2670e560f1eb,Social Science,60d5957237321a00040eb0e0,Geography – The Earth: Our Habitat,3
+60d59a8a37321a00040eb158,Motions of the Earth,3.3,60c05895e82abc693455109d,6,60c85dd9de9a2670e560f1eb,Social Science,60d5957237321a00040eb0e0,Geography – The Earth: Our Habitat,3
+60d59a8a37321a00040eb160,Our Country: India,3.7,60c05895e82abc693455109d,6,60c85dd9de9a2670e560f1eb,Social Science,60d5957237321a00040eb0e0,Geography – The Earth: Our Habitat,3
+60d59a8a37321a00040eb154,The Earth in the Solar System,3.1,60c05895e82abc693455109d,6,60c85dd9de9a2670e560f1eb,Social Science,60d5957237321a00040eb0e0,Geography – The Earth: Our Habitat,3
+60d597db37321a00040eb10d,"Ashoka, The Emperor Who Gave Up War",1.7,60c05895e82abc693455109d,6,60c85dd9de9a2670e560f1eb,Social Science,60d5957237321a00040eb0de,History,1
+60d597db37321a00040eb115,"Buildings, Paintings And Books",1.11,60c05895e82abc693455109d,6,60c85dd9de9a2670e560f1eb,Social Science,60d5957237321a00040eb0de,History,1
+60d597db37321a00040eb103,From Hunting – Gathering To Growing Food,1.2,60c05895e82abc693455109d,6,60c85dd9de9a2670e560f1eb,Social Science,60d5957237321a00040eb0de,History,1
+60d597db37321a00040eb105,In The Earliest Cities,1.3,60c05895e82abc693455109d,6,60c85dd9de9a2670e560f1eb,Social Science,60d5957237321a00040eb0de,History,1
+60d597db37321a00040eb109,"Kingdoms, Kings And An Early Republic",1.5,60c05895e82abc693455109d,6,60c85dd9de9a2670e560f1eb,Social Science,60d5957237321a00040eb0de,History,1
+60d597db37321a00040eb113,New Empires And Kingdoms,1.1,60c05895e82abc693455109d,6,60c85dd9de9a2670e560f1eb,Social Science,60d5957237321a00040eb0de,History,1
+60d597db37321a00040eb10b,New Questions And Ideas,1.6,60c05895e82abc693455109d,6,60c85dd9de9a2670e560f1eb,Social Science,60d5957237321a00040eb0de,History,1
+60d597db37321a00040eb111,"Traders, Kings And Pilgrims",1.9,60c05895e82abc693455109d,6,60c85dd9de9a2670e560f1eb,Social Science,60d5957237321a00040eb0de,History,1
+60d597db37321a00040eb10f,"Vital Villages, Thriving Towns",1.8,60c05895e82abc693455109d,6,60c85dd9de9a2670e560f1eb,Social Science,60d5957237321a00040eb0de,History,1
+60d597db37321a00040eb107,What Books And Burials Tell Us,1.4,60c05895e82abc693455109d,6,60c85dd9de9a2670e560f1eb,Social Science,60d5957237321a00040eb0de,History,1
+60d597db37321a00040eb101,"What, Where, How And When?",1.1,60c05895e82abc693455109d,6,60c85dd9de9a2670e560f1eb,Social Science,60d5957237321a00040eb0de,History,1
+60d59a1437321a00040eb135,Diversity and Discrimination,2.2,60c05895e82abc693455109d,6,60c85dd9de9a2670e560f1eb,Social Science,60d5957237321a00040eb0df,Social & Political Life,2
+60d59a1437321a00040eb139,Key Elements of a Democratic Government,2.4,60c05895e82abc693455109d,6,60c85dd9de9a2670e560f1eb,Social Science,60d5957237321a00040eb0df,Social & Political Life,2
+60d59a1437321a00040eb13b,Panchayati Raj,2.5,60c05895e82abc693455109d,6,60c85dd9de9a2670e560f1eb,Social Science,60d5957237321a00040eb0df,Social & Political Life,2
+60d59a1437321a00040eb13d,Rural Administration,2.6,60c05895e82abc693455109d,6,60c85dd9de9a2670e560f1eb,Social Science,60d5957237321a00040eb0df,Social & Political Life,2
+60d59a1437321a00040eb141,Rural Livelihoods,2.8,60c05895e82abc693455109d,6,60c85dd9de9a2670e560f1eb,Social Science,60d5957237321a00040eb0df,Social & Political Life,2
+60d59a1437321a00040eb133,Understanding Diversity,2.1,60c05895e82abc693455109d,6,60c85dd9de9a2670e560f1eb,Social Science,60d5957237321a00040eb0df,Social & Political Life,2
+60d59a1437321a00040eb13f,Urban Administration,2.7,60c05895e82abc693455109d,6,60c85dd9de9a2670e560f1eb,Social Science,60d5957237321a00040eb0df,Social & Political Life,2
+60d59a1437321a00040eb143,Urban Livelihoods,2.9,60c05895e82abc693455109d,6,60c85dd9de9a2670e560f1eb,Social Science,60d5957237321a00040eb0df,Social & Political Life,2
+60d59a1437321a00040eb137,What is Government?,2.3,60c05895e82abc693455109d,6,60c85dd9de9a2670e560f1eb,Social Science,60d5957237321a00040eb0df,Social & Political Life,2
+60d182e17849920004933d83,Agriculture,3.4,60bf184a4b91dc3983c12ae7,8,60c85dd9de9a2670e560f1eb,Social Science,60d181c87849920004933d7a,Geography,3
+60d182e17849920004933d85,Human Resources,3.6,60bf184a4b91dc3983c12ae7,8,60c85dd9de9a2670e560f1eb,Social Science,60d181c87849920004933d7a,Geography,3
+60d1829a7849920004933d7c,Parliament and The Making of Laws,1.2,60bf184a4b91dc3983c12ae7,8,60c85dd9de9a2670e560f1eb,Social Science,60d181c87849920004933d79,Social and Political Life,2
+60d1829a7849920004933d7b,The Indian Constitution and Secularism,1.1,60bf184a4b91dc3983c12ae7,8,60c85dd9de9a2670e560f1eb,Social Science,60d181c87849920004933d79,Social and Political Life,2
+60d1829a7849920004933d7e,Social Justice and The Marginalised,1.4,60bf184a4b91dc3983c12ae7,8,60c85dd9de9a2670e560f1eb,Social Science,60d181c87849920004933d79,Social and Political Life,2
+60d1829a7849920004933d7d,The Judiciary,1.3,60bf184a4b91dc3983c12ae7,8,60c85dd9de9a2670e560f1eb,Social Science,60d181c87849920004933d79,Social and Political Life,2
+60d1829a7849920004933d7f,Economic Presence of the Government,1.5,60bf184a4b91dc3983c12ae7,8,60c85dd9de9a2670e560f1eb,Social Science,60d181c87849920004933d79,Social and Political Life,2
+60d182e17849920004933d84,Industries,3.5,60bf184a4b91dc3983c12ae7,8,60c85dd9de9a2670e560f1eb,Social Science,60d181c87849920004933d7a,Geography,3
+60d182e17849920004933d82,Mineral and Power Resources,3.3,60bf184a4b91dc3983c12ae7,8,60c85dd9de9a2670e560f1eb,Social Science,60d181c87849920004933d7a,Geography,3
+60d183717849920004933d8c,"Civilising the “Native”, Educating the Nation",1.7,60bf184a4b91dc3983c12ae7,8,60c85dd9de9a2670e560f1eb,Social Science,60d181c87849920004933d78,History,1
+60d183717849920004933d87,From Trade to Territory The Company Establishes Power,1.2,60bf184a4b91dc3983c12ae7,8,60c85dd9de9a2670e560f1eb,Social Science,60d181c87849920004933d78,History,1
+60d183717849920004933d86,"How, When and Where",1.1,60bf184a4b91dc3983c12ae7,8,60c85dd9de9a2670e560f1eb,Social Science,60d181c87849920004933d78,History,1
+60d183717849920004933d8f,India After Independence,1.1,60bf184a4b91dc3983c12ae7,8,60c85dd9de9a2670e560f1eb,Social Science,60d181c87849920004933d78,History,1
+60d183717849920004933d88,Ruling the Countryside,1.3,60bf184a4b91dc3983c12ae7,8,60c85dd9de9a2670e560f1eb,Social Science,60d181c87849920004933d78,History,1
+60d183717849920004933d8e,The Making of the National Movement: 1870s–1947,1.9,60bf184a4b91dc3983c12ae7,8,60c85dd9de9a2670e560f1eb,Social Science,60d181c87849920004933d78,History,1
+60d183717849920004933d89,"Tribals, Dikus and the Vision of a Golden Age",1.4,60bf184a4b91dc3983c12ae7,8,60c85dd9de9a2670e560f1eb,Social Science,60d181c87849920004933d78,History,1
+60d183717849920004933d8b,"Weavers, Iron Smelters and Factory Owners",1.6,60bf184a4b91dc3983c12ae7,8,60c85dd9de9a2670e560f1eb,Social Science,60d181c87849920004933d78,History,1
+60d183717849920004933d8a,When People Rebel 1857 and After,1.5,60bf184a4b91dc3983c12ae7,8,60c85dd9de9a2670e560f1eb,Social Science,60d181c87849920004933d78,History,1
+60d183717849920004933d8d,"Women, Caste and Reform",1.8,60bf184a4b91dc3983c12ae7,8,60c85dd9de9a2670e560f1eb,Social Science,60d181c87849920004933d78,History,1
+60d1760a7849920004933cca,Force- A push or a Pull,11.1,60bf184a4b91dc3983c12ae7,8,60b62b5f4b44826738114acb,Science,60d16f9e7849920004933c3c,Force and Pressure,11
+60d56a012f660300042ba472,Climate ,4,60bf71cad38e530a98c857fc,9,60c85dd9de9a2670e560f1eb,Social Science,60cb3da6cc9b7012dcf94abf,Contemporary India - I,2
+60d56a012f660300042ba46e,Physical Features of India,2,60bf71cad38e530a98c857fc,9,60c85dd9de9a2670e560f1eb,Social Science,60cb3da6cc9b7012dcf94abf,Contemporary India - I,2
+60d56a012f660300042ba470,Drainage,3,60bf71cad38e530a98c857fc,9,60c85dd9de9a2670e560f1eb,Social Science,60cb3da6cc9b7012dcf94abf,Contemporary India - I,2
+60d56a012f660300042ba474,Natural Vegetation and Wild Life,5,60bf71cad38e530a98c857fc,9,60c85dd9de9a2670e560f1eb,Social Science,60cb3da6cc9b7012dcf94abf,Contemporary India - I,2
+60d56a012f660300042ba476,Population,6,60bf71cad38e530a98c857fc,9,60c85dd9de9a2670e560f1eb,Social Science,60cb3da6cc9b7012dcf94abf,Contemporary India - I,2
+60d56a8d2f660300042ba48c,Food Security in India,4,60bf71cad38e530a98c857fc,9,60c85dd9de9a2670e560f1eb,Social Science,60cb3da6cc9b7012dcf94ac1,Economics,4
+60d56a8d2f660300042ba48a,Poverty as a Challenge ,3,60bf71cad38e530a98c857fc,9,60c85dd9de9a2670e560f1eb,Social Science,60cb3da6cc9b7012dcf94ac1,Economics,4
+60d56a8d2f660300042ba486,The Story of Village Palampur ,1,60bf71cad38e530a98c857fc,9,60c85dd9de9a2670e560f1eb,Social Science,60cb3da6cc9b7012dcf94ac1,Economics,4
+60d56a4f2f660300042ba47c,Constitutional Design,2,60bf71cad38e530a98c857fc,9,60c85dd9de9a2670e560f1eb,Social Science,60cb3da6cc9b7012dcf94ac0,Democratic Politics - I,3
+60d56a4f2f660300042ba482, Democratic Rights,5,60bf71cad38e530a98c857fc,9,60c85dd9de9a2670e560f1eb,Social Science,60cb3da6cc9b7012dcf94ac0,Democratic Politics - I,3
+60d56a4f2f660300042ba47e,Electoral Politics,3,60bf71cad38e530a98c857fc,9,60c85dd9de9a2670e560f1eb,Social Science,60cb3da6cc9b7012dcf94ac0,Democratic Politics - I,3
+60d56a4f2f660300042ba47a,What is Democracy? Why Democracy?,1,60bf71cad38e530a98c857fc,9,60c85dd9de9a2670e560f1eb,Social Science,60cb3da6cc9b7012dcf94ac0,Democratic Politics - I,3
+60d56a4f2f660300042ba480,Working of Institutions,4,60bf71cad38e530a98c857fc,9,60c85dd9de9a2670e560f1eb,Social Science,60cb3da6cc9b7012dcf94ac0,Democratic Politics - I,3
+60d56a8d2f660300042ba488,People as Resource ,2,60bf71cad38e530a98c857fc,9,60c85dd9de9a2670e560f1eb,Social Science,60cb3da6cc9b7012dcf94ac1,Economics,4
+60d569af2f660300042ba466,Events and Processes,1,60bf71cad38e530a98c857fc,9,60c85dd9de9a2670e560f1eb,Social Science,60cb3da6cc9b7012dcf94abe,India and the Contemporary World - II,1
+60d569af2f660300042ba468,"Livelihoods, Economies and Societies",2,60bf71cad38e530a98c857fc,9,60c85dd9de9a2670e560f1eb,Social Science,60cb3da6cc9b7012dcf94abe,India and the Contemporary World - II,1
+60d174b57849920004933ca8,Parts of the Cell,8.5,60bf184a4b91dc3983c12ae7,8,60b62b5f4b44826738114acb,Science,60d16f9e7849920004933c39,Cell — Structure and Functions,8
+60d174b57849920004933ca5,The Cell,8.2,60bf184a4b91dc3983c12ae7,8,60b62b5f4b44826738114acb,Science,60d16f9e7849920004933c39,Cell — Structure and Functions,8
+60d1735d7849920004933c8d,Coal,5.1,60bf184a4b91dc3983c12ae7,8,60b62b5f4b44826738114acb,Science,60d16f9e7849920004933c36,Coal and Petroleum,5
+60d1735d7849920004933c8f,Natural Gas,5.3,60bf184a4b91dc3983c12ae7,8,60b62b5f4b44826738114acb,Science,60d16f9e7849920004933c36,Coal and Petroleum,5
+60d1735d7849920004933c90,Some Natural Resources are Limited,5.4,60bf184a4b91dc3983c12ae7,8,60b62b5f4b44826738114acb,Science,60d16f9e7849920004933c36,Coal and Petroleum,5
+60d1d75248a5bb000420a65a,Human Health and Diseases,3.1,60bf71dad38e530a98c857fe,12,60c85dc6de9a2670e560f1ea,Biology,60d1d6d048a5bb000420a652,Biology and Human Welfare,3
+60d173bf7849920004933c94,Flame,6.4,60bf184a4b91dc3983c12ae7,8,60b62b5f4b44826738114acb,Science,60d16f9e7849920004933c37,Combustion and Flame,6
+60d173bf7849920004933c97,Fuel Efficiency,6.7,60bf184a4b91dc3983c12ae7,8,60b62b5f4b44826738114acb,Science,60d16f9e7849920004933c37,Combustion and Flame,6
+60d173bf7849920004933c93,Types of Combustion,6.3,60bf184a4b91dc3983c12ae7,8,60b62b5f4b44826738114acb,Science,60d16f9e7849920004933c37,Combustion and Flame,6
+60d1d75248a5bb000420a65b,Microbes in Human Welfare,3.2,60bf71dad38e530a98c857fe,12,60c85dc6de9a2670e560f1ea,Biology,60d1d6d048a5bb000420a652,Biology and Human Welfare,3
+60d174557849920004933c98,Deforestation and Its Causes,7.1,60bf184a4b91dc3983c12ae7,8,60b62b5f4b44826738114acb,Science,60d16f9e7849920004933c38,Conservation of Plants and Animals,7
+60d172647849920004933c6c,Preparation of Soil,1.3,60bf184a4b91dc3983c12ae7,8,60b62b5f4b44826738114acb,Science,60d1717e7849920004933c5b,Crop Production and Management,1
+60d172b97849920004933c80,Harmful Microorganisms,2.4,60bf184a4b91dc3983c12ae7,8,60b62b5f4b44826738114acb,Science,60d16f9e7849920004933c33,Microorganisms- Friend and Foe,2
+60d172b97849920004933c7d,Microorganisms,2.1,60bf184a4b91dc3983c12ae7,8,60b62b5f4b44826738114acb,Science,60d16f9e7849920004933c33,Microorganisms- Friend and Foe,2
+60d1d78c48a5bb000420a65d,Biotechnology and its Application,4.2,60bf71dad38e530a98c857fe,12,60c85dc6de9a2670e560f1ea,Biology,60d1d6d048a5bb000420a653,Biotechnology and its Applications,4
+60d1d7ad48a5bb000420a65f,Biodiversity and its Conservation,5.2,60bf71dad38e530a98c857fe,12,60c85dc6de9a2670e560f1ea,Biology,60d1d6d048a5bb000420a654,Ecology and Environment,5
+60d175667849920004933cbe,Changes at Puberty,10.2,60bf184a4b91dc3983c12ae7,8,60b62b5f4b44826738114acb,Science,60d16f9e7849920004933c3b,Reaching the Age of Adolescence,10
+60d175667849920004933cbf,Secondary Sexual Characters,10.3,60bf184a4b91dc3983c12ae7,8,60b62b5f4b44826738114acb,Science,60d16f9e7849920004933c3b,Reaching the Age of Adolescence,10
+60d174e77849920004933cba,Modes of Reproduction,9.1,60bf184a4b91dc3983c12ae7,8,60b62b5f4b44826738114acb,Science,60d16f9e7849920004933c3a,Reproduction in Animals,9
+60d174e77849920004933cbb,Sexual Reproduction,9.2,60bf184a4b91dc3983c12ae7,8,60b62b5f4b44826738114acb,Science,60d16f9e7849920004933c3a,Reproduction in Animals,9
+60d173057849920004933c86,Characteristics of Synthetic Fibres,3.3,60bf184a4b91dc3983c12ae7,8,60b62b5f4b44826738114acb,Science,60d16f9e7849920004933c34,Synthetic Fibres and Plastics,3
+60d173057849920004933c87,Plastics,3.4,60bf184a4b91dc3983c12ae7,8,60b62b5f4b44826738114acb,Science,60d16f9e7849920004933c34,Synthetic Fibres and Plastics,3
+60d173057849920004933c85,Types of Synthetic Fibres,3.2,60bf184a4b91dc3983c12ae7,8,60b62b5f4b44826738114acb,Science,60d16f9e7849920004933c34,Synthetic Fibres and Plastics,3
+60d1e36f48a5bb000420a680,Mode of Nutrition In Plants,1.1,60dd8c7c01bce4172cf4899a,7,60b62b5f4b44826738114acb,Science,60d1e22b48a5bb000420a66e,Nutrition in Plants,1
+60d1d73248a5bb000420a659,Molecular Basis of Inheritance,2.2,60bf71dad38e530a98c857fe,12,60c85dc6de9a2670e560f1ea,Biology,60d1d6d048a5bb000420a651,Genetics and Evolution,2
+60d1e46548a5bb000420a690, Acids and Bases,5.1,60dd8c7c01bce4172cf4899a,7,60b62b5f4b44826738114acb,Science,60d1e29748a5bb000420a672,"Acids, Bases, and Salts",5
+60d1e46548a5bb000420a691,Natural Indicators Around Us,5.2,60dd8c7c01bce4172cf4899a,7,60b62b5f4b44826738114acb,Science,60d1e29748a5bb000420a672,"Acids, Bases, and Salts",5
+60d1d73248a5bb000420a658,Principles of Inheritance and Variation ,2.1,60bf71dad38e530a98c857fe,12,60c85dc6de9a2670e560f1ea,Biology,60d1d6d048a5bb000420a651,Genetics and Evolution,2
+60d1d71248a5bb000420a656,Human Reproduction,1.3,60bf71dad38e530a98c857fe,12,60c85dc6de9a2670e560f1ea,Biology,60d1d6d048a5bb000420a650,Reproduction,1
+60d1e46548a5bb000420a692, Neutralisation,5.3,60dd8c7c01bce4172cf4899a,7,60b62b5f4b44826738114acb,Science,60d1e29748a5bb000420a672,"Acids, Bases, and Salts",5
+60d1e6e248a5bb000420a6bf,Magnetic Effect of Electric Current,14.3,60dd8c7c01bce4172cf4899a,7,60b62b5f4b44826738114acb,Science,60d1e2fe48a5bb000420a67b,Electric Current and Its Effects,14
+60d1d71248a5bb000420a657,Reproductive Health,1.3,60bf71dad38e530a98c857fe,12,60c85dc6de9a2670e560f1ea,Biology,60d1d6d048a5bb000420a650,Reproduction,1
+60d172b97849920004933c81,Food Preservation,2.5,60bf184a4b91dc3983c12ae7,8,60b62b5f4b44826738114acb,Science,60d16f9e7849920004933c33,Microorganisms- Friend and Foe,2
+60d1d71248a5bb000420a655,Sexual Reproduction in Flowering Plants,1.1,60bf71dad38e530a98c857fe,12,60c85dc6de9a2670e560f1ea,Biology,60d1d6d048a5bb000420a650,Reproduction,1
+60e955b549a9f800048188de,Reproduction in Organisms,1.4,60bf71dad38e530a98c857fe,12,60c85dc6de9a2670e560f1ea,Biology,60d1d6d048a5bb000420a650,Reproduction,1
+60e9553849a9f800048188c8,Strategies for Enhancement in Food Production,3.3,60bf71dad38e530a98c857fe,12,60c85dc6de9a2670e560f1ea,Biology,60d1d6d048a5bb000420a652,Biology and Human Welfare,3
+60e955e349a9f800048188e2, Evolution,2.3,60bf71dad38e530a98c857fe,12,60c85dc6de9a2670e560f1ea,Biology,60d1d6d048a5bb000420a651,Genetics and Evolution,2
+60d1e6e248a5bb000420a6be,Heating Effect of Electric Current,14.2,60dd8c7c01bce4172cf4899a,7,60b62b5f4b44826738114acb,Science,60d1e2fe48a5bb000420a67b,Electric Current and Its Effects,14
+60e9565449a9f800048188f7,Ecosystem,5.2,60bf71dad38e530a98c857fe,12,60c85dc6de9a2670e560f1ea,Biology,60d1d6d048a5bb000420a654,Ecology and Environment,5
+60e9566349a9f800048188fa,Environmental Issues,5.4,60bf71dad38e530a98c857fe,12,60c85dc6de9a2670e560f1ea,Biology,60d1d6d048a5bb000420a654,Ecology and Environment,5
+60d1e6e248a5bb000420a6bd,Symbols of Electric Components,14.1,60dd8c7c01bce4172cf4899a,7,60b62b5f4b44826738114acb,Science,60d1e2fe48a5bb000420a67b,Electric Current and Its Effects,14
+60d1e3f848a5bb000420a68a,Silk,3.2,60dd8c7c01bce4172cf4899a,7,60b62b5f4b44826738114acb,Science,60d1e29748a5bb000420a670,Fibre to Fabric,3
+60d1d7ad48a5bb000420a65e,Organisms and Populations,5.1,60bf71dad38e530a98c857fe,12,60c85dc6de9a2670e560f1ea,Biology,60d1d6d048a5bb000420a654,Ecology and Environment,5
+60d17f957849920004933d5e,Devotional Paths to the Divine,8,60dd8c7c01bce4172cf4899a,7,60c85dd9de9a2670e560f1eb,Social Science,60d17eb17849920004933d3c,History,2
+60d17f957849920004933d57,Tracing Changes Through a Thousand Years,1,60dd8c7c01bce4172cf4899a,7,60c85dd9de9a2670e560f1eb,Social Science,60d17eb17849920004933d3c,History,2
+60d17f957849920004933d58,New Kings and Kingdoms,2,60dd8c7c01bce4172cf4899a,7,60c85dd9de9a2670e560f1eb,Social Science,60d17eb17849920004933d3c,History,2
+60d17f957849920004933d5b,Rulers and Buildings,5,60dd8c7c01bce4172cf4899a,7,60c85dd9de9a2670e560f1eb,Social Science,60d17eb17849920004933d3c,History,2
+60d17f957849920004933d5a,The Mughal Empire,4,60dd8c7c01bce4172cf4899a,7,60c85dd9de9a2670e560f1eb,Social Science,60d17eb17849920004933d3c,History,2
+60d17f957849920004933d59,The Delhi Sultans,3,60dd8c7c01bce4172cf4899a,7,60c85dd9de9a2670e560f1eb,Social Science,60d17eb17849920004933d3c,History,2
+60d17f957849920004933d5d,"Tribes, Nomads, and Settled Communities",7,60dd8c7c01bce4172cf4899a,7,60c85dd9de9a2670e560f1eb,Social Science,60d17eb17849920004933d3c,History,2
+60d17f957849920004933d5f,The Making of Regional Cultures,9,60dd8c7c01bce4172cf4899a,7,60c85dd9de9a2670e560f1eb,Social Science,60d17eb17849920004933d3c,History,2
+60d17f957849920004933d5c,"Towns, Traders, and Craftsperson",6,60dd8c7c01bce4172cf4899a,7,60c85dd9de9a2670e560f1eb,Social Science,60d17eb17849920004933d3c,History,2
+60d17f957849920004933d60,Eighteenth- Century Political Formations,10,60dd8c7c01bce4172cf4899a,7,60c85dd9de9a2670e560f1eb,Social Science,60d17eb17849920004933d3c,History,2
+60d180127849920004933d6a,Inside Our Earth,2,60dd8c7c01bce4172cf4899a,7,60c85dd9de9a2670e560f1eb,Social Science,60d17eb17849920004933d3d,Geography,3
+60d180127849920004933d6c,Air,4,60dd8c7c01bce4172cf4899a,7,60c85dd9de9a2670e560f1eb,Social Science,60d17eb17849920004933d3d,Geography,3
+60d180127849920004933d69,Environment,1,60dd8c7c01bce4172cf4899a,7,60c85dd9de9a2670e560f1eb,Social Science,60d17eb17849920004933d3d,Geography,3
+60d180127849920004933d6b,Our Changing Earth,3,60dd8c7c01bce4172cf4899a,7,60c85dd9de9a2670e560f1eb,Social Science,60d17eb17849920004933d3d,Geography,3
+60d180127849920004933d6f,"Human Environment Settlement, Transport and Communication.",7,60dd8c7c01bce4172cf4899a,7,60c85dd9de9a2670e560f1eb,Social Science,60d17eb17849920004933d3d,Geography,3
+60d180127849920004933d72,Life in the Deserts,10,60dd8c7c01bce4172cf4899a,7,60c85dd9de9a2670e560f1eb,Social Science,60d17eb17849920004933d3d,Geography,3
+60d180127849920004933d70,Human Environment and Interaction – The Tropical and Subtropical Region,8,60dd8c7c01bce4172cf4899a,7,60c85dd9de9a2670e560f1eb,Social Science,60d17eb17849920004933d3d,Geography,3
+60d180127849920004933d6d,Water,5,60dd8c7c01bce4172cf4899a,7,60c85dd9de9a2670e560f1eb,Social Science,60d17eb17849920004933d3d,Geography,3
+60d180127849920004933d6e,Natural Vegetation and Wildlife,6,60dd8c7c01bce4172cf4899a,7,60c85dd9de9a2670e560f1eb,Social Science,60d17eb17849920004933d3d,Geography,3
+60d1e43648a5bb000420a68c,Measuring Temperature,4.2,60dd8c7c01bce4172cf4899a,7,60b62b5f4b44826738114acb,Science,60d1e29748a5bb000420a671,Heat,4
+60d17f267849920004933d47,On Equality,1,60dd8c7c01bce4172cf4899a,7,60c85dd9de9a2670e560f1eb,Social Science,60d17eb17849920004933d3b,Civics,1
+60d17f267849920004933d49,How the State Government Works,3,60dd8c7c01bce4172cf4899a,7,60c85dd9de9a2670e560f1eb,Social Science,60d17eb17849920004933d3b,Civics,1
+60d17f267849920004933d4f,A Shirt in the Market,9,60dd8c7c01bce4172cf4899a,7,60c85dd9de9a2670e560f1eb,Social Science,60d17eb17849920004933d3b,Civics,1
+60d17f267849920004933d4d,Understanding Advertising,7,60dd8c7c01bce4172cf4899a,7,60c85dd9de9a2670e560f1eb,Social Science,60d17eb17849920004933d3b,Civics,1
+60d17f267849920004933d48,Role of Government in Health,2,60dd8c7c01bce4172cf4899a,7,60c85dd9de9a2670e560f1eb,Social Science,60d17eb17849920004933d3b,Civics,1
+60d17f267849920004933d4e,Markets Around Us,8,60dd8c7c01bce4172cf4899a,7,60c85dd9de9a2670e560f1eb,Social Science,60d17eb17849920004933d3b,Civics,1
+60d17f267849920004933d4a,Growing Up as Boys and Girls,4,60dd8c7c01bce4172cf4899a,7,60c85dd9de9a2670e560f1eb,Social Science,60d17eb17849920004933d3b,Civics,1
+60d17f267849920004933d4b,Women Change the World,5,60dd8c7c01bce4172cf4899a,7,60c85dd9de9a2670e560f1eb,Social Science,60d17eb17849920004933d3b,Civics,1
+60d1e43648a5bb000420a68e,Transfer of Heat,4.4,60dd8c7c01bce4172cf4899a,7,60b62b5f4b44826738114acb,Science,60d1e29748a5bb000420a671,Heat,4
+60d1e74148a5bb000420a6c5,Playing with Spherical Mirrors,15.4,60dd8c7c01bce4172cf4899a,7,60b62b5f4b44826738114acb,Science,60d1e2fe48a5bb000420a67c,Light,15
+60d1e74148a5bb000420a6c6,Images Formed by Lenses,15.5,60dd8c7c01bce4172cf4899a,7,60b62b5f4b44826738114acb,Science,60d1e2fe48a5bb000420a67c,Light,15
+60e96b2a49a9f80004818c96,Interrelationship of organisms in a forest,17.2,60dd8c7c01bce4172cf4899a,7,60b62b5f4b44826738114acb,Science,60d1e2fe48a5bb000420a67e,Forest: our Lifeline,17
+60e96bf649a9f80004818cb6,Understoreys of a forest,17.3,60dd8c7c01bce4172cf4899a,7,60b62b5f4b44826738114acb,Science,60d1e2fe48a5bb000420a67e,Forest: our Lifeline,17
+60e96c4f49a9f80004818cc8,Dispersion of White Light,15.7,60dd8c7c01bce4172cf4899a,7,60b62b5f4b44826738114acb,Science,60d1e2fe48a5bb000420a67c,Light,15
+60e96c6449a9f80004818cce,Properties of Lights,17.7,60dd8c7c01bce4172cf4899a,7,60b62b5f4b44826738114acb,Science,60d1e2fe48a5bb000420a67c,Light,15
+60d1e6a348a5bb000420a6bc,Distance-Time Graph.,13.5,60dd8c7c01bce4172cf4899a,7,60b62b5f4b44826738114acb,Science,60d1e2fe48a5bb000420a67a,Motion and Time,13
+60d1e6a348a5bb000420a6b9,Speed,13.2,60dd8c7c01bce4172cf4899a,7,60b62b5f4b44826738114acb,Science,60d1e2fe48a5bb000420a67a,Motion and Time,13
+60d1e4a648a5bb000420a695,Chemical Change,6.2,60dd8c7c01bce4172cf4899a,7,60b62b5f4b44826738114acb,Science,60d1e29748a5bb000420a673,Physical and Chemical Changes,6
+60d1e4a648a5bb000420a697,Crystallization,6.4,60dd8c7c01bce4172cf4899a,7,60b62b5f4b44826738114acb,Science,60d1e29748a5bb000420a673,Physical and Chemical Changes,6
+60d1e4a648a5bb000420a694,Physical Changes,6.1,60dd8c7c01bce4172cf4899a,7,60b62b5f4b44826738114acb,Science,60d1e29748a5bb000420a673,Physical and Chemical Changes,6
+60d1e4a648a5bb000420a696,Rusting of Iron,6.3,60dd8c7c01bce4172cf4899a,7,60b62b5f4b44826738114acb,Science,60d1e29748a5bb000420a673,Physical and Chemical Changes,6
+60d1e66648a5bb000420a6b5,Sexual Reproduction,12.2,60dd8c7c01bce4172cf4899a,7,60b62b5f4b44826738114acb,Science,60d1e2fe48a5bb000420a679,Reproduction in Plants,12
+60d1e59248a5bb000420a6a6,Properties of Soil,9.4,60dd8c7c01bce4172cf4899a,7,60b62b5f4b44826738114acb,Science,60d1e29748a5bb000420a676,Soil,9
+60d1e59248a5bb000420a6a4,Soil Profile,9.2,60dd8c7c01bce4172cf4899a,7,60b62b5f4b44826738114acb,Science,60d1e29748a5bb000420a676,Soil,9
+60d1e59248a5bb000420a6a5, Soil Types,9.3,60dd8c7c01bce4172cf4899a,7,60b62b5f4b44826738114acb,Science,60d1e29748a5bb000420a676,Soil,9
+60d1e62f48a5bb000420a6b1,Circulatory System,11.1,60dd8c7c01bce4172cf4899a,7,60b62b5f4b44826738114acb,Science,60d1e2fe48a5bb000420a678,Transportation in Animals and Plants,11
+60d1e62f48a5bb000420a6b2,Excretion in Animals,11.2,60dd8c7c01bce4172cf4899a,7,60b62b5f4b44826738114acb,Science,60d1e2fe48a5bb000420a678,Transportation in Animals and Plants,11
+60d1e84148a5bb000420a6d6,Sanitation and Disease,18.6,60dd8c7c01bce4172cf4899a,7,60b62b5f4b44826738114acb,Science,60d1e2fe48a5bb000420a67f,Waste Water Story,18
+60d1e84148a5bb000420a6d2,What Is Sewage?,18.2,60dd8c7c01bce4172cf4899a,7,60b62b5f4b44826738114acb,Science,60d1e2fe48a5bb000420a67f,Waste Water Story,18
+60d1e7a948a5bb000420a6c8,How Much Water Is Available,16.1,60dd8c7c01bce4172cf4899a,7,60b62b5f4b44826738114acb,Science,60d1e2fe48a5bb000420a67d,Water- A Precious Resource,16
+60d1e7a948a5bb000420a6cb,Depletion of Water Table,16.4,60dd8c7c01bce4172cf4899a,7,60b62b5f4b44826738114acb,Science,60d1e2fe48a5bb000420a67d,Water- A Precious Resource,16
+60d1e7a948a5bb000420a6c9,Forms of Water,16.2,60dd8c7c01bce4172cf4899a,7,60b62b5f4b44826738114acb,Science,60d1e2fe48a5bb000420a67d,Water- A Precious Resource,16
+60d1e4d748a5bb000420a69a,Climate and Adaptation.,7.3,60dd8c7c01bce4172cf4899a,7,60b62b5f4b44826738114acb,Science,60d1e29748a5bb000420a674,Weather Climate and Adaptation of Animals to Climate,7
+60d1e4d748a5bb000420a698,Weather,7.1,60dd8c7c01bce4172cf4899a,7,60b62b5f4b44826738114acb,Science,60d1e29748a5bb000420a674,Weather Climate and Adaptation of Animals to Climate,7
+60d1e53d48a5bb000420a69f,Thunderstorms and Cyclones,8.5,60dd8c7c01bce4172cf4899a,7,60b62b5f4b44826738114acb,Science,60d1e29748a5bb000420a675,"Winds, Storms, and Cyclones",8
+60e98c54b5a0910004bf59c6,Water Harvesting,16.8,60dd8c7c01bce4172cf4899a,7,60b62b5f4b44826738114acb,Science,60d1e2fe48a5bb000420a67d,Water- A Precious Resource,16
+60d567c12f660300042ba41f,Motion,1,60bf71cad38e530a98c857fc,9,60b62b5f4b44826738114acb,Science,60cb3da6cc9b7012dcf94ab5,"Motion, Force and Work",3
+60e985abb5a0910004bf58da,Asexual Reproduction,12.5,60dd8c7c01bce4172cf4899a,7,60b62b5f4b44826738114acb,Science,60d1e2fe48a5bb000420a679,Reproduction in Plants,12
+60e98420f497d60004ea4853,Periodic Motion,13.6,60dd8c7c01bce4172cf4899a,7,60b62b5f4b44826738114acb,Science,60d1e2fe48a5bb000420a67a,Motion and Time,13
+60e98910b5a0910004bf5967,Transpiration,11.4,60dd8c7c01bce4172cf4899a,7,60b62b5f4b44826738114acb,Science,60d1e2fe48a5bb000420a678,Transportation in Animals and Plants,11
+60d1e62f48a5bb000420a6b3,Transport of Substances in Plants,11.3,60dd8c7c01bce4172cf4899a,7,60b62b5f4b44826738114acb,Science,60d1e2fe48a5bb000420a678,Transportation in Animals and Plants,11
+60e98e2eb5a0910004bf5a6d,Wind Currents,20.1,60dd8c7c01bce4172cf4899a,7,60b62b5f4b44826738114acb,Science,60e98e0ab5a0910004bf5a5f,"Wind, Storms and Cyclones",20
+60e98666b5a0910004bf591e,Respiration in Plants,19.1,60dd8c7c01bce4172cf4899a,7,60b62b5f4b44826738114acb,Science,60e9863bb5a0910004bf5912,Respiration in Plants,XIX
+60d567c12f660300042ba423,Gravitation,3,60bf71cad38e530a98c857fc,9,60b62b5f4b44826738114acb,Science,60cb3da6cc9b7012dcf94ab5,"Motion, Force and Work",3
+60d567c12f660300042ba429,Sound,6,60bf71cad38e530a98c857fc,9,60b62b5f4b44826738114acb,Science,60cb3da6cc9b7012dcf94ab5,"Motion, Force and Work",3
+60e99a25b5a0910004bf5b93,Velocity,7,60bf71cad38e530a98c857fc,9,60b62b5f4b44826738114acb,Science,60cb3da6cc9b7012dcf94ab5,"Motion, Force and Work",3
+60d17df17849920004933d30,Multiplication of Algebraic Expressions: Introduction,9.6,60bf184a4b91dc3983c12ae7,8,60b62b974b44826738114ad0,Maths,60d174de7849920004933cb2,Algebraic Expressions and Identities	,9
+60d567c12f660300042ba427,"Work, energy and power",5,60bf71cad38e530a98c857fc,9,60b62b5f4b44826738114acb,Science,60cb3da6cc9b7012dcf94ab5,"Motion, Force and Work",3
+60d17d217849920004933d27,Compound Interest,8.6,60bf184a4b91dc3983c12ae7,8,60b62b974b44826738114ad0,Maths,60d174de7849920004933cb1,Comparing Quantities,8
+60d17c597849920004933d20,Cubes,7.2,60bf184a4b91dc3983c12ae7,8,60b62b974b44826738114ad0,Maths,60d174de7849920004933cb0,Cubes and Cube Roots,7
+60d1a2ac48a5bb000420a501,Motion in a Straight Line,2.1,60c0bcd4ebcff34e68fad7c9,11,60b62b8c4b44826738114ace,Physics,60d1a25b48a5bb000420a4f6,Kinematics,2
+60d1a2ac48a5bb000420a502,Motion in a Plane,2.2,60c0bcd4ebcff34e68fad7c9,11,60b62b8c4b44826738114ace,Physics,60d1a25b48a5bb000420a4f6,Kinematics,2
+60ebbfd932be2c000464a8b8,Division of Algebraic Expressions,9.13,60bf184a4b91dc3983c12ae7,8,60b62b974b44826738114ad0,Maths,60d174de7849920004933cb2,Algebraic Expressions and Identities	,9
+60d2cbdd4dee2b000462a2d0,Concepts of System and types of systems,1,60c0bcd4ebcff34e68fad7c9,11,60b62b914b44826738114acf,Chemistry,60d2c6714dee2b000462a21b, Chemical Thermodynamics,6
+60d1b5c848a5bb000420a60a,"Alcohols— Mono, Di, Tri or Polyhydric alcohols",11.1,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a590,"Alcohols, Phenols and Ethers",11
+60ebcb4332be2c000464a946,Equation of state of a perfect gas,9.2,60c0bcd4ebcff34e68fad7c9,11,60b62b8c4b44826738114ace,Physics,60d1a25b48a5bb000420a4fd,Behaviour of Perfect Gases and Kinetic Theory of Gases	,9
+60ebcb9332be2c000464a94a,Acceleration due to gravity,6.2,60c0bcd4ebcff34e68fad7c9,11,60b62b8c4b44826738114ace,Physics,60d1a25b48a5bb000420a4fa,Gravitation,6
+60d1b5c848a5bb000420a60b,"Phenols— Mono, Di and trihydric phenols",11.2,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a590,"Alcohols, Phenols and Ethers",11
+60d1b60b48a5bb000420a60d,Preparation of Aldehydes and Ketones,12.2,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a591,"Aldehydes, Ketones and Carboxylic Acids",12
+60d1b60b48a5bb000420a60c,"Nomenclature, the structure of the carbonyl group",12.1,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a591,"Aldehydes, Ketones and Carboxylic Acids",12
+60ebcbc532be2c000464a95f,Kepler's law of planetary motion,6.3,60c0bcd4ebcff34e68fad7c9,11,60b62b8c4b44826738114ace,Physics,60d1a25b48a5bb000420a4fa,Gravitation,6
+60d1b06548a5bb000420a5be,Rate of a chemical reaction,4.1,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a589,Chemical Kinetics,4
+60ebcbe832be2c000464a962,The universal law of gravitation,6.4,60c0bcd4ebcff34e68fad7c9,11,60b62b8c4b44826738114ace,Physics,60d1a25b48a5bb000420a4fa,Gravitation,6
+60d1b00c48a5bb000420a5bd,Nernst equation,3.4,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a588,Electro-chemistry,3
+60d1b3bd48a5bb000420a5f5,Nature of C-X Bond C-X Bond,10.1,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a58f,Haloalkanes and Haloarenes,10
+60d567cd2f660300042ba42d,Real Numbers ,1.1,60bf71cad38e530a98c857fc,9,60b62b974b44826738114ad0,Maths,60cb3da6cc9b7012dcf94ab8,Number System,1
+60d1b3bd48a5bb000420a5f6,Methods of preparation of haloalkanes,10.2,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a58f,Haloalkanes and Haloarenes,10
+60d1b72148a5bb000420a618,Mechanism of polymerisation reaction,15.3,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a594,Polymers,15
+60ebed6a86ceaa0004241ff0,Ethers,11.3,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a590,"Alcohols, Phenols and Ethers",11
+60d1b6d148a5bb000420a611,Carbohydrates,14.1,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a593,Biomolecules,14
+60ebee0286ceaa0004242002,Nucleic Acids,14.6,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a593,Biomolecules,14
+60d2c70a4dee2b000462a232,General Introduction- Importance and scope of Chemistry.,1,60c0bcd4ebcff34e68fad7c9,11,60b62b914b44826738114acf,Chemistry,60d2c6714dee2b000462a216,Some Basic Concepts of Chemistry,1
+60ebee0e86ceaa0004242005,Proteins,14.7,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a593,Biomolecules,14
+60ebee3886ceaa0004242029,Structure of Proteins,14.8,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a593,Biomolecules,14
+60ebee4a86ceaa000424202c,Vitamins,14.8,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a593,Biomolecules,14
+60d2c81f4dee2b000462a246,Bohr’s model and its limitations,1,60c0bcd4ebcff34e68fad7c9,11,60b62b914b44826738114acf,Chemistry,60d2c6714dee2b000462a217,Structure of Atom,2
+60d2c81f4dee2b000462a248,Concept of shells and subshells,2,60c0bcd4ebcff34e68fad7c9,11,60b62b914b44826738114acf,Chemistry,60d2c6714dee2b000462a217,Structure of Atom,2
+60d567fa2f660300042ba438,Linear Equations in Two Variables,2.2,60bf71cad38e530a98c857fc,9,60b62b974b44826738114ad0,Maths,60cb3da6cc9b7012dcf94ab9,Algebra,2
+60d2c81f4dee2b000462a24e,Heisenberg uncertainty principle,5,60c0bcd4ebcff34e68fad7c9,11,60b62b914b44826738114acf,Chemistry,60d2c6714dee2b000462a217,Structure of Atom,2
+60d2c8b34dee2b000462a261,Modern periodic law and the present form of periodic table,1,60c0bcd4ebcff34e68fad7c9,11,60b62b914b44826738114acf,Chemistry,60d2c6714dee2b000462a218,Classification of Elements and Periodicity in Properties,3
+60d2ccd14dee2b000462a2fd,Equilibrium in physical and chemical processes,1,60c0bcd4ebcff34e68fad7c9,11,60b62b914b44826738114acf,Chemistry,60d2c6714dee2b000462a21c, Equilibrium,7
+60ebeeeb86ceaa000424204f,Cleansing Agent - Soaps and Detergents,16.5,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a595,Chemistry in Everyday Life,16
+60ebef0e86ceaa0004242059,Chemicals in Food-Preservations,16.6,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a595,Chemistry in Everyday Life,16
+60ebeeb686ceaa0004242042,Chemicals in medicines,16.4,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a595,Chemistry in Everyday Life,16
+60d1a38b48a5bb000420a516,Oscillations,10.1,60c0bcd4ebcff34e68fad7c9,11,60b62b8c4b44826738114ace,Physics,60d1a25b48a5bb000420a4fe,Oscillations and Waves,10
+60ebef7686ceaa000424207a,Coordination number,9.3,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a58e,Coordination Compounds,9
+60ebef8586ceaa0004242086,Importance of coordination compounds,9.4,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a58e,Coordination Compounds,9
+60ebef9586ceaa0004242089,Isomerism,9.5,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a58e,Coordination Compounds,9
+60ebefb986ceaa000424208c,IUPAC Nomenclature of mononuclear coordination compound,9.6,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a58e,Coordination Compounds,9
+60ebefc886ceaa000424208f,Magnetic properties and shapes,9.7,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a58e,Coordination Compounds,9
+60d2cda74dee2b000462a332,Position of hydrogen in periodic table,1,60c0bcd4ebcff34e68fad7c9,11,60b62b914b44826738114acf,Chemistry,60d2c6714dee2b000462a21e, Hydrogen,9
+60d2cf424dee2b000462a365,Electronic displacements in a covalent bond- inductive effect,3,60c0bcd4ebcff34e68fad7c9,11,60b62b914b44826738114acf,Chemistry,60d2c6714dee2b000462a221,Organic Chemistry – Some Basic Principles and Techniques,12
+60d2cf424dee2b000462a361,General introduction,1,60c0bcd4ebcff34e68fad7c9,11,60b62b914b44826738114acf,Chemistry,60d2c6714dee2b000462a221,Organic Chemistry – Some Basic Principles and Techniques,12
+60d2ce834dee2b000462a35b,Group 13 Elements,1,60c0bcd4ebcff34e68fad7c9,11,60b62b914b44826738114acf,Chemistry,60d2c6714dee2b000462a220, p-Block Elements,11
+60d2ce834dee2b000462a35d,Group 14 Elements,2,60c0bcd4ebcff34e68fad7c9,11,60b62b914b44826738114acf,Chemistry,60d2c6714dee2b000462a220, p-Block Elements,11
+60d2cd334dee2b000462a320,Concept of oxidation and reduction,1,60c0bcd4ebcff34e68fad7c9,11,60b62b914b44826738114acf,Chemistry,60d2c6714dee2b000462a21d, Redox Reactions,8
+60d1a38b48a5bb000420a517,Waves,10.2,60c0bcd4ebcff34e68fad7c9,11,60b62b8c4b44826738114ace,Physics,60d1a25b48a5bb000420a4fe,Oscillations and Waves,10
+60ebf00c86ceaa0004242093,General introduction,8.3,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a58d,The d- and f - Block Elements,8
+60ebf02286ceaa0004242096,Lanthanoids - Electronic Configuration,8.4,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a58d,The d- and f - Block Elements,8
+60ebf0f186ceaa00042420b2,Conductance in Electrolytic Solutions,3.5,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a588,Electro-chemistry,3
+60ebf10a86ceaa00042420b5,Electrolysis and Law of Electrolysis (Elementary Idea),3.6,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a588,Electro-chemistry,3
+60ebf12c86ceaa00042420b8,Fuel Cells,3.7,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a588,Electro-chemistry,3
+60ebf14586ceaa00042420bb,Kohlrausch's Law,3.8,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a588,Electro-chemistry,3
+60ebf15486ceaa00042420be,Specific and Molar Conductivity,3.9,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a588,Electro-chemistry,3
+60d567fa2f660300042ba436,Polynomials  ,2.1,60bf71cad38e530a98c857fc,9,60b62b974b44826738114ad0,Maths,60cb3da6cc9b7012dcf94ab9,Algebra,2
+60ebf1a886ceaa00042420c2,Reduction - Electrolytic Method and Refining,6.4,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a58b,General Principles and Processes of Isolation of Elements,6
+60ebf27386ceaa00042420e0,Iodoform,10.8,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a58f,Haloalkanes and Haloarenes,10
+60d2ce604dee2b000462a345,Group 1 and Group 2 Elements General introduction,1,60c0bcd4ebcff34e68fad7c9,11,60b62b914b44826738114acf,Chemistry,60d2c6714dee2b000462a21f,s-Block Elements,10
+60ebf22086ceaa00042420d1,Mechanism of Substitution Reactions,10.6,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a58f,Haloalkanes and Haloarenes,10
+60ebf20b86ceaa00042420c6,Physical and Chemical Properties,10.5,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a58f,Haloalkanes and Haloarenes,10
+60ebf23b86ceaa00042420d9,Tetra chloromethane,10.7,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a58f,Haloalkanes and Haloarenes,10
+60ebf33186ceaa0004242103,Group -15 Elements: General Introduction,7.6,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a58c,The p-Block elements,7
+60ebf34286ceaa0004242106,Group 16 Elements: General introduction,7.7,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a58c,The p-Block elements,7
+60d2c70a4dee2b000462a234,Atomic and molecular masses,2,60c0bcd4ebcff34e68fad7c9,11,60b62b914b44826738114acf,Chemistry,60d2c6714dee2b000462a216,Some Basic Concepts of Chemistry,1
+60d2c70a4dee2b000462a236,Mole concept and molar mas,3,60c0bcd4ebcff34e68fad7c9,11,60b62b914b44826738114acf,Chemistry,60d2c6714dee2b000462a216,Some Basic Concepts of Chemistry,1
+60d2c70a4dee2b000462a238,Percentage composition,4,60c0bcd4ebcff34e68fad7c9,11,60b62b914b44826738114acf,Chemistry,60d2c6714dee2b000462a216,Some Basic Concepts of Chemistry,1
+60d1a28948a5bb000420a4ff, Physical World,1.1,60c0bcd4ebcff34e68fad7c9,11,60b62b8c4b44826738114ace,Physics,60d1a25b48a5bb000420a4f5,Physical World and Measurement,1
+60ebf35786ceaa0004242109,Group 17 Elements: General Introduction,7.8,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a58c,The p-Block elements,7
+60d2ca964dee2b000462a2b6,Avogadro’s law,9,60c0bcd4ebcff34e68fad7c9,11,60b62b914b44826738114acf,Chemistry,60d2c6714dee2b000462a21a, States of Matter- Gases and Liquids,5
+60ebf3ba86ceaa0004242123,Bakelite,15.6,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a594,Polymers,15
+60d2ca964dee2b000462a2b8,Ideal behaviour,10,60c0bcd4ebcff34e68fad7c9,11,60b62b914b44826738114acf,Chemistry,60d2c6714dee2b000462a21a, States of Matter- Gases and Liquids,5
+60d568122f660300042ba43c,Coordinate Geometry,3.1,60bf71cad38e530a98c857fc,9,60b62b974b44826738114ad0,Maths,60cb3da6cc9b7012dcf94aba,Coordinate Geometry,3
+60d1a28948a5bb000420a500, Units and Measurements,1.2,60c0bcd4ebcff34e68fad7c9,11,60b62b8c4b44826738114ace,Physics,60d1a25b48a5bb000420a4f5,Physical World and Measurement,1
+60ebf39f86ceaa0004242116,Copolymerization,15.4,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a594,Polymers,15
+60ebf3ab86ceaa000424211d,Nylon Polyesters,15.5,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a594,Polymers,15
+60d2ca964dee2b000462a2be,Ideal gas equation and deviation from ideal behavior,13,60c0bcd4ebcff34e68fad7c9,11,60b62b914b44826738114acf,Chemistry,60d2c6714dee2b000462a21a, States of Matter- Gases and Liquids,5
+60ebf3ce86ceaa0004242126,Rubber,15.7,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a594,Polymers,15
+60d2ca964dee2b000462a2a6,Three states of matter,1,60c0bcd4ebcff34e68fad7c9,11,60b62b914b44826738114acf,Chemistry,60d2c6714dee2b000462a21a, States of Matter- Gases and Liquids,5
+60ebf4ae86ceaa000424219a,Number of Atoms Per Unit Cell in a Cubic Unit Cell,1.5,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a586,Solid State,1
+60ebf4c286ceaa00042421a3,Point Defects,1.6,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a586,Solid State,1
+60ebf4f086ceaa00042421c2,Colligative Properties,2.5,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a587,Solutions,2
+60d2c9c94dee2b000462a281,Valence electrons,1,60c0bcd4ebcff34e68fad7c9,11,60b62b914b44826738114acf,Chemistry,60d2c6714dee2b000462a219,Chemical Bonding and Molecular Structure,4
+60d1a35248a5bb000420a510,Mechanical Properties of Fluids,7.2,60c0bcd4ebcff34e68fad7c9,11,60b62b8c4b44826738114ace,Physics,60d1a25b48a5bb000420a4fb,Properties of Bulk Matter,7
+60d1a9df48a5bb000420a55a,Atoms,8.1,60bf71dad38e530a98c857fe,12,60b62b8c4b44826738114ace,Physics,60d1a92948a5bb000420a54d,Atoms and Nuclei,8
+60d1a35248a5bb000420a50f,Mechanical Properties of Solids,7.1,60c0bcd4ebcff34e68fad7c9,11,60b62b8c4b44826738114ace,Physics,60d1a25b48a5bb000420a4fb,Properties of Bulk Matter,7
+60d2cf6c4dee2b000462a377,Aliphatic Hydrocarbons,1,60c0bcd4ebcff34e68fad7c9,11,60b62b914b44826738114acf,Chemistry,60d2c6714dee2b000462a222,Hydrocarbons,13
+60d1a35248a5bb000420a511,Thermal Properties of Matter,7.3,60c0bcd4ebcff34e68fad7c9,11,60b62b8c4b44826738114ace,Physics,60d1a25b48a5bb000420a4fb,Properties of Bulk Matter,7
+60d1a9df48a5bb000420a55b,Nuclei,8.2,60bf71dad38e530a98c857fe,12,60b62b8c4b44826738114ace,Physics,60d1a92948a5bb000420a54d,Atoms and Nuclei,8
+60d1a9c748a5bb000420a559, Dual Nature of Radiation and Matter,7.1,60bf71dad38e530a98c857fe,12,60b62b8c4b44826738114ace,Physics,60d1a92948a5bb000420a54c,Dual Nature of Radiation and Matter	,7
+60d1a98848a5bb000420a555,Alternating Current,4.2,60bf71dad38e530a98c857fe,12,60b62b8c4b44826738114ace,Physics,60d1a92948a5bb000420a549,Electromagnetic Induction and Alternating Currents,4
+60d1a98848a5bb000420a554,Electromagnetic Induction,4.1,60bf71dad38e530a98c857fe,12,60b62b8c4b44826738114ace,Physics,60d1a92948a5bb000420a549,Electromagnetic Induction and Alternating Currents,4
+60d1a99548a5bb000420a556,Electromagnetic Waves,5.1,60bf71dad38e530a98c857fe,12,60b62b8c4b44826738114ace,Physics,60d1a92948a5bb000420a54a,Electromagnetic Waves	,5
+60d1a9f148a5bb000420a55c," Semiconductor Electronics: Materials, Devices and Simple Circuits",9.1,60bf71dad38e530a98c857fe,12,60b62b8c4b44826738114ace,Physics,60d1a92948a5bb000420a54e,Electronic Devices,9
+60d1a94f48a5bb000420a550,Electrostatic Potential and Capacitance,1.2,60bf71dad38e530a98c857fe,12,60b62b8c4b44826738114ace,Physics,60d1a92948a5bb000420a546,Electrostatics,1
+60d1a94f48a5bb000420a54f,Electric Charges and Fields,1.1,60bf71dad38e530a98c857fe,12,60b62b8c4b44826738114ace,Physics,60d1a92948a5bb000420a546,Electrostatics,1
+60d07f8f7849920004933b28,What is an Equation?,11.9,60c05895e82abc693455109d,6,60b62b974b44826738114ad0,Maths,60d078637849920004933ac8,Algebra,11
+60d07f8f7849920004933b26,Expressions with Variables,11.7,60c05895e82abc693455109d,6,60b62b974b44826738114ad0,Maths,60d078637849920004933ac8,Algebra,11
+60d07f8f7849920004933b25,Use Of Variables in Common Rules,11.6,60c05895e82abc693455109d,6,60b62b974b44826738114ad0,Maths,60d078637849920004933ac8,Algebra,11
+60d07b0a7849920004933aee,Angles,4.1,60c05895e82abc693455109d,6,60b62b974b44826738114ad0,Maths,60d077f57849920004933abc,Basic Geometrical Ideas,4
+60d1a97748a5bb000420a553,Magnetism and Matter,3.2,60bf71dad38e530a98c857fe,12,60b62b8c4b44826738114ace,Physics,60d1a92948a5bb000420a548,Magnetic Effects of Current and Magnetism,3
+60d07b0a7849920004933af1,Circles,4.13,60c05895e82abc693455109d,6,60b62b974b44826738114ad0,Maths,60d077f57849920004933abc,Basic Geometrical Ideas,4
+60d568992f660300042ba454,Circles ,4.4,60bf71cad38e530a98c857fc,9,60b62b974b44826738114ad0,Maths,60cb3da6cc9b7012dcf94abb,Geometry,4
+60d07eb47849920004933b1b,A Bar Graph,9.7,60c05895e82abc693455109d,6,60b62b974b44826738114ad0,Maths,60d078427849920004933ac6,Data Handling,9
+60d07eb47849920004933b15,Introduction,9.1,60c05895e82abc693455109d,6,60b62b974b44826738114ad0,Maths,60d078427849920004933ac6,Data Handling,9
+60d07eb47849920004933b18,Pictograph,9.4,60c05895e82abc693455109d,6,60b62b974b44826738114ad0,Maths,60d078427849920004933ac6,Data Handling,9
+60d1a9b048a5bb000420a558,Wave Optics,6.2,60bf71dad38e530a98c857fe,12,60b62b8c4b44826738114ace,Physics,60d1a92948a5bb000420a54b,Optics,6
+60d1a9b048a5bb000420a557,Ray Optics and Optical Instruments,6.1,60bf71dad38e530a98c857fe,12,60b62b8c4b44826738114ace,Physics,60d1a92948a5bb000420a54b,Optics,6
+60d07e5d7849920004933b10,Comparing Decimals,8.4,60c05895e82abc693455109d,6,60b62b974b44826738114ad0,Maths,60d078327849920004933ac5,Decimals,8
+60d07e5d7849920004933b0d,Introduction,8.1,60c05895e82abc693455109d,6,60b62b974b44826738114ad0,Maths,60d078327849920004933ac5,Decimals,8
+60ed1943ddb18e0004880e51,Representation of a decimal,8.7,60c05895e82abc693455109d,6,60b62b974b44826738114ad0,Maths,60d078327849920004933ac5,Decimals,8
+60d07e5d7849920004933b11,Using Decimals,8.5,60c05895e82abc693455109d,6,60b62b974b44826738114ad0,Maths,60d078327849920004933ac5,Decimals,8
+60ed1d5abab3a200046ce1d3,Arithmetic using Fractions,7.5,60c05895e82abc693455109d,6,60b62b974b44826738114ad0,Maths,60d078247849920004933ac4,Fractions,7
+60ed1d4fbab3a200046ce1d0,Numerator & Denominator,7.4,60c05895e82abc693455109d,6,60b62b974b44826738114ad0,Maths,60d078247849920004933ac4,Fractions,7
+60ed1d2cbab3a200046ce1ca,Representation of a Fraction,7.2,60c05895e82abc693455109d,6,60b62b974b44826738114ad0,Maths,60d078247849920004933ac4,Fractions,7
+60ed1d3dbab3a200046ce1cd,Types of Fractions,7.3,60c05895e82abc693455109d,6,60b62b974b44826738114ad0,Maths,60d078247849920004933ac4,Fractions,7
+60d07d047849920004933aff,Introduction,6.1,60c05895e82abc693455109d,6,60b62b974b44826738114ad0,Maths,60d078187849920004933ac3,Integers,6
+60ed254dbab3a200046ce32d,Operations on Integers,6.3,60c05895e82abc693455109d,6,60b62b974b44826738114ad0,Maths,60d078187849920004933ac3,Integers,6
+60d07edb7849920004933b1e,Area,10.3,60c05895e82abc693455109d,6,60b62b974b44826738114ad0,Maths,60d078547849920004933ac7,Mensuration,10
+60d07edb7849920004933b1d,Perimeter,10.2,60c05895e82abc693455109d,6,60b62b974b44826738114ad0,Maths,60d078547849920004933ac7,Mensuration,10
+60d0910d7849920004933b82, Common Factors and Common Multiples,3.5,60c05895e82abc693455109d,6,60b62b974b44826738114ad0,Maths,60d08fa57849920004933b6d,Playing With Numbers,3
+60d0910d7849920004933b7e,Introduction,3.1,60c05895e82abc693455109d,6,60b62b974b44826738114ad0,Maths,60d08fa57849920004933b6d,Playing With Numbers,3
+60d0910d7849920004933b81,Test For Divisibility Of Numbers,3.4,60c05895e82abc693455109d,6,60b62b974b44826738114ad0,Maths,60d08fa57849920004933b6d,Playing With Numbers,3
+60d07fde7849920004933b2a,Introduction,12.1,60c05895e82abc693455109d,6,60b62b974b44826738114ad0,Maths,60d078717849920004933ace,Ratio and Proportion,12
+60d085d07849920004933b40,Roman Numerals,1.5,60c05895e82abc693455109d,6,60b62b974b44826738114ad0,Maths,60d075947849920004933aa8,Knowing Our Numbers,1
+60ed26a0bab3a200046ce37d,Applications,13.3,60c05895e82abc693455109d,6,60b62b974b44826738114ad0,Maths,60d078827849920004933acf,Symmetry,13
+60ed2694bab3a200046ce37a,Reflection & Symmetry,13.2,60c05895e82abc693455109d,6,60b62b974b44826738114ad0,Maths,60d078827849920004933acf,Symmetry,13
+60d0805b7849920004933b2e,Introduction,13.1,60c05895e82abc693455109d,6,60b62b974b44826738114ad0,Maths,60d078827849920004933acf,Symmetry,13
+60d07bfd7849920004933afe,Three Dimensional Shapes,5.1,60c05895e82abc693455109d,6,60b62b974b44826738114ad0,Maths,60d078077849920004933abd,Understanding Elementary Shapes,5
+60d07bfd7849920004933af8,"Angles- ‘Acute’, ‘Obtuse’ and ‘Reflex’",5.4,60c05895e82abc693455109d,6,60b62b974b44826738114ad0,Maths,60d078077849920004933abd,Understanding Elementary Shapes,5
+60d07bfd7849920004933afb,Classification of Triangles,5.7,60c05895e82abc693455109d,6,60b62b974b44826738114ad0,Maths,60d078077849920004933abd,Understanding Elementary Shapes,5
+60d07bfd7849920004933af6,Measuring Line Segments,5.2,60c05895e82abc693455109d,6,60b62b974b44826738114ad0,Maths,60d078077849920004933abd,Understanding Elementary Shapes,5
+60d07bfd7849920004933afc,Quadrilaterals,5.8,60c05895e82abc693455109d,6,60b62b974b44826738114ad0,Maths,60d078077849920004933abd,Understanding Elementary Shapes,5
+60d1a97748a5bb000420a552,Moving Charges and Magnetism,3.1,60bf71dad38e530a98c857fe,12,60b62b8c4b44826738114ace,Physics,60d1a92948a5bb000420a548,Magnetic Effects of Current and Magnetism,3
+60d0902c7849920004933b7c,Properties Of Whole Numbers,2.4,60c05895e82abc693455109d,6,60b62b974b44826738114ad0,Maths,60d08f517849920004933b63,Whole Numbers,2
+60d1a95d48a5bb000420a551,Current Electricity,2.1,60bf71dad38e530a98c857fe,12,60b62b8c4b44826738114ace,Physics,60d1a92948a5bb000420a547,Current Electricity,2
+60d0902c7849920004933b7b,The Number Line,2.3,60c05895e82abc693455109d,6,60b62b974b44826738114ad0,Maths,60d08f517849920004933b63,Whole Numbers,2
+60d0902c7849920004933b79,Introduction,2.1,60c05895e82abc693455109d,6,60b62b974b44826738114ad0,Maths,60d08f517849920004933b63,Whole Numbers,2
+60d1a30a48a5bb000420a50a,Conic Sections,2,60c0bcd4ebcff34e68fad7c9,11,60b62b974b44826738114ad0,Maths,60d1a0d048a5bb000420a4ec,Coordinate Geometry,3
+60d1a2e648a5bb000420a504,Complex Numbers and Quadratic Equations,1,60c0bcd4ebcff34e68fad7c9,11,60b62b974b44826738114ad0,Maths,60d1a0d048a5bb000420a4eb,Algebra,2
+60d1a30a48a5bb000420a50b,Introduction to Three-dimensional Geometry,3,60c0bcd4ebcff34e68fad7c9,11,60b62b974b44826738114ad0,Maths,60d1a0d048a5bb000420a4ec,Coordinate Geometry,3
+60ec0c035ee58e000413ae52,Dynamics of Uniform Circular Motion,3.6,60c0bcd4ebcff34e68fad7c9,11,60b62b8c4b44826738114ace,Physics,60d1a25b48a5bb000420a4f7,Laws of Motion,3
+60ec0bdb5ee58e000413ae4c,Equilibrium of Concurrent Forces,3.4,60c0bcd4ebcff34e68fad7c9,11,60b62b8c4b44826738114ace,Physics,60d1a25b48a5bb000420a4f7,Laws of Motion,3
+60ed5f1cda4f9c00044a0901,Binomial Theorem,5,60c0bcd4ebcff34e68fad7c9,11,60b62b974b44826738114ad0,Maths,60d1a0d048a5bb000420a4eb,Algebra,2
+60ec0bcb5ee58e000413ae49,Law of Conservation of Linear Momentum,3.3,60c0bcd4ebcff34e68fad7c9,11,60b62b8c4b44826738114ace,Physics,60d1a25b48a5bb000420a4f7,Laws of Motion,3
+60ec0bf55ee58e000413ae4f,"Laws of Friction, Rolling Friction, Lubrication",3.5,60c0bcd4ebcff34e68fad7c9,11,60b62b8c4b44826738114ace,Physics,60d1a25b48a5bb000420a4f7,Laws of Motion,3
+60ec0bb25ee58e000413ae42,Newton's Laws of Motion,3.2,60c0bcd4ebcff34e68fad7c9,11,60b62b8c4b44826738114ace,Physics,60d1a25b48a5bb000420a4f7,Laws of Motion,3
+60ec0ccb5ee58e000413ae76,Centre of Mass of a Rigid Body,5.3,60c0bcd4ebcff34e68fad7c9,11,60b62b8c4b44826738114ace,Physics,60d1a25b48a5bb000420a4f9,Motion of System of Particles and Rigid Body,5
+60ec0cb75ee58e000413ae73,Centre of Mass of a Two-particle System,5.2,60c0bcd4ebcff34e68fad7c9,11,60b62b8c4b44826738114ace,Physics,60d1a25b48a5bb000420a4f9,Motion of System of Particles and Rigid Body,5
+60ec0ceb5ee58e000413ae8c,Laws of Conservation of Angular Momentum and Its Applications.,5.5,60c0bcd4ebcff34e68fad7c9,11,60b62b8c4b44826738114ace,Physics,60d1a25b48a5bb000420a4f9,Motion of System of Particles and Rigid Body,5
+60ec0cde5ee58e000413ae82,"Moment of a Force, Torque, Angular Momentum",5.4,60c0bcd4ebcff34e68fad7c9,11,60b62b8c4b44826738114ace,Physics,60d1a25b48a5bb000420a4f9,Motion of System of Particles and Rigid Body,5
+60d17f717849920004933d56,Inverse Proportion,13.3,60bf184a4b91dc3983c12ae7,8,60b62b974b44826738114ad0,Maths,60d174de7849920004933cb6,Direct and Inverse Proportions,13
+60ec0d155ee58e000413ae8f,Moment of Inertia,5.6,60c0bcd4ebcff34e68fad7c9,11,60b62b8c4b44826738114ace,Physics,60d1a25b48a5bb000420a4f9,Motion of System of Particles and Rigid Body,5
+60ec0d275ee58e000413ae92,Statement of Parallel and Perpendicular Axes Theorems/applications.,5.7,60c0bcd4ebcff34e68fad7c9,11,60b62b8c4b44826738114ace,Physics,60d1a25b48a5bb000420a4f9,Motion of System of Particles and Rigid Body,5
+60d568992f660300042ba456,Constructions ,4.5,60bf71cad38e530a98c857fc,9,60b62b974b44826738114ad0,Maths,60cb3da6cc9b7012dcf94abb,Geometry,4
+60d1768a7849920004933cdf,Reducing Equations to Simpler Form,2.6,60bf184a4b91dc3983c12ae7,8,60b62b974b44826738114ad0,Maths,60d174de7849920004933cab,Linear Equations in One Variable,2
+60d1804d7849920004933d77,Test of Divisibility,16.5,60bf184a4b91dc3983c12ae7,8,60b62b974b44826738114ad0,Maths,60d174de7849920004933cb9,Playing with Numbers,16
+60d17aa17849920004933cf9,Constructing a Quadrilateral,4.2,60bf184a4b91dc3983c12ae7,8,60b62b974b44826738114ad0,Maths,60d174de7849920004933cad,Practical Geometry,4
+60d175967849920004933cc7,Properties of Rational Numbers,1.2,60bf184a4b91dc3983c12ae7,8,60b62b974b44826738114ad0,Maths,60d174de7849920004933caa,Rational Numbers,1
+60d175967849920004933cc6,Introduction,1.1,60bf184a4b91dc3983c12ae7,8,60b62b974b44826738114ad0,Maths,60d174de7849920004933caa,Rational Numbers,1
+60d17c0b7849920004933d1a,Some More Interesting Patterns,6.3,60bf184a4b91dc3983c12ae7,8,60b62b974b44826738114ad0,Maths,60d174de7849920004933caf,Squares and Square Roots,6
+60d17c0b7849920004933d1b,Finding the Square of a Number,6.4,60bf184a4b91dc3983c12ae7,8,60b62b974b44826738114ad0,Maths,60d174de7849920004933caf,Squares and Square Roots,6
+60ed7191da4f9c00044a0d7b,Heron's Formula,5.3,60bf71cad38e530a98c857fc,9,60b62b974b44826738114ad0,Maths,60cb3da6cc9b7012dcf94abc,Mensuration,5
+60ed71f6da4f9c00044a0d86,Introduction to Euclid's Geometry,4.6,60bf71cad38e530a98c857fc,9,60b62b974b44826738114ad0,Maths,60cb3da6cc9b7012dcf94abb,Geometry,4
+60d17c0b7849920004933d1e,Estimating Square Root,6.7,60bf184a4b91dc3983c12ae7,8,60b62b974b44826738114ad0,Maths,60d174de7849920004933caf,Squares and Square Roots,6
+60d179f17849920004933cea,Polygons,3.2,60bf184a4b91dc3983c12ae7,8,60b62b974b44826738114ad0,Maths,60d174de7849920004933cac,Understanding Quadrilaterals,3
+60d179f17849920004933cec,Kinds of Quadrilaterals,3.4,60bf184a4b91dc3983c12ae7,8,60b62b974b44826738114ad0,Maths,60d174de7849920004933cac,Understanding Quadrilaterals,3
+60d17e327849920004933d3a,"Faces, Edges and Vertices",10.4,60bf184a4b91dc3983c12ae7,8,60b62b974b44826738114ad0,Maths,60d174de7849920004933cb3,Visualising Solid Shapes,10
+60d1a30348a5bb000420a508," Work, Energy and Power",4.1,60c0bcd4ebcff34e68fad7c9,11,60b62b8c4b44826738114ace,Physics,60d1a25b48a5bb000420a4f8,"Work, Energy and Power",4
+60d1a7b348a5bb000420a53e,Applications of Derivatives,3.2,60bf71dad38e530a98c857fe,12,60b62b974b44826738114ad0,Maths,60d1a72448a5bb000420a535,Calculus,3
+60d17b037849920004933cfd,Grouping Data,5.3,60bf184a4b91dc3983c12ae7,8,60b62b974b44826738114ad0,Maths,60d174de7849920004933cae,Data Handling,5
+60ed706eda4f9c00044a0d5d,Introduction,5.6,60bf184a4b91dc3983c12ae7,8,60b62b974b44826738114ad0,Maths,60d174de7849920004933cae,Data Handling,5
+60ed7488acff670004ad7fea,"Heat, work and Internal Energy",8.2,60c0bcd4ebcff34e68fad7c9,11,60b62b8c4b44826738114ace,Physics,60d1a25b48a5bb000420a4fc,Thermodynamics,8
+60ed749eacff670004ad7ff5,Law of Thermodynamics,8.3,60c0bcd4ebcff34e68fad7c9,11,60b62b8c4b44826738114ace,Physics,60d1a25b48a5bb000420a4fc,Thermodynamics,8
+60d17e327849920004933d38,View of 3D-Shapes,10.2,60bf184a4b91dc3983c12ae7,8,60b62b974b44826738114ad0,Maths,60d174de7849920004933cb3,Visualising Solid Shapes,10
+60d1a77e48a5bb000420a53c, Determinants,2.2,60bf71dad38e530a98c857fe,12,60b62b974b44826738114ad0,Maths,60d1a72448a5bb000420a534,Algebra,2
+60d17f4a7849920004933d50,Introduction,12.1,60bf184a4b91dc3983c12ae7,8,60b62b974b44826738114ad0,Maths,60d174de7849920004933cb5,Exponents and Powers,12
+60d17fe87849920004933d61,Introduction,14.1,60bf184a4b91dc3983c12ae7,8,60b62b974b44826738114ad0,Maths,60d174de7849920004933cb7,Factorisation,14
+60d17fe87849920004933d64,Division of Algebraic Expressions Continued (Polynomial / Polynomial),14.4,60bf184a4b91dc3983c12ae7,8,60b62b974b44826738114ad0,Maths,60d174de7849920004933cb7,Factorisation,14
+60d17df17849920004933d2b,What are Expressions?,9.1,60bf184a4b91dc3983c12ae7,8,60b62b974b44826738114ad0,Maths,60d174de7849920004933cb2,Algebraic Expressions and Identities	,9
+60ed7363acff670004ad7fa4,Graph Types,15.1,60bf184a4b91dc3983c12ae7,8,60b62b974b44826738114ad0,Maths,60d174de7849920004933cb8,Introduction to Graphs,15
+60ed7672acff670004ad80ad,Polyhedrons,10.5,60bf184a4b91dc3983c12ae7,8,60b62b974b44826738114ad0,Maths,60d174de7849920004933cb3,Visualising Solid Shapes,10
+60d1a34048a5bb000420a50e, Limits and Derivatives,1,60c0bcd4ebcff34e68fad7c9,11,60b62b974b44826738114ad0,Maths,60d1a0d048a5bb000420a4ed,Calculus,4
+60d17ee67849920004933d41,Area of General Quadrilateral,11.4,60bf184a4b91dc3983c12ae7,8,60b62b974b44826738114ad0,Maths,60d174de7849920004933cb4,Mensuration,11
+60ed7ab2acff670004ad818e,Constructing Triangle,4.4,60bf184a4b91dc3983c12ae7,8,60b62b974b44826738114ad0,Maths,60d174de7849920004933cad,Practical Geometry,4
+60d1a2e648a5bb000420a505, Linear Inequalities,2,60c0bcd4ebcff34e68fad7c9,11,60b62b974b44826738114ad0,Maths,60d1a0d048a5bb000420a4eb,Algebra,2
+60ee9040acff670004ad8986,Mathematical Reasoning,6.1,60c0bcd4ebcff34e68fad7c9,11,60b62b974b44826738114ad0,Maths,60ee901bacff670004ad897b,Mathematical Reasoning,6
+60d1a2e648a5bb000420a506,Permutations and Combinations,3,60c0bcd4ebcff34e68fad7c9,11,60b62b974b44826738114ad0,Maths,60d1a0d048a5bb000420a4eb,Algebra,2
+60d568b72f660300042ba45a,Areas ,5.1,60bf71cad38e530a98c857fc,9,60b62b974b44826738114ad0,Maths,60cb3da6cc9b7012dcf94abc,Mensuration,5
+60d568b72f660300042ba45c,Surface Areas and Volumes,5.2,60bf71cad38e530a98c857fc,9,60b62b974b44826738114ad0,Maths,60cb3da6cc9b7012dcf94abc,Mensuration,5
+60d16e6d7849920004933c1f,Altitudes Of A Triangle.,6.3,60dd8c7c01bce4172cf4899a,7,60b62b974b44826738114ad0,Maths,60d16c7e7849920004933be5,The triangle and its properties,6
+60d16e6d7849920004933c21,Angle Sum Property Of A Triangle.,6.5,60dd8c7c01bce4172cf4899a,7,60b62b974b44826738114ad0,Maths,60d16c7e7849920004933be5,The triangle and its properties,6
+60d1712b7849920004933c5a,Applications.,11.7,60dd8c7c01bce4172cf4899a,7,60b62b974b44826738114ad0,Maths,60d16c7e7849920004933bea,Perimeter and Area,11
+60d1712b7849920004933c58,Circles.,11.5,60dd8c7c01bce4172cf4899a,7,60b62b974b44826738114ad0,Maths,60d16c7e7849920004933bea,Perimeter and Area,11
+60d1712b7849920004933c55,Squares And Rectangles.,11.2,60dd8c7c01bce4172cf4899a,7,60b62b974b44826738114ad0,Maths,60d16c7e7849920004933bea,Perimeter and Area,11
+60eea4a8acff670004ad8d6e,Mathematical Induction ,6,60c0bcd4ebcff34e68fad7c9,11,60b62b974b44826738114ad0,Maths,60d1a0d048a5bb000420a4eb,Algebra,2
+60d1712b7849920004933c57,Area Of A Triangle.,11.4,60dd8c7c01bce4172cf4899a,7,60b62b974b44826738114ad0,Maths,60d16c7e7849920004933bea,Perimeter and Area,11
+60d16da37849920004933c11,Chance And Probability,3.9,60dd8c7c01bce4172cf4899a,7,60b62b974b44826738114ad0,Maths,60d16c7e7849920004933be2,Data Handling,3
+60d1a35d48a5bb000420a513,Probability,2,60c0bcd4ebcff34e68fad7c9,11,60b62b974b44826738114ad0,Maths,60d1a0d048a5bb000420a4ee,Statistics and Probability,5
+60d1a19948a5bb000420a4f3,Relations & Functions,2,60c0bcd4ebcff34e68fad7c9,11,60b62b974b44826738114ad0,Maths,60d1a0d048a5bb000420a4ea,Sets and Functions,1
+60d568992f660300042ba452,Quadrilaterals ,4.3,60bf71cad38e530a98c857fc,9,60b62b974b44826738114ad0,Maths,60cb3da6cc9b7012dcf94abb,Geometry,4
+60d1a2e648a5bb000420a507,Sequence and Series,4,60c0bcd4ebcff34e68fad7c9,11,60b62b974b44826738114ad0,Maths,60d1a0d048a5bb000420a4eb,Algebra,2
+60d16ef47849920004933c2a,Criteria For Congruence Of Triangles.,7.6,60dd8c7c01bce4172cf4899a,7,60b62b974b44826738114ad0,Maths,60d16c7e7849920004933be6,Congruence of Triangles,7
+60d1a19948a5bb000420a4f2,Sets,1,60c0bcd4ebcff34e68fad7c9,11,60b62b974b44826738114ad0,Maths,60d1a0d048a5bb000420a4ea,Sets and Functions,1
+60d172147849920004933c68,Decimal Number System.,13.5,60dd8c7c01bce4172cf4899a,7,60b62b974b44826738114ad0,Maths,60d16c7e7849920004933bec,Exponents and Powers,13
+60d1a35d48a5bb000420a512,Statistics,1,60c0bcd4ebcff34e68fad7c9,11,60b62b974b44826738114ad0,Maths,60d1a0d048a5bb000420a4ee,Statistics and Probability,5
+60d172147849920004933c65,Exponents.,13.2,60dd8c7c01bce4172cf4899a,7,60b62b974b44826738114ad0,Maths,60d16c7e7849920004933bec,Exponents and Powers,13
+60d568d22f660300042ba462,Probability ,6.2,60bf71cad38e530a98c857fc,9,60b62b974b44826738114ad0,Maths,60cb3da6cc9b7012dcf94abd,Statistics & Probability,6
+60d16f737849920004933c2d,Equivalent Ratios.,8.2,60dd8c7c01bce4172cf4899a,7,60b62b974b44826738114ad0,Maths,60d16c7e7849920004933be7,Comparing Quantities,8
+60eeb9e7acff670004ad9223,Conversions,8.7,60dd8c7c01bce4172cf4899a,7,60b62b974b44826738114ad0,Maths,60d16c7e7849920004933be7,Comparing Quantities,8
+60d171b67849920004933c5d,How Are Expressions Formed?,12.2,60dd8c7c01bce4172cf4899a,7,60b62b974b44826738114ad0,Maths,60d16c7e7849920004933beb,Algebraic Equations,12
+60d16d497849920004933c02,Introduction,2.1,60dd8c7c01bce4172cf4899a,7,60b62b974b44826738114ad0,Maths,60d16c7e7849920004933be1,Fractions and Decimals,2
+60d171b67849920004933c63,Using Algebraic Expressions – Formulas And Rules.,12.8,60dd8c7c01bce4172cf4899a,7,60b62b974b44826738114ad0,Maths,60d16c7e7849920004933beb,Algebraic Equations,12
+60d171b67849920004933c5f,Like And Unlike Terms.,12.4,60dd8c7c01bce4172cf4899a,7,60b62b974b44826738114ad0,Maths,60d16c7e7849920004933beb,Algebraic Equations,12
+60d172667849920004933c74,Introduction: Symmetry,14.1,60dd8c7c01bce4172cf4899a,7,60b62b974b44826738114ad0,Maths,60d16c7e7849920004933bed,Symmetry,14
+60d16e6d7849920004933c20,Exterior Angle Of A Triangle And Its Property.,6.4,60dd8c7c01bce4172cf4899a,7,60b62b974b44826738114ad0,Maths,60d16c7e7849920004933be5,The triangle and its properties,6
+60eeacbcacff670004ad8ef9,Calculations of Rational Numbers,9.4,60dd8c7c01bce4172cf4899a,7,60b62b974b44826738114ad0,Maths,60d16c7e7849920004933be8,Rational Numbers,9
+60d1729b7849920004933c7b,Drawing Solids On A Flat Surface.,15.4,60dd8c7c01bce4172cf4899a,7,60b62b974b44826738114ad0,Maths,60d16c7e7849920004933bee,Visualising Solid Shapes,15
+60d568d22f660300042ba460,Statistics ,6.1,60bf71cad38e530a98c857fc,9,60b62b974b44826738114ad0,Maths,60cb3da6cc9b7012dcf94abd,Statistics & Probability,6
+60d1a30a48a5bb000420a509,Straight Lines,1,60c0bcd4ebcff34e68fad7c9,11,60b62b974b44826738114ad0,Maths,60d1a0d048a5bb000420a4ec,Coordinate Geometry,3
+60d568992f660300042ba450,Triangles ,4.2,60bf71cad38e530a98c857fc,9,60b62b974b44826738114ad0,Maths,60cb3da6cc9b7012dcf94abb,Geometry,4
+60d1a19948a5bb000420a4f4,Trigonometric Functions,3,60c0bcd4ebcff34e68fad7c9,11,60b62b974b44826738114ad0,Maths,60d1a0d048a5bb000420a4ea,Sets and Functions,1
+60d16da37849920004933c0f,Median,3.7,60dd8c7c01bce4172cf4899a,7,60b62b974b44826738114ad0,Maths,60d16c7e7849920004933be2,Data Handling,3
+60d16da37849920004933c0e,Mode,3.6,60dd8c7c01bce4172cf4899a,7,60b62b974b44826738114ad0,Maths,60d16c7e7849920004933be2,Data Handling,3
+60eeacd2acff670004ad8efc,Operations,9.5,60dd8c7c01bce4172cf4899a,7,60b62b974b44826738114ad0,Maths,60d16c7e7849920004933be8,Rational Numbers,9
+60d16f737849920004933c2f,Use Of Percentages.,8.4,60dd8c7c01bce4172cf4899a,7,60b62b974b44826738114ad0,Maths,60d16c7e7849920004933be7,Comparing Quantities,8
+60d1a7f448a5bb000420a545,Probability,6.1,60bf71dad38e530a98c857fe,12,60b62b974b44826738114ad0,Maths,60d1a72448a5bb000420a538,Probability,6
+60d171b67849920004933c60,"Monomials, Binomials, Trinomials And Polynomials.",12.5,60dd8c7c01bce4172cf4899a,7,60b62b974b44826738114ad0,Maths,60d16c7e7849920004933beb,Algebraic Equations,12
+60eeac9bacff670004ad8ef3,Representation of Rational Number,9.2,60dd8c7c01bce4172cf4899a,7,60b62b974b44826738114ad0,Maths,60d16c7e7849920004933be8,Rational Numbers,9
+60d16d497849920004933c07,Multiplication Of Decimal Numbers,2.6,60dd8c7c01bce4172cf4899a,7,60b62b974b44826738114ad0,Maths,60d16c7e7849920004933be1,Fractions and Decimals,2
+60d16d497849920004933c04,Multiplication Of Fractions,2.3,60dd8c7c01bce4172cf4899a,7,60b62b974b44826738114ad0,Maths,60d16c7e7849920004933be1,Fractions and Decimals,2
+60d1729b7849920004933c78,Introduction: Plane Figures And Solid Shapes.,15.1,60dd8c7c01bce4172cf4899a,7,60b62b974b44826738114ad0,Maths,60d16c7e7849920004933bee,Visualising Solid Shapes,15
+60d1a76b48a5bb000420a539,Relations and Functions,1.1,60bf71dad38e530a98c857fe,12,60b62b974b44826738114ad0,Maths,60d1a72448a5bb000420a533,Relations and Functions,1
+60d16f737849920004933c31,Charge Given On Borrowed Money Or Simple Interest.,8.6,60dd8c7c01bce4172cf4899a,7,60b62b974b44826738114ad0,Maths,60d16c7e7849920004933be7,Comparing Quantities,8
+60d16cfe7849920004933bfb,Multiplication Of Integers,1.4,60dd8c7c01bce4172cf4899a,7,60b62b974b44826738114ad0,Maths,60d16c7e7849920004933be0,Integers,1
+60d568992f660300042ba44e,Lines and Angles,4.1,60bf71cad38e530a98c857fc,9,60b62b974b44826738114ad0,Maths,60cb3da6cc9b7012dcf94abb,Geometry,4
+60d1729b7849920004933c7a,Nets For Building 3-D Shapes.,15.3,60dd8c7c01bce4172cf4899a,7,60b62b974b44826738114ad0,Maths,60d16c7e7849920004933bee,Visualising Solid Shapes,15
+60d1a7d248a5bb000420a543,Three – dimensional Geometry,4.2,60bf71dad38e530a98c857fe,12,60b62b974b44826738114ad0,Maths,60d1a72448a5bb000420a536,Vectors and Three – Dimensional Geometry,4
+60d16e187849920004933c1a,Related Angles.,5.2,60dd8c7c01bce4172cf4899a,7,60b62b974b44826738114ad0,Maths,60d16c7e7849920004933be4,Lines and Angles,5
+60d172667849920004933c76,Rotational Symmetry.,14.3,60dd8c7c01bce4172cf4899a,7,60b62b974b44826738114ad0,Maths,60d16c7e7849920004933bed,Symmetry,14
+60d1a77e48a5bb000420a53b,Matrices,2.1,60bf71dad38e530a98c857fe,12,60b62b974b44826738114ad0,Maths,60d1a72448a5bb000420a534,Algebra,2
+60d170bb7849920004933c50,Constructing A Triangle When The Lengths Of Its Three Sides Are Known (SSS Criterion),10.4,60dd8c7c01bce4172cf4899a,7,60b62b974b44826738114ad0,Maths,60d16c7e7849920004933be9,Practical Geometry,10
+60d1729b7849920004933c7c,Viewing Different Sections Of A Solid.,15.5,60dd8c7c01bce4172cf4899a,7,60b62b974b44826738114ad0,Maths,60d16c7e7849920004933bee,Visualising Solid Shapes,15
+60eee6b164f5e00004d89d68,Various Geometries,11.8,60dd8c7c01bce4172cf4899a,7,60b62b974b44826738114ad0,Maths,60d16c7e7849920004933bea,Perimeter and Area,11
+60d16e187849920004933c1b,Pairs Of Lines.,5.3,60dd8c7c01bce4172cf4899a,7,60b62b974b44826738114ad0,Maths,60d16c7e7849920004933be4,Lines and Angles,5
+60d16cfe7849920004933bfc,Properties Of Multiplication Of Integers,1.5,60dd8c7c01bce4172cf4899a,7,60b62b974b44826738114ad0,Maths,60d16c7e7849920004933be0,Integers,1
+60d16ded7849920004933c13,Setting Up Of An Equation.,4.2,60dd8c7c01bce4172cf4899a,7,60b62b974b44826738114ad0,Maths,60d16c7e7849920004933be3,Simple Equations,4
+60d1a7b348a5bb000420a53d,Continuity and Differentiability,3.1,60bf71dad38e530a98c857fe,12,60b62b974b44826738114ad0,Maths,60d1a72448a5bb000420a535,Calculus,3
+60d1a7b348a5bb000420a540,Applications of the Integrals,3.4,60bf71dad38e530a98c857fe,12,60b62b974b44826738114ad0,Maths,60d1a72448a5bb000420a535,Calculus,3
+60d1a7b348a5bb000420a53f,Integrals,3.3,60bf71dad38e530a98c857fe,12,60b62b974b44826738114ad0,Maths,60d1a72448a5bb000420a535,Calculus,3
+60d1a7b348a5bb000420a541,Differential Equations,3.5,60bf71dad38e530a98c857fe,12,60b62b974b44826738114ad0,Maths,60d1a72448a5bb000420a535,Calculus,3
+60d1a7e248a5bb000420a544,Linear Programming,5.1,60bf71dad38e530a98c857fe,12,60b62b974b44826738114ad0,Maths,60d1a72448a5bb000420a537,Linear Programming,5
+60d1a76b48a5bb000420a53a,Inverse Trigonometric Functions,1.2,60bf71dad38e530a98c857fe,12,60b62b974b44826738114ad0,Maths,60d1a72448a5bb000420a533,Relations and Functions,1
+60efee5464f5e00004d8a535,Classification of Solids Based on Different Binding Forces,1.7,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a586,Solid State,1
+60efee1664f5e00004d8a52e,Elevation of Boiling Point,2.6,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a587,Solutions,2
+60efee2664f5e00004d8a531,Determination of Molecular Massesusing Colligative Properties,2.7,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a587,Solutions,2
+60d1b0b248a5bb000420a5c1,Adsorption - Physisorption and Chemisorption,5.1,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a58a,Surface Chemistry,5
+60efeeef64f5e00004d8a553,Colloids Distinction Between True Solutions,5.4,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a58a,Surface Chemistry,5
+60efef5964f5e00004d8a556,Brownian Movement,5.5,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a58a,Surface Chemistry,5
+60efef8464f5e00004d8a559,Electrophoresis,5.6,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a58a,Surface Chemistry,5
+60efef9c64f5e00004d8a55c,Coagulation,5.7,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a58a,Surface Chemistry,5
+60d1af6f48a5bb000420a5aa,Expressing the concentration of solutions,2.2,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a587,Solutions,2
+60d1b65348a5bb000420a60e,Structure of amines,13.1,60bf71dad38e530a98c857fe,12,60b62b914b44826738114acf,Chemistry,60d1ae3248a5bb000420a592,Amines,13
+60c9f16f3d63a83918aea4cd,Sustainable Management of Natural Resources,16,60bf71d1d38e530a98c857fd,10,60b62b5f4b44826738114acb,Science,60c9d9b3e7dd6959e8fb1b34,Natural Resources,5
+60d182e17849920004933d81,"Land, Soil, Water, Natural Vegetation and Wildlife Resources",3.2,60bf184a4b91dc3983c12ae7,8,60c85dd9de9a2670e560f1eb,Social Science,60d181c87849920004933d7a,Geography,3
+60d182e17849920004933d80,Resources,3.1,60bf184a4b91dc3983c12ae7,8,60c85dd9de9a2670e560f1eb,Social Science,60d181c87849920004933d7a,Geography,3
+60d097e57849920004933b91,Yarn to Fabric,3.5,60c05895e82abc693455109d,6,60b62b5f4b44826738114acb,Science,60d076627849920004933ab0,Fibre to Fabric,3
+60e9851fb5a0910004bf5896,Animal Nutrition,2.5,60dd8c7c01bce4172cf4899a,7,60b62b5f4b44826738114acb,Science,60d1e29748a5bb000420a66f,Nutrition in Animals,2
+60d1e3b048a5bb000420a686,Digestion in Humans,2.2,60dd8c7c01bce4172cf4899a,7,60b62b5f4b44826738114acb,Science,60d1e29748a5bb000420a66f,Nutrition in Animals,2
+60d17f267849920004933d4c,Understanding Media,6,60dd8c7c01bce4172cf4899a,7,60c85dd9de9a2670e560f1eb,Social Science,60d17eb17849920004933d3b,Civics,1
+60d180127849920004933d71,Life in Temperate Grasslands,9,60dd8c7c01bce4172cf4899a,7,60c85dd9de9a2670e560f1eb,Social Science,60d17eb17849920004933d3d,Geography,3
+60d568662f660300042ba445,Manures,3,60bf71cad38e530a98c857fc,9,60b62b5f4b44826738114acb,Science,60cb3da6cc9b7012dcf94ab7,"Food, Food Production",5
+60d18e377849920004933d9f,Adjectives,1.3,60c05895e82abc693455109d,6,60cc53337fd9443c34e3aa81,English,60d18c927849920004933d90,English Grammar,1
+60d18e377849920004933d9d,Noun,1.1,60c05895e82abc693455109d,6,60cc53337fd9443c34e3aa81,English,60d18c927849920004933d90,English Grammar,1
+60d18e377849920004933da8,Prepositions,1.12,60c05895e82abc693455109d,6,60cc53337fd9443c34e3aa81,English,60d18c927849920004933d90,English Grammar,1
+60d18e377849920004933da4,Sentence and Phrases,1.8,60c05895e82abc693455109d,6,60cc53337fd9443c34e3aa81,English,60d18c927849920004933d90,English Grammar,1
+60d18e377849920004933da1,Tenses,1.5,60c05895e82abc693455109d,6,60cc53337fd9443c34e3aa81,English,60d18c927849920004933d90,English Grammar,1
+60d18e377849920004933da2,Verbs,1.6,60c05895e82abc693455109d,6,60cc53337fd9443c34e3aa81,English,60d18c927849920004933d90,English Grammar,1
+60d18e377849920004933daa,Punctuation,1.14,60c05895e82abc693455109d,6,60cc53337fd9443c34e3aa81,English,60d18c927849920004933d90,English Grammar,1
+60d18e377849920004933da7,Framing Questions,1.11,60c05895e82abc693455109d,6,60cc53337fd9443c34e3aa81,English,60d18c927849920004933d90,English Grammar,1
+60d18d8f7849920004933d99,Adjectives (Comparative and Superlative),7,60dd8c7c01bce4172cf4899a,7,60cc53337fd9443c34e3aa81,English,60d18d057849920004933d92,English Grammar,1
+60d18d8f7849920004933d95,Adverbs (place and type),3,60dd8c7c01bce4172cf4899a,7,60cc53337fd9443c34e3aa81,English,60d18d057849920004933d92,English Grammar,1
+60d18d8f7849920004933d93,Determiners,1,60dd8c7c01bce4172cf4899a,7,60cc53337fd9443c34e3aa81,English,60d18d057849920004933d92,English Grammar,1
+60d18d8f7849920004933d94,Linking Words,2,60dd8c7c01bce4172cf4899a,7,60cc53337fd9443c34e3aa81,English,60d18d057849920004933d92,English Grammar,1
+60d18d8f7849920004933d9a,Modal Auxiliaries,8,60dd8c7c01bce4172cf4899a,7,60cc53337fd9443c34e3aa81,English,60d18d057849920004933d92,English Grammar,1
+60d18d8f7849920004933d98,Passivisation,6,60dd8c7c01bce4172cf4899a,7,60cc53337fd9443c34e3aa81,English,60d18d057849920004933d92,English Grammar,1
+60d18d8f7849920004933d9c,Reported speech,10,60dd8c7c01bce4172cf4899a,7,60cc53337fd9443c34e3aa81,English,60d18d057849920004933d92,English Grammar,1
+60d18d8f7849920004933d96,Tense forms,4,60dd8c7c01bce4172cf4899a,7,60cc53337fd9443c34e3aa81,English,60d18d057849920004933d92,English Grammar,1
+60d18efc7849920004933db4,Active and Passive Voice,3,60bf184a4b91dc3983c12ae7,8,60cc53337fd9443c34e3aa81,English,60d18e607849920004933dab,English Grammar,1
+60d18efc7849920004933db9,Adverb,8,60bf184a4b91dc3983c12ae7,8,60cc53337fd9443c34e3aa81,English,60d18e607849920004933dab,English Grammar,1
+60d18efc7849920004933dbb,Conjunction,10,60bf184a4b91dc3983c12ae7,8,60cc53337fd9443c34e3aa81,English,60d18e607849920004933dab,English Grammar,1
+60d18efc7849920004933db3,Direct and Indirect Speech,2,60bf184a4b91dc3983c12ae7,8,60cc53337fd9443c34e3aa81,English,60d18e607849920004933dab,English Grammar,1
+60d18efc7849920004933db6,Noun,5,60bf184a4b91dc3983c12ae7,8,60cc53337fd9443c34e3aa81,English,60d18e607849920004933dab,English Grammar,1
+60d18efc7849920004933db2,Order of Words and Clauses,1,60bf184a4b91dc3983c12ae7,8,60cc53337fd9443c34e3aa81,English,60d18e607849920004933dab,English Grammar,1
+60d18efc7849920004933dbc,Phrases and Idioms,11,60bf184a4b91dc3983c12ae7,8,60cc53337fd9443c34e3aa81,English,60d18e607849920004933dab,English Grammar,1
+60d18efc7849920004933dba,Prepositions,9,60bf184a4b91dc3983c12ae7,8,60cc53337fd9443c34e3aa81,English,60d18e607849920004933dab,English Grammar,1
+60d18efc7849920004933db7,Pronoun,6,60bf184a4b91dc3983c12ae7,8,60cc53337fd9443c34e3aa81,English,60d18e607849920004933dab,English Grammar,1
+60d18efc7849920004933dbd,Vocabulary,12,60bf184a4b91dc3983c12ae7,8,60cc53337fd9443c34e3aa81,English,60d18e607849920004933dab,English Grammar,1
+60d18efc7849920004933db5,Tenses,4,60bf184a4b91dc3983c12ae7,8,60cc53337fd9443c34e3aa81,English,60d18e607849920004933dab,English Grammar,1
+60d18efc7849920004933dbe,Comprehension Reading,13,60bf184a4b91dc3983c12ae7,8,60cc53337fd9443c34e3aa81,English,60d18e607849920004933dab,English Grammar,1
+61136ba922fcff004be0d6b0,Use of  Passive Voice,2.9,60bf71cad38e530a98c857fc,9,60cc53337fd9443c34e3aa81,English,60d193057849920004933ddc,Writing Skills with Grammar,2
+61136ba922fcff004be0d6b2,"Clauses: Noun, Adverb Clauses of condition and time, Relative Clauses",2.1,60bf71cad38e530a98c857fc,9,60cc53337fd9443c34e3aa81,English,60d193057849920004933ddc,Writing Skills with Grammar,2
+61136ba922fcff004be0d6ac,Questions,2.7,60bf71cad38e530a98c857fc,9,60cc53337fd9443c34e3aa81,English,60d193057849920004933ddc,Writing Skills with Grammar,2
+61136ba922fcff004be0d6ae,Determiner,2.8,60bf71cad38e530a98c857fc,9,60cc53337fd9443c34e3aa81,English,60d193057849920004933ddc,Writing Skills with Grammar,2
+61136ba922fcff004be0d6aa,Statements,2.6,60bf71cad38e530a98c857fc,9,60cc53337fd9443c34e3aa81,English,60d193057849920004933ddc,Writing Skills with Grammar,2
+61136ba922fcff004be0d6a2,Modals,2.2,60bf71cad38e530a98c857fc,9,60cc53337fd9443c34e3aa81,English,60d193057849920004933ddc,Writing Skills with Grammar,2
+61136ba922fcff004be0d6b4,Prepositions,2.11,60bf71cad38e530a98c857fc,9,60cc53337fd9443c34e3aa81,English,60d193057849920004933ddc,Writing Skills with Grammar,2
+61136ba922fcff004be0d6a6,Reported Speech ,2.4,60bf71cad38e530a98c857fc,9,60cc53337fd9443c34e3aa81,English,60d193057849920004933ddc,Writing Skills with Grammar,2
+61136ba922fcff004be0d6a4,Subject - verb concord,2.3,60bf71cad38e530a98c857fc,9,60cc53337fd9443c34e3aa81,English,60d193057849920004933ddc,Writing Skills with Grammar,2
+61136ba922fcff004be0d6a0,Tenses,2.1,60bf71cad38e530a98c857fc,9,60cc53337fd9443c34e3aa81,English,60d193057849920004933ddc,Writing Skills with Grammar,2
+60d192b67849920004933dda,Determiners,8,60bf71d1d38e530a98c857fd,10,60cc53337fd9443c34e3aa81,English,60d191d67849920004933dcc,Writing Skills with Grammar,2
+60d192b67849920004933dd4,Modals,2,60bf71d1d38e530a98c857fd,10,60cc53337fd9443c34e3aa81,English,60d191d67849920004933dcc,Writing Skills with Grammar,2
+60d192b67849920004933dd6,Reported speech,4,60bf71d1d38e530a98c857fd,10,60cc53337fd9443c34e3aa81,English,60d191d67849920004933dcc,Writing Skills with Grammar,2
+60d192b67849920004933dd3,Tenses,1,60bf71d1d38e530a98c857fd,10,60cc53337fd9443c34e3aa81,English,60d191d67849920004933dcc,Writing Skills with Grammar,2
+6113870b89efe7004c25477e,Vocabulary,2.12,60bf71cad38e530a98c857fc,9,60cc53337fd9443c34e3aa81,English,60d193057849920004933ddc,Writing Skills with Grammar,2
+60d192b67849920004933dd5,Verb concord,3,60bf71d1d38e530a98c857fd,10,60cc53337fd9443c34e3aa81,English,60d191d67849920004933dcc,Writing Skills with Grammar,2

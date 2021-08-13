@@ -11,7 +11,6 @@ export default function useViewAllQuestions() {
     const params = useParams();
     let key = '';
     key = `questions-${params?.class_id}-${params?.subject_id}`;
-    
     return useQuery(`${key}`, async () => {
         if(
             state.access_token && 
@@ -25,8 +24,6 @@ export default function useViewAllQuestions() {
                 }
             });
             return result.data.data; 
-        
-            
         }
     });
     
