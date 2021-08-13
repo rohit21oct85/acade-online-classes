@@ -1,6 +1,6 @@
 const OS = require('os');
 const cluster = require('cluster');
-let numCPUs = OS.cpus().length*2
+let numCPUs = OS.cpus().length
 
 const dotenv = require('dotenv').config();
 const express = require("express");
