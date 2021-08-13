@@ -802,6 +802,7 @@ const attemptTestByStudentOffline = async (req, res) =>{
                 test_window: newData1.test_window,
                 test_duration: newData1.test_duration,
                 test_name: newData1.test_name,
+                test_type: newData1.test_type,
                 total_marks: newData1.total_marks,
                 section:req.body.section,
                 student_roll_no: student.roll_no,
