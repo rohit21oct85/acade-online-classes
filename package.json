@@ -41,7 +41,6 @@
     "jsonwebtoken": "^8.5.1",
     "jspdf": "^2.3.1",
     "jspdf-autotable": "^3.5.15",
-    "loadtest": "^5.1.2",
     "mongodb": "^3.6.5",
     "mongoose": "^5.12.3",
     "mongoose-double": "^0.0.1",
@@ -54,8 +53,5 @@
     "randombytes": "^2.1.0",
     "react-datepicker": "^4.1.1",
     "response-time": "^2.3.2"
-  },
-  "devDependencies": {
-    "loadtest": "^5.1.2"
   }
 }
