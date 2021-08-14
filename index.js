@@ -141,13 +141,13 @@ const directory = path.join(__dirname, 'apps/uploads');
 app.use('/uploads', express.static(directory));
 
 if (process.env.NODE_ENV === 'production') {
-    // app.use(express.static('views/build'));
-    // app.get('/*', (req, res) => {
-    //     const index = path.join(__dirname, 'views', 'build', 'index.html');
-    //     res.sendFile(index);
-    // });
-    app.use(express.static(path.join(__dirname, 'build')));
-    app.get('/', function(req, res) {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+    app.use(express.static('views/build'));
+    app.get('/*', (req, res) => {
+        const index = path.join(__dirname, 'views', 'build', 'index.html');
+        res.sendFile(index);
     });
+    // app.use(express.static(path.join(__dirname, 'build')));
+    // app.get('/', function(req, res) {
+    // res.sendFile(path.join(__dirname, 'build', 'index.html'));
+    // });
 }
