@@ -1,6 +1,6 @@
 const OS = require('os');
 const cluster = require('cluster');
-let numCPUs = OS.cpus().length
+let numCPUs = OS.cpus().length*2
 
 const dotenv = require('dotenv').config();
 const express = require("express");
@@ -100,6 +100,7 @@ const options = {
             cluster.fork();
         });
     }else{
+        process.env.UV_THREADPOOL_SIZE = numCPUs
         app.listen(PORT, () => {
             console.log(`App is running pid ${process.pid} on PORT ${PORT}`);
         })
