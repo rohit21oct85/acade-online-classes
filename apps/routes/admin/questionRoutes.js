@@ -34,6 +34,8 @@ router
     .get('/questions', checkAuth, Question.AllQuestionsByUnits)
     .post('/delete', checkAuth, Question.DeleteQuestion)
     .post('/upload', upload.single('file'), checkAuth, Question.uploadQuestion)
+    .post('/update-chapter-id',checkAuth, Question.updateChapterId)
+    .post('/unit-questions',checkAuth, Question.unitQuestions)
 ;
 
 module.exports = router;

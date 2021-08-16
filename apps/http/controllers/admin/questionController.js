@@ -586,6 +586,65 @@ const AllChapterQuestions = async (req, res) => {
     }
 }
 
+async function getChapters(filter){
+    let chapters = await Chapter.findOne(filter);
+    return chapters?._id;
+}
+const updateChapterId = async (req, res) => {
+    try {
+        let filter = {
+            "class_id":req?.body.class_id,
+            "subject_id":req?.body.subject_id,
+            "unit_id":req?.body.unit_id,
+            "chapter_no":req?.body.chapter_no,
+        }
+        let questions = await Question.find(filter);
+
+        if(questions?.length > 0){
+            let chapter_id = await getChapters(filter);
+            // console.log(chapters);
+            await Question.updateMany(filter,{
+                chapter_id: chapter_id
+            });   
+        }
+        res.status(201).json({
+            length: questions.length,
+            message: 'Questions Updated'
+        });
+    } catch (error) {
+        res.status(409).json({
+            message: "Error occured while Inserting Data",
+            errors: error.message
+        });
+    }
+}
+const unitQuestions = async (req, res) => {
+    try {
+        let questions = await Question.find({
+            "class_id":req?.body.class_id,
+            "subject_id":req?.body.subject_id,
+            "unit_id":req?.body.unit_id
+        },{
+            chapter_no: 1,
+            chapter_name: 1,
+            chapter_id: 1,
+            unit_id: 1,
+            subject_id: 1,
+            class_id: 1
+        });
+        
+        res.status(201).json({
+            length: questions.length,
+            data: questions
+        });
+    } catch (error) {
+        res.status(409).json({
+            message: "Error occured while Inserting Data",
+            errors: error.message
+        });
+    }
+}
+
 module.exports = {
     AllChapterQuestions,
     AllSubjectsQuestions,
@@ -599,4 +658,6 @@ module.exports = {
     AllQuestions,
     DeleteQuestion,
     uploadQuestion,
+    updateChapterId,
+    unitQuestions
 }

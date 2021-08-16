@@ -146,8 +146,4 @@ if (process.env.NODE_ENV === 'production') {
         const index = path.join(__dirname, 'views', 'build', 'index.html');
         res.sendFile(index);
     });
-    // app.use(express.static(path.join(__dirname, 'build')));
-    // app.get('/', function(req, res) {
-    // res.sendFile(path.join(__dirname, 'build', 'index.html'));
-    // });
 }
