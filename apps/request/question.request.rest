@@ -62,9 +62,9 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZDZkNTZkOTk3MjZjM2FjMDFmOGI0OSIsInJvbGUiOjEsImlhdCI6MTYyOTE3NjYwNiwiZXhwIjoxNjMxNzY4NjA2fQ.cRJ2yaMdV29jqIL1CQGIdaGbsq8v4UuVz7_e3t-xjaw
 
 {
-      "class_id":"60bf71cad38e530a98c857fc",
-      "subject_id":"60b62b5f4b44826738114acb",
-      "unit_id":"60cb3da6cc9b7012dcf94ab3"
+      "class_id":"610a36d1d48cf79f0292f52d",
+      "subject_id":"60cc53337fd9443c34e3aa81",
+      "unit_id":"6116117e6a9253006c32974d"
 }
 
 ### Update Questions ChapterID ### 
@@ -73,9 +73,9 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwZDZkNTZkOTk3MjZjM2FjMDFmOGI0OSIsInJvbGUiOjEsImlhdCI6MTYyODU5NDg2NSwiZXhwIjoxNjMxMTg2ODY1fQ.YVwmqo-PvLcGRkp0kxGsmbXfKQVxX9R85-GfwlSDtgA
 
 {
-      "class_id":"60bf71cad38e530a98c857fc",
-      "subject_id":"60b62b5f4b44826738114acb",
-      "unit_id":"60cb3da6cc9b7012dcf94ab3",
+      "class_id":"610a36d1d48cf79f0292f52d",
+      "subject_id":"60cc53337fd9443c34e3aa81",
+      "unit_id":"6116117e6a9253006c32974d"
       "chapter_no":"2"
 }
 

@@ -142,9 +142,9 @@ const directory = path.join(__dirname, 'apps/uploads');
 app.use('/uploads', express.static(directory));
 
 if (process.env.NODE_ENV === 'production') {
-    app.use(express.static('views/build'));
+    app.use(express.static('build'));
     app.get('/*', (req, res) => {
-        const index = path.join(__dirname, 'views', 'build', 'index.html');
+        const index = path.join(__dirname, 'build', 'index.html');
         res.sendFile(index);
     });
 }
