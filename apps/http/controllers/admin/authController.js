@@ -224,6 +224,17 @@ const AddField = async (req, res) => {
         res.status(502).json({message: "Somethign went wrong!"})
     }
 }
+const AdminLogout = async (req, res) => {
+    try {
+        await Admin.findOneAndUpdate({email:  req.body.email},{$set: {
+            isActive: false
+        }});
+        res.status(201).json({message: "Logout Successfully"})
+    } catch (error) {
+        res.status(502).json({message: "Somethign went wrong!"})
+    }
+}
+
 module.exports = {
     AddField,
     UpdateSubAdmin,
@@ -234,6 +245,7 @@ module.exports = {
     Register,
     Login,
     Logout,
+    AdminLogout,
     RefreshToken,
     ForgotPassword,
 }

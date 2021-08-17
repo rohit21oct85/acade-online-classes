@@ -1,5 +1,5 @@
 ### Update Subjects Class ### 
-POST http://localhost:5000/api/v1/school/search-school
+POST http://localhost:3000/api/v1/school/search-school
 Content-Type: application/json
 
 {

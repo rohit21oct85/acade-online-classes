@@ -153,7 +153,7 @@ export default function ViewAllQuestions() {
                                         {params?.type === 'Units' && (
                                         <tr className="flex col-md-12 ml-2 mr-2 pt-1 table-bordered">
                                             <td className="col-md-1 pl-0"><b>{unit?.unit_no}</b></td> 
-                                            <td className="col-md-10"><b>{unit?.unit_name}</b></td>
+                                            <td className="col-md-10"><b>{unit?.unit_name?.replaceAll(',',' ')}</b></td>
                                             <td className="col-md-2">
                                                 <b>{total_questions}</b>
                                             </td>

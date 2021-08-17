@@ -20,4 +20,10 @@ Content-Type: application/json
       "isActive": "false"
 }
 
+### Logout User ###
+POST http://localhost:3000/api/v1/admin/admin-logout
+Content-Type: application/json
 
+{
+      "email":"kajal.sahu2609@gmail.com"
+}

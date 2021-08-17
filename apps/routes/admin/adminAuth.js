@@ -17,5 +17,6 @@ router
     .post('/forgot-password', auth.ForgotPassword)
     .post('/refresh-token', auth.RefreshToken)
     .delete('/logout', auth.Logout)
+    .post('/admin-logout', auth.AdminLogout)
 ;
 module.exports = router;

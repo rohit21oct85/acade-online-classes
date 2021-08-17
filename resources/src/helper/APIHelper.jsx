@@ -1,5 +1,5 @@
 let API_URL='';
-if(process.env.NODE_ENV === 'development'){
+if(process.env.REACT_APP_NODE_ENV === 'development'){
     API_URL = process.env.REACT_APP_LOCAL_API_URL;
 }else{
     API_URL = process.env.REACT_APP_LIVE_API_URL;

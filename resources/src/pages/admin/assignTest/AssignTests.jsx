@@ -124,7 +124,7 @@ export default function AssignTests() {
                                 }}>
                                     <option value="">Test Type</option>
                                     <option value="mock-test">Mock Test</option>
-                                    <option value="combine-test">Rivision Test</option>
+                                    <option value="combine-test">Revision Test</option>
                                     <option value="single-test">Single Test</option>
                                     <option value="upload-test">Teacher Led Test</option>
                                 </select>

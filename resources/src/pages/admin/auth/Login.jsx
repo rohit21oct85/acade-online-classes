@@ -30,7 +30,7 @@ export default function Login() {
             return false;
         }else{
             setLoading(true);
-            
+            console.log(process.env.REACT_APP_NODE_ENV)
             const formData = {email: emailRef.current.value , password: passwordRef.current.value};
             const response = await axios.post(`${API_URL}v1/admin/login`, formData);
             if(response?.status === 203){
