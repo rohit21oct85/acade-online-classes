@@ -866,8 +866,14 @@ const getQuestions = async (req,res) => {
         });
     }
 }
-
+const saveAnswerNew = async (req, res) => {
+  res.status(res.statusCode).json({
+     "message":"OK",
+     "data": req.params
+  });
+}
 const saveAnswer = async (req,res) => {
+    //return res.status(res.statusCode).json({data: "hello"});
     try{
         if(req.params.test_type == "mock-test"){
             const filter = {
@@ -921,7 +927,7 @@ const saveAnswer = async (req,res) => {
                     item['option_c'] = un?.options[2],
                     item['option_d'] = un?.options[3],
                     item['extension'] = "docx"
-                } else if(item.question_id == req.body.question_id){
+                } else {
                     item['answer'] = req.body.answer,
                     item['option'] = req.body.option,
                     item['correct_option'] = un.answer,
